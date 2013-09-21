@@ -149,19 +149,33 @@ class RietveldScraper
       get_ids
     end
 
-    args_map = {
+    issue_args = {
       "messages" => true  # We don't just put with_messages here. Instead, we
     } if with_messages  # protect against possibly throwing a string into the hash we pass to the request
+
+    patch_args = {
+      'comments' => true
+    } if with_messages
 
     hydra = Typhoeus::Hydra.new  # make a new concurrent run area
     
     @ids.each do |id|  # for each of the IDs in the pool
-      request = Typhoeus::Request.new(baseurl + "/api/#{id}", params: args_map)  # make a new request
-      request.on_complete do |resp| 
-        print '.' # print a dot when the request finishes
-        @issues << Oj.load(resp.body)  # push a Hash of the response onto our issues list
+      issue_request = Typhoeus::Request.new(baseurl + "/api/#{id}", params: issue_args)  # make a new request
+      issue_request.on_complete do |resp| 
+        print 'i'  # print an 'i' when an issue request finishes
+        resp_hash = Oj.load(resp.body)  
+        @issues << resp_hash # push a Hash of the response onto our issues list
+
+        resp_hash['patchsets'].each do |patch|
+          patch_request = Typhoeus::Request.new(baseurl + "/api/#{id}/#{patch}", params: patch_args)
+          patch_request.on_complete do |patch_resp|
+            print 'p'  # print an 'p' when an issue request finishes
+            @patches << Oj.load(patch_resp.body)
+          end
+          hydra.queue patch_request
+        end
       end
-      hydra.queue request  # and enqueue the request
+      hydra.queue issue_request  # and enqueue the request
     end
 
     # BLOCKING CALL
