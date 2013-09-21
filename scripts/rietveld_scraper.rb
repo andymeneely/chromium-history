@@ -1,57 +1,105 @@
 #!/usr/bin/env ruby
-require 'net/http'
+require 'typhoeus'
 require 'oj'
 require 'set'
 require 'msgpack'
 
-class RietveldScraper
-  attr_accessor :ids
-
+# 
+# This is a class for basic state storage and 
+# collection of Rietveld-scraping methods
+# 
+# @author Katherine Whitlock
+class RietveldScraper  
+  # Set whether we want verbose debug output or not
+  Typhoeus::Config.verbose = false 
+  
   @@baseurl = 'https://codereview.chromium.org'
 
-  def self.get_json_response(url, args=nil)
-    Oj.load(Net::HTTP::get(URI.parse(url, args)))
+  # 
+  # return the baseurl
+  # 
+  # @return String baseurl
+  def self.baseurl
+    @@baseurl
   end
 
+  # 
+  # Get one more page of search results in json format
+  # (2000 ids), using the cursor as reference
+  # @param  cursor=nil String The cursor to use as reference 
+  # 
+  # @return  Hash The response's body in a Ruby Hash
   def self.get_more_ids(cursor=nil)
-    Net::HTTP::post_form( 
-      URI.parse(@@baseurl + "/search"), 
-      {
-        "closed" => "1",
-        "private" => "1", 
-        "commit" => "1",
-        "format" => "json",
-        "keys_only" => "True",
-        "with_messages" => "False",
-        "cursor" => "#{cursor}"
-      }
+    Oj.load(
+      Typhoeus.get(
+        @@baseurl + "/search", 
+        params: {
+          "closed" => "1",
+          "private" => "1", 
+          "commit" => "1",
+          "format" => "json",
+          "keys_only" => "True",
+          "with_messages" => "False",
+          "cursor" => "#{cursor}"
+        }
+      ).body  # we want the response's body
     )
   end
 
-  def initialize
+  # 
+  # Create a new instance
+  # @param  initial=nil Hash The initial values we have.
+  # This should match the output of to_hash
+  # 
+  # @return RietveldScraper Our new object
+  def initialize(initial=nil)
     @cursor = nil
-    @ids = Set.new
-    @issues = Array.new
-    @patches = Array.new
+    if initial
+      @ids = Set.new initial['ids']
+      @issues = initial['issues']
+      @patches = initial['patches']
+    else
+      @ids = Set.new
+      @issues = Array.new
+      @patches = Array.new
+    end
   end
 
+  # 
+  # Generate a Hash representation of the scraper state
+  # 
+  # @return Hash all important fields
   def to_hash
     {
-      cursor:  @cursor,
-      ids:     @ids.to_a,
-      issues:  @issues,
-      patches: @patches
+      'ids'     => @ids.to_a,
+      'issues'  => @issues,
+      'patches' => @patches
     }
   end
   
+  # 
+  # Generates a String version of the scraper
+  # 
+  # @return String human-readable output
   def to_s
     puts @ids.first
   end
 
+
+  # 
+  # Generate a JSON version of the scraper state
+  # 
+  # @return String The JSON representation
   def to_json
     Oj.dump(self.to_hash)
   end
 
+
+  # 
+  # Gemerates a MessagePack representation of the scraper state
+  # @param  io=nil File Takes an IOStream and outputs to there
+  # 
+  # @return String The MessagePack representation
   def to_msgpack(io=nil)
     if io
       io.write self.to_hash
@@ -60,11 +108,17 @@ class RietveldScraper
     end
   end
 
+
+  # 
+  # Get IDs fetches each 2000 consecutive IDs until it reaches either a non-response
+  # from the server, or a match that we have.
+  # 
+  # @return Set The IDs we've found (a reference to our IVAR)
   def get_ids
     puts "Fetching IDs:"
-    while true
+    1.times do
       begin
-        json = Oj.load(self.get_more_ids(@cursor).body)
+        json = self.get_more_ids
         @cursor = json['cursor']  # Grab the cursor from the response
         new_ids = json['results']  # Grab the array of new ids from the response
         new_ids.each do |id|  # For each of the new ids we've fetched...
@@ -80,23 +134,52 @@ class RietveldScraper
         puts "Reached end of results"
       end
     end
+    @ids
   end
 
-  def get_data
+
+  # 
+  # Concurrently grabs corresponding data for each of the IDS we have.
+  # @param  with_messages=true Bool whether we want messages in the response
+  # 
+  # @return Array The data we've grabbed (a reference to our IVAR)
+  def get_data(with_messages=true)
     puts "Fetching Data:\n"
-    if not @ids  # let's make sure we've got some ids
+    if @ids.empty?  # let's make sure we've got some ids
       get_ids
     end
 
-    ids.map do |id|
-      print '.'
-      @issues << self.get_json_response(baseurl + "/api/#{id}", {
-        "messages" => true
-        })
+    args_map = {
+      "messages" => true  # We don't just put with_messages here. Instead, we
+    } if with_messages  # protect against possibly throwing a string into the hash we pass to the request
+
+    hydra = Typhoeus::Hydra.new  # make a new concurrent run area
+    
+    @ids.each do |id|  # for each of the IDs in the pool
+      request = Typhoeus::Request.new(baseurl + "/api/#{id}", params: args_map)  # make a new request
+      request.on_complete do |resp| 
+        print '.' # print a dot when the request finishes
+        @issues << Oj.load(resp.body)  # push a Hash of the response onto our issues list
+      end
+      hydra.queue request  # and enqueue the request
     end
+
+    # BLOCKING CALL
+    hydra.run  # This runs all the requests that are queued (200 at a time)
+
+    @issues
   end
 
 end
+
+# r = RietveldScraper.new( MessagePack.load(File.open("scraper.msg", "r") ))
+# r.get_ids
+
+# Saving output:
+# File.open("test.msg", "w") do |file|  
+#    MessagePack.pack(r, file)
+# end
+
 
 # puts "Latest issue: #{element}" 
 # puts "Issue Id: #{element['issue']}"
