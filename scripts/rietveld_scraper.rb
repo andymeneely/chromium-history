@@ -144,7 +144,7 @@ class RietveldScraper
   # 
   # @return Array The data we've grabbed (a reference to our IVAR)
   def get_data(with_messages=true)
-    puts "Fetching Data:\n"
+    puts "Fetching Data:"
     if @ids.empty?  # let's make sure we've got some ids
       get_ids
     end
@@ -153,27 +153,14 @@ class RietveldScraper
       "messages" => true  # We don't just put with_messages here. Instead, we
     } if with_messages  # protect against possibly throwing a string into the hash we pass to the request
 
-    patch_args = {
-      'comments' => true
-    } if with_messages
 
     hydra = Typhoeus::Hydra.new  # make a new concurrent run area
     
     @ids.each do |id|  # for each of the IDs in the pool
       issue_request = Typhoeus::Request.new(baseurl + "/api/#{id}", params: issue_args)  # make a new request
       issue_request.on_complete do |resp| 
-        print 'i'  # print an 'i' when an issue request finishes
-        resp_hash = Oj.load(resp.body)  
-        @issues << resp_hash # push a Hash of the response onto our issues list
-
-        resp_hash['patchsets'].each do |patch|
-          patch_request = Typhoeus::Request.new(baseurl + "/api/#{id}/#{patch}", params: patch_args)
-          patch_request.on_complete do |patch_resp|
-            print 'p'  # print an 'p' when an issue request finishes
-            @patches << Oj.load(patch_resp.body)
-          end
-          hydra.queue patch_request
-        end
+        print '.'  # print a '.' when an issue request finishes
+        @issues << Oj.load(resp.body) # push a Hash of the response onto our issues list
       end
       hydra.queue issue_request  # and enqueue the request
     end
@@ -182,6 +169,39 @@ class RietveldScraper
     hydra.run  # This runs all the requests that are queued (200 at a time)
 
     @issues
+  end
+
+  
+  # 
+  # Grab all the patchsets for the issues we've got
+  # @param  with_comments=true Bool whether we want comments in the response
+  # 
+  # @return Array The patches we've grabbed (a reference to our IVAR)
+  def get_patches(with_comments=true)
+    puts "Fetching Patchsets:"
+    if @issues.empty?
+      get_data
+    end
+
+    patch_args = {
+      'comments' => true
+    } if with_comments
+
+    hydra = Typhoeus::Hydra.new
+
+    @issues.each do |issue|
+      issue['patchsets'].each do |patch|
+        request = Typhoeus::Request.new(baseurl + "/api/#{id}/#{patch}", params: patch_args)
+          request.on_complete do |resp|
+          print '.'  # print a '.' when an patch request finishes
+          @patches << Oj.load(resp.body)
+        end
+        hydra.queue patch_request
+      end
+    end
+    hydra.run
+
+    @patches
   end
 
 end
