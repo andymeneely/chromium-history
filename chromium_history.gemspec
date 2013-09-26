@@ -6,14 +6,14 @@ require 'chromium_history/version'
 Gem::Specification.new do |spec|
   spec.name          = "chromium_history"
   spec.version       = ChromiumHistory::VERSION
-  spec.authors       = ["Andy Meneely, 
+  spec.authors       = ["Andy Meneely", 
   					    "Katherine Whitlock",
 						"Shannon Trudeau",
 						"Christopher Ketant",
 						"Alberto Rodriguez",
 						"Danielle Neuberger"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
+  spec.description   = %q{Scripts for downloading, parsing, and analyzing the history of the Chromium project}
+  spec.summary       = spec.description
   spec.homepage      = "http://www.se.rit.edu/~archeology/"
   spec.license       = ""
 
