@@ -3,6 +3,7 @@ require 'typhoeus'
 require 'oj'
 require 'set'
 require 'msgpack'
+require 'highline/import'
 
 # 
 # This is a class for basic state storage and 
@@ -12,9 +13,12 @@ require 'msgpack'
 class RietveldScraper  
   # Set whether we want verbose debug output or not
   Typhoeus::Config.verbose = false 
-  
+
+  @@file_location = '../../data/scrapes/'
   @@baseurl = 'https://codereview.chromium.org'
 
+
+  attr_accessor :ids, :data, :patches
   # 
   # return the baseurl
   # 
@@ -52,62 +56,16 @@ class RietveldScraper
   # This should match the output of to_hash
   # 
   # @return RietveldScraper Our new object
-  def initialize(initial=nil)
+  def initialize
     @cursor = nil
-    if initial
-      @ids = Set.new initial['ids']
-      @issues = initial['issues']
-      @patches = initial['patches']
-    else
-      @ids = Set.new
-      @issues = Array.new
-      @patches = Array.new
+    @ids = if File.file?(@@file_location + "ids.msg") 
+      MessagePack.load( File.open(@@file_location + "ids.msg") ).to_set 
+    else 
+      []
     end
+    @issues = Array.new
+    @patches = Array.new
   end
-
-  # 
-  # Generate a Hash representation of the scraper state
-  # 
-  # @return Hash all important fields
-  def to_hash
-    {
-      'ids'     => @ids.to_a,
-      'issues'  => @issues,
-      'patches' => @patches
-    }
-  end
-  
-  # 
-  # Generates a String version of the scraper
-  # 
-  # @return String human-readable output
-  def to_s
-    puts @ids.first
-  end
-
-
-  # 
-  # Generate a JSON version of the scraper state
-  # 
-  # @return String The JSON representation
-  def to_json
-    Oj.dump(self.to_hash)
-  end
-
-
-  # 
-  # Gemerates a MessagePack representation of the scraper state
-  # @param  io=nil File Takes an IOStream and outputs to there
-  # 
-  # @return String The MessagePack representation
-  def to_msgpack(io=nil)
-    if io
-      io.write self.to_hash
-    else
-      MessagePack.pack self.to_hash
-    end
-  end
-
 
   # 
   # Get IDs fetches each 2000 consecutive IDs until it reaches either a non-response
@@ -117,23 +75,20 @@ class RietveldScraper
   def get_ids
     puts "Fetching IDs:"
     1.times do
-      begin
-        json = self.get_more_ids
-        @cursor = json['cursor']  # Grab the cursor from the response
-        new_ids = json['results']  # Grab the array of new ids from the response
-        new_ids.each do |id|  # For each of the new ids we've fetched...
-          if ids.include? id  # Check if what we have is already in our Set
-            puts "We're fetching stale ids. Stopping."
-            break
-          else  # If it's not, let's push it on
-            @ids << id 
-          end
+      json = RietveldScraper.get_more_ids
+      @cursor = json['cursor']  # Grab the cursor from the response
+      new_ids = json['results']  # Grab the array of new ids from the response
+      new_ids.each do |id|  # For each of the new ids we've fetched...
+        if @ids.include? id  # Check if what we have is already in our Set
+          puts "We're fetching stale ids. Stopping."
+          break
+        else  # If it's not, let's push it on
+          @ids << id 
         end
-        print '.'  # A way to tell how many responses we've dealt with
-      rescue
-        puts "Reached end of results"
       end
+      print '.'  # A way to tell how many responses we've dealt with
     end
+    File.open(@@file_location + "ids.msg", "w") { |file| MessagePack.pack(@ids.to_a, file) }
     @ids
   end
 
@@ -154,13 +109,24 @@ class RietveldScraper
     } if with_messages  # protect against possibly throwing a string into the hash we pass to the request
 
 
-    hydra = Typhoeus::Hydra.new  # make a new concurrent run area
+    hydra = Typhoeus::Hydra.new(max_concurrency: 1) # make a new concurrent run area
     
     @ids.each do |id|  # for each of the IDs in the pool
-      issue_request = Typhoeus::Request.new(baseurl + "/api/#{id}", params: issue_args)  # make a new request
-      issue_request.on_complete do |resp| 
-        print '.'  # print a '.' when an issue request finishes
-        @issues << Oj.load(resp.body) # push a Hash of the response onto our issues list
+      issue_request = Typhoeus::Request.new(@@baseurl + "/api/#{id}", params: issue_args)  # make a new request
+      issue_request.on_complete do |resp|
+        if resp.success?
+          print '.'  # print a '.' when an issue request finishes
+          result = Oj.load(resp.body) # push a Hash of the response onto our issues list
+          File.open(@@file_location + "#{result['issue']}.msg", "w") { |file| MessagePack.pack(result, file) }
+          @issues << result['issue']
+          #sleep(0.5)
+        else
+          puts("HTTP request failed: " + resp.code.to_s)
+          ans = ask("Abort? (y/n)") {|q| q.default = "y"}
+          if ans.eql? "y"
+            hydra.stop
+          end
+        end
       end
       hydra.queue issue_request  # and enqueue the request
     end
@@ -187,14 +153,16 @@ class RietveldScraper
       'comments' => true
     } if with_comments
 
-    hydra = Typhoeus::Hydra.new
+    hydra = Typhoeus::Hydra.new(max_concurrency: 1)
+
 
     @issues.each do |issue|
       issue['patchsets'].each do |patch|
-        request = Typhoeus::Request.new(baseurl + "/api/#{id}/#{patch}", params: patch_args)
+        request = Typhoeus::Request.new(baseurl + "/api/#{id}/#{patch}", params: patch_args, followlocation: true)
           request.on_complete do |resp|
           print '.'  # print a '.' when an patch request finishes
           @patches << Oj.load(resp.body)
+          sleep(0.5)
         end
         hydra.queue patch_request
       end
@@ -206,13 +174,7 @@ class RietveldScraper
 
 end
 
-# r = RietveldScraper.new( MessagePack.load(File.open("scraper.msg", "r") ))
 # r.get_ids
-
-# Saving output:
-# File.open("test.msg", "w") do |file|  
-#    MessagePack.pack(r, file)
-# end
 
 
 # puts "Latest issue: #{element}" 
