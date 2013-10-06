@@ -183,19 +183,24 @@ class RietveldScraper
     hydra = Typhoeus::Hydra.new(max_concurrency: 1)
     patch_count = Array.new
     errors = Array.new
-    progress_bar = ProgressBar.create(:title => "Patchsets", :total => ids.count, :format => '%a |%b>>%i| %p%% %t')
+    progress_bar = nil 
 
     ids.each do |id|
-      MessagePack.load( File.open(@@file_location + "#{id}.msg")) do |issue| 
+      if File.exist?(@@file_location + "#{id}.msg")
+        issue = MessagePack.load(File.open(@@file_location + "#{id}.msg"))
         patch_count << issue['patchsets'].count
         issue['patchsets'].each do |patch|
-          request = Typhoeus::Request.new(baseurl + "/api/#{id}/#{patch}", params: patch_args, followlocation: true)
+          request = Typhoeus::Request.new(@@baseurl + "/api/#{id}/#{patch}", params: patch_args, followlocation: true)
           request.on_complete do |resp|
             progress_bar.increment
             if resp.success?
-              File.open(@@file_location + "#{result['issue']}.msg", "w") { |file| MessagePack.pack(result, file) }
-              @patches << Oj.load(resp.body)
-              sleep(0.5)
+              result = Oj.load(resp.body)
+              if not File.directory?(@@file_location + "/#{result['issue']}")
+                FileUtils.mkdir(@@file_location + "/#{result['issue']}")
+              end
+              File.open(@@file_location + "/#{result['issue']}/#{result['patchset']}.msg", "w") { |file| MessagePack.pack(result, file) }
+              @patches << result['patchset']
+              #sleep(0.5)
             else
               if errors.key? id
                 errors[id] <<  patch
@@ -204,10 +209,13 @@ class RietveldScraper
               end
             end
           end
-          hydra.queue patch_request
+          hydra.queue request
         end
       end
     end
+
+    patch_total = patch_count.inject(:+)
+    progress_bar = ProgressBar.create(:title => "Patchsets", :total => patch_total, :format => '%a |%b>>%i| %p%% %t')
 
     hydra.run
 
