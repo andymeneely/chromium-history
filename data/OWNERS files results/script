@@ -1,0 +1,11 @@
+#!/bin/bash
+
+echo "Number of Edits in One Year" > output.txt
+
+for line in $(cat search.txt)
+do 
+	echo ":::: $line :::: " >> output.txt
+	git log --format=%aD "$line" | tail -1 >> output.txt
+	git log --since="2012-09-27" --pretty=format: --numstat "$line" >> output.txt
+	echo "."
+done

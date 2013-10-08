@@ -1,0 +1,883 @@
+aa@chromium.org is an owner on 1 files
+abarth@chromium.org is an owner on 3 files
+abodenha@chromium.org is an owner on 9 files
+aboxhall@chromium.org is an owner on 3 files
+achuith@chromium.org is an owner on 10 files
+achuith@chromium.org  is an owner on 1 files
+acolwell@chromium.org is an owner on 10 files
+aelias@chromium.org is an owner on 4 files
+agable@chromium.org is an owner on 1 files
+agable@google.com is an owner on 1 files
+agl@chromium.org is an owner on 9 files
+ahendrickson@chromium.org is an owner on 2 files
+ajuma@chromium.org is an owner on 2 files
+ajwong@chromium.org is an owner on 26 files
+akalin@chromium.org is an owner on 10 files
+albertb@chromium.org is an owner on 1 files
+alecflett@chromium.org is an owner on 7 files
+alexeypa@chromium.org is an owner on 1 files
+alokp@chromium.org is an owner on 1 files
+ananta@chromium.org is an owner on 8 files
+antrim@chromium.org is an owner on 3 files
+apatrick@chromium.org is an owner on 16 files
+armansito@chromium.org is an owner on 3 files
+arthurhsu@chromium.org is an owner on 1 files
+aruslan@chromium.org is an owner on 4 files
+arv@chromium.org is an owner on 5 files
+asanka@chromium.org is an owner on 4 files
+asargent@chromium.org is an owner on 20 files
+asvitkine@chromium.org is an owner on 16 files
+atwilson@chromium.org is an owner on 15 files
+avi@chromium.org is an owner on 15 files
+awatson@chromium.org is an owner on 3 files
+bajones@chromium.org is an owner on 1 files
+bartfab@chromium.org is an owner on 5 files
+bashi@chromium.org is an owner on 3 files
+battre@chromium.org is an owner on 14 files
+bauerb@chromium.org is an owner on 20 files
+bbudge@chromium.org is an owner on 6 files
+beaudoin@chromium.org is an owner on 1 files
+behdad@chromium.org is an owner on 1 files
+ben@chromium.org is an owner on 11 files
+benchan@chromium.org is an owner on 1 files
+bengr@chromium.org is an owner on 2 files
+benjhayden@chromium.org is an owner on 6 files
+benm@chromium.org is an owner on 4 files
+benwells@chromium.org is an owner on 21 files
+bevc@chromium.org is an owner on 1 files
+bevc@google.com is an owner on 1 files
+binji@chromium.org is an owner on 2 files
+blundell@chromium.org is an owner on 1 files
+boliu@chomium.org is an owner on 2 files
+boliu@chromium.org is an owner on 1 files
+bolms@chromium.org is an owner on 1 files
+borenet@google.com is an owner on 1 files
+bradchen@chromium.org is an owner on 5 files
+bradnelson@chromium.org is an owner on 10 files
+brettw@chromium.org is an owner on 17 files
+brianderson@chromium.org is an owner on 1 files
+bruening@chromium.org is an owner on 1 files
+bryeung@chromium.org is an owner on 5 files
+bryner@chromium.org is an owner on 3 files
+bsalomon@google.com is an owner on 2 files
+bshe@chromium.org is an owner on 6 files
+bulach@chromium.org is an owner on 29 files
+bungeman@google.com is an owner on 1 files
+caitkp@chromium.org is an owner on 1 files
+calamity@chromium.org is an owner on 2 files
+calvinlo@chromium.org is an owner on 2 files
+caseq@chromium.org is an owner on 1 files
+cbentzel@chromium.org is an owner on 5 files
+ccameron@chromium.org is an owner on 2 files
+cdn@chromium.org is an owner on 24 files
+cevans@chromium.org is an owner on 32 files
+chrisgao@chromium.org is an owner on 2 files
+chrisha@chromium.org is an owner on 5 files
+cjhopman@chromium.org is an owner on 3 files
+cmp@chromium.org is an owner on 4 files
+cmp@google.com is an owner on 1 files
+cnwan@chromium.org is an owner on 1 files
+courage@chromium.org is an owner on 2 files
+cpu@chromium.org is an owner on 16 files
+craigdh@chromium.org is an owner on 7 files
+creis@chromium.org is an owner on 4 files
+csharp@chromium.org is an owner on 9 files
+cylee@chromium.org is an owner on 1 files
+dalecurtis@chromium.org is an owner on 13 files
+danakj@chromium.org is an owner on 5 files
+darin@chromium.org is an owner on 10 files
+davemoore@chromium.org is an owner on 10 files
+davidyu@chromium.org is an owner on 1 files
+dbeam@chromium.org is an owner on 18 files
+dcblack@chromium.org is an owner on 2 files
+dcheng@chromium.org is an owner on 6 files
+dconnelly@chromium.org is an owner on 1 files
+ddorwin@chromium.org is an owner on 11 files
+derat@chromium.org is an owner on 12 files
+dewittj@chromium.org is an owner on 5 files
+dfalcantara@chromium.org is an owner on 2 files
+dgarrett@chromium.org is an owner on 1 files
+dgozman@chromium.org is an owner on 1 files
+dgrogan@chromium.org is an owner on 6 files
+dharcourt@chromium.org is an owner on 1 files
+dhollowa@chromium.org is an owner on 1 files
+digit@chromium.org is an owner on 4 files
+dimich@chromium.org is an owner on 6 files
+djsollen@google.com is an owner on 1 files
+dmazzoni@chromium.org is an owner on 16 files
+dmichael@chromium.org is an owner on 8 files
+dmikurube@chromium.org is an owner on 6 files
+dominich@chromium.org is an owner on 3 files
+dpapad@chromium.org is an owner on 4 files
+dpolukhin@chromium.org is an owner on 10 files
+dpranke@chromium.org is an owner on 3 files
+dschuff@chromium.org is an owner on 1 files
+dsinclair@chromium.org is an owner on 2 files
+dslomov@chromium.org is an owner on 1 files
+dtrainor@chromium.org is an owner on 5 files
+dtseng@chromium.org is an owner on 12 files
+dtu@chromium.org is an owner on 4 files
+dubroy@chromium.org is an owner on 4 files
+dzhioev@chromium.org is an owner on 6 files
+ebeach@chromium.org is an owner on 1 files
+edisonn@google.com is an owner on 1 files
+eliben@chromium.org is an owner on 1 files
+elijahtaylor@google.com is an owner on 1 files
+enne@chromium.org is an owner on 4 files
+epoger@google.com is an owner on 1 files
+erg@chromium.org is an owner on 16 files
+ericu@chromium.org is an owner on 8 files
+erikkay@chromium.org is an owner on 3 files
+erikwright@chromium.org is an owner on 7 files
+ernstm@chromium.org is an owner on 2 files
+eroman@chromium.org is an owner on 7 files
+estade@chromium.org is an owner on 22 files
+falken@chromium.org is an owner on 1 files
+fbarchard@chromium.org is an owner on 2 files
+felt@chromium.org is an owner on 2 files
+finnur@chromium.org is an owner on 12 files
+fischman@chromium.org is an owner on 12 files
+flackr@chromium.org is an owner on 1 files
+fmalita@chromium.org is an owner on 1 files
+frankf@chromium.org is an owner on 5 files
+fsamuel@chromium.org is an owner on 10 files
+gab@chromium.org is an owner on 8 files
+garykac@chromium.org is an owner on 5 files
+gauravsh@chromium.org is an owner on 2 files
+gavinp@chromium.org is an owner on 5 files
+gbillock@chromium.org is an owner on 7 files
+gcasto@chromium.org is an owner on 3 files
+gdk@chromium.org is an owner on 3 files
+gene@chromium.org is an owner on 16 files
+glider@chromium.org is an owner on 3 files
+gman@chromium.org is an owner on 1 files
+groby@chromium.org is an owner on 6 files
+grt@chromium.org is an owner on 11 files
+grunell@chromium.org is an owner on 1 files
+gspencer@chromium.org is an owner on 12 files
+gwilson@chromium.org is an owner on 2 files
+hajimehoshi@chromium.org is an owner on 5 files
+hans@chromium.org is an owner on 6 files
+haraken@chromium.org is an owner on 3 files
+hartmanng@chromium.org is an owner on 2 files
+hashimoto@chromium.org is an owner on 6 files
+haven@chromium.org is an owner on 2 files
+hclam@chromium.org is an owner on 10 files
+henrika@chromium.org is an owner on 2 files
+hidehiko@chromium.org is an owner on 5 files
+hirono@chromium.org is an owner on 3 files
+hongbo.min@intel.com is an owner on 5 files
+hshi@chromium.org is an owner on 5 files
+hubbe@chromium.org is an owner on 2 files
+iannucci@chromium.org is an owner on 1 files
+iannucci@google.com is an owner on 1 files
+ikarienator@chromium.org is an owner on 7 files
+ilevy@chromium.org is an owner on 2 files
+ilevy@google.com is an owner on 1 files
+inferno@chromium.org is an owner on 12 files
+isherman@chromium.org is an owner on 20 files
+jam@chromium.org is an owner on 9 files
+jamescook@chromium.org is an owner on 5 files
+jamesr@chromium.org is an owner on 8 files
+jamiewalch@chromium.org is an owner on 1 files
+jar@chromium.org is an owner on 13 files
+jbauman@chromium.org is an owner on 6 files
+jcivelli@chromium.org is an owner on 3 files
+jdduke@chromium.org is an owner on 1 files
+jennb@chromium.org is an owner on 4 files
+jennyz@chromium.org is an owner on 3 files
+jered@chromium.org is an owner on 10 files
+jeremy@chromium.org is an owner on 13 files
+jeremycho@chromium.org is an owner on 1 files
+jhawkins@chromium.org is an owner on 7 files
+jianli@chromium.org is an owner on 9 files
+jln@chromium.org is an owner on 19 files
+joaodasilva@chromium.org is an owner on 9 files
+jochen@chromium.org is an owner on 18 files
+johnw@chromium.org is an owner on 1 files
+johnw@google.com is an owner on 1 files
+joi@chromium.org is an owner on 12 files
+jorgelo@chromium.org is an owner on 1 files
+joshua.lock@intel.com is an owner on 1 files
+joth@chromium.org is an owner on 18 files
+jsbell@chromium.org is an owner on 7 files
+jschuh@chromium.org is an owner on 29 files
+jshin@chromium.org is an owner on 3 files
+jstritar@chromium.org is an owner on 1 files
+junjianx@chromium.org is an owner on 1 files
+junov@chromium.org is an owner on 3 files
+justinlin@chromium.org is an owner on 6 files
+jvanverth@google.com is an owner on 1 files
+jvoung@chromium.org is an owner on 7 files
+jwd@chromium.org is an owner on 2 files
+jyasskin@chromium.org is an owner on 10 files
+kaiwang@chromium.org is an owner on 2 files
+kalman@chromium.org is an owner on 17 files
+kbr@chromium.org is an owner on 14 files
+kenrb@chromium.org is an owner on 11 files
+kerz@chromium.org is an owner on 2 files
+kevers@chromium.org is an owner on 1 files
+keybuk@chromium.org is an owner on 5 files
+khorimoto@chromium.org is an owner on 1 files
+kinaba@chromium.org is an owner on 5 files
+kinuko@chromium.org is an owner on 13 files
+kkania@chromium.org is an owner on 5 files
+kmadhusu@chromium.org is an owner on 5 files
+koz@chromium.org is an owner on 15 files
+laforge@chromium.org is an owner on 1 files
+lambroslambrou@chromium.org is an owner on 1 files
+lazyboy@chromium.org is an owner on 7 files
+leandrogracia@chromium.org is an owner on 1 files
+levin@chromium.org is an owner on 1 files
+lipalani@chromium.org is an owner on 4 files
+lliabraa@chromium.org is an owner on 1 files
+mad@chromium.org is an owner on 8 files
+mal@chromium.org is an owner on 1 files
+mallinath@chromium.org is an owner on 4 files
+marcheu@chromium.org is an owner on 2 files
+marja@chromium.org is an owner on 8 files
+mark@chromium.org is an owner on 16 files
+markus@chromium.org is an owner on 4 files
+markusheintz@chromium.org is an owner on 6 files
+maruel@chromium.org is an owner on 10 files
+maruel@google.com is an owner on 1 files
+mattm@chromium.org is an owner on 6 files
+mdm@chromium.org is an owner on 1 files
+meacer@chromium.org is an owner on 1 files
+mek@chromium.org is an owner on 8 files
+mfoltz@chromium.org is an owner on 2 files
+michaelbai@chromium.org is an owner on 3 files
+michaeln@chromium.org is an owner on 19 files
+miguelg@chromium.org is an owner on 2 files
+miket@chromium.org is an owner on 18 files
+mirandac@chromium.org is an owner on 7 files
+miu@chromium.org is an owner on 6 files
+mkearney@chromium.org is an owner on 2 files
+mkosiba@chromium.org is an owner on 7 files
+mkwst@chromium.org is an owner on 5 files
+mmenke@chromium.org is an owner on 10 files
+mmoss@chromium.org is an owner on 4 files
+mmoss@google.com is an owner on 1 files
+mnaganov@chromium.org is an owner on 3 files
+mnissler@chromium.org is an owner on 17 files
+mpcomplete@chromium.org is an owner on 22 files
+mpearson@chromium.org is an owner on 4 files
+mseaborn@chromium.org is an owner on 10 files
+msw@chromium.org is an owner on 3 files
+mtomasz@chromium.org is an owner on 7 files
+mukai@chromium.org is an owner on 6 files
+mvanouwerkerk@chromium.org is an owner on 2 files
+nasko@chromium.org is an owner on 1 files
+navabi@chromium.org is an owner on 1 files
+nbarth@chromium.org is an owner on 3 files
+ncbray@chromium.org is an owner on 4 files
+nduca@chromium.org is an owner on 16 files
+newt@chromium.org is an owner on 4 files
+nfullagar@chromium.org is an owner on 2 files
+nfullagar@google.com is an owner on 1 files
+nhiroki@chromium.org is an owner on 4 files
+nick@chromium.org is an owner on 7 files
+ningxin.hu@intel.com is an owner on 1 files
+nkostylev@chromium.org is an owner on 18 files
+noamsml@chromium.org is an owner on 5 files
+noelallen@chromium.org is an owner on 8 files
+noelallen@google.com is an owner on 2 files
+noelutz@google.com is an owner on 3 files
+nona@chromium.org is an owner on 5 files
+nsylvain@chromium.org is an owner on 2 files
+nyquist@chromium.org is an owner on 10 files
+ojan@chromium.org is an owner on 1 files
+oshima@chromium.org is an owner on 15 files
+palmer@chromium.org is an owner on 10 files
+pam@chromium.org is an owner on 11 files
+pasko@chromium.org is an owner on 1 files
+pastarmovj@chromium.org is an owner on 9 files
+penghuang@chromium.org is an owner on 2 files
+peria@chromium.org is an owner on 3 files
+perkj@chromium.org is an owner on 1 files
+pfeldman@chromium.org is an owner on 7 files
+phajdan.jr@chromium.org is an owner on 16 files
+phoglund@chromium.org is an owner on 1 files
+piman@chromium.org is an owner on 19 files
+pinkerton@chromium.org is an owner on 2 files
+pkasting@chromium.org is an owner on 19 files
+pkotwicz@chromium.org is an owner on 2 files
+pliard@chromium.org is an owner on 4 files
+plundblad@chromium.org is an owner on 1 files
+pneubeck@chromium.org is an owner on 16 files
+posciak@chromium.org is an owner on 1 files
+primiano@chromium.org is an owner on 4 files
+pschmidt@chromium.org is an owner on 1 files
+pschmidt@google.com is an owner on 1 files
+qinmin@chromium.org is an owner on 3 files
+qsr@chromium.org is an owner on 1 files
+raymes@chromium.org is an owner on 6 files
+rbyers@chromium.org is an owner on 2 files
+rch@chromium.org is an owner on 1 files
+rdevlin.cronin@chromium.org is an owner on 2 files
+rdsmith@chromium.org is an owner on 5 files
+reed@google.com is an owner on 2 files
+reveman@chromium.org is an owner on 2 files
+rickcam@chromium.org is an owner on 2 files
+rjkroege@chromium.org is an owner on 5 files
+rkc@chromium.org is an owner on 7 files
+rlarocque@chromium.org is an owner on 5 files
+rlp@chromium.org is an owner on 7 files
+rmistry@google.com is an owner on 1 files
+rmsousa@chromium.org is an owner on 1 files
+robertm@chromium.org is an owner on 1 files
+robertphillips@google.com is an owner on 1 files
+robertshield@chromium.org is an owner on 8 files
+rogerta@chromium.org is an owner on 6 files
+rohitrao@chromium.org is an owner on 10 files
+ronghuawu@chromium.org is an owner on 3 files
+rouslan@chromium.org is an owner on 3 files
+rpaquay@chromium.org is an owner on 3 files
+rsesek@chromium.org is an owner on 17 files
+rsimha@chromium.org is an owner on 6 files
+rsleevi@chromium.org is an owner on 6 files
+rtenneti@chromium.org is an owner on 4 files
+rvargas@chromium.org is an owner on 3 files
+ryanmyers@chromium.org is an owner on 1 files
+sadrul@chromium.org is an owner on 13 files
+sail@chromium.org is an owner on 5 files
+samarth@chromium.org is an owner on 10 files
+sammc@chromium.org is an owner on 2 files
+sanjeevr@chromium.org is an owner on 2 files
+satorux@chromium.org is an owner on 18 files
+sbc@chromium.org is an owner on 2 files
+scheib@chromium.org is an owner on 12 files
+scherkus@chromium.org is an owner on 12 files
+scottbyer@chromium.org is an owner on 9 files
+scottmg@chromium.org is an owner on 2 files
+scroggo@google.com is an owner on 1 files
+sehr@chromium.org is an owner on 8 files
+sehr@google.com is an owner on 2 files
+senorblanco@chromium.org is an owner on 2 files
+sergeyu@chromium.org is an owner on 11 files
+shadi@chromium.org is an owner on 11 files
+shawnsingh@chromium.org is an owner on 1 files
+shess@chromium.org is an owner on 13 files
+shishir@chromium.org is an owner on 2 files
+sievers@chromium.org is an owner on 7 files
+siggi@chromium.org is an owner on 5 files
+simonjam@chromium.org is an owner on 1 files
+skuhne@chromium.org is an owner on 2 files
+sky@chromium.org is an owner on 28 files
+solb@chromium.org is an owner on 2 files
+sque@chromium.org is an owner on 1 files
+sra@chromium.org is an owner on 1 files
+stephenlin@chromium.org is an owner on 2 files
+steveblock@chromium.org is an owner on 2 files
+stevenjb@chromium.org is an owner on 19 files
+stevet@chromium.org is an owner on 9 files
+stuartmorgan@chromium.org is an owner on 7 files
+sugoi@google.com is an owner on 1 files
+szager@chromium.org is an owner on 2 files
+szager@google.com is an owner on 1 files
+szym@chromium.org is an owner on 1 files
+tapted@chromium.org is an owner on 7 files
+tbarzic@chromium.org is an owner on 2 files
+tbreisacher@chromium.org is an owner on 3 files
+tburkard@chromium.org is an owner on 1 files
+tedchoc@chromium.org is an owner on 16 files
+tengs@chromium.org is an owner on 1 files
+thakis@chromium.org is an owner on 17 files
+thestig@chromium.org is an owner on 24 files
+thestig@chromum.org is an owner on 1 files
+thomasvl@chromium.org is an owner on 5 files
+tim@chromium.org is an owner on 10 files
+timloh@chromium.org is an owner on 2 files
+timurrrr@chromium.org is an owner on 1 files
+timvolodine@chromium.org is an owner on 3 files
+tomhudson@google.com is an owner on 1 files
+tommi@chromium.org is an owner on 17 files
+tommycli@chromium.org is an owner on 2 files
+tony@chromium.org is an owner on 4 files
+tonyg@chromium.org is an owner on 3 files
+torne@chromium.org is an owner on 4 files
+toyoshim@chromium.org is an owner on 9 files
+tsepez@chromium.org is an owner on 28 files
+ttuttle@chromium.org is an owner on 1 files
+tyoshino@chromium.org is an owner on 3 files
+tzik@chromium.org is an owner on 9 files
+vabr@chromium.org is an owner on 1 files
+vadimt@chromium.org is an owner on 1 files
+vandebo@chromium.org is an owner on 13 files
+varunjain@chromium.org is an owner on 1 files
+vasilii@chromium.org is an owner on 1 files
+viettrungluu@chromium.org is an owner on 2 files
+vitalybuka@chromium.org is an owner on 15 files
+vmpstr@chromium.org is an owner on 1 files
+vollick@chromium.org is an owner on 5 files
+vrk@chromium.org is an owner on 11 files
+wangxianzhu@chromium.org is an owner on 2 files
+wez@chromium.org is an owner on 7 files
+willchan@chromium.org is an owner on 7 files
+wittman@chromium.org is an owner on 1 files
+wjia@chromium.org is an owner on 7 files
+wolenetz@chromium.org is an owner on 1 files
+wtc@chromium.org is an owner on 10 files
+xhwang@chromium.org is an owner on 11 files
+xians@chromium.org is an owner on 10 files
+xiaowenx@chromium.org is an owner on 1 files
+xiyuan@chromium.org is an owner on 13 files
+xji@chromium.org is an owner on 1 files
+xusydoc@chromium.org is an owner on 1 files
+xusydoc@google.com is an owner on 1 files
+yfriedman@chromium.org is an owner on 32 files
+ygorshenin@chromium.org is an owner on 3 files
+yhirano@chromium.org is an owner on 1 files
+yoshiki@chromium.org is an owner on 11 files
+youngki@chromium.org is an owner on 1 files
+yoz@chromium.org is an owner on 12 files
+yurys@chromium.org is an owner on 3 files
+yutak@chromium.org is an owner on 3 files
+yzshen@chromium.org is an owner on 9 files
+zea@chromium.org is an owner on 6 files
+zelidrag@chromium.org is an owner on 15 files
+zmo@chromium.org is an owner on 7 files
+zork@chromium.org is an owner on 4 files
+
+The average number of times a name appears is: 5.965909090909091
+
+1
+3
+9
+3
+10
+1
+10
+4
+1
+1
+9
+2
+2
+26
+10
+1
+7
+1
+1
+8
+3
+16
+3
+1
+4
+5
+4
+20
+16
+15
+15
+3
+1
+5
+3
+14
+20
+6
+1
+1
+11
+1
+2
+6
+4
+21
+1
+1
+2
+1
+2
+1
+1
+1
+5
+10
+17
+1
+1
+5
+3
+2
+6
+29
+1
+1
+2
+2
+1
+5
+2
+24
+32
+2
+5
+3
+4
+1
+1
+2
+16
+7
+4
+9
+1
+13
+5
+10
+10
+1
+18
+2
+6
+1
+11
+12
+5
+2
+1
+1
+6
+1
+1
+4
+6
+1
+16
+8
+6
+3
+4
+10
+3
+1
+2
+1
+5
+12
+4
+4
+6
+1
+1
+1
+1
+4
+1
+16
+8
+3
+7
+2
+7
+22
+1
+2
+2
+12
+12
+1
+1
+5
+10
+8
+5
+2
+5
+7
+3
+3
+16
+3
+1
+6
+11
+1
+12
+2
+5
+6
+3
+2
+6
+2
+10
+2
+5
+3
+5
+5
+2
+1
+1
+7
+2
+1
+12
+20
+9
+5
+8
+1
+13
+6
+3
+1
+4
+3
+10
+13
+1
+7
+9
+19
+9
+18
+1
+1
+12
+1
+1
+18
+7
+29
+3
+1
+1
+3
+6
+1
+7
+2
+10
+2
+17
+14
+11
+2
+1
+5
+1
+5
+13
+5
+5
+15
+1
+1
+7
+1
+1
+4
+1
+8
+1
+4
+2
+8
+16
+4
+6
+10
+1
+6
+1
+1
+8
+2
+3
+19
+2
+18
+7
+6
+2
+7
+5
+10
+4
+1
+3
+17
+22
+4
+10
+3
+7
+6
+2
+1
+1
+3
+4
+16
+4
+2
+1
+4
+7
+1
+18
+5
+8
+2
+3
+5
+2
+10
+1
+15
+10
+11
+1
+9
+2
+3
+1
+7
+16
+1
+19
+2
+19
+2
+4
+1
+16
+1
+4
+1
+1
+3
+1
+6
+2
+1
+2
+5
+2
+2
+2
+5
+7
+5
+7
+1
+1
+1
+1
+8
+6
+10
+3
+3
+3
+17
+6
+6
+4
+3
+1
+13
+5
+10
+2
+2
+18
+2
+12
+12
+9
+2
+1
+8
+2
+2
+11
+11
+1
+13
+2
+7
+5
+1
+2
+28
+2
+1
+1
+2
+2
+19
+9
+7
+1
+2
+1
+1
+7
+2
+3
+1
+16
+1
+17
+24
+1
+5
+10
+2
+1
+3
+1
+17
+2
+4
+3
+4
+9
+28
+1
+3
+9
+1
+1
+13
+1
+1
+2
+15
+1
+5
+11
+2
+7
+7
+1
+7
+1
+10
+11
+10
+1
+13
+1
+1
+1
+32
+3
+1
+11
+1
+12
+3
+3
+9
+6
+15
+7
+4

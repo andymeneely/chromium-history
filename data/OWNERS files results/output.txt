@@ -1,0 +1,4334 @@
+Number of Edits in One Year
+:::: android_webview/OWNERS :::: 
+Thu, 9 Aug 2012 10:55:04 +0000
+
+1	0	android_webview/OWNERS
+
+
+3	1	android_webview/OWNERS
+
+
+0	2	android_webview/OWNERS
+:::: android_webview/buildbot/OWNERS :::: 
+Fri, 24 May 2013 12:25:44 +0000
+
+4	0	android_webview/buildbot/OWNERS
+:::: android_webview/common/OWNERS :::: 
+Fri, 9 Nov 2012 19:39:19 +0000
+
+7	7	android_webview/common/OWNERS
+
+
+1	0	android_webview/common/OWNERS
+
+
+8	0	android_webview/common/OWNERS
+:::: apps/OWNERS :::: 
+Thu, 24 Jan 2013 23:16:17 +0000
+
+1	0	apps/OWNERS
+
+
+1	0	apps/OWNERS
+
+
+1	1	apps/OWNERS
+
+
+0	1	apps/OWNERS
+
+
+7	0	apps/OWNERS
+:::: apps/app_shim/OWNERS :::: 
+Mon, 18 Mar 2013 05:54:50 +0000
+
+1	1	apps/app_shim/OWNERS
+
+
+1	0	apps/app_shim/OWNERS
+:::: ash/OWNERS :::: 
+Fri, 23 Dec 2011 22:40:52 +0000
+
+0	5	ash/OWNERS
+
+
+1	0	ash/OWNERS
+
+
+1	0	ash/OWNERS
+
+
+0	1	ash/OWNERS
+
+
+3	1	ash/OWNERS
+
+
+2	2	ash/OWNERS
+
+
+1	1	ash/OWNERS
+
+
+2	0	ash/OWNERS
+
+
+4	0	ash/OWNERS
+
+
+1	0	ash/OWNERS
+
+
+0	1	ash/OWNERS
+:::: ash/desktop_background/OWNERS :::: 
+Fri, 17 Aug 2012 13:08:56 +0000
+:::: ash/display/OWNERS :::: 
+Fri, 18 Jan 2013 22:23:01 +0000
+
+1	0	ash/display/OWNERS
+:::: ash/drag_drop/OWNERS :::: 
+Wed, 21 Nov 2012 22:36:36 +0000
+
+1	0	ash/drag_drop/OWNERS
+:::: ash/launcher/OWNERS :::: 
+Thu, 15 Mar 2012 20:25:49 +0000
+
+1	0	ash/launcher/OWNERS
+:::: ash/resources/OWNERS :::: 
+Fri, 18 Jan 2013 22:23:01 +0000
+
+1	0	ash/resources/OWNERS
+:::: ash/screensaver/OWNERS :::: 
+Tue, 31 Jul 2012 23:57:36 +0000
+:::: ash/system/OWNERS :::: 
+Mon, 2 Apr 2012 16:42:31 +0000
+:::: ash/wm/gestures/OWNERS :::: 
+Wed, 5 Dec 2012 06:04:18 +0000
+
+1	0	ash/wm/gestures/OWNERS
+:::: ash/wm/panels/OWNERS :::: 
+Thu, 7 Mar 2013 19:41:49 +0000
+
+2	0	ash/wm/panels/OWNERS
+:::: base/OWNERS :::: 
+Thu, 14 Apr 2011 20:14:57 +0000
+
+2	0	base/OWNERS
+
+
+2	0	base/OWNERS
+
+
+1	0	base/OWNERS
+
+
+21	0	base/OWNERS
+
+
+0	1	base/OWNERS
+:::: base/android/OWNERS :::: 
+Wed, 29 Feb 2012 01:25:41 +0000
+
+0	1	base/android/OWNERS
+
+
+0	1	base/android/OWNERS
+
+
+0	1	base/android/OWNERS
+:::: base/debug/OWNERS :::: 
+Mon, 13 May 2013 23:27:41 +0000
+
+3	0	base/debug/OWNERS
+:::: base/files/OWNERS :::: 
+Thu, 14 Apr 2011 16:56:01 +0000
+:::: base/i18n/OWNERS :::: 
+Tue, 15 Nov 2011 02:18:01 +0000
+:::: base/ios/OWNERS :::: 
+Fri, 5 Oct 2012 17:48:58 +0000
+
+3	0	base/ios/OWNERS
+:::: base/mac/OWNERS :::: 
+Thu, 14 Apr 2011 20:15:48 +0000
+:::: base/metrics/OWNERS :::: 
+Thu, 5 May 2011 02:22:11 +0000
+:::: base/prefs/OWNERS :::: 
+Mon, 22 Oct 2012 13:13:33 +0000
+
+0	3	base/prefs/OWNERS
+
+
+7	0	base/prefs/OWNERS
+:::: base/strings/OWNERS :::: 
+Sun, 1 Sep 2013 22:53:12 +0000
+
+1	0	base/strings/OWNERS
+
+
+0	1	base/strings/OWNERS
+
+
+1	0	base/strings/OWNERS
+:::: base/test/OWNERS :::: 
+Mon, 21 Mar 2011 18:53:17 +0000
+:::: base/test/android/OWNERS :::: 
+Sat, 24 Mar 2012 03:57:36 +0000
+
+0	1	base/test/android/OWNERS
+
+
+0	1	base/test/android/OWNERS
+
+
+0	1	base/test/android/OWNERS
+:::: base/test/expectations/OWNERS :::: 
+Fri, 1 Feb 2013 00:19:28 +0000
+
+1	0	base/test/expectations/OWNERS
+:::: base/third_party/nspr/OWNERS :::: 
+Tue, 5 Feb 2013 08:25:12 +0000
+
+2	0	base/third_party/nspr/OWNERS
+:::: base/threading/OWNERS :::: 
+Wed, 2 May 2012 21:57:33 +0000
+:::: base/win/OWNERS :::: 
+Fri, 9 Nov 2012 00:19:28 +0000
+
+1	0	base/win/OWNERS
+:::: breakpad/OWNERS :::: 
+Sat, 2 Jul 2011 23:53:59 +0000
+
+3	0	breakpad/OWNERS
+:::: build/OWNERS :::: 
+Mon, 12 Mar 2012 20:56:41 +0000
+:::: build/android/buildbot/OWNERS :::: 
+Tue, 25 Sep 2012 23:53:31 +0000
+
+1	0	build/android/buildbot/OWNERS
+
+
+0	1	build/android/buildbot/OWNERS
+
+
+0	2	build/android/buildbot/OWNERS
+
+
+2	0	build/android/buildbot/OWNERS
+
+
+0	1	build/android/buildbot/OWNERS
+:::: build/android/pylib/OWNERS :::: 
+Wed, 10 Apr 2013 20:29:52 +0000
+
+3	0	build/android/pylib/OWNERS
+:::: build/android/pylib/gtest/filter/OWNERS :::: 
+Wed, 10 Apr 2013 20:29:52 +0000
+
+1	0	build/android/pylib/gtest/filter/OWNERS
+:::: build/git-hooks/OWNERS :::: 
+Tue, 16 Apr 2013 21:16:46 +0000
+
+3	0	build/git-hooks/OWNERS
+:::: build/mac/OWNERS :::: 
+Thu, 28 Apr 2011 18:49:36 +0000
+:::: build/slave/OWNERS :::: 
+Thu, 22 Aug 2013 08:25:34 +0000
+
+24	0	build/slave/OWNERS
+:::: cc/OWNERS :::: 
+Mon, 6 Aug 2012 23:19:30 +0000
+
+3	1	cc/OWNERS
+
+
+3	0	cc/OWNERS
+
+
+4	0	cc/OWNERS
+
+
+2	2	cc/OWNERS
+
+
+34	0	cc/OWNERS
+
+
+0	1	cc/OWNERS
+:::: cc/debug/OWNERS :::: 
+Mon, 15 Jul 2013 23:33:29 +0000
+
+4	0	cc/debug/OWNERS
+:::: chrome/OWNERS :::: 
+Tue, 13 Mar 2012 01:04:56 +0000
+
+4	0	chrome/OWNERS
+
+
+1	0	chrome/OWNERS
+
+
+0	1	chrome/OWNERS
+
+
+0	4	chrome/OWNERS
+
+
+0	2	chrome/OWNERS
+
+
+1	3	chrome/OWNERS
+
+
+12	0	chrome/OWNERS
+
+
+1	0	chrome/OWNERS
+
+
+2	0	chrome/OWNERS
+
+
+8	0	chrome/OWNERS
+
+
+0	1	chrome/OWNERS
+
+
+1	0	chrome/OWNERS
+
+
+4	0	chrome/OWNERS
+
+
+6	0	chrome/OWNERS
+
+
+6	0	chrome/OWNERS
+
+
+1	0	chrome/OWNERS
+
+
+0	2	chrome/OWNERS
+:::: chrome/android/OWNERS :::: 
+Thu, 2 Aug 2012 22:36:11 +0000
+
+1	0	chrome/android/OWNERS
+
+
+0	1	chrome/android/OWNERS
+
+
+1	0	chrome/android/OWNERS
+
+
+1	0	chrome/android/OWNERS
+
+
+0	1	chrome/android/OWNERS
+:::: chrome/android/java/src/org/chromium/chrome/browser/infobar/OWNERS :::: 
+Tue, 17 Sep 2013 19:06:19 +0000
+
+2	0	chrome/android/java/src/org/chromium/chrome/browser/infobar/OWNERS
+:::: chrome/app/OWNERS :::: 
+Mon, 2 Apr 2012 21:16:47 +0000
+
+2	1	chrome/app/OWNERS
+
+
+2	0	chrome/app/OWNERS
+
+
+1	0	chrome/app/OWNERS
+
+
+1	2	chrome/app/OWNERS
+:::: chrome/app/android/OWNERS :::: 
+Sat, 20 Apr 2013 01:05:25 +0000
+
+0	1	chrome/app/android/OWNERS
+
+
+5	0	chrome/app/android/OWNERS
+:::: chrome/app/nibs/OWNERS :::: 
+Wed, 3 Aug 2011 21:17:37 +0000
+
+1	6	chrome/app/nibs/OWNERS
+
+
+0	1	chrome/app/nibs/OWNERS
+
+
+1	0	chrome/app/nibs/OWNERS
+:::: chrome/app/policy/OWNERS :::: 
+Mon, 11 Jul 2011 16:09:24 +0000
+
+11	0	chrome/app/policy/OWNERS
+
+
+0	2	chrome/app/policy/OWNERS
+
+
+2	0	chrome/app/policy/OWNERS
+
+
+1	1	chrome/app/policy/OWNERS
+:::: chrome/app/resources/OWNERS :::: 
+Sat, 16 Feb 2013 04:00:29 +0000
+
+1	0	chrome/app/resources/OWNERS
+:::: chrome/app/theme/OWNERS :::: 
+Wed, 13 Jun 2012 23:56:35 +0000
+:::: chrome/browser/OWNERS :::: 
+Tue, 3 May 2011 18:00:02 +0000
+
+0	1	chrome/browser/OWNERS
+
+
+1	0	chrome/browser/OWNERS
+
+
+2	0	chrome/browser/OWNERS
+
+
+4	1	chrome/browser/OWNERS
+
+
+2	2	chrome/browser/OWNERS
+
+
+2	0	chrome/browser/OWNERS
+
+
+4	0	chrome/browser/OWNERS
+
+
+3	0	chrome/browser/OWNERS
+
+
+2	0	chrome/browser/OWNERS
+:::: chrome/browser/accessibility/OWNERS :::: 
+Fri, 21 Jan 2011 00:40:12 +0000
+:::: chrome/browser/android/OWNERS :::: 
+Thu, 2 Aug 2012 22:36:11 +0000
+
+1	0	chrome/browser/android/OWNERS
+
+
+0	2	chrome/browser/android/OWNERS
+
+
+0	1	chrome/browser/android/OWNERS
+
+
+0	1	chrome/browser/android/OWNERS
+:::: chrome/browser/apps/OWNERS :::: 
+Fri, 26 Jul 2013 15:08:01 +0000
+
+5	0	chrome/browser/apps/OWNERS
+
+
+6	0	chrome/browser/apps/OWNERS
+:::: chrome/browser/autocomplete/OWNERS :::: 
+Fri, 21 Jan 2011 23:42:37 +0000
+
+1	0	chrome/browser/autocomplete/OWNERS
+:::: chrome/browser/autofill/OWNERS :::: 
+Fri, 21 Jan 2011 00:50:33 +0000
+
+1	1	chrome/browser/autofill/OWNERS
+:::: chrome/browser/automation/OWNERS :::: 
+Thu, 19 Jul 2012 20:45:59 +0000
+
+0	1	chrome/browser/automation/OWNERS
+:::: chrome/browser/background/OWNERS :::: 
+Fri, 17 Jun 2011 16:36:53 +0000
+:::: chrome/browser/bookmarks/OWNERS :::: 
+Thu, 20 Jan 2011 00:50:36 +0000
+
+0	3	chrome/browser/bookmarks/OWNERS
+:::: chrome/browser/browsing_data/OWNERS :::: 
+Thu, 19 Jul 2012 19:22:47 +0000
+
+1	1	chrome/browser/browsing_data/OWNERS
+:::: chrome/browser/captive_portal/OWNERS :::: 
+Fri, 11 May 2012 18:59:20 +0000
+:::: chrome/browser/chromeos/OWNERS :::: 
+Fri, 3 Aug 2012 02:02:48 +0000
+
+1	1	chrome/browser/chromeos/OWNERS
+
+
+2	0	chrome/browser/chromeos/OWNERS
+:::: chrome/browser/chromeos/accessibility/OWNERS :::: 
+Fri, 26 Oct 2012 02:13:12 +0000
+
+3	0	chrome/browser/chromeos/accessibility/OWNERS
+:::: chrome/browser/chromeos/attestation/OWNERS :::: 
+Fri, 19 Apr 2013 20:34:35 +0000
+
+2	0	chrome/browser/chromeos/attestation/OWNERS
+:::: chrome/browser/chromeos/audio/OWNERS :::: 
+Thu, 2 May 2013 00:35:40 +0000
+
+3	0	chrome/browser/chromeos/audio/OWNERS
+:::: chrome/browser/chromeos/background/OWNERS :::: 
+Fri, 17 Aug 2012 13:08:56 +0000
+:::: chrome/browser/chromeos/contacts/OWNERS :::: 
+Tue, 31 Jul 2012 22:43:37 +0000
+:::: chrome/browser/chromeos/dbus/OWNERS :::: 
+Sat, 17 Sep 2011 05:10:30 +0000
+:::: chrome/browser/chromeos/display/OWNERS :::: 
+Mon, 3 Sep 2012 08:33:43 +0000
+:::: chrome/browser/chromeos/drive/OWNERS :::: 
+Thu, 11 Oct 2012 06:00:54 +0000
+
+0	1	chrome/browser/chromeos/drive/OWNERS
+
+
+1	5	chrome/browser/chromeos/drive/OWNERS
+
+
+10	0	chrome/browser/chromeos/drive/OWNERS
+:::: chrome/browser/chromeos/extensions/OWNERS :::: 
+Tue, 31 Jul 2012 17:59:41 +0000
+
+10	7	chrome/browser/chromeos/extensions/OWNERS
+
+
+1	0	chrome/browser/chromeos/extensions/OWNERS
+
+
+0	1	chrome/browser/chromeos/extensions/OWNERS
+
+
+0	1	chrome/browser/chromeos/extensions/OWNERS
+
+
+0	1	chrome/browser/chromeos/extensions/OWNERS
+
+
+3	11	chrome/browser/chromeos/extensions/OWNERS
+
+
+1	0	chrome/browser/chromeos/extensions/OWNERS
+
+
+0	1	chrome/browser/chromeos/extensions/OWNERS
+
+
+2	0	chrome/browser/chromeos/extensions/OWNERS
+:::: chrome/browser/chromeos/extensions/file_manager/OWNERS :::: 
+Tue, 16 Apr 2013 04:43:03 +0000
+
+2	0	chrome/browser/chromeos/extensions/file_manager/OWNERS
+
+
+3	9	chrome/browser/chromeos/extensions/file_manager/OWNERS
+
+
+11	0	chrome/browser/chromeos/extensions/file_manager/OWNERS
+:::: chrome/browser/chromeos/file_manager/OWNERS :::: 
+Thu, 5 Sep 2013 04:22:54 +0000
+
+6	0	chrome/browser/chromeos/file_manager/OWNERS
+:::: chrome/browser/chromeos/first_run/OWNERS :::: 
+Mon, 2 Sep 2013 23:50:01 +0000
+
+1	0	chrome/browser/chromeos/first_run/OWNERS
+:::: chrome/browser/chromeos/input_method/OWNERS :::: 
+Mon, 30 Jul 2012 08:26:13 +0000
+:::: chrome/browser/chromeos/kiosk_mode/OWNERS :::: 
+Tue, 31 Jul 2012 23:57:36 +0000
+:::: chrome/browser/chromeos/login/OWNERS :::: 
+Wed, 23 Mar 2011 15:53:51 +0000
+
+1	2	chrome/browser/chromeos/login/OWNERS
+
+
+2	0	chrome/browser/chromeos/login/OWNERS
+
+
+1	0	chrome/browser/chromeos/login/OWNERS
+
+
+3	6	chrome/browser/chromeos/login/OWNERS
+:::: chrome/browser/chromeos/login/enrollment/OWNERS :::: 
+Mon, 29 Aug 2011 17:40:55 +0000
+:::: chrome/browser/chromeos/memory/OWNERS :::: 
+Wed, 10 Oct 2012 23:02:32 +0000
+
+2	0	chrome/browser/chromeos/memory/OWNERS
+:::: chrome/browser/chromeos/net/OWNERS :::: 
+Wed, 27 Feb 2013 12:19:28 +0000
+
+3	5	chrome/browser/chromeos/net/OWNERS
+
+
+5	0	chrome/browser/chromeos/net/OWNERS
+:::: chrome/browser/chromeos/policy/OWNERS :::: 
+Thu, 14 Mar 2013 09:53:40 +0000
+
+6	0	chrome/browser/chromeos/policy/OWNERS
+:::: chrome/browser/chromeos/settings/OWNERS :::: 
+Wed, 1 Aug 2012 11:31:31 +0000
+:::: chrome/browser/chromeos/status/OWNERS :::: 
+Tue, 8 Nov 2011 23:18:03 +0000
+:::: chrome/browser/chromeos/system_logs/OWNERS :::: 
+Tue, 19 Mar 2013 22:36:42 +0000
+
+1	0	chrome/browser/chromeos/system_logs/OWNERS
+:::: chrome/browser/common/OWNERS :::: 
+Wed, 19 Sep 2012 01:51:57 +0000
+:::: chrome/browser/component_updater/OWNERS :::: 
+Tue, 18 Oct 2011 00:06:20 +0000
+:::: chrome/browser/component_updater/pnacl/OWNERS :::: 
+Thu, 15 Dec 2011 02:53:18 +0000
+:::: chrome/browser/content_settings/OWNERS :::: 
+Mon, 28 Mar 2011 17:41:30 +0000
+:::: chrome/browser/devtools/OWNERS :::: 
+Wed, 19 Dec 2012 10:12:13 +0000
+
+0	1	chrome/browser/devtools/OWNERS
+
+
+11	0	chrome/browser/devtools/OWNERS
+
+
+2	0	chrome/browser/devtools/OWNERS
+
+
+0	2	chrome/browser/devtools/OWNERS
+
+
+2	0	chrome/browser/devtools/OWNERS
+:::: chrome/browser/diagnostics/OWNERS :::: 
+Wed, 22 Aug 2012 21:46:24 +0000
+
+1	0	chrome/browser/diagnostics/OWNERS
+:::: chrome/browser/download/OWNERS :::: 
+Thu, 27 Jan 2011 19:51:17 +0000
+
+2	0	chrome/browser/download/OWNERS
+:::: chrome/browser/drive/OWNERS :::: 
+Mon, 17 Jun 2013 08:47:51 +0000
+
+5	0	chrome/browser/drive/OWNERS
+:::: chrome/browser/extensions/OWNERS :::: 
+Wed, 14 Sep 2011 21:05:40 +0000
+
+21	15	chrome/browser/extensions/OWNERS
+
+
+0	5	chrome/browser/extensions/OWNERS
+
+
+1	0	chrome/browser/extensions/OWNERS
+
+
+4	3	chrome/browser/extensions/OWNERS
+
+
+0	1	chrome/browser/extensions/OWNERS
+
+
+0	1	chrome/browser/extensions/OWNERS
+
+
+1	0	chrome/browser/extensions/OWNERS
+
+
+1	0	chrome/browser/extensions/OWNERS
+
+
+2	0	chrome/browser/extensions/OWNERS
+
+
+1	0	chrome/browser/extensions/OWNERS
+
+
+0	1	chrome/browser/extensions/OWNERS
+:::: chrome/browser/extensions/activity_log/OWNERS :::: 
+Wed, 7 Aug 2013 00:02:12 +0000
+
+4	0	chrome/browser/extensions/activity_log/OWNERS
+:::: chrome/browser/extensions/api/activity_log_private/OWNERS :::: 
+Wed, 7 Aug 2013 00:02:12 +0000
+
+4	0	chrome/browser/extensions/api/activity_log_private/OWNERS
+:::: chrome/browser/extensions/api/alarms/OWNERS :::: 
+Thu, 15 Aug 2013 15:56:45 +0000
+
+1	0	chrome/browser/extensions/api/alarms/OWNERS
+:::: chrome/browser/extensions/api/app_current_window_internal/OWNERS :::: 
+Tue, 6 Aug 2013 20:11:45 +0000
+
+2	0	chrome/browser/extensions/api/app_current_window_internal/OWNERS
+:::: chrome/browser/extensions/api/app_window/OWNERS :::: 
+Tue, 6 Aug 2013 20:11:45 +0000
+
+2	0	chrome/browser/extensions/api/app_window/OWNERS
+:::: chrome/browser/extensions/api/autotest_private/OWNERS :::: 
+Tue, 11 Dec 2012 14:06:29 +0000
+
+2	0	chrome/browser/extensions/api/autotest_private/OWNERS
+:::: chrome/browser/extensions/api/bluetooth/OWNERS :::: 
+Thu, 15 Aug 2013 15:56:45 +0000
+
+3	0	chrome/browser/extensions/api/bluetooth/OWNERS
+:::: chrome/browser/extensions/api/braille_display_private/OWNERS :::: 
+Wed, 4 Sep 2013 20:44:24 +0000
+
+3	0	chrome/browser/extensions/api/braille_display_private/OWNERS
+:::: chrome/browser/extensions/api/browsing_data/OWNERS :::: 
+Thu, 14 Jun 2012 13:21:46 +0000
+:::: chrome/browser/extensions/api/commands/OWNERS :::: 
+Wed, 14 Aug 2013 09:57:13 +0000
+
+3	0	chrome/browser/extensions/api/commands/OWNERS
+:::: chrome/browser/extensions/api/context_menus/OWNERS :::: 
+Thu, 15 Aug 2013 15:56:45 +0000
+
+1	0	chrome/browser/extensions/api/context_menus/OWNERS
+:::: chrome/browser/extensions/api/cookies/OWNERS :::: 
+Thu, 16 Aug 2012 21:03:59 +0000
+:::: chrome/browser/extensions/api/declarative/OWNERS :::: 
+Mon, 7 May 2012 17:52:27 +0000
+:::: chrome/browser/extensions/api/declarative_content/OWNERS :::: 
+Sat, 26 Jan 2013 06:33:10 +0000
+
+2	0	chrome/browser/extensions/api/declarative_content/OWNERS
+:::: chrome/browser/extensions/api/declarative_webrequest/OWNERS :::: 
+Mon, 7 May 2012 17:52:27 +0000
+:::: chrome/browser/extensions/api/desktop_capture/OWNERS :::: 
+Tue, 13 Aug 2013 03:21:25 +0000
+
+2	0	chrome/browser/extensions/api/desktop_capture/OWNERS
+:::: chrome/browser/extensions/api/dial/OWNERS :::: 
+Thu, 15 Aug 2013 15:56:45 +0000
+
+2	0	chrome/browser/extensions/api/dial/OWNERS
+:::: chrome/browser/extensions/api/discovery/OWNERS :::: 
+Wed, 30 May 2012 23:34:41 +0000
+:::: chrome/browser/extensions/api/downloads/OWNERS :::: 
+Thu, 21 Jun 2012 19:43:42 +0000
+:::: chrome/browser/extensions/api/downloads_internal/OWNERS :::: 
+Tue, 9 Apr 2013 16:02:04 +0000
+
+1	0	chrome/browser/extensions/api/downloads_internal/OWNERS
+:::: chrome/browser/extensions/api/enterprise_platform_keys_private/OWNERS :::: 
+Wed, 14 Aug 2013 22:15:59 +0000
+
+2	0	chrome/browser/extensions/api/enterprise_platform_keys_private/OWNERS
+:::: chrome/browser/extensions/api/extension_action/OWNERS :::: 
+Thu, 15 Aug 2013 15:56:45 +0000
+
+1	0	chrome/browser/extensions/api/extension_action/OWNERS
+:::: chrome/browser/extensions/api/file_handlers/OWNERS :::: 
+Fri, 16 Aug 2013 01:22:01 +0000
+
+2	0	chrome/browser/extensions/api/file_handlers/OWNERS
+:::: chrome/browser/extensions/api/file_system/OWNERS :::: 
+Fri, 31 Aug 2012 01:36:12 +0000
+
+1	0	chrome/browser/extensions/api/file_system/OWNERS
+:::: chrome/browser/extensions/api/font_settings/OWNERS :::: 
+Mon, 19 Aug 2013 01:52:55 +0000
+
+1	0	chrome/browser/extensions/api/font_settings/OWNERS
+:::: chrome/browser/extensions/api/identity/OWNERS :::: 
+Tue, 16 Jul 2013 16:43:51 +0000
+
+1	0	chrome/browser/extensions/api/identity/OWNERS
+:::: chrome/browser/extensions/api/identity_private/OWNERS :::: 
+Wed, 21 Aug 2013 00:59:35 +0000
+
+1	0	chrome/browser/extensions/api/identity_private/OWNERS
+:::: chrome/browser/extensions/api/idle/OWNERS :::: 
+Fri, 28 Sep 2012 23:06:52 +0000
+
+1	0	chrome/browser/extensions/api/idle/OWNERS
+:::: chrome/browser/extensions/api/image_writer_private/OWNERS :::: 
+Thu, 19 Sep 2013 00:42:43 +0000
+
+2	0	chrome/browser/extensions/api/image_writer_private/OWNERS
+:::: chrome/browser/extensions/api/mdns/OWNERS :::: 
+Fri, 6 Sep 2013 07:21:08 +0000
+
+2	0	chrome/browser/extensions/api/mdns/OWNERS
+
+
+0	2	chrome/browser/extensions/api/mdns/OWNERS
+
+
+2	0	chrome/browser/extensions/api/mdns/OWNERS
+:::: chrome/browser/extensions/api/media_galleries/OWNERS :::: 
+Tue, 6 Aug 2013 17:04:05 +0000
+
+3	0	chrome/browser/extensions/api/media_galleries/OWNERS
+:::: chrome/browser/extensions/api/media_galleries_private/OWNERS :::: 
+Tue, 6 Aug 2013 17:04:05 +0000
+
+3	0	chrome/browser/extensions/api/media_galleries_private/OWNERS
+:::: chrome/browser/extensions/api/messaging/OWNERS :::: 
+Thu, 15 Aug 2013 15:56:45 +0000
+
+6	0	chrome/browser/extensions/api/messaging/OWNERS
+:::: chrome/browser/extensions/api/metrics_private/OWNERS :::: 
+Sat, 17 Aug 2013 00:50:03 +0000
+
+2	0	chrome/browser/extensions/api/metrics_private/OWNERS
+:::: chrome/browser/extensions/api/module/OWNERS :::: 
+Thu, 15 Aug 2013 15:56:45 +0000
+
+1	0	chrome/browser/extensions/api/module/OWNERS
+:::: chrome/browser/extensions/api/networking_private/OWNERS :::: 
+Thu, 15 Aug 2013 18:57:58 +0000
+
+2	0	chrome/browser/extensions/api/networking_private/OWNERS
+:::: chrome/browser/extensions/api/notifications/OWNERS :::: 
+Tue, 4 Jun 2013 21:09:41 +0000
+
+1	0	chrome/browser/extensions/api/notifications/OWNERS
+:::: chrome/browser/extensions/api/omnibox/OWNERS :::: 
+Thu, 17 May 2012 23:03:55 +0000
+:::: chrome/browser/extensions/api/power/OWNERS :::: 
+Thu, 15 Aug 2013 15:56:45 +0000
+
+1	0	chrome/browser/extensions/api/power/OWNERS
+:::: chrome/browser/extensions/api/proxy/OWNERS :::: 
+Mon, 7 May 2012 17:52:27 +0000
+:::: chrome/browser/extensions/api/push_messaging/OWNERS :::: 
+Fri, 28 Sep 2012 23:06:52 +0000
+
+1	0	chrome/browser/extensions/api/push_messaging/OWNERS
+:::: chrome/browser/extensions/api/recovery_private/OWNERS :::: 
+Wed, 18 Sep 2013 02:53:18 +0000
+
+2	0	chrome/browser/extensions/api/recovery_private/OWNERS
+:::: chrome/browser/extensions/api/serial/OWNERS :::: 
+Thu, 15 Aug 2013 15:56:45 +0000
+
+3	0	chrome/browser/extensions/api/serial/OWNERS
+:::: chrome/browser/extensions/api/sessions/OWNERS :::: 
+Thu, 22 Aug 2013 19:21:51 +0000
+
+1	0	chrome/browser/extensions/api/sessions/OWNERS
+
+
+0	1	chrome/browser/extensions/api/sessions/OWNERS
+
+
+1	0	chrome/browser/extensions/api/sessions/OWNERS
+:::: chrome/browser/extensions/api/socket/OWNERS :::: 
+Thu, 15 Aug 2013 15:56:45 +0000
+
+2	0	chrome/browser/extensions/api/socket/OWNERS
+:::: chrome/browser/extensions/api/storage/OWNERS :::: 
+Thu, 15 Aug 2013 15:56:45 +0000
+
+1	0	chrome/browser/extensions/api/storage/OWNERS
+:::: chrome/browser/extensions/api/sync_file_system/OWNERS :::: 
+Sun, 3 Feb 2013 05:37:11 +0000
+
+1	0	chrome/browser/extensions/api/sync_file_system/OWNERS
+:::: chrome/browser/extensions/api/system_cpu/OWNERS :::: 
+Thu, 18 Jul 2013 02:06:01 +0000
+
+1	0	chrome/browser/extensions/api/system_cpu/OWNERS
+:::: chrome/browser/extensions/api/system_display/OWNERS :::: 
+Tue, 6 Aug 2013 18:10:16 +0000
+
+1	0	chrome/browser/extensions/api/system_display/OWNERS
+:::: chrome/browser/extensions/api/system_indicator/OWNERS :::: 
+Thu, 15 Aug 2013 15:56:45 +0000
+
+1	0	chrome/browser/extensions/api/system_indicator/OWNERS
+:::: chrome/browser/extensions/api/system_info/OWNERS :::: 
+Fri, 8 Mar 2013 09:28:53 +0000
+
+1	0	chrome/browser/extensions/api/system_info/OWNERS
+:::: chrome/browser/extensions/api/system_memory/OWNERS :::: 
+Tue, 6 Aug 2013 18:10:16 +0000
+
+1	0	chrome/browser/extensions/api/system_memory/OWNERS
+:::: chrome/browser/extensions/api/system_private/OWNERS :::: 
+Thu, 15 Aug 2013 22:15:20 +0000
+
+1	0	chrome/browser/extensions/api/system_private/OWNERS
+:::: chrome/browser/extensions/api/system_storage/OWNERS :::: 
+Fri, 26 Jul 2013 12:19:12 +0000
+
+3	0	chrome/browser/extensions/api/system_storage/OWNERS
+:::: chrome/browser/extensions/api/tab_capture/OWNERS :::: 
+Thu, 15 Aug 2013 15:56:45 +0000
+
+1	0	chrome/browser/extensions/api/tab_capture/OWNERS
+
+
+2	0	chrome/browser/extensions/api/tab_capture/OWNERS
+:::: chrome/browser/extensions/api/tabs/OWNERS :::: 
+Thu, 15 Aug 2013 15:56:45 +0000
+
+2	0	chrome/browser/extensions/api/tabs/OWNERS
+:::: chrome/browser/extensions/api/usb/OWNERS :::: 
+Wed, 7 Aug 2013 23:55:32 +0000
+
+3	0	chrome/browser/extensions/api/usb/OWNERS
+:::: chrome/browser/extensions/api/web_navigation/OWNERS :::: 
+Wed, 4 Apr 2012 09:11:26 +0000
+:::: chrome/browser/extensions/api/web_request/OWNERS :::: 
+Mon, 7 May 2012 17:52:27 +0000
+:::: chrome/browser/extensions/api/webrtc_logging_private/OWNERS :::: 
+Tue, 24 Sep 2013 17:52:43 +0000
+
+1	0	chrome/browser/extensions/api/webrtc_logging_private/OWNERS
+:::: chrome/browser/extensions/api/webstore_private/OWNERS :::: 
+Thu, 24 May 2012 11:18:27 +0000
+
+0	1	chrome/browser/extensions/api/webstore_private/OWNERS
+:::: chrome/browser/extensions/api/webview/OWNERS :::: 
+Thu, 15 Aug 2013 15:56:45 +0000
+
+2	0	chrome/browser/extensions/api/webview/OWNERS
+:::: chrome/browser/extensions/updater/OWNERS :::: 
+Fri, 16 Mar 2012 18:09:11 +0000
+
+1	0	chrome/browser/extensions/updater/OWNERS
+
+
+0	1	chrome/browser/extensions/updater/OWNERS
+:::: chrome/browser/external_tab/OWNERS :::: 
+Tue, 3 Apr 2012 23:57:21 +0000
+:::: chrome/browser/favicon/OWNERS :::: 
+Wed, 22 Aug 2012 21:46:24 +0000
+:::: chrome/browser/feedback/OWNERS :::: 
+Tue, 31 Jul 2012 23:57:36 +0000
+:::: chrome/browser/first_run/OWNERS :::: 
+Mon, 7 Jan 2013 15:07:24 +0000
+
+3	0	chrome/browser/first_run/OWNERS
+:::: chrome/browser/geolocation/OWNERS :::: 
+Wed, 22 Aug 2012 21:46:24 +0000
+
+4	2	chrome/browser/geolocation/OWNERS
+
+
+5	1	chrome/browser/geolocation/OWNERS
+
+
+0	1	chrome/browser/geolocation/OWNERS
+:::: chrome/browser/google/OWNERS :::: 
+Tue, 28 Feb 2012 22:30:44 +0000
+:::: chrome/browser/google_apis/OWNERS :::: 
+Tue, 11 Sep 2012 20:26:19 +0000
+
+0	1	chrome/browser/google_apis/OWNERS
+
+
+1	5	chrome/browser/google_apis/OWNERS
+:::: chrome/browser/gpu/OWNERS :::: 
+Fri, 7 Dec 2012 20:57:24 +0000
+
+0	1	chrome/browser/gpu/OWNERS
+
+
+5	0	chrome/browser/gpu/OWNERS
+:::: chrome/browser/guestview/OWNERS :::: 
+Fri, 28 Jun 2013 17:15:40 +0000
+
+1	0	chrome/browser/guestview/OWNERS
+:::: chrome/browser/history/OWNERS :::: 
+Wed, 31 Aug 2011 16:08:10 +0000
+
+2	0	chrome/browser/history/OWNERS
+:::: chrome/browser/importer/OWNERS :::: 
+Wed, 15 Jun 2011 15:11:02 +0000
+
+0	1	chrome/browser/importer/OWNERS
+
+
+7	8	chrome/browser/importer/OWNERS
+
+
+1	0	chrome/browser/importer/OWNERS
+
+
+1	0	chrome/browser/importer/OWNERS
+
+
+9	0	chrome/browser/importer/OWNERS
+:::: chrome/browser/infobars/OWNERS :::: 
+Mon, 13 Aug 2012 16:19:34 +0000
+:::: chrome/browser/invalidation/OWNERS :::: 
+Fri, 10 May 2013 19:26:16 +0000
+
+5	0	chrome/browser/invalidation/OWNERS
+:::: chrome/browser/local_discovery/OWNERS :::: 
+Fri, 14 Jun 2013 21:05:21 +0000
+
+3	0	chrome/browser/local_discovery/OWNERS
+:::: chrome/browser/mac/OWNERS :::: 
+Mon, 20 Jun 2011 22:15:52 +0000
+:::: chrome/browser/managed_mode/OWNERS :::: 
+Fri, 26 Oct 2012 19:33:32 +0000
+
+2	0	chrome/browser/managed_mode/OWNERS
+:::: chrome/browser/media/OWNERS :::: 
+Fri, 24 Jun 2011 20:59:19 +0000
+
+1	0	chrome/browser/media/OWNERS
+
+
+1	0	chrome/browser/media/OWNERS
+
+
+0	1	chrome/browser/media/OWNERS
+:::: chrome/browser/media_galleries/OWNERS :::: 
+Thu, 28 Feb 2013 02:12:56 +0000
+
+0	1	chrome/browser/media_galleries/OWNERS
+
+
+1	1	chrome/browser/media_galleries/OWNERS
+
+
+5	0	chrome/browser/media_galleries/OWNERS
+:::: chrome/browser/media_galleries/fileapi/OWNERS :::: 
+Fri, 26 Apr 2013 10:21:54 +0000
+
+5	0	chrome/browser/media_galleries/fileapi/OWNERS
+:::: chrome/browser/metrics/OWNERS :::: 
+Tue, 24 May 2011 23:04:48 +0000
+:::: chrome/browser/metrics/variations/OWNERS :::: 
+Wed, 15 Aug 2012 01:01:16 +0000
+:::: chrome/browser/metro_viewer/OWNERS :::: 
+Fri, 7 Dec 2012 19:02:52 +0000
+
+3	0	chrome/browser/metro_viewer/OWNERS
+:::: chrome/browser/nacl_host/OWNERS :::: 
+Tue, 31 Jul 2012 20:19:50 +0000
+:::: chrome/browser/net/OWNERS :::: 
+Fri, 21 Jan 2011 19:42:18 +0000
+:::: chrome/browser/net/gaia/OWNERS :::: 
+Thu, 28 Jul 2011 03:28:46 +0000
+:::: chrome/browser/notifications/OWNERS :::: 
+Fri, 21 Jan 2011 00:50:33 +0000
+
+1	1	chrome/browser/notifications/OWNERS
+
+
+2	1	chrome/browser/notifications/OWNERS
+
+
+2	0	chrome/browser/notifications/OWNERS
+:::: chrome/browser/omnibox/OWNERS :::: 
+Fri, 12 Apr 2013 22:02:58 +0000
+
+3	0	chrome/browser/omnibox/OWNERS
+:::: chrome/browser/password_manager/OWNERS :::: 
+Fri, 24 Jun 2011 01:24:56 +0000
+
+1	0	chrome/browser/password_manager/OWNERS
+:::: chrome/browser/performance_monitor/OWNERS :::: 
+Thu, 2 Aug 2012 17:06:40 +0000
+
+0	1	chrome/browser/performance_monitor/OWNERS
+:::: chrome/browser/plugins/OWNERS :::: 
+Thu, 20 Sep 2012 20:53:18 +0000
+:::: chrome/browser/policy/OWNERS :::: 
+Mon, 16 May 2011 14:36:02 +0000
+
+2	0	chrome/browser/policy/OWNERS
+
+
+1	0	chrome/browser/policy/OWNERS
+:::: chrome/browser/predictors/OWNERS :::: 
+Wed, 2 May 2012 03:05:58 +0000
+:::: chrome/browser/prefs/OWNERS :::: 
+Tue, 26 Apr 2011 18:10:22 +0000
+:::: chrome/browser/prerender/OWNERS :::: 
+Sat, 19 Mar 2011 01:45:31 +0000
+
+0	1	chrome/browser/prerender/OWNERS
+
+
+1	0	chrome/browser/prerender/OWNERS
+:::: chrome/browser/printing/OWNERS :::: 
+Fri, 18 Nov 2011 19:54:53 +0000
+
+0	1	chrome/browser/printing/OWNERS
+
+
+1	0	chrome/browser/printing/OWNERS
+:::: chrome/browser/printing/cloud_print/OWNERS :::: 
+Fri, 18 Nov 2011 19:54:53 +0000
+
+1	0	chrome/browser/printing/cloud_print/OWNERS
+:::: chrome/browser/profile_resetter/OWNERS :::: 
+Thu, 25 Apr 2013 22:03:42 +0000
+
+1	0	chrome/browser/profile_resetter/OWNERS
+
+
+2	0	chrome/browser/profile_resetter/OWNERS
+:::: chrome/browser/profiles/OWNERS :::: 
+Thu, 7 Apr 2011 17:30:00 +0000
+
+1	0	chrome/browser/profiles/OWNERS
+:::: chrome/browser/renderer_host/pepper/OWNERS :::: 
+Thu, 29 Nov 2012 20:39:00 +0000
+
+1	0	chrome/browser/renderer_host/pepper/OWNERS
+
+
+1	0	chrome/browser/renderer_host/pepper/OWNERS
+
+
+2	0	chrome/browser/renderer_host/pepper/OWNERS
+:::: chrome/browser/resources/OWNERS :::: 
+Thu, 20 Jan 2011 01:57:29 +0000
+
+1	0	chrome/browser/resources/OWNERS
+
+
+1	1	chrome/browser/resources/OWNERS
+
+
+1	0	chrome/browser/resources/OWNERS
+
+
+3	0	chrome/browser/resources/OWNERS
+
+
+1	0	chrome/browser/resources/OWNERS
+
+
+2	2	chrome/browser/resources/OWNERS
+
+
+2	3	chrome/browser/resources/OWNERS
+:::: chrome/browser/resources/chromeos/OWNERS :::: 
+Mon, 28 Nov 2011 22:08:12 +0000
+:::: chrome/browser/resources/chromeos/connectivity_diagnostics/OWNERS :::: 
+Mon, 12 Aug 2013 05:33:02 +0000
+
+4	0	chrome/browser/resources/chromeos/connectivity_diagnostics/OWNERS
+:::: chrome/browser/resources/chromeos/diagnostics/OWNERS :::: 
+Thu, 2 Aug 2012 19:40:13 +0000
+:::: chrome/browser/resources/chromeos/echo/OWNERS :::: 
+Tue, 17 Apr 2012 23:52:14 +0000
+:::: chrome/browser/resources/chromeos/first_run/OWNERS :::: 
+Mon, 2 Sep 2013 23:50:01 +0000
+
+1	0	chrome/browser/resources/chromeos/first_run/OWNERS
+:::: chrome/browser/resources/chromeos/genius_app/OWNERS :::: 
+Fri, 13 Sep 2013 08:55:31 +0000
+
+3	0	chrome/browser/resources/chromeos/genius_app/OWNERS
+:::: chrome/browser/resources/chromeos/login/OWNERS :::: 
+Thu, 24 Nov 2011 13:59:58 +0000
+
+1	1	chrome/browser/resources/chromeos/login/OWNERS
+
+
+2	0	chrome/browser/resources/chromeos/login/OWNERS
+
+
+2	4	chrome/browser/resources/chromeos/login/OWNERS
+:::: chrome/browser/resources/chromeos/network_configuration/OWNERS :::: 
+Wed, 27 Feb 2013 14:44:48 +0000
+
+2	0	chrome/browser/resources/chromeos/network_configuration/OWNERS
+:::: chrome/browser/resources/chromeos/wallpaper_manager/OWNERS :::: 
+Mon, 10 Sep 2012 16:51:40 +0000
+:::: chrome/browser/resources/cloud_print_app/OWNERS :::: 
+Wed, 20 Feb 2013 23:40:46 +0000
+
+2	0	chrome/browser/resources/cloud_print_app/OWNERS
+:::: chrome/browser/resources/default_apps/OWNERS :::: 
+Fri, 4 May 2012 21:57:47 +0000
+
+0	1	chrome/browser/resources/default_apps/OWNERS
+:::: chrome/browser/resources/downloads/OWNERS :::: 
+Mon, 8 Apr 2013 18:07:40 +0000
+
+2	0	chrome/browser/resources/downloads/OWNERS
+:::: chrome/browser/resources/extensions/OWNERS :::: 
+Tue, 11 Sep 2012 18:28:57 +0000
+
+0	1	chrome/browser/resources/extensions/OWNERS
+
+
+0	1	chrome/browser/resources/extensions/OWNERS
+:::: chrome/browser/resources/file_manager/OWNERS :::: 
+Wed, 13 Jul 2011 21:57:36 +0000
+
+2	2	chrome/browser/resources/file_manager/OWNERS
+
+
+1	0	chrome/browser/resources/file_manager/OWNERS
+
+
+1	11	chrome/browser/resources/file_manager/OWNERS
+
+
+5	0	chrome/browser/resources/file_manager/OWNERS
+:::: chrome/browser/resources/gaia_auth/OWNERS :::: 
+Fri, 25 May 2012 22:30:50 +0000
+:::: chrome/browser/resources/gaia_auth_host/OWNERS :::: 
+Fri, 26 Apr 2013 00:03:11 +0000
+
+3	0	chrome/browser/resources/gaia_auth_host/OWNERS
+:::: chrome/browser/resources/google_now/OWNERS :::: 
+Mon, 9 Sep 2013 22:47:32 +0000
+
+1	0	chrome/browser/resources/google_now/OWNERS
+:::: chrome/browser/resources/help_app/OWNERS :::: 
+Thu, 22 Aug 2013 21:40:53 +0000
+
+2	0	chrome/browser/resources/help_app/OWNERS
+:::: chrome/browser/resources/history/OWNERS :::: 
+Fri, 2 Mar 2012 19:36:32 +0000
+:::: chrome/browser/resources/image_loader/OWNERS :::: 
+Tue, 21 May 2013 07:23:47 +0000
+
+1	0	chrome/browser/resources/image_loader/OWNERS
+:::: chrome/browser/resources/inspect/OWNERS :::: 
+Thu, 11 Jul 2013 16:03:09 +0000
+
+1	0	chrome/browser/resources/inspect/OWNERS
+:::: chrome/browser/resources/local_discovery/OWNERS :::: 
+Wed, 17 Jul 2013 14:05:10 +0000
+
+3	0	chrome/browser/resources/local_discovery/OWNERS
+:::: chrome/browser/resources/local_ntp/OWNERS :::: 
+Wed, 1 May 2013 22:54:25 +0000
+
+1	0	chrome/browser/resources/local_ntp/OWNERS
+
+
+2	0	chrome/browser/resources/local_ntp/OWNERS
+:::: chrome/browser/resources/local_omnibox_popup/OWNERS :::: 
+Wed, 1 May 2013 22:54:25 +0000
+
+2	0	chrome/browser/resources/local_omnibox_popup/OWNERS
+:::: chrome/browser/resources/memory_internals/OWNERS :::: 
+Tue, 29 Jan 2013 12:15:46 +0000
+
+1	0	chrome/browser/resources/memory_internals/OWNERS
+
+
+0	2	chrome/browser/resources/memory_internals/OWNERS
+
+
+2	0	chrome/browser/resources/memory_internals/OWNERS
+:::: chrome/browser/resources/net_internals/OWNERS :::: 
+Fri, 2 Dec 2011 21:59:21 +0000
+:::: chrome/browser/resources/ntp4/OWNERS :::: 
+Tue, 12 Apr 2011 00:24:02 +0000
+:::: chrome/browser/resources/ntp_android/OWNERS :::: 
+Tue, 16 Oct 2012 17:40:43 +0000
+
+0	2	chrome/browser/resources/ntp_android/OWNERS
+
+
+4	0	chrome/browser/resources/ntp_android/OWNERS
+:::: chrome/browser/resources/options/OWNERS :::: 
+Thu, 20 Jan 2011 01:57:29 +0000
+
+0	1	chrome/browser/resources/options/OWNERS
+:::: chrome/browser/resources/options/chromeos/OWNERS :::: 
+Sat, 18 Aug 2012 23:29:35 +0000
+
+0	4	chrome/browser/resources/options/chromeos/OWNERS
+
+
+10	0	chrome/browser/resources/options/chromeos/OWNERS
+:::: chrome/browser/resources/performance_monitor/OWNERS :::: 
+Tue, 11 Sep 2012 18:28:57 +0000
+
+0	1	chrome/browser/resources/performance_monitor/OWNERS
+:::: chrome/browser/resources/plugin_metadata/OWNERS :::: 
+Wed, 23 May 2012 17:10:42 +0000
+:::: chrome/browser/resources/predictors/OWNERS :::: 
+Wed, 2 May 2012 03:05:58 +0000
+:::: chrome/browser/resources/print_preview/OWNERS :::: 
+Thu, 1 Dec 2011 01:42:20 +0000
+
+1	0	chrome/browser/resources/print_preview/OWNERS
+
+
+1	0	chrome/browser/resources/print_preview/OWNERS
+:::: chrome/browser/resources/profiler/OWNERS :::: 
+Wed, 7 Dec 2011 19:14:45 +0000
+:::: chrome/browser/resources/quick_office/OWNERS :::: 
+Wed, 3 Apr 2013 12:07:18 +0000
+
+2	0	chrome/browser/resources/quick_office/OWNERS
+:::: chrome/browser/resources/quota_internals/OWNERS :::: 
+Tue, 11 Jun 2013 14:46:09 +0000
+
+1	0	chrome/browser/resources/quota_internals/OWNERS
+:::: chrome/browser/resources/sync_file_system_internals/OWNERS :::: 
+Wed, 15 May 2013 09:18:44 +0000
+
+4	0	chrome/browser/resources/sync_file_system_internals/OWNERS
+:::: chrome/browser/resources/sync_internals/OWNERS :::: 
+Tue, 24 Jan 2012 22:39:33 +0000
+:::: chrome/browser/resources/task_manager/OWNERS :::: 
+Mon, 5 Mar 2012 18:41:27 +0000
+:::: chrome/browser/resources/uber/OWNERS :::: 
+Wed, 4 Jul 2012 03:22:47 +0000
+:::: chrome/browser/resources/web_dev_style/OWNERS :::: 
+Wed, 7 Mar 2012 22:18:00 +0000
+:::: chrome/browser/resources/webstore_app/OWNERS :::: 
+Fri, 2 Dec 2011 22:04:18 +0000
+
+0	1	chrome/browser/resources/webstore_app/OWNERS
+
+
+0	1	chrome/browser/resources/webstore_app/OWNERS
+
+
+0	1	chrome/browser/resources/webstore_app/OWNERS
+:::: chrome/browser/rlz/OWNERS :::: 
+Mon, 12 Sep 2011 19:46:56 +0000
+:::: chrome/browser/safe_browsing/OWNERS :::: 
+Fri, 4 Feb 2011 01:31:26 +0000
+
+0	1	chrome/browser/safe_browsing/OWNERS
+:::: chrome/browser/search/OWNERS :::: 
+Mon, 18 Mar 2013 18:52:43 +0000
+
+2	2	chrome/browser/search/OWNERS
+
+
+1	1	chrome/browser/search/OWNERS
+
+
+3	0	chrome/browser/search/OWNERS
+:::: chrome/browser/search_engines/OWNERS :::: 
+Mon, 21 Mar 2011 14:40:42 +0000
+
+1	1	chrome/browser/search_engines/OWNERS
+
+
+3	1	chrome/browser/search_engines/OWNERS
+:::: chrome/browser/service/OWNERS :::: 
+Wed, 22 Aug 2012 21:46:24 +0000
+:::: chrome/browser/sessions/OWNERS :::: 
+Mon, 21 Mar 2011 14:40:42 +0000
+:::: chrome/browser/signin/OWNERS :::: 
+Wed, 11 Jan 2012 00:19:00 +0000
+:::: chrome/browser/speech/OWNERS :::: 
+Fri, 21 Jan 2011 00:50:33 +0000
+
+1	0	chrome/browser/speech/OWNERS
+
+
+5	0	chrome/browser/speech/OWNERS
+
+
+2	0	chrome/browser/speech/OWNERS
+
+
+0	1	chrome/browser/speech/OWNERS
+:::: chrome/browser/speech/extension_api/OWNERS :::: 
+Sat, 24 Mar 2012 07:01:36 +0000
+:::: chrome/browser/spellchecker/OWNERS :::: 
+Wed, 22 Aug 2012 21:46:24 +0000
+
+1	2	chrome/browser/spellchecker/OWNERS
+:::: chrome/browser/ssl/OWNERS :::: 
+Wed, 22 Aug 2012 21:46:24 +0000
+
+4	1	chrome/browser/ssl/OWNERS
+:::: chrome/browser/status_icons/OWNERS :::: 
+Thu, 20 Jan 2011 00:50:36 +0000
+:::: chrome/browser/storage_monitor/OWNERS :::: 
+Thu, 21 Feb 2013 00:00:10 +0000
+
+3	0	chrome/browser/storage_monitor/OWNERS
+:::: chrome/browser/sync/OWNERS :::: 
+Thu, 21 Apr 2011 18:36:10 +0000
+:::: chrome/browser/sync_file_system/OWNERS :::: 
+Sat, 20 Oct 2012 05:26:39 +0000
+
+2	0	chrome/browser/sync_file_system/OWNERS
+:::: chrome/browser/sync_file_system/drive_backend/OWNERS :::: 
+Tue, 2 Jul 2013 03:51:08 +0000
+
+1	0	chrome/browser/sync_file_system/drive_backend/OWNERS
+:::: chrome/browser/sync_file_system/drive_backend_v1/OWNERS :::: 
+Tue, 10 Sep 2013 09:01:37 +0000
+
+1	0	chrome/browser/sync_file_system/drive_backend_v1/OWNERS
+:::: chrome/browser/tab_contents/OWNERS :::: 
+Tue, 3 May 2011 18:00:02 +0000
+:::: chrome/browser/task_manager/OWNERS :::: 
+Mon, 5 Mar 2012 18:41:27 +0000
+:::: chrome/browser/task_profiler/OWNERS :::: 
+Wed, 22 Aug 2012 21:46:24 +0000
+:::: chrome/browser/themes/OWNERS :::: 
+Wed, 22 Aug 2012 21:46:24 +0000
+:::: chrome/browser/translate/OWNERS :::: 
+Tue, 7 Aug 2012 16:20:02 +0000
+
+1	0	chrome/browser/translate/OWNERS
+
+
+1	0	chrome/browser/translate/OWNERS
+:::: chrome/browser/ui/OWNERS :::: 
+Tue, 3 May 2011 18:00:02 +0000
+
+3	3	chrome/browser/ui/OWNERS
+
+
+2	1	chrome/browser/ui/OWNERS
+
+
+4	0	chrome/browser/ui/OWNERS
+
+
+2	0	chrome/browser/ui/OWNERS
+:::: chrome/browser/ui/android/OWNERS :::: 
+Fri, 13 Jul 2012 01:48:00 +0000
+
+0	1	chrome/browser/ui/android/OWNERS
+
+
+1	0	chrome/browser/ui/android/OWNERS
+
+
+0	1	chrome/browser/ui/android/OWNERS
+
+
+0	1	chrome/browser/ui/android/OWNERS
+
+
+1	0	chrome/browser/ui/android/OWNERS
+:::: chrome/browser/ui/android/infobars/OWNERS :::: 
+Wed, 25 Sep 2013 18:44:15 +0000
+
+2	0	chrome/browser/ui/android/infobars/OWNERS
+:::: chrome/browser/ui/app_list/OWNERS :::: 
+Fri, 24 Aug 2012 09:59:16 +0000
+
+2	0	chrome/browser/ui/app_list/OWNERS
+
+
+1	0	chrome/browser/ui/app_list/OWNERS
+:::: chrome/browser/ui/apps/OWNERS :::: 
+Tue, 9 Jul 2013 13:56:53 +0000
+
+1	0	chrome/browser/ui/apps/OWNERS
+
+
+1	1	chrome/browser/ui/apps/OWNERS
+
+
+6	0	chrome/browser/ui/apps/OWNERS
+:::: chrome/browser/ui/ash/OWNERS :::: 
+Tue, 7 Aug 2012 04:12:31 +0000
+
+1	0	chrome/browser/ui/ash/OWNERS
+
+
+0	1	chrome/browser/ui/ash/OWNERS
+
+
+1	0	chrome/browser/ui/ash/OWNERS
+:::: chrome/browser/ui/ash/app_list/OWNERS :::: 
+Sun, 5 Aug 2012 18:24:34 +0000
+:::: chrome/browser/ui/ash/launcher/OWNERS :::: 
+Thu, 9 Aug 2012 01:25:00 +0000
+
+2	0	chrome/browser/ui/ash/launcher/OWNERS
+:::: chrome/browser/ui/autofill/OWNERS :::: 
+Thu, 30 Aug 2012 00:33:10 +0000
+
+1	0	chrome/browser/ui/autofill/OWNERS
+
+
+0	1	chrome/browser/ui/autofill/OWNERS
+
+
+3	0	chrome/browser/ui/autofill/OWNERS
+
+
+1	0	chrome/browser/ui/autofill/OWNERS
+:::: chrome/browser/ui/blocked_content/OWNERS :::: 
+Thu, 18 Jul 2013 14:01:46 +0000
+
+2	0	chrome/browser/ui/blocked_content/OWNERS
+:::: chrome/browser/ui/cocoa/OWNERS :::: 
+Tue, 18 Jan 2011 16:51:02 +0000
+
+0	1	chrome/browser/ui/cocoa/OWNERS
+
+
+0	5	chrome/browser/ui/cocoa/OWNERS
+
+
+0	1	chrome/browser/ui/cocoa/OWNERS
+:::: chrome/browser/ui/cocoa/applescript/OWNERS :::: 
+Tue, 18 Jan 2011 16:51:02 +0000
+:::: chrome/browser/ui/cocoa/apps/OWNERS :::: 
+Thu, 19 Sep 2013 17:37:38 +0000
+
+1	0	chrome/browser/ui/cocoa/apps/OWNERS
+:::: chrome/browser/ui/cocoa/autofill/OWNERS :::: 
+Thu, 8 Aug 2013 22:43:58 +0000
+
+2	0	chrome/browser/ui/cocoa/autofill/OWNERS
+:::: chrome/browser/ui/cocoa/bookmarks/OWNERS :::: 
+Tue, 18 Jan 2011 16:51:02 +0000
+
+0	2	chrome/browser/ui/cocoa/bookmarks/OWNERS
+
+
+1	0	chrome/browser/ui/cocoa/bookmarks/OWNERS
+:::: chrome/browser/ui/cocoa/content_settings/OWNERS :::: 
+Thu, 20 Jan 2011 16:21:23 +0000
+:::: chrome/browser/ui/cocoa/download/OWNERS :::: 
+Tue, 18 Jan 2011 16:51:02 +0000
+:::: chrome/browser/ui/cocoa/find_bar/OWNERS :::: 
+Tue, 18 Jan 2011 16:51:02 +0000
+:::: chrome/browser/ui/cocoa/importer/OWNERS :::: 
+Tue, 18 Jan 2011 19:45:14 +0000
+:::: chrome/browser/ui/cocoa/infobars/OWNERS :::: 
+Tue, 18 Jan 2011 18:21:53 +0000
+:::: chrome/browser/ui/cocoa/location_bar/OWNERS :::: 
+Tue, 18 Jan 2011 16:51:02 +0000
+:::: chrome/browser/ui/cocoa/notifications/OWNERS :::: 
+Tue, 18 Jan 2011 16:51:02 +0000
+
+1	1	chrome/browser/ui/cocoa/notifications/OWNERS
+:::: chrome/browser/ui/cocoa/panels/OWNERS :::: 
+Thu, 27 Sep 2012 02:00:29 +0000
+:::: chrome/browser/ui/cocoa/tab_contents/OWNERS :::: 
+Mon, 24 Jan 2011 17:53:29 +0000
+
+0	1	chrome/browser/ui/cocoa/tab_contents/OWNERS
+:::: chrome/browser/ui/cocoa/tabs/OWNERS :::: 
+Wed, 19 Jan 2011 20:06:47 +0000
+
+0	1	chrome/browser/ui/cocoa/tabs/OWNERS
+
+
+0	1	chrome/browser/ui/cocoa/tabs/OWNERS
+:::: chrome/browser/ui/cocoa/toolbar/OWNERS :::: 
+Wed, 19 Jan 2011 22:16:22 +0000
+
+0	1	chrome/browser/ui/cocoa/toolbar/OWNERS
+
+
+0	1	chrome/browser/ui/cocoa/toolbar/OWNERS
+:::: chrome/browser/ui/cocoa/wrench_menu/OWNERS :::: 
+Tue, 18 Jan 2011 16:51:02 +0000
+:::: chrome/browser/ui/content_settings/OWNERS :::: 
+Mon, 30 Jan 2012 23:19:48 +0000
+:::: chrome/browser/ui/extensions/OWNERS :::: 
+Tue, 28 Feb 2012 20:39:56 +0000
+
+0	1	chrome/browser/ui/extensions/OWNERS
+
+
+0	1	chrome/browser/ui/extensions/OWNERS
+
+
+2	1	chrome/browser/ui/extensions/OWNERS
+:::: chrome/browser/ui/fullscreen/OWNERS :::: 
+Fri, 29 Jun 2012 20:13:07 +0000
+
+1	0	chrome/browser/ui/fullscreen/OWNERS
+:::: chrome/browser/ui/gtk/OWNERS :::: 
+Thu, 20 Jan 2011 00:50:36 +0000
+:::: chrome/browser/ui/gtk/apps/OWNERS :::: 
+Thu, 19 Sep 2013 17:37:38 +0000
+
+1	0	chrome/browser/ui/gtk/apps/OWNERS
+:::: chrome/browser/ui/gtk/panels/OWNERS :::: 
+Thu, 27 Sep 2012 02:00:29 +0000
+:::: chrome/browser/ui/gtk/website_settings/OWNERS :::: 
+Sat, 18 Aug 2012 02:21:57 +0000
+:::: chrome/browser/ui/libgtk2ui/OWNERS :::: 
+Fri, 15 Mar 2013 16:30:34 +0000
+
+3	0	chrome/browser/ui/libgtk2ui/OWNERS
+:::: chrome/browser/ui/omnibox/OWNERS :::: 
+Thu, 5 Jan 2012 00:01:44 +0000
+:::: chrome/browser/ui/panels/OWNERS :::: 
+Fri, 15 Apr 2011 22:52:06 +0000
+:::: chrome/browser/ui/pdf/OWNERS :::: 
+Thu, 16 Feb 2012 00:10:13 +0000
+:::: chrome/browser/ui/prefs/OWNERS :::: 
+Wed, 3 Oct 2012 16:39:22 +0000
+
+4	0	chrome/browser/ui/prefs/OWNERS
+:::: chrome/browser/ui/search/OWNERS :::: 
+Thu, 21 Jun 2012 00:55:28 +0000
+
+1	2	chrome/browser/ui/search/OWNERS
+
+
+2	1	chrome/browser/ui/search/OWNERS
+
+
+1	0	chrome/browser/ui/search/OWNERS
+:::: chrome/browser/ui/search_engines/OWNERS :::: 
+Thu, 5 Jan 2012 00:01:44 +0000
+:::: chrome/browser/ui/sync/OWNERS :::: 
+Wed, 30 Nov 2011 21:47:45 +0000
+:::: chrome/browser/ui/tab_contents/OWNERS :::: 
+Wed, 31 Aug 2011 18:55:14 +0000
+:::: chrome/browser/ui/tabs/OWNERS :::: 
+Tue, 22 Mar 2011 20:11:32 +0000
+:::: chrome/browser/ui/views/OWNERS :::: 
+Tue, 4 Sep 2012 14:57:36 +0000
+:::: chrome/browser/ui/views/app_list/OWNERS :::: 
+Wed, 10 Oct 2012 02:42:22 +0000
+
+2	0	chrome/browser/ui/views/app_list/OWNERS
+
+
+1	0	chrome/browser/ui/views/app_list/OWNERS
+:::: chrome/browser/ui/views/apps/OWNERS :::: 
+Thu, 19 Sep 2013 17:37:38 +0000
+
+1	0	chrome/browser/ui/views/apps/OWNERS
+:::: chrome/browser/ui/views/ash/OWNERS :::: 
+Fri, 2 Mar 2012 22:40:55 +0000
+
+0	1	chrome/browser/ui/views/ash/OWNERS
+
+
+1	0	chrome/browser/ui/views/ash/OWNERS
+:::: chrome/browser/ui/views/autofill/OWNERS :::: 
+Mon, 13 May 2013 15:53:37 +0000
+
+1	0	chrome/browser/ui/views/autofill/OWNERS
+:::: chrome/browser/ui/views/bookmarks/OWNERS :::: 
+Tue, 22 Mar 2011 20:11:32 +0000
+:::: chrome/browser/ui/views/frame/OWNERS :::: 
+Mon, 14 Jan 2013 19:17:24 +0000
+
+2	0	chrome/browser/ui/views/frame/OWNERS
+
+
+6	0	chrome/browser/ui/views/frame/OWNERS
+:::: chrome/browser/ui/views/infobars/OWNERS :::: 
+Sat, 20 Jul 2013 00:29:25 +0000
+
+1	0	chrome/browser/ui/views/infobars/OWNERS
+:::: chrome/browser/ui/views/location_bar/OWNERS :::: 
+Sat, 20 Jul 2013 00:29:25 +0000
+
+1	0	chrome/browser/ui/views/location_bar/OWNERS
+:::: chrome/browser/ui/views/message_center/OWNERS :::: 
+Fri, 1 Mar 2013 23:21:05 +0000
+
+1	0	chrome/browser/ui/views/message_center/OWNERS
+
+
+2	0	chrome/browser/ui/views/message_center/OWNERS
+:::: chrome/browser/ui/views/notifications/OWNERS :::: 
+Wed, 5 Dec 2012 05:24:28 +0000
+
+1	0	chrome/browser/ui/views/notifications/OWNERS
+:::: chrome/browser/ui/views/omnibox/OWNERS :::: 
+Sat, 20 Jul 2013 00:29:25 +0000
+
+1	0	chrome/browser/ui/views/omnibox/OWNERS
+:::: chrome/browser/ui/views/panels/OWNERS :::: 
+Thu, 27 Sep 2012 02:00:29 +0000
+:::: chrome/browser/ui/views/tabs/OWNERS :::: 
+Tue, 22 Mar 2011 20:11:32 +0000
+
+0	1	chrome/browser/ui/views/tabs/OWNERS
+:::: chrome/browser/ui/views/website_settings/OWNERS :::: 
+Wed, 27 Jun 2012 01:50:43 +0000
+:::: chrome/browser/ui/web_applications/OWNERS :::: 
+Fri, 10 May 2013 05:11:08 +0000
+
+1	0	chrome/browser/ui/web_applications/OWNERS
+:::: chrome/browser/ui/website_settings/OWNERS :::: 
+Tue, 5 Jun 2012 00:00:32 +0000
+:::: chrome/browser/ui/webui/OWNERS :::: 
+Sun, 27 Feb 2011 19:33:36 +0000
+
+1	0	chrome/browser/ui/webui/OWNERS
+
+
+1	0	chrome/browser/ui/webui/OWNERS
+
+
+3	0	chrome/browser/ui/webui/OWNERS
+
+
+1	0	chrome/browser/ui/webui/OWNERS
+
+
+2	2	chrome/browser/ui/webui/OWNERS
+
+
+1	1	chrome/browser/ui/webui/OWNERS
+
+
+3	0	chrome/browser/ui/webui/OWNERS
+:::: chrome/browser/ui/webui/chromeos/OWNERS :::: 
+Thu, 13 Oct 2011 00:45:36 +0000
+
+2	0	chrome/browser/ui/webui/chromeos/OWNERS
+
+
+1	1	chrome/browser/ui/webui/chromeos/OWNERS
+
+
+1	0	chrome/browser/ui/webui/chromeos/OWNERS
+
+
+2	0	chrome/browser/ui/webui/chromeos/OWNERS
+:::: chrome/browser/ui/webui/chromeos/diagnostics/OWNERS :::: 
+Thu, 2 Aug 2012 19:40:13 +0000
+:::: chrome/browser/ui/webui/chromeos/first_run/OWNERS :::: 
+Mon, 2 Sep 2013 23:50:01 +0000
+
+1	0	chrome/browser/ui/webui/chromeos/first_run/OWNERS
+:::: chrome/browser/ui/webui/chromeos/login/OWNERS :::: 
+Fri, 16 Mar 2012 20:52:39 +0000
+
+3	2	chrome/browser/ui/webui/chromeos/login/OWNERS
+
+
+1	1	chrome/browser/ui/webui/chromeos/login/OWNERS
+
+
+2	0	chrome/browser/ui/webui/chromeos/login/OWNERS
+
+
+0	1	chrome/browser/ui/webui/chromeos/login/OWNERS
+:::: chrome/browser/ui/webui/extensions/OWNERS :::: 
+Wed, 28 Aug 2013 10:13:55 +0000
+
+1	0	chrome/browser/ui/webui/extensions/OWNERS
+:::: chrome/browser/ui/webui/local_discovery/OWNERS :::: 
+Wed, 17 Jul 2013 14:05:10 +0000
+
+3	0	chrome/browser/ui/webui/local_discovery/OWNERS
+:::: chrome/browser/ui/webui/memory_internals/OWNERS :::: 
+Tue, 29 Jan 2013 12:15:46 +0000
+
+1	0	chrome/browser/ui/webui/memory_internals/OWNERS
+
+
+0	2	chrome/browser/ui/webui/memory_internals/OWNERS
+
+
+2	0	chrome/browser/ui/webui/memory_internals/OWNERS
+:::: chrome/browser/ui/webui/net_internals/OWNERS :::: 
+Wed, 11 Jan 2012 15:45:37 +0000
+:::: chrome/browser/ui/webui/ntp/OWNERS :::: 
+Wed, 28 Mar 2012 21:47:26 +0000
+:::: chrome/browser/ui/webui/ntp/android/OWNERS :::: 
+Sat, 22 Dec 2012 18:37:19 +0000
+
+0	1	chrome/browser/ui/webui/ntp/android/OWNERS
+
+
+4	0	chrome/browser/ui/webui/ntp/android/OWNERS
+:::: chrome/browser/ui/webui/options/OWNERS :::: 
+Sat, 26 Feb 2011 15:09:20 +0000
+
+0	1	chrome/browser/ui/webui/options/OWNERS
+:::: chrome/browser/ui/webui/options/chromeos/OWNERS :::: 
+Sun, 19 Aug 2012 05:55:04 +0000
+
+0	4	chrome/browser/ui/webui/options/chromeos/OWNERS
+
+
+4	0	chrome/browser/ui/webui/options/chromeos/OWNERS
+:::: chrome/browser/ui/webui/performance_monitor/OWNERS :::: 
+Tue, 25 Sep 2012 23:05:48 +0000
+:::: chrome/browser/ui/webui/predictors/OWNERS :::: 
+Wed, 2 May 2012 03:05:58 +0000
+:::: chrome/browser/ui/webui/print_preview/OWNERS :::: 
+Wed, 11 Jan 2012 22:23:55 +0000
+
+1	0	chrome/browser/ui/webui/print_preview/OWNERS
+:::: chrome/browser/ui/webui/quota_internals/OWNERS :::: 
+Tue, 11 Jun 2013 14:46:09 +0000
+
+1	0	chrome/browser/ui/webui/quota_internals/OWNERS
+:::: chrome/browser/ui/webui/sync_file_system_internals/OWNERS :::: 
+Wed, 15 May 2013 09:18:44 +0000
+
+4	0	chrome/browser/ui/webui/sync_file_system_internals/OWNERS
+:::: chrome/browser/ui/webui/task_manager/OWNERS :::: 
+Mon, 5 Mar 2012 18:41:27 +0000
+:::: chrome/browser/ui/webui/uber/OWNERS :::: 
+Wed, 4 Jul 2012 03:22:47 +0000
+:::: chrome/browser/ui/zoom/OWNERS :::: 
+Fri, 16 Nov 2012 00:05:04 +0000
+
+2	0	chrome/browser/ui/zoom/OWNERS
+:::: chrome/browser/usb/OWNERS :::: 
+Tue, 31 Jul 2012 19:17:27 +0000
+
+1	0	chrome/browser/usb/OWNERS
+:::: chrome/browser/value_store/OWNERS :::: 
+Wed, 22 Aug 2012 21:46:24 +0000
+:::: chrome/browser/web_applications/OWNERS :::: 
+Mon, 8 Oct 2012 21:53:35 +0000
+
+1	0	chrome/browser/web_applications/OWNERS
+:::: chrome/browser/web_resource/OWNERS :::: 
+Mon, 9 Apr 2012 20:46:11 +0000
+
+6	0	chrome/browser/web_resource/OWNERS
+:::: chrome/browser/webdata/OWNERS :::: 
+Thu, 8 Nov 2012 08:13:06 +0000
+
+1	1	chrome/browser/webdata/OWNERS
+
+
+4	4	chrome/browser/webdata/OWNERS
+
+
+14	0	chrome/browser/webdata/OWNERS
+:::: chrome/common/OWNERS :::: 
+Wed, 7 Nov 2012 21:54:43 +0000
+
+7	7	chrome/common/OWNERS
+
+
+5	5	chrome/common/OWNERS
+
+
+1	0	chrome/common/OWNERS
+
+
+3	2	chrome/common/OWNERS
+
+
+3	0	chrome/common/OWNERS
+
+
+10	0	chrome/common/OWNERS
+
+
+2	1	chrome/common/OWNERS
+
+
+4	0	chrome/common/OWNERS
+
+
+10	0	chrome/common/OWNERS
+
+
+9	0	chrome/common/OWNERS
+
+
+6	0	chrome/common/OWNERS
+:::: chrome/common/cloud_print/OWNERS :::: 
+Wed, 27 Feb 2013 01:09:52 +0000
+
+3	0	chrome/common/cloud_print/OWNERS
+:::: chrome/common/extensions/OWNERS :::: 
+Wed, 14 Sep 2011 21:05:40 +0000
+
+0	1	chrome/common/extensions/OWNERS
+
+
+8	6	chrome/common/extensions/OWNERS
+
+
+1	0	chrome/common/extensions/OWNERS
+
+
+0	4	chrome/common/extensions/OWNERS
+
+
+0	1	chrome/common/extensions/OWNERS
+
+
+0	1	chrome/common/extensions/OWNERS
+
+
+0	1	chrome/common/extensions/OWNERS
+
+
+7	7	chrome/common/extensions/OWNERS
+
+
+1	0	chrome/common/extensions/OWNERS
+
+
+0	1	chrome/common/extensions/OWNERS
+
+
+9	0	chrome/common/extensions/OWNERS
+
+
+1	0	chrome/common/extensions/OWNERS
+:::: chrome/common/extensions/api/OWNERS :::: 
+Wed, 1 Jun 2011 02:21:48 +0000
+
+2	7	chrome/common/extensions/api/OWNERS
+
+
+2	1	chrome/common/extensions/api/OWNERS
+:::: chrome/common/extensions/api/devtools/OWNERS :::: 
+Mon, 5 Aug 2013 20:55:05 +0000
+
+2	0	chrome/common/extensions/api/devtools/OWNERS
+:::: chrome/common/extensions/docs/OWNERS :::: 
+Tue, 9 Oct 2012 21:16:02 +0000
+
+1	0	chrome/common/extensions/docs/OWNERS
+
+
+6	2	chrome/common/extensions/docs/OWNERS
+
+
+1	0	chrome/common/extensions/docs/OWNERS
+
+
+2	0	chrome/common/extensions/docs/OWNERS
+:::: chrome/common/extensions/docs/examples/apps/calculator/OWNERS :::: 
+Tue, 12 Mar 2013 22:43:29 +0000
+
+3	0	chrome/common/extensions/docs/examples/apps/calculator/OWNERS
+:::: chrome/common/importer/OWNERS :::: 
+Tue, 9 Jul 2013 01:34:43 +0000
+
+0	1	chrome/common/importer/OWNERS
+
+
+12	0	chrome/common/importer/OWNERS
+:::: chrome/common/local_discovery/OWNERS :::: 
+Thu, 4 Jul 2013 12:46:35 +0000
+
+3	0	chrome/common/local_discovery/OWNERS
+:::: chrome/common/mac/OWNERS :::: 
+Fri, 19 Aug 2011 13:59:59 +0000
+:::: chrome/common/media_galleries/OWNERS :::: 
+Wed, 26 Jun 2013 04:32:00 +0000
+
+1	0	chrome/common/media_galleries/OWNERS
+
+
+4	0	chrome/common/media_galleries/OWNERS
+:::: chrome/common/metrics/OWNERS :::: 
+Tue, 4 Sep 2012 23:38:04 +0000
+
+1	0	chrome/common/metrics/OWNERS
+:::: chrome/common/metrics/variations/OWNERS :::: 
+Wed, 15 Aug 2012 01:01:16 +0000
+:::: chrome/common/omaha_query_params/OWNERS :::: 
+Sat, 27 Apr 2013 02:22:27 +0000
+
+2	0	chrome/common/omaha_query_params/OWNERS
+:::: chrome/common/safe_browsing/OWNERS :::: 
+Fri, 9 Nov 2012 19:26:28 +0000
+
+0	1	chrome/common/safe_browsing/OWNERS
+
+
+7	7	chrome/common/safe_browsing/OWNERS
+
+
+6	0	chrome/common/safe_browsing/OWNERS
+
+
+8	0	chrome/common/safe_browsing/OWNERS
+:::: chrome/common/translate/OWNERS :::: 
+Thu, 6 Jun 2013 23:34:00 +0000
+
+1	1	chrome/common/translate/OWNERS
+
+
+3	0	chrome/common/translate/OWNERS
+:::: chrome/installer/OWNERS :::: 
+Thu, 29 Mar 2012 03:24:29 +0000
+
+4	0	chrome/installer/OWNERS
+:::: chrome/installer/gcapi_mac/OWNERS :::: 
+Mon, 13 Aug 2012 19:16:03 +0000
+:::: chrome/installer/linux/OWNERS :::: 
+Wed, 5 Jun 2013 21:12:37 +0000
+
+4	0	chrome/installer/linux/OWNERS
+:::: chrome/installer/mac/OWNERS :::: 
+Thu, 14 Apr 2011 20:14:40 +0000
+:::: chrome/nacl/OWNERS :::: 
+Tue, 31 Jul 2012 20:19:50 +0000
+
+0	3	chrome/nacl/OWNERS
+
+
+3	0	chrome/nacl/OWNERS
+:::: chrome/renderer/autofill/OWNERS :::: 
+Fri, 25 May 2012 00:25:38 +0000
+
+3	0	chrome/renderer/autofill/OWNERS
+
+
+1	1	chrome/renderer/autofill/OWNERS
+:::: chrome/renderer/extensions/OWNERS :::: 
+Wed, 14 Sep 2011 21:05:40 +0000
+
+11	8	chrome/renderer/extensions/OWNERS
+
+
+1	0	chrome/renderer/extensions/OWNERS
+
+
+0	1	chrome/renderer/extensions/OWNERS
+
+
+0	1	chrome/renderer/extensions/OWNERS
+
+
+0	1	chrome/renderer/extensions/OWNERS
+
+
+1	0	chrome/renderer/extensions/OWNERS
+
+
+0	1	chrome/renderer/extensions/OWNERS
+:::: chrome/renderer/media/OWNERS :::: 
+Fri, 13 Sep 2013 21:51:47 +0000
+
+11	0	chrome/renderer/media/OWNERS
+:::: chrome/renderer/net/OWNERS :::: 
+Mon, 16 Sep 2013 19:01:02 +0000
+
+3	0	chrome/renderer/net/OWNERS
+:::: chrome/renderer/pepper/OWNERS :::: 
+Wed, 22 Aug 2012 21:46:09 +0000
+
+1	0	chrome/renderer/pepper/OWNERS
+
+
+0	1	chrome/renderer/pepper/OWNERS
+
+
+1	0	chrome/renderer/pepper/OWNERS
+:::: chrome/renderer/plugins/OWNERS :::: 
+Wed, 22 Aug 2012 20:32:42 +0000
+:::: chrome/renderer/prerender/OWNERS :::: 
+Fri, 25 May 2012 21:42:38 +0000
+
+0	1	chrome/renderer/prerender/OWNERS
+:::: chrome/renderer/printing/OWNERS :::: 
+Wed, 23 Jan 2013 02:41:36 +0000
+
+8	0	chrome/renderer/printing/OWNERS
+:::: chrome/renderer/resources/extensions/OWNERS :::: 
+Mon, 6 Aug 2012 09:50:13 +0000
+
+10	8	chrome/renderer/resources/extensions/OWNERS
+
+
+1	0	chrome/renderer/resources/extensions/OWNERS
+
+
+4	5	chrome/renderer/resources/extensions/OWNERS
+
+
+0	1	chrome/renderer/resources/extensions/OWNERS
+
+
+0	1	chrome/renderer/resources/extensions/OWNERS
+
+
+0	1	chrome/renderer/resources/extensions/OWNERS
+
+
+2	0	chrome/renderer/resources/extensions/OWNERS
+
+
+3	0	chrome/renderer/resources/extensions/OWNERS
+
+
+1	0	chrome/renderer/resources/extensions/OWNERS
+
+
+0	1	chrome/renderer/resources/extensions/OWNERS
+
+
+1	0	chrome/renderer/resources/extensions/OWNERS
+
+
+3	0	chrome/renderer/resources/extensions/OWNERS
+:::: chrome/renderer/safe_browsing/OWNERS :::: 
+Wed, 22 Aug 2012 21:46:09 +0000
+:::: chrome/renderer/searchbox/OWNERS :::: 
+Sat, 11 Aug 2012 01:21:07 +0000
+
+1	1	chrome/renderer/searchbox/OWNERS
+
+
+2	1	chrome/renderer/searchbox/OWNERS
+:::: chrome/renderer/spellchecker/OWNERS :::: 
+Wed, 22 Aug 2012 21:46:09 +0000
+
+1	2	chrome/renderer/spellchecker/OWNERS
+:::: chrome/renderer/translate/OWNERS :::: 
+Sat, 13 Apr 2013 08:33:27 +0000
+
+1	0	chrome/renderer/translate/OWNERS
+
+
+2	0	chrome/renderer/translate/OWNERS
+:::: chrome/service/OWNERS :::: 
+Fri, 18 Mar 2011 19:13:08 +0000
+:::: chrome/test/OWNERS :::: 
+Wed, 19 Jan 2011 07:47:56 +0000
+:::: chrome/test/android/OWNERS :::: 
+Fri, 23 Aug 2013 22:51:44 +0000
+
+6	0	chrome/test/android/OWNERS
+:::: chrome/test/automation/OWNERS :::: 
+Thu, 19 Jul 2012 20:45:59 +0000
+
+0	1	chrome/test/automation/OWNERS
+:::: chrome/test/chromedriver/OWNERS :::: 
+Tue, 23 Oct 2012 19:56:46 +0000
+
+1	1	chrome/test/chromedriver/OWNERS
+
+
+2	0	chrome/test/chromedriver/OWNERS
+
+
+2	0	chrome/test/chromedriver/OWNERS
+:::: chrome/test/data/OWNERS :::: 
+Fri, 22 Apr 2011 01:23:24 +0000
+:::: chrome/test/data/extensions/api_test/file_browser/OWNERS :::: 
+Mon, 9 Sep 2013 06:49:41 +0000
+
+4	0	chrome/test/data/extensions/api_test/file_browser/OWNERS
+:::: chrome/test/data/extensions/api_test/file_manager_browsertest/OWNERS :::: 
+Mon, 9 Sep 2013 06:49:41 +0000
+
+4	0	chrome/test/data/extensions/api_test/file_manager_browsertest/OWNERS
+:::: chrome/test/data/extensions/platform_apps/web_view/OWNERS :::: 
+Fri, 16 Aug 2013 16:47:02 +0000
+
+2	0	chrome/test/data/extensions/platform_apps/web_view/OWNERS
+:::: chrome/test/data/nacl/OWNERS :::: 
+Wed, 15 Aug 2012 18:23:37 +0000
+:::: chrome/test/data/translate/OWNERS :::: 
+Fri, 26 Apr 2013 03:42:37 +0000
+
+3	0	chrome/test/data/translate/OWNERS
+:::: chrome/test/ext_auto/OWNERS :::: 
+Mon, 26 Nov 2012 22:21:19 +0000
+
+2	0	chrome/test/ext_auto/OWNERS
+:::: chrome/test/functional/OWNERS :::: 
+Thu, 27 Jan 2011 21:52:59 +0000
+
+0	2	chrome/test/functional/OWNERS
+
+
+3	1	chrome/test/functional/OWNERS
+:::: chrome/test/functional/ispy/OWNERS :::: 
+Tue, 11 Jun 2013 23:12:08 +0000
+
+2	0	chrome/test/functional/ispy/OWNERS
+:::: chrome/test/functional/media/OWNERS :::: 
+Thu, 2 Aug 2012 20:54:48 +0000
+:::: chrome/test/gpu/OWNERS :::: 
+Tue, 25 Oct 2011 23:14:10 +0000
+
+1	1	chrome/test/gpu/OWNERS
+:::: chrome/test/install_test/OWNERS :::: 
+Mon, 8 Oct 2012 21:26:38 +0000
+
+1	0	chrome/test/install_test/OWNERS
+:::: chrome/test/logging/win/OWNERS :::: 
+Mon, 12 Mar 2012 21:42:11 +0000
+:::: chrome/test/mini_installer/OWNERS :::: 
+Tue, 6 Aug 2013 19:02:38 +0000
+
+3	0	chrome/test/mini_installer/OWNERS
+:::: chrome/test/nacl/OWNERS :::: 
+Wed, 15 Aug 2012 18:23:37 +0000
+:::: chrome/test/nacl_test_injection/OWNERS :::: 
+Tue, 21 Aug 2012 01:08:03 +0000
+:::: chrome/test/perf/OWNERS :::: 
+Tue, 18 Sep 2012 22:35:55 +0000
+:::: chrome/test/perf/frame_rate/OWNERS :::: 
+Wed, 30 Nov 2011 17:14:00 +0000
+
+1	1	chrome/test/perf/frame_rate/OWNERS
+:::: chrome/test/perf/rendering/OWNERS :::: 
+Tue, 3 Jan 2012 21:01:59 +0000
+
+1	1	chrome/test/perf/rendering/OWNERS
+:::: chrome/test/ppapi/OWNERS :::: 
+Mon, 9 Jul 2012 19:09:15 +0000
+
+0	1	chrome/test/ppapi/OWNERS
+:::: chrome/test/pyautolib/OWNERS :::: 
+Thu, 27 Jan 2011 21:52:59 +0000
+
+1	2	chrome/test/pyautolib/OWNERS
+
+
+2	1	chrome/test/pyautolib/OWNERS
+:::: chrome/test/telemetry/OWNERS :::: 
+Thu, 11 Apr 2013 23:48:44 +0000
+
+2	0	chrome/test/telemetry/OWNERS
+:::: chrome/tools/build/OWNERS :::: 
+Wed, 15 Aug 2012 16:52:02 +0000
+
+4	0	chrome/tools/build/OWNERS
+:::: chrome/tools/build/mac/OWNERS :::: 
+Thu, 28 Apr 2011 18:49:36 +0000
+:::: chrome/tools/build/win/OWNERS :::: 
+Wed, 15 Aug 2012 16:52:02 +0000
+
+8	0	chrome/tools/build/win/OWNERS
+
+
+4	0	chrome/tools/build/win/OWNERS
+:::: chrome/utility/extensions/OWNERS :::: 
+Thu, 11 Jul 2013 16:14:42 +0000
+
+0	1	chrome/utility/extensions/OWNERS
+
+
+11	0	chrome/utility/extensions/OWNERS
+:::: chrome/utility/importer/OWNERS :::: 
+Tue, 16 Jul 2013 21:57:52 +0000
+
+0	1	chrome/utility/importer/OWNERS
+
+
+12	0	chrome/utility/importer/OWNERS
+:::: chrome/utility/local_discovery/OWNERS :::: 
+Thu, 4 Jul 2013 12:46:35 +0000
+
+3	0	chrome/utility/local_discovery/OWNERS
+:::: chrome/utility/media_galleries/OWNERS :::: 
+Wed, 26 Jun 2013 04:32:00 +0000
+
+1	1	chrome/utility/media_galleries/OWNERS
+
+
+4	0	chrome/utility/media_galleries/OWNERS
+:::: chrome_frame/OWNERS :::: 
+Wed, 6 Jul 2011 05:25:15 +0000
+:::: chromeos/OWNERS :::: 
+Wed, 21 Mar 2012 22:25:05 +0000
+
+3	0	chromeos/OWNERS
+
+
+0	1	chromeos/OWNERS
+:::: chromeos/attestation/OWNERS :::: 
+Fri, 19 Apr 2013 20:34:35 +0000
+
+2	0	chromeos/attestation/OWNERS
+:::: chromeos/audio/OWNERS :::: 
+Thu, 2 May 2013 00:35:40 +0000
+
+3	0	chromeos/audio/OWNERS
+:::: chromeos/dbus/ibus/OWNERS :::: 
+Mon, 24 Sep 2012 18:29:52 +0000
+:::: chromeos/display/OWNERS :::: 
+Tue, 14 Aug 2012 23:29:44 +0000
+
+1	0	chromeos/display/OWNERS
+
+
+2	1	chromeos/display/OWNERS
+:::: chromeos/docs/OWNERS :::: 
+Wed, 19 Dec 2012 19:22:19 +0000
+
+2	0	chromeos/docs/OWNERS
+:::: chromeos/ime/OWNERS :::: 
+Mon, 25 Mar 2013 03:42:46 +0000
+
+2	0	chromeos/ime/OWNERS
+:::: chromeos/network/OWNERS :::: 
+Tue, 15 Jan 2013 00:05:57 +0000
+
+5	1	chromeos/network/OWNERS
+
+
+1	0	chromeos/network/OWNERS
+
+
+2	0	chromeos/network/OWNERS
+:::: chromeos/process_proxy/OWNERS :::: 
+Tue, 12 Mar 2013 20:22:48 +0000
+
+1	0	chromeos/process_proxy/OWNERS
+:::: chromeos/test/data/OWNERS :::: 
+Tue, 5 Mar 2013 12:26:13 +0000
+
+1	0	chromeos/test/data/OWNERS
+:::: chromeos/tools/onc_validator/OWNERS :::: 
+Mon, 28 Jan 2013 14:27:18 +0000
+
+1	0	chromeos/tools/onc_validator/OWNERS
+:::: cloud_print/OWNERS :::: 
+Thu, 5 May 2011 18:04:01 +0000
+
+0	1	cloud_print/OWNERS
+:::: components/OWNERS :::: 
+Thu, 27 Dec 2012 11:44:00 +0000
+
+4	0	components/OWNERS
+
+
+0	4	components/OWNERS
+
+
+4	0	components/OWNERS
+
+
+2	0	components/OWNERS
+
+
+4	0	components/OWNERS
+
+
+7	0	components/OWNERS
+
+
+8	2	components/OWNERS
+
+
+7	0	components/OWNERS
+
+
+3	0	components/OWNERS
+
+
+4	0	components/OWNERS
+
+
+0	4	components/OWNERS
+
+
+3	3	components/OWNERS
+
+
+4	0	components/OWNERS
+
+
+0	1	components/OWNERS
+
+
+3	0	components/OWNERS
+
+
+4	0	components/OWNERS
+
+
+0	4	components/OWNERS
+
+
+4	0	components/OWNERS
+
+
+0	4	components/OWNERS
+
+
+4	0	components/OWNERS
+
+
+0	4	components/OWNERS
+
+
+4	0	components/OWNERS
+
+
+2	2	components/OWNERS
+
+
+5	0	components/OWNERS
+
+
+4	0	components/OWNERS
+
+
+3	0	components/OWNERS
+
+
+1	0	components/OWNERS
+:::: components/auto_login_parser/OWNERS :::: 
+Fri, 18 Jan 2013 21:52:34 +0000
+
+1	0	components/auto_login_parser/OWNERS
+:::: components/autofill/OWNERS :::: 
+Thu, 7 Mar 2013 05:44:43 +0000
+
+3	0	components/autofill/OWNERS
+
+
+1	1	components/autofill/OWNERS
+
+
+5	0	components/autofill/OWNERS
+:::: components/autofill/content/browser/wallet/OWNERS :::: 
+Mon, 10 Jun 2013 19:02:01 +0000
+
+1	0	components/autofill/content/browser/wallet/OWNERS
+:::: components/autofill/core/common/OWNERS :::: 
+Tue, 18 Jun 2013 14:52:13 +0000
+
+9	0	components/autofill/core/common/OWNERS
+:::: components/breakpad/OWNERS :::: 
+Tue, 18 Jun 2013 12:21:19 +0000
+
+4	0	components/breakpad/OWNERS
+
+
+0	3	components/breakpad/OWNERS
+
+
+3	0	components/breakpad/OWNERS
+:::: components/browser_context_keyed_service/OWNERS :::: 
+Wed, 29 May 2013 19:55:29 +0000
+
+4	0	components/browser_context_keyed_service/OWNERS
+:::: components/dom_distiller/OWNERS :::: 
+Tue, 17 Sep 2013 04:01:11 +0000
+
+3	0	components/dom_distiller/OWNERS
+
+
+0	3	components/dom_distiller/OWNERS
+
+
+3	0	components/dom_distiller/OWNERS
+:::: components/json_schema/OWNERS :::: 
+Tue, 13 Aug 2013 22:55:07 +0000
+
+5	0	components/json_schema/OWNERS
+:::: components/nacl/OWNERS :::: 
+Fri, 21 Jun 2013 23:17:52 +0000
+
+0	2	components/nacl/OWNERS
+
+
+3	0	components/nacl/OWNERS
+
+
+6	0	components/nacl/OWNERS
+
+
+0	6	components/nacl/OWNERS
+
+
+6	0	components/nacl/OWNERS
+:::: components/nacl/common/OWNERS :::: 
+Tue, 23 Jul 2013 20:24:00 +0000
+
+0	1	components/nacl/common/OWNERS
+
+
+10	0	components/nacl/common/OWNERS
+:::: components/nacl/loader/OWNERS :::: 
+Wed, 31 Jul 2013 21:57:37 +0000
+
+2	0	components/nacl/loader/OWNERS
+:::: components/navigation_interception/OWNERS :::: 
+Wed, 23 Jan 2013 03:55:16 +0000
+
+0	1	components/navigation_interception/OWNERS
+
+
+3	0	components/navigation_interception/OWNERS
+:::: components/policy/OWNERS :::: 
+Wed, 14 Aug 2013 14:41:10 +0000
+
+6	0	components/policy/OWNERS
+:::: components/sessions/OWNERS :::: 
+Wed, 1 May 2013 21:28:01 +0000
+
+2	0	components/sessions/OWNERS
+:::: components/startup_metric_utils/OWNERS :::: 
+Tue, 3 Sep 2013 12:09:17 +0000
+
+1	0	components/startup_metric_utils/OWNERS
+:::: components/test/data/web_database/OWNERS :::: 
+Tue, 30 Jul 2013 23:03:15 +0000
+
+5	0	components/test/data/web_database/OWNERS
+:::: components/tracing/OWNERS :::: 
+Fri, 28 Dec 2012 01:14:23 +0000
+
+0	1	components/tracing/OWNERS
+
+
+7	7	components/tracing/OWNERS
+
+
+1	0	components/tracing/OWNERS
+
+
+9	0	components/tracing/OWNERS
+
+
+2	0	components/tracing/OWNERS
+:::: components/user_prefs/OWNERS :::: 
+Wed, 6 Mar 2013 00:42:44 +0000
+
+4	0	components/user_prefs/OWNERS
+:::: components/variations/OWNERS :::: 
+Thu, 29 Aug 2013 18:03:22 +0000
+
+3	0	components/variations/OWNERS
+:::: components/visitedlink/OWNERS :::: 
+Wed, 23 Jan 2013 00:35:14 +0000
+
+2	0	components/visitedlink/OWNERS
+:::: components/visitedlink/common/OWNERS :::: 
+Wed, 23 Jan 2013 00:35:14 +0000
+
+0	1	components/visitedlink/common/OWNERS
+
+
+7	7	components/visitedlink/common/OWNERS
+
+
+1	0	components/visitedlink/common/OWNERS
+
+
+8	0	components/visitedlink/common/OWNERS
+:::: components/web_contents_delegate_android/OWNERS :::: 
+Sat, 12 Jan 2013 23:04:31 +0000
+
+1	0	components/web_contents_delegate_android/OWNERS
+:::: components/web_modal/OWNERS :::: 
+Tue, 20 Aug 2013 18:12:17 +0000
+
+2	0	components/web_modal/OWNERS
+
+
+0	2	components/web_modal/OWNERS
+
+
+2	0	components/web_modal/OWNERS
+:::: components/webdata/OWNERS :::: 
+Sat, 13 Apr 2013 12:18:41 +0000
+
+1	1	components/webdata/OWNERS
+
+
+5	0	components/webdata/OWNERS
+:::: components/webdata/encryptor/OWNERS :::: 
+Sun, 24 Mar 2013 20:57:36 +0000
+
+0	1	components/webdata/encryptor/OWNERS
+
+
+2	0	components/webdata/encryptor/OWNERS
+:::: content/OWNERS :::: 
+Fri, 18 Feb 2011 08:17:44 +0000
+
+0	1	content/OWNERS
+
+
+1	0	content/OWNERS
+
+
+0	1	content/OWNERS
+
+
+0	1	content/OWNERS
+
+
+3	0	content/OWNERS
+
+
+0	3	content/OWNERS
+
+
+0	1	content/OWNERS
+
+
+2	0	content/OWNERS
+
+
+4	0	content/OWNERS
+
+
+5	0	content/OWNERS
+
+
+1	0	content/OWNERS
+
+
+1	0	content/OWNERS
+
+
+3	0	content/OWNERS
+
+
+0	3	content/OWNERS
+
+
+3	0	content/OWNERS
+
+
+2	0	content/OWNERS
+
+
+0	2	content/OWNERS
+:::: content/app/OWNERS :::: 
+Sat, 1 Oct 2011 01:24:34 +0000
+:::: content/app/android/OWNERS :::: 
+Fri, 1 Jun 2012 18:23:18 +0000
+
+1	1	content/app/android/OWNERS
+
+
+0	1	content/app/android/OWNERS
+:::: content/browser/OWNERS :::: 
+Thu, 24 Feb 2011 23:37:35 +0000
+
+6	3	content/browser/OWNERS
+
+
+4	0	content/browser/OWNERS
+
+
+0	7	content/browser/OWNERS
+
+
+1	0	content/browser/OWNERS
+
+
+3	0	content/browser/OWNERS
+
+
+7	0	content/browser/OWNERS
+:::: content/browser/accessibility/OWNERS :::: 
+Thu, 23 Jun 2011 21:07:33 +0000
+:::: content/browser/android/OWNERS :::: 
+Wed, 25 Apr 2012 03:18:46 +0000
+
+0	4	content/browser/android/OWNERS
+
+
+1	0	content/browser/android/OWNERS
+
+
+0	1	content/browser/android/OWNERS
+
+
+3	1	content/browser/android/OWNERS
+
+
+0	1	content/browser/android/OWNERS
+:::: content/browser/appcache/OWNERS :::: 
+Wed, 11 May 2011 19:07:18 +0000
+:::: content/browser/aura/OWNERS :::: 
+Mon, 29 Jul 2013 20:32:39 +0000
+
+1	0	content/browser/aura/OWNERS
+
+
+3	0	content/browser/aura/OWNERS
+:::: content/browser/browser_plugin/OWNERS :::: 
+Fri, 30 Nov 2012 03:34:54 +0000
+
+1	0	content/browser/browser_plugin/OWNERS
+:::: content/browser/device_orientation/OWNERS :::: 
+Wed, 30 Mar 2011 09:05:53 +0000
+
+1	0	content/browser/device_orientation/OWNERS
+:::: content/browser/devtools/OWNERS :::: 
+Wed, 19 Dec 2012 10:12:13 +0000
+
+2	0	content/browser/devtools/OWNERS
+
+
+0	2	content/browser/devtools/OWNERS
+
+
+2	0	content/browser/devtools/OWNERS
+:::: content/browser/dom_storage/OWNERS :::: 
+Thu, 15 Mar 2012 23:30:47 +0000
+
+1	3	content/browser/dom_storage/OWNERS
+:::: content/browser/download/OWNERS :::: 
+Thu, 14 Jul 2011 23:41:28 +0000
+:::: content/browser/fileapi/OWNERS :::: 
+Thu, 1 Mar 2012 19:08:20 +0000
+:::: content/browser/gamepad/OWNERS :::: 
+Tue, 26 Jun 2012 23:12:09 +0000
+:::: content/browser/geolocation/OWNERS :::: 
+Wed, 13 Apr 2011 14:25:37 +0000
+
+4	2	content/browser/geolocation/OWNERS
+
+
+5	1	content/browser/geolocation/OWNERS
+
+
+0	1	content/browser/geolocation/OWNERS
+:::: content/browser/gpu/OWNERS :::: 
+Mon, 9 May 2011 20:09:24 +0000
+
+0	1	content/browser/gpu/OWNERS
+
+
+0	1	content/browser/gpu/OWNERS
+:::: content/browser/indexed_db/OWNERS :::: 
+Tue, 20 Dec 2011 22:04:28 +0000
+
+4	0	content/browser/indexed_db/OWNERS
+:::: content/browser/loader/OWNERS :::: 
+Fri, 8 Mar 2013 09:39:14 +0000
+
+1	0	content/browser/loader/OWNERS
+:::: content/browser/media/OWNERS :::: 
+Mon, 14 Jan 2013 10:57:25 +0000
+
+11	0	content/browser/media/OWNERS
+:::: content/browser/media/android/OWNERS :::: 
+Fri, 13 Sep 2013 22:06:55 +0000
+
+1	0	content/browser/media/android/OWNERS
+:::: content/browser/net/OWNERS :::: 
+Tue, 12 Jul 2011 19:18:38 +0000
+
+1	0	content/browser/net/OWNERS
+:::: content/browser/renderer_host/OWNERS :::: 
+Thu, 17 May 2012 16:20:02 +0000
+
+1	0	content/browser/renderer_host/OWNERS
+
+
+2	0	content/browser/renderer_host/OWNERS
+
+
+2	2	content/browser/renderer_host/OWNERS
+
+
+18	16	content/browser/renderer_host/OWNERS
+
+
+3	0	content/browser/renderer_host/OWNERS
+
+
+4	0	content/browser/renderer_host/OWNERS
+:::: content/browser/renderer_host/input/OWNERS :::: 
+Fri, 19 Jul 2013 23:10:38 +0000
+
+2	1	content/browser/renderer_host/input/OWNERS
+
+
+2	0	content/browser/renderer_host/input/OWNERS
+
+
+0	2	content/browser/renderer_host/input/OWNERS
+
+
+2	0	content/browser/renderer_host/input/OWNERS
+:::: content/browser/renderer_host/java/OWNERS :::: 
+Fri, 6 Jan 2012 18:42:39 +0000
+:::: content/browser/renderer_host/media/OWNERS :::: 
+Tue, 14 Jun 2011 22:07:34 +0000
+
+2	2	content/browser/renderer_host/media/OWNERS
+
+
+2	2	content/browser/renderer_host/media/OWNERS
+
+
+2	2	content/browser/renderer_host/media/OWNERS
+
+
+4	0	content/browser/renderer_host/media/OWNERS
+
+
+5	1	content/browser/renderer_host/media/OWNERS
+
+
+1	0	content/browser/renderer_host/media/OWNERS
+
+
+6	0	content/browser/renderer_host/media/OWNERS
+
+
+1	0	content/browser/renderer_host/media/OWNERS
+
+
+0	1	content/browser/renderer_host/media/OWNERS
+:::: content/browser/renderer_host/p2p/OWNERS :::: 
+Tue, 12 Apr 2011 21:39:19 +0000
+
+2	1	content/browser/renderer_host/p2p/OWNERS
+:::: content/browser/renderer_host/pepper/OWNERS :::: 
+Thu, 29 Nov 2012 20:39:00 +0000
+
+1	0	content/browser/renderer_host/pepper/OWNERS
+
+
+1	0	content/browser/renderer_host/pepper/OWNERS
+
+
+2	0	content/browser/renderer_host/pepper/OWNERS
+:::: content/browser/resources/gpu/OWNERS :::: 
+Thu, 31 Jan 2013 18:13:18 +0000
+
+1	0	content/browser/resources/gpu/OWNERS
+:::: content/browser/resources/indexed_db/OWNERS :::: 
+Mon, 8 Apr 2013 22:15:22 +0000
+
+4	0	content/browser/resources/indexed_db/OWNERS
+:::: content/browser/resources/media/OWNERS :::: 
+Wed, 30 Jan 2013 19:13:57 +0000
+
+11	0	content/browser/resources/media/OWNERS
+:::: content/browser/service_worker/OWNERS :::: 
+Sat, 21 Sep 2013 16:12:49 +0000
+
+3	0	content/browser/service_worker/OWNERS
+:::: content/browser/speech/OWNERS :::: 
+Sat, 26 Feb 2011 18:46:15 +0000
+
+1	0	content/browser/speech/OWNERS
+
+
+2	0	content/browser/speech/OWNERS
+
+
+0	1	content/browser/speech/OWNERS
+:::: content/browser/ssl/OWNERS :::: 
+Tue, 14 Jun 2011 19:19:55 +0000
+:::: content/browser/streams/OWNERS :::: 
+Wed, 20 Mar 2013 17:23:22 +0000
+
+1	0	content/browser/streams/OWNERS
+:::: content/browser/tracing/OWNERS :::: 
+Fri, 1 Feb 2013 03:32:01 +0000
+
+1	0	content/browser/tracing/OWNERS
+
+
+1	0	content/browser/tracing/OWNERS
+
+
+0	1	content/browser/tracing/OWNERS
+
+
+1	0	content/browser/tracing/OWNERS
+:::: content/browser/web_contents/OWNERS :::: 
+Thu, 17 May 2012 16:20:02 +0000
+
+2	0	content/browser/web_contents/OWNERS
+
+
+2	2	content/browser/web_contents/OWNERS
+:::: content/browser/webui/OWNERS :::: 
+Tue, 3 May 2011 17:31:34 +0000
+:::: content/browser/worker_host/OWNERS :::: 
+Tue, 31 May 2011 16:31:44 +0000
+:::: content/browser/worker_host/test/OWNERS :::: 
+Thu, 29 Mar 2012 17:47:14 +0000
+:::: content/browser/zygote_host/OWNERS :::: 
+Tue, 24 Jul 2012 01:31:31 +0000
+:::: content/child/OWNERS :::: 
+Fri, 21 Jun 2013 00:21:00 +0000
+
+1	0	content/child/OWNERS
+:::: content/child/appcache/OWNERS :::: 
+Mon, 12 Aug 2013 05:50:50 +0000
+
+1	0	content/child/appcache/OWNERS
+:::: content/child/fileapi/OWNERS :::: 
+Tue, 4 Jun 2013 12:56:01 +0000
+
+0	1	content/child/fileapi/OWNERS
+
+
+8	8	content/child/fileapi/OWNERS
+
+
+14	0	content/child/fileapi/OWNERS
+:::: content/child/indexed_db/OWNERS :::: 
+Tue, 4 Jun 2013 12:56:01 +0000
+
+8	8	content/child/indexed_db/OWNERS
+
+
+15	0	content/child/indexed_db/OWNERS
+:::: content/child/npapi/OWNERS :::: 
+Fri, 19 Jul 2013 01:13:47 +0000
+
+2	0	content/child/npapi/OWNERS
+:::: content/common/OWNERS :::: 
+Tue, 31 May 2011 16:31:44 +0000
+
+0	1	content/common/OWNERS
+
+
+3	0	content/common/OWNERS
+
+
+8	8	content/common/OWNERS
+
+
+2	0	content/common/OWNERS
+
+
+1	0	content/common/OWNERS
+
+
+3	3	content/common/OWNERS
+
+
+1	0	content/common/OWNERS
+
+
+4	0	content/common/OWNERS
+
+
+4	0	content/common/OWNERS
+
+
+4	3	content/common/OWNERS
+
+
+15	6	content/common/OWNERS
+:::: content/common/android/OWNERS :::: 
+Fri, 13 Jul 2012 18:49:07 +0000
+
+0	1	content/common/android/OWNERS
+
+
+0	1	content/common/android/OWNERS
+
+
+0	1	content/common/android/OWNERS
+:::: content/common/browser_plugin/OWNERS :::: 
+Tue, 5 Mar 2013 07:37:42 +0000
+
+0	1	content/common/browser_plugin/OWNERS
+
+
+1	0	content/common/browser_plugin/OWNERS
+
+
+7	7	content/common/browser_plugin/OWNERS
+
+
+11	0	content/common/browser_plugin/OWNERS
+:::: content/common/device_orientation/OWNERS :::: 
+Mon, 5 Aug 2013 21:17:14 +0000
+
+1	0	content/common/device_orientation/OWNERS
+:::: content/common/dom_storage/OWNERS :::: 
+Wed, 7 Aug 2013 16:59:41 +0000
+
+2	0	content/common/dom_storage/OWNERS
+:::: content/common/fileapi/OWNERS :::: 
+Thu, 1 Mar 2012 19:08:20 +0000
+
+0	1	content/common/fileapi/OWNERS
+
+
+8	8	content/common/fileapi/OWNERS
+
+
+1	0	content/common/fileapi/OWNERS
+
+
+9	0	content/common/fileapi/OWNERS
+:::: content/common/gpu/OWNERS :::: 
+Fri, 8 Apr 2011 01:48:48 +0000
+
+14	13	content/common/gpu/OWNERS
+
+
+0	1	content/common/gpu/OWNERS
+
+
+0	1	content/common/gpu/OWNERS
+
+
+8	8	content/common/gpu/OWNERS
+
+
+1	0	content/common/gpu/OWNERS
+
+
+9	0	content/common/gpu/OWNERS
+:::: content/common/gpu/media/OWNERS :::: 
+Thu, 16 Jun 2011 20:29:01 +0000
+
+0	1	content/common/gpu/media/OWNERS
+:::: content/common/indexed_db/OWNERS :::: 
+Tue, 20 Dec 2011 22:04:28 +0000
+
+1	0	content/common/indexed_db/OWNERS
+
+
+8	8	content/common/indexed_db/OWNERS
+
+
+1	0	content/common/indexed_db/OWNERS
+
+
+1	0	content/common/indexed_db/OWNERS
+
+
+9	0	content/common/indexed_db/OWNERS
+:::: content/common/input/OWNERS :::: 
+Sat, 7 Sep 2013 07:07:52 +0000
+
+2	0	content/common/input/OWNERS
+:::: content/common/media/OWNERS :::: 
+Fri, 17 Jun 2011 17:20:25 +0000
+
+8	8	content/common/media/OWNERS
+
+
+1	0	content/common/media/OWNERS
+
+
+9	0	content/common/media/OWNERS
+
+
+0	1	content/common/media/OWNERS
+:::: content/common/net/OWNERS :::: 
+Tue, 13 Sep 2011 01:05:48 +0000
+:::: content/gpu/OWNERS :::: 
+Mon, 21 Mar 2011 22:33:46 +0000
+
+0	1	content/gpu/OWNERS
+:::: content/plugin/OWNERS :::: 
+Tue, 31 May 2011 16:31:44 +0000
+:::: content/port/OWNERS :::: 
+Thu, 16 Feb 2012 15:02:04 +0000
+:::: content/ppapi_plugin/OWNERS :::: 
+Tue, 31 May 2011 16:31:44 +0000
+
+4	0	content/ppapi_plugin/OWNERS
+:::: content/public/OWNERS :::: 
+Sat, 1 Oct 2011 01:24:34 +0000
+:::: content/public/android/OWNERS :::: 
+Wed, 9 May 2012 12:12:09 +0000
+
+0	2	content/public/android/OWNERS
+
+
+1	0	content/public/android/OWNERS
+
+
+0	1	content/public/android/OWNERS
+
+
+1	0	content/public/android/OWNERS
+:::: content/public/android/java/resource_map/OWNERS :::: 
+Wed, 10 Jul 2013 14:55:33 +0000
+
+13	0	content/public/android/java/resource_map/OWNERS
+:::: content/public/browser/android/OWNERS :::: 
+Mon, 24 Sep 2012 23:34:51 +0000
+
+0	2	content/public/browser/android/OWNERS
+:::: content/public/common/OWNERS :::: 
+Thu, 10 Jan 2013 03:59:23 +0000
+
+2	0	content/public/common/OWNERS
+:::: content/public/renderer/android/OWNERS :::: 
+Wed, 1 May 2013 18:18:21 +0000
+
+6	0	content/public/renderer/android/OWNERS
+
+
+0	6	content/public/renderer/android/OWNERS
+
+
+6	0	content/public/renderer/android/OWNERS
+:::: content/public/test/OWNERS :::: 
+Sat, 2 Jun 2012 17:19:18 +0000
+
+1	2	content/public/test/OWNERS
+
+
+2	0	content/public/test/OWNERS
+:::: content/public/test/android/OWNERS :::: 
+Tue, 25 Sep 2012 17:37:38 +0000
+
+0	2	content/public/test/android/OWNERS
+
+
+0	1	content/public/test/android/OWNERS
+:::: content/renderer/OWNERS :::: 
+Thu, 28 Apr 2011 20:19:46 +0000
+
+1	1	content/renderer/OWNERS
+
+
+1	0	content/renderer/OWNERS
+
+
+4	0	content/renderer/OWNERS
+:::: content/renderer/accessibility/OWNERS :::: 
+Fri, 8 Feb 2013 07:23:41 +0000
+
+2	0	content/renderer/accessibility/OWNERS
+:::: content/renderer/android/OWNERS :::: 
+Fri, 13 Jul 2012 18:49:07 +0000
+
+0	1	content/renderer/android/OWNERS
+
+
+0	1	content/renderer/android/OWNERS
+
+
+0	1	content/renderer/android/OWNERS
+:::: content/renderer/browser_plugin/OWNERS :::: 
+Fri, 30 Nov 2012 03:34:54 +0000
+
+1	0	content/renderer/browser_plugin/OWNERS
+:::: content/renderer/device_orientation/OWNERS :::: 
+Thu, 11 Jul 2013 08:00:57 +0000
+
+3	0	content/renderer/device_orientation/OWNERS
+:::: content/renderer/devtools/OWNERS :::: 
+Wed, 19 Dec 2012 10:12:13 +0000
+
+2	0	content/renderer/devtools/OWNERS
+
+
+0	2	content/renderer/devtools/OWNERS
+
+
+2	0	content/renderer/devtools/OWNERS
+:::: content/renderer/dom_storage/OWNERS :::: 
+Thu, 10 May 2012 00:04:10 +0000
+
+6	1	content/renderer/dom_storage/OWNERS
+
+
+1	0	content/renderer/dom_storage/OWNERS
+:::: content/renderer/gpu/OWNERS :::: 
+Wed, 25 May 2011 21:26:40 +0000
+:::: content/renderer/java/OWNERS :::: 
+Fri, 6 Jan 2012 18:42:39 +0000
+:::: content/renderer/media/OWNERS :::: 
+Wed, 11 May 2011 20:11:27 +0000
+
+1	0	content/renderer/media/OWNERS
+
+
+0	1	content/renderer/media/OWNERS
+:::: content/renderer/media/android/OWNERS :::: 
+Sat, 22 Jun 2013 14:32:44 +0000
+
+0	1	content/renderer/media/android/OWNERS
+
+
+3	0	content/renderer/media/android/OWNERS
+:::: content/renderer/p2p/OWNERS :::: 
+Thu, 31 Mar 2011 20:37:06 +0000
+:::: content/renderer/pepper/OWNERS :::: 
+Thu, 29 Nov 2012 20:39:00 +0000
+
+1	0	content/renderer/pepper/OWNERS
+
+
+3	0	content/renderer/pepper/OWNERS
+
+
+1	0	content/renderer/pepper/OWNERS
+
+
+2	0	content/renderer/pepper/OWNERS
+:::: content/shell/OWNERS :::: 
+Fri, 13 Jul 2012 21:26:22 +0000
+
+0	9	content/shell/OWNERS
+
+
+9	0	content/shell/OWNERS
+
+
+1	0	content/shell/OWNERS
+:::: content/shell/android/OWNERS :::: 
+Fri, 30 Mar 2012 11:44:06 +0000
+
+0	1	content/shell/android/OWNERS
+
+
+0	1	content/shell/android/OWNERS
+
+
+0	1	content/shell/android/OWNERS
+:::: content/test/OWNERS :::: 
+Fri, 30 Mar 2012 17:18:20 +0000
+
+1	2	content/test/OWNERS
+
+
+0	1	content/test/OWNERS
+
+
+1	0	content/test/OWNERS
+
+
+2	0	content/test/OWNERS
+:::: content/test/data/OWNERS :::: 
+Fri, 30 Mar 2012 17:18:20 +0000
+:::: content/test/data/accessibility/OWNERS :::: 
+Thu, 29 Mar 2012 05:09:37 +0000
+:::: content/test/data/media/OWNERS :::: 
+Mon, 14 Jan 2013 10:57:25 +0000
+
+12	0	content/test/data/media/OWNERS
+:::: content/test/gpu/OWNERS :::: 
+Wed, 25 Jan 2012 20:02:51 +0000
+
+1	1	content/test/gpu/OWNERS
+:::: content/test/net/OWNERS :::: 
+Thu, 15 Mar 2012 15:06:18 +0000
+:::: content/utility/OWNERS :::: 
+Tue, 14 Jun 2011 19:19:55 +0000
+
+4	0	content/utility/OWNERS
+:::: content/worker/OWNERS :::: 
+Tue, 31 May 2011 16:31:44 +0000
+:::: content/zygote/OWNERS :::: 
+Fri, 1 Jun 2012 00:25:42 +0000
+:::: courgette/OWNERS :::: 
+Tue, 13 Mar 2012 01:11:27 +0000
+:::: crypto/OWNERS :::: 
+Thu, 14 Apr 2011 17:37:14 +0000
+
+0	1	crypto/OWNERS
+:::: dbus/OWNERS :::: 
+Tue, 14 Feb 2012 03:14:03 +0000
+
+0	1	dbus/OWNERS
+:::: device/OWNERS :::: 
+Mon, 22 Oct 2012 18:25:24 +0000
+
+1	1	device/OWNERS
+
+
+3	0	device/OWNERS
+:::: device/bluetooth/OWNERS :::: 
+Thu, 18 Oct 2012 22:15:23 +0000
+
+1	1	device/bluetooth/OWNERS
+
+
+2	0	device/bluetooth/OWNERS
+:::: device/media_transfer_protocol/OWNERS :::: 
+Fri, 4 Jan 2013 01:23:03 +0000
+
+2	0	device/media_transfer_protocol/OWNERS
+
+
+0	2	device/media_transfer_protocol/OWNERS
+
+
+2	0	device/media_transfer_protocol/OWNERS
+:::: device/usb/OWNERS :::: 
+Wed, 5 Dec 2012 22:41:18 +0000
+
+1	0	device/usb/OWNERS
+
+
+2	0	device/usb/OWNERS
+:::: extensions/OWNERS :::: 
+Thu, 14 Feb 2013 16:22:20 +0000
+
+9	6	extensions/OWNERS
+
+
+1	0	extensions/OWNERS
+
+
+0	1	extensions/OWNERS
+
+
+0	1	extensions/OWNERS
+
+
+0	1	extensions/OWNERS
+
+
+13	0	extensions/OWNERS
+:::: extensions/common/matcher/OWNERS :::: 
+Mon, 4 Feb 2013 23:15:11 +0000
+
+1	0	extensions/common/matcher/OWNERS
+:::: google_apis/OWNERS :::: 
+Fri, 7 Sep 2012 04:26:37 +0000
+
+0	1	google_apis/OWNERS
+
+
+0	2	google_apis/OWNERS
+:::: google_apis/cup/OWNERS :::: 
+Fri, 7 Jun 2013 08:32:30 +0000
+
+1	0	google_apis/cup/OWNERS
+:::: google_apis/gaia/OWNERS :::: 
+Fri, 7 Sep 2012 04:26:37 +0000
+:::: google_update/OWNERS :::: 
+Tue, 13 Mar 2012 01:06:20 +0000
+:::: gpu/OWNERS :::: 
+Sun, 3 Jul 2011 00:43:43 +0000
+
+1	0	gpu/OWNERS
+
+
+0	1	gpu/OWNERS
+:::: gpu/command_buffer/OWNERS :::: 
+Mon, 26 Aug 2013 20:20:19 +0000
+
+5	0	gpu/command_buffer/OWNERS
+:::: gpu/config/OWNERS :::: 
+Tue, 21 May 2013 22:59:42 +0000
+
+0	1	gpu/config/OWNERS
+
+
+5	0	gpu/config/OWNERS
+
+
+0	5	gpu/config/OWNERS
+
+
+5	0	gpu/config/OWNERS
+:::: ios/OWNERS :::: 
+Thu, 30 May 2013 15:09:32 +0000
+
+3	0	ios/OWNERS
+:::: ipc/OWNERS :::: 
+Sun, 3 Jul 2011 20:20:23 +0000
+
+1	0	ipc/OWNERS
+
+
+1	0	ipc/OWNERS
+
+
+9	0	ipc/OWNERS
+:::: jingle/OWNERS :::: 
+Fri, 18 Mar 2011 22:20:32 +0000
+:::: media/OWNERS :::: 
+Fri, 17 Jun 2011 19:01:36 +0000
+
+3	0	media/OWNERS
+
+
+0	1	media/OWNERS
+:::: media/audio/OWNERS :::: 
+Tue, 24 Jan 2012 01:45:18 +0000
+
+0	3	media/audio/OWNERS
+
+
+3	0	media/audio/OWNERS
+
+
+6	0	media/audio/OWNERS
+
+
+4	0	media/audio/OWNERS
+:::: media/base/android/OWNERS :::: 
+Thu, 19 Apr 2012 21:02:09 +0000
+
+0	1	media/base/android/OWNERS
+
+
+1	1	media/base/android/OWNERS
+
+
+0	1	media/base/android/OWNERS
+:::: media/cast/OWNERS :::: 
+Wed, 21 Aug 2013 20:24:25 +0000
+
+1	0	media/cast/OWNERS
+
+
+1	0	media/cast/OWNERS
+:::: media/video/capture/OWNERS :::: 
+Fri, 21 Dec 2012 19:42:12 +0000
+
+1	1	media/video/capture/OWNERS
+
+
+3	0	media/video/capture/OWNERS
+:::: mojo/OWNERS :::: 
+Tue, 24 Sep 2013 22:11:09 +0000
+
+7	0	mojo/OWNERS
+:::: native_client_sdk/OWNERS :::: 
+Fri, 31 Aug 2012 22:51:20 +0000
+
+1	0	native_client_sdk/OWNERS
+
+
+1	0	native_client_sdk/OWNERS
+
+
+0	1	native_client_sdk/OWNERS
+:::: native_client_sdk/src/doc/OWNERS :::: 
+Wed, 28 Aug 2013 18:17:59 +0000
+
+1	0	native_client_sdk/src/doc/OWNERS
+
+
+2	0	native_client_sdk/src/doc/OWNERS
+:::: net/OWNERS :::: 
+Thu, 20 Jan 2011 21:42:53 +0000
+
+1	0	net/OWNERS
+
+
+3	0	net/OWNERS
+
+
+1	0	net/OWNERS
+
+
+0	1	net/OWNERS
+:::: net/android/OWNERS :::: 
+Fri, 20 Apr 2012 03:24:07 +0000
+
+0	1	net/android/OWNERS
+
+
+3	1	net/android/OWNERS
+
+
+0	1	net/android/OWNERS
+:::: net/base/OWNERS :::: 
+Fri, 24 May 2013 21:27:01 +0000
+
+2	0	net/base/OWNERS
+:::: net/base/registry_controlled_domains/OWNERS :::: 
+Fri, 20 Jul 2012 11:31:25 +0000
+:::: net/cookies/OWNERS :::: 
+Thu, 15 Mar 2012 09:29:58 +0000
+:::: net/data/websocket/OWNERS :::: 
+Tue, 16 Oct 2012 07:48:14 +0000
+
+3	0	net/data/websocket/OWNERS
+:::: net/disk_cache/simple/OWNERS :::: 
+Thu, 11 Jul 2013 18:40:03 +0000
+
+2	0	net/disk_cache/simple/OWNERS
+:::: net/ftp/OWNERS :::: 
+Thu, 20 Jan 2011 18:59:30 +0000
+:::: net/socket_stream/OWNERS :::: 
+Wed, 13 Apr 2011 13:42:17 +0000
+
+6	2	net/socket_stream/OWNERS
+
+
+0	1	net/socket_stream/OWNERS
+
+
+3	0	net/socket_stream/OWNERS
+:::: net/test/OWNERS :::: 
+Tue, 22 Mar 2011 18:46:46 +0000
+:::: net/test/android/OWNERS :::: 
+Wed, 7 Nov 2012 19:40:41 +0000
+
+0	1	net/test/android/OWNERS
+
+
+4	0	net/test/android/OWNERS
+:::: net/test/embedded_test_server/OWNERS :::: 
+Tue, 7 May 2013 17:50:26 +0000
+
+2	0	net/test/embedded_test_server/OWNERS
+:::: net/tools/testserver/OWNERS :::: 
+Wed, 29 Jun 2011 00:32:05 +0000
+
+0	5	net/tools/testserver/OWNERS
+
+
+2	8	net/tools/testserver/OWNERS
+:::: net/tools/tld_cleanup/OWNERS :::: 
+Fri, 26 Apr 2013 23:32:33 +0000
+
+1	0	net/tools/tld_cleanup/OWNERS
+:::: net/websockets/OWNERS :::: 
+Wed, 13 Apr 2011 13:42:17 +0000
+
+6	2	net/websockets/OWNERS
+
+
+0	1	net/websockets/OWNERS
+
+
+2	1	net/websockets/OWNERS
+
+
+2	0	net/websockets/OWNERS
+:::: ppapi/OWNERS :::: 
+Wed, 29 Jun 2011 21:24:44 +0000
+
+1	0	ppapi/OWNERS
+
+
+0	1	ppapi/OWNERS
+
+
+1	0	ppapi/OWNERS
+
+
+0	1	ppapi/OWNERS
+:::: ppapi/api/OWNERS :::: 
+Wed, 29 Jun 2011 21:24:44 +0000
+
+2	0	ppapi/api/OWNERS
+:::: ppapi/examples/video_decode/OWNERS :::: 
+Wed, 7 Mar 2012 23:23:15 +0000
+:::: ppapi/generators/OWNERS :::: 
+Wed, 29 Jun 2011 21:24:44 +0000
+
+1	0	ppapi/generators/OWNERS
+
+
+2	0	ppapi/generators/OWNERS
+:::: ppapi/native_client/OWNERS :::: 
+Thu, 25 Aug 2011 21:04:40 +0000
+:::: ppapi/proxy/OWNERS :::: 
+Wed, 29 Jun 2011 21:24:44 +0000
+
+0	1	ppapi/proxy/OWNERS
+
+
+7	7	ppapi/proxy/OWNERS
+
+
+1	0	ppapi/proxy/OWNERS
+
+
+9	0	ppapi/proxy/OWNERS
+:::: printing/OWNERS :::: 
+Tue, 12 Jul 2011 23:28:26 +0000
+
+1	0	printing/OWNERS
+
+
+0	1	printing/OWNERS
+:::: remoting/OWNERS :::: 
+Mon, 28 Mar 2011 17:27:25 +0000
+
+1	1	remoting/OWNERS
+
+
+0	1	remoting/OWNERS
+:::: remoting/android/OWNERS :::: 
+Fri, 19 Jul 2013 01:49:09 +0000
+
+3	0	remoting/android/OWNERS
+:::: remoting/client/jni/OWNERS :::: 
+Thu, 11 Jul 2013 11:26:50 +0000
+
+3	0	remoting/client/jni/OWNERS
+:::: remoting/host/OWNERS :::: 
+Fri, 9 Nov 2012 19:40:25 +0000
+
+0	1	remoting/host/OWNERS
+
+
+7	7	remoting/host/OWNERS
+
+
+1	0	remoting/host/OWNERS
+
+
+8	0	remoting/host/OWNERS
+:::: rlz/OWNERS :::: 
+Fri, 22 Jun 2012 20:36:54 +0000
+
+0	1	rlz/OWNERS
+:::: sandbox/OWNERS :::: 
+Tue, 13 Mar 2012 23:05:23 +0000
+
+0	2	sandbox/OWNERS
+:::: sdch/OWNERS :::: 
+Tue, 13 Mar 2012 01:07:13 +0000
+:::: skia/OWNERS :::: 
+Thu, 7 Jul 2011 15:33:27 +0000
+
+1	1	skia/OWNERS
+
+
+16	6	skia/OWNERS
+
+
+1	0	skia/OWNERS
+
+
+4	0	skia/OWNERS
+:::: sql/OWNERS :::: 
+Tue, 13 Mar 2012 01:08:20 +0000
+:::: sync/OWNERS :::: 
+Sat, 10 Mar 2012 01:06:41 +0000
+
+0	1	sync/OWNERS
+
+
+4	0	sync/OWNERS
+
+
+0	1	sync/OWNERS
+:::: sync/android/OWNERS :::: 
+Sat, 12 Jan 2013 16:07:20 +0000
+
+0	1	sync/android/OWNERS
+
+
+3	0	sync/android/OWNERS
+:::: sync/test/android/OWNERS :::: 
+Fri, 22 Feb 2013 02:03:54 +0000
+
+0	1	sync/test/android/OWNERS
+
+
+3	0	sync/test/android/OWNERS
+:::: sync/tools/testserver/OWNERS :::: 
+Sun, 20 Jan 2013 01:10:24 +0000
+
+3	0	sync/tools/testserver/OWNERS
+:::: testing/OWNERS :::: 
+Mon, 12 Mar 2012 22:54:58 +0000
+:::: testing/android/OWNERS :::: 
+Thu, 19 Apr 2012 21:02:09 +0000
+
+0	1	testing/android/OWNERS
+
+
+0	1	testing/android/OWNERS
+:::: testing/iossim/OWNERS :::: 
+Fri, 27 Jul 2012 15:30:39 +0000
+
+1	0	testing/iossim/OWNERS
+:::: third_party/JSON/OWNERS :::: 
+Sat, 8 Jun 2013 13:47:20 +0000
+
+2	0	third_party/JSON/OWNERS
+
+
+0	2	third_party/JSON/OWNERS
+
+
+2	0	third_party/JSON/OWNERS
+:::: third_party/OWNERS :::: 
+Mon, 12 Mar 2012 20:56:41 +0000
+
+4	0	third_party/OWNERS
+
+
+3	1	third_party/OWNERS
+:::: third_party/adobe/OWNERS :::: 
+Fri, 7 Jun 2013 20:39:22 +0000
+
+7	0	third_party/adobe/OWNERS
+:::: third_party/android_platform/OWNERS :::: 
+Wed, 10 Jul 2013 13:23:12 +0000
+
+2	0	third_party/android_platform/OWNERS
+:::: third_party/android_testrunner/OWNERS :::: 
+Tue, 11 Jun 2013 00:32:12 +0000
+
+2	0	third_party/android_testrunner/OWNERS
+:::: third_party/apple_apsl/OWNERS :::: 
+Tue, 4 Jun 2013 06:27:19 +0000
+
+2	0	third_party/apple_apsl/OWNERS
+:::: third_party/apple_sample_code/OWNERS :::: 
+Tue, 4 Jun 2013 06:27:19 +0000
+
+2	0	third_party/apple_sample_code/OWNERS
+:::: third_party/ashmem/OWNERS :::: 
+Tue, 26 Mar 2013 21:26:01 +0000
+
+1	0	third_party/ashmem/OWNERS
+:::: third_party/bintrees/OWNERS :::: 
+Wed, 5 Jun 2013 07:32:13 +0000
+
+2	0	third_party/bintrees/OWNERS
+:::: third_party/cacheinvalidation/OWNERS :::: 
+Fri, 7 Jun 2013 22:37:02 +0000
+
+10	0	third_party/cacheinvalidation/OWNERS
+:::: third_party/cld/OWNERS :::: 
+Sun, 24 Mar 2013 18:14:18 +0000
+
+1	0	third_party/cld/OWNERS
+
+
+2	0	third_party/cld/OWNERS
+:::: third_party/cld_2/OWNERS :::: 
+Thu, 5 Sep 2013 11:17:03 +0000
+
+3	0	third_party/cld_2/OWNERS
+
+
+0	3	third_party/cld_2/OWNERS
+
+
+3	0	third_party/cld_2/OWNERS
+:::: third_party/closure_linter/OWNERS :::: 
+Fri, 14 Jun 2013 02:49:10 +0000
+
+2	0	third_party/closure_linter/OWNERS
+:::: third_party/cros_dbus_cplusplus/OWNERS :::: 
+Mon, 1 Jul 2013 20:21:45 +0000
+
+2	0	third_party/cros_dbus_cplusplus/OWNERS
+:::: third_party/devscripts/OWNERS :::: 
+Sat, 8 Jun 2013 16:46:25 +0000
+
+2	0	third_party/devscripts/OWNERS
+:::: third_party/eyesfree/OWNERS :::: 
+Fri, 7 Jun 2013 18:20:57 +0000
+
+2	0	third_party/eyesfree/OWNERS
+:::: third_party/freetype2/OWNERS :::: 
+Thu, 21 Feb 2013 01:19:26 +0000
+
+1	0	third_party/freetype2/OWNERS
+:::: third_party/handlebar/OWNERS :::: 
+Thu, 31 May 2012 04:39:40 +0000
+:::: third_party/harfbuzz-ng/OWNERS :::: 
+Thu, 13 Jun 2013 00:09:01 +0000
+
+0	4	third_party/harfbuzz-ng/OWNERS
+
+
+4	0	third_party/harfbuzz-ng/OWNERS
+
+
+4	0	third_party/harfbuzz-ng/OWNERS
+:::: third_party/iaccessible2/OWNERS :::: 
+Fri, 7 Jun 2013 18:20:57 +0000
+
+3	0	third_party/iaccessible2/OWNERS
+:::: third_party/iccjpeg/OWNERS :::: 
+Mon, 10 Jun 2013 17:49:02 +0000
+
+1	0	third_party/iccjpeg/OWNERS
+:::: third_party/isimpledom/OWNERS :::: 
+Fri, 7 Jun 2013 18:20:57 +0000
+
+3	0	third_party/isimpledom/OWNERS
+:::: third_party/jinja2/OWNERS :::: 
+Mon, 2 Sep 2013 05:36:55 +0000
+
+3	0	third_party/jinja2/OWNERS
+:::: third_party/jsoncpp/OWNERS :::: 
+Tue, 11 Jun 2013 18:23:05 +0000
+
+2	0	third_party/jsoncpp/OWNERS
+:::: third_party/jstemplate/OWNERS :::: 
+Wed, 12 Jun 2013 19:11:38 +0000
+
+2	0	third_party/jstemplate/OWNERS
+:::: third_party/khronos/OWNERS :::: 
+Tue, 26 Feb 2013 04:42:18 +0000
+
+1	1	third_party/khronos/OWNERS
+
+
+1	1	third_party/khronos/OWNERS
+
+
+2	0	third_party/khronos/OWNERS
+:::: third_party/leveldatabase/OWNERS :::: 
+Fri, 22 Mar 2013 22:54:46 +0000
+
+6	0	third_party/leveldatabase/OWNERS
+:::: third_party/libexif/OWNERS :::: 
+Mon, 3 Jun 2013 20:31:30 +0000
+
+2	0	third_party/libexif/OWNERS
+:::: third_party/libjingle/OWNERS :::: 
+Thu, 28 Feb 2013 02:23:35 +0000
+
+4	0	third_party/libjingle/OWNERS
+:::: third_party/libphonenumber/OWNERS :::: 
+Tue, 25 Jun 2013 16:56:40 +0000
+
+2	0	third_party/libphonenumber/OWNERS
+:::: third_party/libusb/OWNERS :::: 
+Wed, 3 Jul 2013 19:51:40 +0000
+
+3	0	third_party/libusb/OWNERS
+:::: third_party/libva/OWNERS :::: 
+Thu, 13 Jun 2013 20:30:12 +0000
+
+2	0	third_party/libva/OWNERS
+:::: third_party/libwebp/OWNERS :::: 
+Fri, 26 Apr 2013 04:39:11 +0000
+
+1	0	third_party/libwebp/OWNERS
+:::: third_party/mach_override/OWNERS :::: 
+Tue, 4 Jun 2013 06:27:19 +0000
+
+3	0	third_party/mach_override/OWNERS
+:::: third_party/markupsafe/OWNERS :::: 
+Fri, 6 Sep 2013 05:19:54 +0000
+
+3	0	third_party/markupsafe/OWNERS
+:::: third_party/mesa/OWNERS :::: 
+Tue, 12 Mar 2013 17:58:12 +0000
+
+6	0	third_party/mesa/OWNERS
+:::: third_party/modp_b64/OWNERS :::: 
+Tue, 11 Jun 2013 19:30:47 +0000
+
+2	0	third_party/modp_b64/OWNERS
+:::: third_party/mozilla/OWNERS :::: 
+Tue, 4 Jun 2013 06:27:19 +0000
+
+2	0	third_party/mozilla/OWNERS
+:::: third_party/mt19937ar/OWNERS :::: 
+Wed, 12 Jun 2013 03:51:06 +0000
+
+1	1	third_party/mt19937ar/OWNERS
+
+
+1	0	third_party/mt19937ar/OWNERS
+:::: third_party/mtpd/OWNERS :::: 
+Thu, 27 Jun 2013 07:31:35 +0000
+
+2	0	third_party/mtpd/OWNERS
+:::: third_party/npapi/bindings/OWNERS :::: 
+Thu, 21 Apr 2011 16:42:23 +0000
+:::: third_party/ocmock/OWNERS :::: 
+Tue, 4 Jun 2013 06:27:19 +0000
+
+2	0	third_party/ocmock/OWNERS
+:::: third_party/opus/OWNERS :::: 
+Wed, 12 Jun 2013 17:58:26 +0000
+
+2	0	third_party/opus/OWNERS
+:::: third_party/pexpect/OWNERS :::: 
+Tue, 18 Jun 2013 17:39:20 +0000
+
+2	0	third_party/pexpect/OWNERS
+:::: third_party/polymer/OWNERS :::: 
+Thu, 20 Jun 2013 03:12:49 +0000
+
+2	0	third_party/polymer/OWNERS
+:::: third_party/pyftpdlib/OWNERS :::: 
+Sat, 3 Aug 2013 08:25:27 +0000
+
+2	0	third_party/pyftpdlib/OWNERS
+:::: third_party/pymock/OWNERS :::: 
+Fri, 22 Feb 2013 06:02:46 +0000
+
+1	0	third_party/pymock/OWNERS
+:::: third_party/python_gflags/OWNERS :::: 
+Fri, 14 Jun 2013 02:49:10 +0000
+
+2	0	third_party/python_gflags/OWNERS
+:::: third_party/pywebsocket/OWNERS :::: 
+Tue, 4 Jun 2013 08:06:14 +0000
+
+2	0	third_party/pywebsocket/OWNERS
+:::: third_party/sfntly/OWNERS :::: 
+Mon, 3 Jun 2013 21:21:40 +0000
+
+2	0	third_party/sfntly/OWNERS
+:::: third_party/simplejson/OWNERS :::: 
+Thu, 13 Jun 2013 17:10:22 +0000
+
+2	0	third_party/simplejson/OWNERS
+:::: third_party/skia/OWNERS :::: 
+Tue, 4 Jun 2013 14:47:30 +0000
+
+2	0	third_party/skia/OWNERS
+:::: third_party/snappy/OWNERS :::: 
+Tue, 11 Jun 2013 18:11:24 +0000
+
+6	0	third_party/snappy/OWNERS
+:::: third_party/speech-dispatcher/OWNERS :::: 
+Fri, 7 Jun 2013 18:20:57 +0000
+
+2	0	third_party/speech-dispatcher/OWNERS
+:::: third_party/sqlite/OWNERS :::: 
+Sat, 16 Feb 2013 18:37:42 +0000
+
+5	0	third_party/sqlite/OWNERS
+:::: third_party/sudden_motion_sensor/OWNERS :::: 
+Tue, 4 Jun 2013 06:27:19 +0000
+
+2	0	third_party/sudden_motion_sensor/OWNERS
+:::: third_party/tcmalloc/OWNERS :::: 
+Tue, 19 Feb 2013 12:27:29 +0000
+
+2	0	third_party/tcmalloc/OWNERS
+:::: third_party/tcmalloc/chromium/src/OWNERS :::: 
+Tue, 19 Feb 2013 12:27:29 +0000
+
+4	0	third_party/tcmalloc/chromium/src/OWNERS
+:::: third_party/tlslite/OWNERS :::: 
+Mon, 4 Mar 2013 15:55:30 +0000
+
+3	0	third_party/tlslite/OWNERS
+:::: third_party/usrsctp/OWNERS :::: 
+Wed, 12 Jun 2013 17:57:40 +0000
+
+2	0	third_party/usrsctp/OWNERS
+:::: third_party/webdriver/OWNERS :::: 
+Tue, 11 Jun 2013 21:27:16 +0000
+
+4	0	third_party/webdriver/OWNERS
+:::: third_party/widevine/OWNERS :::: 
+Sat, 6 Oct 2012 18:44:49 +0000
+
+5	0	third_party/widevine/OWNERS
+:::: third_party/x86inc/OWNERS :::: 
+Thu, 6 Jun 2013 23:48:43 +0000
+
+2	0	third_party/x86inc/OWNERS
+:::: third_party/yasm/OWNERS :::: 
+Fri, 7 Jun 2013 06:08:47 +0000
+
+1	0	third_party/yasm/OWNERS
+:::: third_party/zlib/OWNERS :::: 
+Tue, 9 Apr 2013 10:50:34 +0000
+
+2	0	third_party/zlib/OWNERS
+:::: third_party/zlib/google/OWNERS :::: 
+Thu, 2 May 2013 20:15:02 +0000
+
+2	0	third_party/zlib/google/OWNERS
+
+
+0	2	third_party/zlib/google/OWNERS
+
+
+2	0	third_party/zlib/google/OWNERS
+:::: tools/OWNERS :::: 
+Mon, 12 Mar 2012 20:56:41 +0000
+
+2	0	tools/OWNERS
+:::: tools/android/OWNERS :::: 
+Wed, 15 Feb 2012 05:12:27 +0000
+
+2	3	tools/android/OWNERS
+
+
+1	0	tools/android/OWNERS
+
+
+0	1	tools/android/OWNERS
+:::: tools/checklicenses/OWNERS :::: 
+Wed, 14 Sep 2011 17:48:47 +0000
+:::: tools/checkperms/OWNERS :::: 
+Tue, 30 Oct 2012 20:15:34 +0000
+
+1	0	tools/checkperms/OWNERS
+:::: tools/clang/OWNERS :::: 
+Sun, 25 Sep 2011 03:40:06 +0000
+:::: tools/clang/plugins/OWNERS :::: 
+Sun, 25 Sep 2011 03:40:06 +0000
+:::: tools/deep_memory_profiler/OWNERS :::: 
+Wed, 13 Mar 2013 13:37:55 +0000
+
+1	0	tools/deep_memory_profiler/OWNERS
+:::: tools/deep_memory_profiler/visualizer/static/third_party/jqTree/OWNERS :::: 
+Tue, 17 Sep 2013 05:13:58 +0000
+
+2	0	tools/deep_memory_profiler/visualizer/static/third_party/jqTree/OWNERS
+:::: tools/find_runtime_symbols/OWNERS :::: 
+Wed, 13 Mar 2013 13:37:55 +0000
+
+1	0	tools/find_runtime_symbols/OWNERS
+:::: tools/gn/OWNERS :::: 
+Mon, 29 Jul 2013 23:30:07 +0000
+
+1	0	tools/gn/OWNERS
+
+
+0	1	tools/gn/OWNERS
+
+
+1	0	tools/gn/OWNERS
+:::: tools/metrics/OWNERS :::: 
+Tue, 2 Apr 2013 09:21:24 +0000
+
+2	2	tools/metrics/OWNERS
+
+
+1	0	tools/metrics/OWNERS
+
+
+4	0	tools/metrics/OWNERS
+
+
+5	0	tools/metrics/OWNERS
+:::: tools/metrics/actions/OWNERS :::: 
+Wed, 3 Apr 2013 12:15:34 +0000
+
+2	0	tools/metrics/actions/OWNERS
+:::: tools/oopif/OWNERS :::: 
+Wed, 13 Mar 2013 18:34:23 +0000
+
+4	0	tools/oopif/OWNERS
+:::: tools/perf/OWNERS :::: 
+Wed, 3 Oct 2012 21:00:28 +0000
+
+1	2	tools/perf/OWNERS
+
+
+1	0	tools/perf/OWNERS
+
+
+1	0	tools/perf/OWNERS
+
+
+2	1	tools/perf/OWNERS
+
+
+4	0	tools/perf/OWNERS
+:::: tools/telemetry/OWNERS :::: 
+Thu, 8 Nov 2012 08:17:22 +0000
+
+0	1	tools/telemetry/OWNERS
+
+
+3	0	tools/telemetry/OWNERS
+
+
+1	0	tools/telemetry/OWNERS
+
+
+1	0	tools/telemetry/OWNERS
+
+
+7	0	tools/telemetry/OWNERS
+:::: tools/telemetry/telemetry/core/timeline/OWNERS :::: 
+Tue, 2 Jul 2013 17:12:55 +0000
+
+2	0	tools/telemetry/telemetry/core/timeline/OWNERS
+:::: tools/valgrind/OWNERS :::: 
+Tue, 19 Apr 2011 11:28:46 +0000
+:::: tools/valgrind/drmemory/OWNERS :::: 
+Mon, 27 Feb 2012 19:54:26 +0000
+:::: tools/valgrind/gtest_exclude/OWNERS :::: 
+Thu, 21 Apr 2011 06:27:56 +0000
+:::: tools/valgrind/memcheck/OWNERS :::: 
+Tue, 19 Apr 2011 11:28:46 +0000
+:::: tools/valgrind/tsan/OWNERS :::: 
+Tue, 19 Apr 2011 11:28:46 +0000
+:::: ui/OWNERS :::: 
+Fri, 14 Jan 2011 21:14:16 +0000
+
+6	0	ui/OWNERS
+
+
+3	0	ui/OWNERS
+
+
+3	0	ui/OWNERS
+
+
+0	1	ui/OWNERS
+:::: ui/android/OWNERS :::: 
+Sat, 22 Sep 2012 02:48:00 +0000
+
+0	1	ui/android/OWNERS
+
+
+1	0	ui/android/OWNERS
+:::: ui/android/java/resource_map/OWNERS :::: 
+Wed, 10 Jul 2013 14:55:33 +0000
+
+13	0	ui/android/java/resource_map/OWNERS
+:::: ui/app_list/OWNERS :::: 
+Wed, 9 May 2012 04:11:45 +0000
+
+2	0	ui/app_list/OWNERS
+
+
+1	0	ui/app_list/OWNERS
+:::: ui/aura/OWNERS :::: 
+Wed, 14 Sep 2011 21:14:01 +0000
+
+4	0	ui/aura/OWNERS
+
+
+0	1	ui/aura/OWNERS
+:::: ui/aura/gestures/OWNERS :::: 
+Thu, 19 Jan 2012 16:31:06 +0000
+
+0	1	ui/aura/gestures/OWNERS
+:::: ui/base/OWNERS :::: 
+Fri, 14 Jan 2011 21:14:16 +0000
+
+1	0	ui/base/OWNERS
+
+
+1	0	ui/base/OWNERS
+:::: ui/base/accessibility/OWNERS :::: 
+Mon, 5 Aug 2013 20:44:21 +0000
+
+1	0	ui/base/accessibility/OWNERS
+:::: ui/base/clipboard/OWNERS :::: 
+Wed, 22 Feb 2012 19:13:06 +0000
+:::: ui/base/cocoa/OWNERS :::: 
+Mon, 2 Apr 2012 21:31:51 +0000
+:::: ui/base/cursor/OWNERS :::: 
+Fri, 2 Aug 2013 19:03:21 +0000
+
+1	0	ui/base/cursor/OWNERS
+:::: ui/base/gtk/OWNERS :::: 
+Tue, 22 Nov 2011 01:06:00 +0000
+:::: ui/base/ime/OWNERS :::: 
+Fri, 11 Nov 2011 04:49:12 +0000
+
+0	1	ui/base/ime/OWNERS
+:::: ui/base/keycodes/OWNERS :::: 
+Wed, 13 Jun 2012 19:21:39 +0000
+
+2	2	ui/base/keycodes/OWNERS
+
+
+2	3	ui/base/keycodes/OWNERS
+:::: ui/base/l10n/OWNERS :::: 
+Thu, 9 Feb 2012 01:50:11 +0000
+:::: ui/base/resource/OWNERS :::: 
+Thu, 10 May 2012 15:56:32 +0000
+:::: ui/base/strings/OWNERS :::: 
+Mon, 5 Aug 2013 20:44:21 +0000
+
+1	0	ui/base/strings/OWNERS
+:::: ui/base/text/OWNERS :::: 
+Mon, 5 Aug 2013 20:44:21 +0000
+
+1	0	ui/base/text/OWNERS
+:::: ui/base/touch/OWNERS :::: 
+Mon, 26 Sep 2011 22:04:44 +0000
+:::: ui/base/x/OWNERS :::: 
+Sun, 26 Feb 2012 20:18:54 +0000
+:::: ui/compositor/OWNERS :::: 
+Sat, 5 May 2012 21:45:41 +0000
+
+3	0	ui/compositor/OWNERS
+
+
+1	1	ui/compositor/OWNERS
+:::: ui/events/OWNERS :::: 
+Wed, 18 Sep 2013 18:11:54 +0000
+
+1	0	ui/events/OWNERS
+:::: ui/events/gestures/OWNERS :::: 
+Wed, 25 Sep 2013 00:36:27 +0000
+
+2	0	ui/events/gestures/OWNERS
+:::: ui/events/ozone/OWNERS :::: 
+Mon, 23 Sep 2013 20:12:59 +0000
+
+1	0	ui/events/ozone/OWNERS
+:::: ui/gfx/OWNERS :::: 
+Fri, 3 Feb 2012 17:08:33 +0000
+
+4	0	ui/gfx/OWNERS
+
+
+4	0	ui/gfx/OWNERS
+
+
+3	0	ui/gfx/OWNERS
+:::: ui/gfx/android/OWNERS :::: 
+Thu, 1 Aug 2013 00:11:55 +0000
+
+1	0	ui/gfx/android/OWNERS
+:::: ui/gfx/codec/OWNERS :::: 
+Thu, 22 Aug 2013 17:07:13 +0000
+
+2	0	ui/gfx/codec/OWNERS
+:::: ui/gfx/image/OWNERS :::: 
+Fri, 2 Dec 2011 21:32:58 +0000
+
+3	0	ui/gfx/image/OWNERS
+:::: ui/gfx/ozone/OWNERS :::: 
+Mon, 23 Sep 2013 20:40:55 +0000
+
+1	0	ui/gfx/ozone/OWNERS
+:::: ui/gfx/range/OWNERS :::: 
+Fri, 6 Sep 2013 20:01:51 +0000
+
+1	0	ui/gfx/range/OWNERS
+:::: ui/gl/OWNERS :::: 
+Sat, 12 May 2012 21:17:27 +0000
+
+0	1	ui/gl/OWNERS
+
+
+1	0	ui/gl/OWNERS
+
+
+0	1	ui/gl/OWNERS
+:::: ui/gl/android/OWNERS :::: 
+Wed, 24 Apr 2013 08:00:11 +0000
+
+1	0	ui/gl/android/OWNERS
+:::: ui/keyboard/OWNERS :::: 
+Tue, 23 Apr 2013 15:33:03 +0000
+
+2	0	ui/keyboard/OWNERS
+:::: ui/keyboard/resources/OWNERS :::: 
+Tue, 25 Jun 2013 15:48:59 +0000
+
+1	0	ui/keyboard/resources/OWNERS
+
+
+2	0	ui/keyboard/resources/OWNERS
+:::: ui/message_center/OWNERS :::: 
+Fri, 2 Nov 2012 04:21:48 +0000
+
+2	1	ui/message_center/OWNERS
+
+
+1	0	ui/message_center/OWNERS
+
+
+2	0	ui/message_center/OWNERS
+:::: ui/metro_viewer/OWNERS :::: 
+Fri, 9 Nov 2012 19:38:28 +0000
+
+0	1	ui/metro_viewer/OWNERS
+
+
+7	7	ui/metro_viewer/OWNERS
+
+
+1	0	ui/metro_viewer/OWNERS
+
+
+8	0	ui/metro_viewer/OWNERS
+:::: ui/resources/OWNERS :::: 
+Wed, 13 Jun 2012 23:56:35 +0000
+:::: ui/shell_dialogs/gtk/OWNERS :::: 
+Wed, 16 Jan 2013 23:08:27 +0000
+
+2	0	ui/shell_dialogs/gtk/OWNERS
+:::: ui/snapshot/OWNERS :::: 
+Tue, 10 Sep 2013 16:24:55 +0000
+
+5	0	ui/snapshot/OWNERS
+:::: ui/surface/OWNERS :::: 
+Thu, 3 May 2012 22:45:41 +0000
+
+0	1	ui/surface/OWNERS
+:::: ui/views/OWNERS :::: 
+Tue, 1 Feb 2011 22:14:38 +0000
+
+0	1	ui/views/OWNERS
+:::: ui/views/accessibility/OWNERS :::: 
+Mon, 14 Nov 2011 16:33:48 +0000
+:::: ui/views/bubble/OWNERS :::: 
+Wed, 19 Sep 2012 18:47:46 +0000
+:::: ui/views/controls/textfield/OWNERS :::: 
+Fri, 17 May 2013 17:10:12 +0000
+
+3	0	ui/views/controls/textfield/OWNERS
+:::: ui/views/ime/OWNERS :::: 
+Thu, 17 Nov 2011 00:46:42 +0000
+
+0	1	ui/views/ime/OWNERS
+:::: ui/views/linux_ui/OWNERS :::: 
+Tue, 10 Sep 2013 09:22:19 +0000
+
+1	0	ui/views/linux_ui/OWNERS
+:::: ui/views/touchui/OWNERS :::: 
+Wed, 16 Nov 2011 17:26:28 +0000
+:::: ui/views/widget/desktop_aura/OWNERS :::: 
+Tue, 6 Aug 2013 06:08:49 +0000
+
+5	0	ui/views/widget/desktop_aura/OWNERS
+:::: ui/webui/OWNERS :::: 
+Thu, 17 Jan 2013 17:50:15 +0000
+
+1	0	ui/webui/OWNERS
+
+
+3	0	ui/webui/OWNERS
+
+
+3	3	ui/webui/OWNERS
+
+
+3	0	ui/webui/OWNERS
+
+
+5	0	ui/webui/OWNERS
+:::: url/OWNERS :::: 
+Wed, 10 Apr 2013 20:10:52 +0000
+
+1	0	url/OWNERS
+
+
+1	0	url/OWNERS
+:::: webkit/OWNERS :::: 
+Fri, 14 Jan 2011 21:38:59 +0000
+
+1	0	webkit/OWNERS
+
+
+0	1	webkit/OWNERS
+
+
+1	0	webkit/OWNERS
+
+
+0	1	webkit/OWNERS
+:::: webkit/browser/blob/OWNERS :::: 
+Wed, 29 May 2013 03:09:43 +0000
+
+1	0	webkit/browser/blob/OWNERS
+:::: webkit/browser/fileapi/OWNERS :::: 
+Tue, 25 Jun 2013 06:22:13 +0000
+
+2	0	webkit/browser/fileapi/OWNERS
+:::: webkit/browser/quota/OWNERS :::: 
+Tue, 25 Jun 2013 06:22:13 +0000
+
+1	0	webkit/browser/quota/OWNERS
+:::: webkit/common/fileapi/OWNERS :::: 
+Tue, 28 May 2013 04:59:23 +0000
+
+1	0	webkit/common/fileapi/OWNERS
+:::: webkit/common/gpu/OWNERS :::: 
+Sun, 26 May 2013 03:23:48 +0000
+
+1	1	webkit/common/gpu/OWNERS
+
+
+1	1	webkit/common/gpu/OWNERS
+
+
+3	0	webkit/common/gpu/OWNERS
+:::: webkit/renderer/compositor_bindings/OWNERS :::: 
+Wed, 15 May 2013 21:18:52 +0000
+
+2	0	webkit/renderer/compositor_bindings/OWNERS
+:::: webkit/tools/layout_tests/OWNERS :::: 
+Fri, 14 Jan 2011 21:38:59 +0000
+:::: win8/OWNERS :::: 
+Thu, 6 Sep 2012 15:25:57 +0000
+:::: win8/metro_driver/OWNERS :::: 
+Fri, 7 Sep 2012 18:24:52 +0000

@@ -1,0 +1,3451 @@
+Over the course of one year, this file has had 0 commits
+
+android_webview/OWNERS
+This file was created on Thu, 9 Aug 2012 
+1 lines deleted
+2 lines deleted
+Over the course of one year, this file has had 3 commits
+
+android_webview/buildbot/OWNERS
+This file was created on Fri, 24 May 2013 
+Over the course of one year, this file has had 1 commits
+
+android_webview/common/OWNERS
+This file was created on Fri, 9 Nov 2012 
+7 lines deleted
+Over the course of one year, this file has had 3 commits
+
+apps/OWNERS
+This file was created on Thu, 24 Jan 2013 
+1 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 5 commits
+
+apps/app_shim/OWNERS
+This file was created on Mon, 18 Mar 2013 
+1 lines deleted
+Over the course of one year, this file has had 2 commits
+
+ash/OWNERS
+This file was created on Fri, 23 Dec 2011 
+5 lines deleted
+1 lines deleted
+1 lines deleted
+2 lines deleted
+1 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 11 commits
+
+ash/desktop_background/OWNERS
+This file was created on Fri, 17 Aug 2012 
+Over the course of one year, this file has had 0 commits
+
+ash/display/OWNERS
+This file was created on Fri, 18 Jan 2013 
+Over the course of one year, this file has had 1 commits
+
+ash/drag_drop/OWNERS
+This file was created on Wed, 21 Nov 2012 
+Over the course of one year, this file has had 1 commits
+
+ash/launcher/OWNERS
+This file was created on Thu, 15 Mar 2012 
+Over the course of one year, this file has had 1 commits
+
+ash/resources/OWNERS
+This file was created on Fri, 18 Jan 2013 
+Over the course of one year, this file has had 1 commits
+
+ash/screensaver/OWNERS
+This file was created on Tue, 31 Jul 2012 
+Over the course of one year, this file has had 0 commits
+
+ash/system/OWNERS
+This file was created on Mon, 2 Apr 2012 
+Over the course of one year, this file has had 0 commits
+
+ash/wm/gestures/OWNERS
+This file was created on Wed, 5 Dec 2012 
+Over the course of one year, this file has had 1 commits
+
+ash/wm/panels/OWNERS
+This file was created on Thu, 7 Mar 2013 
+Over the course of one year, this file has had 1 commits
+
+base/OWNERS
+This file was created on Thu, 14 Apr 2011 
+1 lines deleted
+Over the course of one year, this file has had 5 commits
+
+base/android/OWNERS
+This file was created on Wed, 29 Feb 2012 
+1 lines deleted
+1 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 3 commits
+
+base/debug/OWNERS
+This file was created on Mon, 13 May 2013 
+Over the course of one year, this file has had 1 commits
+
+base/files/OWNERS
+This file was created on Thu, 14 Apr 2011 
+Over the course of one year, this file has had 0 commits
+
+base/i18n/OWNERS
+This file was created on Tue, 15 Nov 2011 
+Over the course of one year, this file has had 0 commits
+
+base/ios/OWNERS
+This file was created on Fri, 5 Oct 2012 
+Over the course of one year, this file has had 1 commits
+
+base/mac/OWNERS
+This file was created on Thu, 14 Apr 2011 
+Over the course of one year, this file has had 0 commits
+
+base/metrics/OWNERS
+This file was created on Thu, 5 May 2011 
+Over the course of one year, this file has had 0 commits
+
+base/prefs/OWNERS
+This file was created on Mon, 22 Oct 2012 
+3 lines deleted
+Over the course of one year, this file has had 2 commits
+
+base/strings/OWNERS
+This file was created on Sun, 1 Sep 2013 
+1 lines deleted
+Over the course of one year, this file has had 3 commits
+
+base/test/OWNERS
+This file was created on Mon, 21 Mar 2011 
+Over the course of one year, this file has had 0 commits
+
+base/test/android/OWNERS
+This file was created on Sat, 24 Mar 2012 
+1 lines deleted
+1 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 3 commits
+
+base/test/expectations/OWNERS
+This file was created on Fri, 1 Feb 2013 
+Over the course of one year, this file has had 1 commits
+
+base/third_party/nspr/OWNERS
+This file was created on Tue, 5 Feb 2013 
+Over the course of one year, this file has had 1 commits
+
+base/threading/OWNERS
+This file was created on Wed, 2 May 2012 
+Over the course of one year, this file has had 0 commits
+
+base/win/OWNERS
+This file was created on Fri, 9 Nov 2012 
+Over the course of one year, this file has had 1 commits
+
+breakpad/OWNERS
+This file was created on Sat, 2 Jul 2011 
+Over the course of one year, this file has had 1 commits
+
+build/OWNERS
+This file was created on Mon, 12 Mar 2012 
+Over the course of one year, this file has had 0 commits
+
+build/android/buildbot/OWNERS
+This file was created on Tue, 25 Sep 2012 
+1 lines deleted
+2 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 5 commits
+
+build/android/pylib/OWNERS
+This file was created on Wed, 10 Apr 2013 
+Over the course of one year, this file has had 1 commits
+
+build/android/pylib/gtest/filter/OWNERS
+This file was created on Wed, 10 Apr 2013 
+Over the course of one year, this file has had 1 commits
+
+build/git-hooks/OWNERS
+This file was created on Tue, 16 Apr 2013 
+Over the course of one year, this file has had 1 commits
+
+build/mac/OWNERS
+This file was created on Thu, 28 Apr 2011 
+Over the course of one year, this file has had 0 commits
+
+build/slave/OWNERS
+This file was created on Thu, 22 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+cc/OWNERS
+This file was created on Mon, 6 Aug 2012 
+1 lines deleted
+2 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 6 commits
+
+cc/debug/OWNERS
+This file was created on Mon, 15 Jul 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/OWNERS
+This file was created on Tue, 13 Mar 2012 
+1 lines deleted
+4 lines deleted
+2 lines deleted
+3 lines deleted
+1 lines deleted
+2 lines deleted
+Over the course of one year, this file has had 17 commits
+
+chrome/android/OWNERS
+This file was created on Thu, 2 Aug 2012 
+1 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 5 commits
+
+chrome/android/java/src/org/chromium/chrome/browser/infobar/OWNERS
+This file was created on Tue, 17 Sep 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/app/OWNERS
+This file was created on Mon, 2 Apr 2012 
+1 lines deleted
+2 lines deleted
+Over the course of one year, this file has had 4 commits
+
+chrome/app/android/OWNERS
+This file was created on Sat, 20 Apr 2013 
+1 lines deleted
+Over the course of one year, this file has had 2 commits
+
+chrome/app/nibs/OWNERS
+This file was created on Wed, 3 Aug 2011 
+6 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 3 commits
+
+chrome/app/policy/OWNERS
+This file was created on Mon, 11 Jul 2011 
+2 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 4 commits
+
+chrome/app/resources/OWNERS
+This file was created on Sat, 16 Feb 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/app/theme/OWNERS
+This file was created on Wed, 13 Jun 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/OWNERS
+This file was created on Tue, 3 May 2011 
+1 lines deleted
+1 lines deleted
+2 lines deleted
+Over the course of one year, this file has had 9 commits
+
+chrome/browser/accessibility/OWNERS
+This file was created on Fri, 21 Jan 2011 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/android/OWNERS
+This file was created on Thu, 2 Aug 2012 
+2 lines deleted
+1 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 4 commits
+
+chrome/browser/apps/OWNERS
+This file was created on Fri, 26 Jul 2013 
+Over the course of one year, this file has had 2 commits
+
+chrome/browser/autocomplete/OWNERS
+This file was created on Fri, 21 Jan 2011 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/autofill/OWNERS
+This file was created on Fri, 21 Jan 2011 
+1 lines deleted
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/automation/OWNERS
+This file was created on Thu, 19 Jul 2012 
+1 lines deleted
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/background/OWNERS
+This file was created on Fri, 17 Jun 2011 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/bookmarks/OWNERS
+This file was created on Thu, 20 Jan 2011 
+3 lines deleted
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/browsing_data/OWNERS
+This file was created on Thu, 19 Jul 2012 
+1 lines deleted
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/captive_portal/OWNERS
+This file was created on Fri, 11 May 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/chromeos/OWNERS
+This file was created on Fri, 3 Aug 2012 
+1 lines deleted
+Over the course of one year, this file has had 2 commits
+
+chrome/browser/chromeos/accessibility/OWNERS
+This file was created on Fri, 26 Oct 2012 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/chromeos/attestation/OWNERS
+This file was created on Fri, 19 Apr 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/chromeos/audio/OWNERS
+This file was created on Thu, 2 May 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/chromeos/background/OWNERS
+This file was created on Fri, 17 Aug 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/chromeos/contacts/OWNERS
+This file was created on Tue, 31 Jul 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/chromeos/dbus/OWNERS
+This file was created on Sat, 17 Sep 2011 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/chromeos/display/OWNERS
+This file was created on Mon, 3 Sep 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/chromeos/drive/OWNERS
+This file was created on Thu, 11 Oct 2012 
+1 lines deleted
+5 lines deleted
+Over the course of one year, this file has had 3 commits
+
+chrome/browser/chromeos/extensions/OWNERS
+This file was created on Tue, 31 Jul 2012 
+7 lines deleted
+1 lines deleted
+1 lines deleted
+1 lines deleted
+11 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 9 commits
+
+chrome/browser/chromeos/extensions/file_manager/OWNERS
+This file was created on Tue, 16 Apr 2013 
+9 lines deleted
+Over the course of one year, this file has had 3 commits
+
+chrome/browser/chromeos/file_manager/OWNERS
+This file was created on Thu, 5 Sep 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/chromeos/first_run/OWNERS
+This file was created on Mon, 2 Sep 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/chromeos/input_method/OWNERS
+This file was created on Mon, 30 Jul 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/chromeos/kiosk_mode/OWNERS
+This file was created on Tue, 31 Jul 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/chromeos/login/OWNERS
+This file was created on Wed, 23 Mar 2011 
+2 lines deleted
+6 lines deleted
+Over the course of one year, this file has had 4 commits
+
+chrome/browser/chromeos/login/enrollment/OWNERS
+This file was created on Mon, 29 Aug 2011 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/chromeos/memory/OWNERS
+This file was created on Wed, 10 Oct 2012 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/chromeos/net/OWNERS
+This file was created on Wed, 27 Feb 2013 
+5 lines deleted
+Over the course of one year, this file has had 2 commits
+
+chrome/browser/chromeos/policy/OWNERS
+This file was created on Thu, 14 Mar 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/chromeos/settings/OWNERS
+This file was created on Wed, 1 Aug 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/chromeos/status/OWNERS
+This file was created on Tue, 8 Nov 2011 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/chromeos/system_logs/OWNERS
+This file was created on Tue, 19 Mar 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/common/OWNERS
+This file was created on Wed, 19 Sep 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/component_updater/OWNERS
+This file was created on Tue, 18 Oct 2011 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/component_updater/pnacl/OWNERS
+This file was created on Thu, 15 Dec 2011 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/content_settings/OWNERS
+This file was created on Mon, 28 Mar 2011 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/devtools/OWNERS
+This file was created on Wed, 19 Dec 2012 
+1 lines deleted
+2 lines deleted
+Over the course of one year, this file has had 5 commits
+
+chrome/browser/diagnostics/OWNERS
+This file was created on Wed, 22 Aug 2012 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/download/OWNERS
+This file was created on Thu, 27 Jan 2011 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/drive/OWNERS
+This file was created on Mon, 17 Jun 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/extensions/OWNERS
+This file was created on Wed, 14 Sep 2011 
+15 lines deleted
+5 lines deleted
+3 lines deleted
+1 lines deleted
+1 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 11 commits
+
+chrome/browser/extensions/activity_log/OWNERS
+This file was created on Wed, 7 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/extensions/api/activity_log_private/OWNERS
+This file was created on Wed, 7 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/extensions/api/alarms/OWNERS
+This file was created on Thu, 15 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/extensions/api/app_current_window_internal/OWNERS
+This file was created on Tue, 6 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/extensions/api/app_window/OWNERS
+This file was created on Tue, 6 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/extensions/api/autotest_private/OWNERS
+This file was created on Tue, 11 Dec 2012 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/extensions/api/bluetooth/OWNERS
+This file was created on Thu, 15 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/extensions/api/braille_display_private/OWNERS
+This file was created on Wed, 4 Sep 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/extensions/api/browsing_data/OWNERS
+This file was created on Thu, 14 Jun 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/extensions/api/commands/OWNERS
+This file was created on Wed, 14 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/extensions/api/context_menus/OWNERS
+This file was created on Thu, 15 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/extensions/api/cookies/OWNERS
+This file was created on Thu, 16 Aug 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/extensions/api/declarative/OWNERS
+This file was created on Mon, 7 May 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/extensions/api/declarative_content/OWNERS
+This file was created on Sat, 26 Jan 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/extensions/api/declarative_webrequest/OWNERS
+This file was created on Mon, 7 May 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/extensions/api/desktop_capture/OWNERS
+This file was created on Tue, 13 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/extensions/api/dial/OWNERS
+This file was created on Thu, 15 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/extensions/api/discovery/OWNERS
+This file was created on Wed, 30 May 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/extensions/api/downloads/OWNERS
+This file was created on Thu, 21 Jun 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/extensions/api/downloads_internal/OWNERS
+This file was created on Tue, 9 Apr 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/extensions/api/enterprise_platform_keys_private/OWNERS
+This file was created on Wed, 14 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/extensions/api/extension_action/OWNERS
+This file was created on Thu, 15 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/extensions/api/file_handlers/OWNERS
+This file was created on Fri, 16 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/extensions/api/file_system/OWNERS
+This file was created on Fri, 31 Aug 2012 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/extensions/api/font_settings/OWNERS
+This file was created on Mon, 19 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/extensions/api/identity/OWNERS
+This file was created on Tue, 16 Jul 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/extensions/api/identity_private/OWNERS
+This file was created on Wed, 21 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/extensions/api/idle/OWNERS
+This file was created on Fri, 28 Sep 2012 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/extensions/api/image_writer_private/OWNERS
+This file was created on Thu, 19 Sep 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/extensions/api/mdns/OWNERS
+This file was created on Fri, 6 Sep 2013 
+2 lines deleted
+Over the course of one year, this file has had 3 commits
+
+chrome/browser/extensions/api/media_galleries/OWNERS
+This file was created on Tue, 6 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/extensions/api/media_galleries_private/OWNERS
+This file was created on Tue, 6 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/extensions/api/messaging/OWNERS
+This file was created on Thu, 15 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/extensions/api/metrics_private/OWNERS
+This file was created on Sat, 17 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/extensions/api/module/OWNERS
+This file was created on Thu, 15 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/extensions/api/networking_private/OWNERS
+This file was created on Thu, 15 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/extensions/api/notifications/OWNERS
+This file was created on Tue, 4 Jun 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/extensions/api/omnibox/OWNERS
+This file was created on Thu, 17 May 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/extensions/api/power/OWNERS
+This file was created on Thu, 15 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/extensions/api/proxy/OWNERS
+This file was created on Mon, 7 May 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/extensions/api/push_messaging/OWNERS
+This file was created on Fri, 28 Sep 2012 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/extensions/api/recovery_private/OWNERS
+This file was created on Wed, 18 Sep 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/extensions/api/serial/OWNERS
+This file was created on Thu, 15 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/extensions/api/sessions/OWNERS
+This file was created on Thu, 22 Aug 2013 
+1 lines deleted
+Over the course of one year, this file has had 3 commits
+
+chrome/browser/extensions/api/socket/OWNERS
+This file was created on Thu, 15 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/extensions/api/storage/OWNERS
+This file was created on Thu, 15 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/extensions/api/sync_file_system/OWNERS
+This file was created on Sun, 3 Feb 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/extensions/api/system_cpu/OWNERS
+This file was created on Thu, 18 Jul 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/extensions/api/system_display/OWNERS
+This file was created on Tue, 6 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/extensions/api/system_indicator/OWNERS
+This file was created on Thu, 15 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/extensions/api/system_info/OWNERS
+This file was created on Fri, 8 Mar 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/extensions/api/system_memory/OWNERS
+This file was created on Tue, 6 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/extensions/api/system_private/OWNERS
+This file was created on Thu, 15 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/extensions/api/system_storage/OWNERS
+This file was created on Fri, 26 Jul 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/extensions/api/tab_capture/OWNERS
+This file was created on Thu, 15 Aug 2013 
+Over the course of one year, this file has had 2 commits
+
+chrome/browser/extensions/api/tabs/OWNERS
+This file was created on Thu, 15 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/extensions/api/usb/OWNERS
+This file was created on Wed, 7 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/extensions/api/web_navigation/OWNERS
+This file was created on Wed, 4 Apr 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/extensions/api/web_request/OWNERS
+This file was created on Mon, 7 May 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/extensions/api/webrtc_logging_private/OWNERS
+This file was created on Tue, 24 Sep 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/extensions/api/webstore_private/OWNERS
+This file was created on Thu, 24 May 2012 
+1 lines deleted
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/extensions/api/webview/OWNERS
+This file was created on Thu, 15 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/extensions/updater/OWNERS
+This file was created on Fri, 16 Mar 2012 
+1 lines deleted
+Over the course of one year, this file has had 2 commits
+
+chrome/browser/external_tab/OWNERS
+This file was created on Tue, 3 Apr 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/favicon/OWNERS
+This file was created on Wed, 22 Aug 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/feedback/OWNERS
+This file was created on Tue, 31 Jul 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/first_run/OWNERS
+This file was created on Mon, 7 Jan 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/geolocation/OWNERS
+This file was created on Wed, 22 Aug 2012 
+2 lines deleted
+1 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 3 commits
+
+chrome/browser/google/OWNERS
+This file was created on Tue, 28 Feb 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/google_apis/OWNERS
+This file was created on Tue, 11 Sep 2012 
+1 lines deleted
+5 lines deleted
+Over the course of one year, this file has had 2 commits
+
+chrome/browser/gpu/OWNERS
+This file was created on Fri, 7 Dec 2012 
+1 lines deleted
+Over the course of one year, this file has had 2 commits
+
+chrome/browser/guestview/OWNERS
+This file was created on Fri, 28 Jun 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/history/OWNERS
+This file was created on Wed, 31 Aug 2011 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/importer/OWNERS
+This file was created on Wed, 15 Jun 2011 
+1 lines deleted
+8 lines deleted
+Over the course of one year, this file has had 5 commits
+
+chrome/browser/infobars/OWNERS
+This file was created on Mon, 13 Aug 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/invalidation/OWNERS
+This file was created on Fri, 10 May 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/local_discovery/OWNERS
+This file was created on Fri, 14 Jun 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/mac/OWNERS
+This file was created on Mon, 20 Jun 2011 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/managed_mode/OWNERS
+This file was created on Fri, 26 Oct 2012 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/media/OWNERS
+This file was created on Fri, 24 Jun 2011 
+1 lines deleted
+Over the course of one year, this file has had 3 commits
+
+chrome/browser/media_galleries/OWNERS
+This file was created on Thu, 28 Feb 2013 
+1 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 3 commits
+
+chrome/browser/media_galleries/fileapi/OWNERS
+This file was created on Fri, 26 Apr 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/metrics/OWNERS
+This file was created on Tue, 24 May 2011 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/metrics/variations/OWNERS
+This file was created on Wed, 15 Aug 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/metro_viewer/OWNERS
+This file was created on Fri, 7 Dec 2012 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/nacl_host/OWNERS
+This file was created on Tue, 31 Jul 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/net/OWNERS
+This file was created on Fri, 21 Jan 2011 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/net/gaia/OWNERS
+This file was created on Thu, 28 Jul 2011 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/notifications/OWNERS
+This file was created on Fri, 21 Jan 2011 
+1 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 3 commits
+
+chrome/browser/omnibox/OWNERS
+This file was created on Fri, 12 Apr 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/password_manager/OWNERS
+This file was created on Fri, 24 Jun 2011 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/performance_monitor/OWNERS
+This file was created on Thu, 2 Aug 2012 
+1 lines deleted
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/plugins/OWNERS
+This file was created on Thu, 20 Sep 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/policy/OWNERS
+This file was created on Mon, 16 May 2011 
+Over the course of one year, this file has had 2 commits
+
+chrome/browser/predictors/OWNERS
+This file was created on Wed, 2 May 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/prefs/OWNERS
+This file was created on Tue, 26 Apr 2011 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/prerender/OWNERS
+This file was created on Sat, 19 Mar 2011 
+1 lines deleted
+Over the course of one year, this file has had 2 commits
+
+chrome/browser/printing/OWNERS
+This file was created on Fri, 18 Nov 2011 
+1 lines deleted
+Over the course of one year, this file has had 2 commits
+
+chrome/browser/printing/cloud_print/OWNERS
+This file was created on Fri, 18 Nov 2011 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/profile_resetter/OWNERS
+This file was created on Thu, 25 Apr 2013 
+Over the course of one year, this file has had 2 commits
+
+chrome/browser/profiles/OWNERS
+This file was created on Thu, 7 Apr 2011 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/renderer_host/pepper/OWNERS
+This file was created on Thu, 29 Nov 2012 
+Over the course of one year, this file has had 3 commits
+
+chrome/browser/resources/OWNERS
+This file was created on Thu, 20 Jan 2011 
+1 lines deleted
+2 lines deleted
+3 lines deleted
+Over the course of one year, this file has had 7 commits
+
+chrome/browser/resources/chromeos/OWNERS
+This file was created on Mon, 28 Nov 2011 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/resources/chromeos/connectivity_diagnostics/OWNERS
+This file was created on Mon, 12 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/resources/chromeos/diagnostics/OWNERS
+This file was created on Thu, 2 Aug 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/resources/chromeos/echo/OWNERS
+This file was created on Tue, 17 Apr 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/resources/chromeos/first_run/OWNERS
+This file was created on Mon, 2 Sep 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/resources/chromeos/genius_app/OWNERS
+This file was created on Fri, 13 Sep 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/resources/chromeos/login/OWNERS
+This file was created on Thu, 24 Nov 2011 
+1 lines deleted
+4 lines deleted
+Over the course of one year, this file has had 3 commits
+
+chrome/browser/resources/chromeos/network_configuration/OWNERS
+This file was created on Wed, 27 Feb 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/resources/chromeos/wallpaper_manager/OWNERS
+This file was created on Mon, 10 Sep 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/resources/cloud_print_app/OWNERS
+This file was created on Wed, 20 Feb 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/resources/default_apps/OWNERS
+This file was created on Fri, 4 May 2012 
+1 lines deleted
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/resources/downloads/OWNERS
+This file was created on Mon, 8 Apr 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/resources/extensions/OWNERS
+This file was created on Tue, 11 Sep 2012 
+1 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 2 commits
+
+chrome/browser/resources/file_manager/OWNERS
+This file was created on Wed, 13 Jul 2011 
+2 lines deleted
+11 lines deleted
+Over the course of one year, this file has had 4 commits
+
+chrome/browser/resources/gaia_auth/OWNERS
+This file was created on Fri, 25 May 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/resources/gaia_auth_host/OWNERS
+This file was created on Fri, 26 Apr 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/resources/google_now/OWNERS
+This file was created on Mon, 9 Sep 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/resources/help_app/OWNERS
+This file was created on Thu, 22 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/resources/history/OWNERS
+This file was created on Fri, 2 Mar 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/resources/image_loader/OWNERS
+This file was created on Tue, 21 May 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/resources/inspect/OWNERS
+This file was created on Thu, 11 Jul 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/resources/local_discovery/OWNERS
+This file was created on Wed, 17 Jul 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/resources/local_ntp/OWNERS
+This file was created on Wed, 1 May 2013 
+Over the course of one year, this file has had 2 commits
+
+chrome/browser/resources/local_omnibox_popup/OWNERS
+This file was created on Wed, 1 May 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/resources/memory_internals/OWNERS
+This file was created on Tue, 29 Jan 2013 
+2 lines deleted
+Over the course of one year, this file has had 3 commits
+
+chrome/browser/resources/net_internals/OWNERS
+This file was created on Fri, 2 Dec 2011 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/resources/ntp4/OWNERS
+This file was created on Tue, 12 Apr 2011 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/resources/ntp_android/OWNERS
+This file was created on Tue, 16 Oct 2012 
+2 lines deleted
+Over the course of one year, this file has had 2 commits
+
+chrome/browser/resources/options/OWNERS
+This file was created on Thu, 20 Jan 2011 
+1 lines deleted
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/resources/options/chromeos/OWNERS
+This file was created on Sat, 18 Aug 2012 
+4 lines deleted
+Over the course of one year, this file has had 2 commits
+
+chrome/browser/resources/performance_monitor/OWNERS
+This file was created on Tue, 11 Sep 2012 
+1 lines deleted
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/resources/plugin_metadata/OWNERS
+This file was created on Wed, 23 May 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/resources/predictors/OWNERS
+This file was created on Wed, 2 May 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/resources/print_preview/OWNERS
+This file was created on Thu, 1 Dec 2011 
+Over the course of one year, this file has had 2 commits
+
+chrome/browser/resources/profiler/OWNERS
+This file was created on Wed, 7 Dec 2011 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/resources/quick_office/OWNERS
+This file was created on Wed, 3 Apr 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/resources/quota_internals/OWNERS
+This file was created on Tue, 11 Jun 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/resources/sync_file_system_internals/OWNERS
+This file was created on Wed, 15 May 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/resources/sync_internals/OWNERS
+This file was created on Tue, 24 Jan 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/resources/task_manager/OWNERS
+This file was created on Mon, 5 Mar 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/resources/uber/OWNERS
+This file was created on Wed, 4 Jul 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/resources/web_dev_style/OWNERS
+This file was created on Wed, 7 Mar 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/resources/webstore_app/OWNERS
+This file was created on Fri, 2 Dec 2011 
+1 lines deleted
+1 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 3 commits
+
+chrome/browser/rlz/OWNERS
+This file was created on Mon, 12 Sep 2011 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/safe_browsing/OWNERS
+This file was created on Fri, 4 Feb 2011 
+1 lines deleted
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/search/OWNERS
+This file was created on Mon, 18 Mar 2013 
+2 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 3 commits
+
+chrome/browser/search_engines/OWNERS
+This file was created on Mon, 21 Mar 2011 
+1 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 2 commits
+
+chrome/browser/service/OWNERS
+This file was created on Wed, 22 Aug 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/sessions/OWNERS
+This file was created on Mon, 21 Mar 2011 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/signin/OWNERS
+This file was created on Wed, 11 Jan 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/speech/OWNERS
+This file was created on Fri, 21 Jan 2011 
+1 lines deleted
+Over the course of one year, this file has had 4 commits
+
+chrome/browser/speech/extension_api/OWNERS
+This file was created on Sat, 24 Mar 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/spellchecker/OWNERS
+This file was created on Wed, 22 Aug 2012 
+2 lines deleted
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/ssl/OWNERS
+This file was created on Wed, 22 Aug 2012 
+1 lines deleted
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/status_icons/OWNERS
+This file was created on Thu, 20 Jan 2011 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/storage_monitor/OWNERS
+This file was created on Thu, 21 Feb 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/sync/OWNERS
+This file was created on Thu, 21 Apr 2011 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/sync_file_system/OWNERS
+This file was created on Sat, 20 Oct 2012 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/sync_file_system/drive_backend/OWNERS
+This file was created on Tue, 2 Jul 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/sync_file_system/drive_backend_v1/OWNERS
+This file was created on Tue, 10 Sep 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/tab_contents/OWNERS
+This file was created on Tue, 3 May 2011 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/task_manager/OWNERS
+This file was created on Mon, 5 Mar 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/task_profiler/OWNERS
+This file was created on Wed, 22 Aug 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/themes/OWNERS
+This file was created on Wed, 22 Aug 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/translate/OWNERS
+This file was created on Tue, 7 Aug 2012 
+Over the course of one year, this file has had 2 commits
+
+chrome/browser/ui/OWNERS
+This file was created on Tue, 3 May 2011 
+3 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 4 commits
+
+chrome/browser/ui/android/OWNERS
+This file was created on Fri, 13 Jul 2012 
+1 lines deleted
+1 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 5 commits
+
+chrome/browser/ui/android/infobars/OWNERS
+This file was created on Wed, 25 Sep 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/ui/app_list/OWNERS
+This file was created on Fri, 24 Aug 2012 
+Over the course of one year, this file has had 2 commits
+
+chrome/browser/ui/apps/OWNERS
+This file was created on Tue, 9 Jul 2013 
+1 lines deleted
+Over the course of one year, this file has had 3 commits
+
+chrome/browser/ui/ash/OWNERS
+This file was created on Tue, 7 Aug 2012 
+1 lines deleted
+Over the course of one year, this file has had 3 commits
+
+chrome/browser/ui/ash/app_list/OWNERS
+This file was created on Sun, 5 Aug 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/ui/ash/launcher/OWNERS
+This file was created on Thu, 9 Aug 2012 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/ui/autofill/OWNERS
+This file was created on Thu, 30 Aug 2012 
+1 lines deleted
+Over the course of one year, this file has had 4 commits
+
+chrome/browser/ui/blocked_content/OWNERS
+This file was created on Thu, 18 Jul 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/ui/cocoa/OWNERS
+This file was created on Tue, 18 Jan 2011 
+1 lines deleted
+5 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 3 commits
+
+chrome/browser/ui/cocoa/applescript/OWNERS
+This file was created on Tue, 18 Jan 2011 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/ui/cocoa/apps/OWNERS
+This file was created on Thu, 19 Sep 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/ui/cocoa/autofill/OWNERS
+This file was created on Thu, 8 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/ui/cocoa/bookmarks/OWNERS
+This file was created on Tue, 18 Jan 2011 
+2 lines deleted
+Over the course of one year, this file has had 2 commits
+
+chrome/browser/ui/cocoa/content_settings/OWNERS
+This file was created on Thu, 20 Jan 2011 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/ui/cocoa/download/OWNERS
+This file was created on Tue, 18 Jan 2011 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/ui/cocoa/find_bar/OWNERS
+This file was created on Tue, 18 Jan 2011 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/ui/cocoa/importer/OWNERS
+This file was created on Tue, 18 Jan 2011 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/ui/cocoa/infobars/OWNERS
+This file was created on Tue, 18 Jan 2011 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/ui/cocoa/location_bar/OWNERS
+This file was created on Tue, 18 Jan 2011 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/ui/cocoa/notifications/OWNERS
+This file was created on Tue, 18 Jan 2011 
+1 lines deleted
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/ui/cocoa/panels/OWNERS
+This file was created on Thu, 27 Sep 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/ui/cocoa/tab_contents/OWNERS
+This file was created on Mon, 24 Jan 2011 
+1 lines deleted
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/ui/cocoa/tabs/OWNERS
+This file was created on Wed, 19 Jan 2011 
+1 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 2 commits
+
+chrome/browser/ui/cocoa/toolbar/OWNERS
+This file was created on Wed, 19 Jan 2011 
+1 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 2 commits
+
+chrome/browser/ui/cocoa/wrench_menu/OWNERS
+This file was created on Tue, 18 Jan 2011 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/ui/content_settings/OWNERS
+This file was created on Mon, 30 Jan 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/ui/extensions/OWNERS
+This file was created on Tue, 28 Feb 2012 
+1 lines deleted
+1 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 3 commits
+
+chrome/browser/ui/fullscreen/OWNERS
+This file was created on Fri, 29 Jun 2012 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/ui/gtk/OWNERS
+This file was created on Thu, 20 Jan 2011 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/ui/gtk/apps/OWNERS
+This file was created on Thu, 19 Sep 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/ui/gtk/panels/OWNERS
+This file was created on Thu, 27 Sep 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/ui/gtk/website_settings/OWNERS
+This file was created on Sat, 18 Aug 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/ui/libgtk2ui/OWNERS
+This file was created on Fri, 15 Mar 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/ui/omnibox/OWNERS
+This file was created on Thu, 5 Jan 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/ui/panels/OWNERS
+This file was created on Fri, 15 Apr 2011 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/ui/pdf/OWNERS
+This file was created on Thu, 16 Feb 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/ui/prefs/OWNERS
+This file was created on Wed, 3 Oct 2012 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/ui/search/OWNERS
+This file was created on Thu, 21 Jun 2012 
+2 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 3 commits
+
+chrome/browser/ui/search_engines/OWNERS
+This file was created on Thu, 5 Jan 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/ui/sync/OWNERS
+This file was created on Wed, 30 Nov 2011 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/ui/tab_contents/OWNERS
+This file was created on Wed, 31 Aug 2011 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/ui/tabs/OWNERS
+This file was created on Tue, 22 Mar 2011 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/ui/views/OWNERS
+This file was created on Tue, 4 Sep 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/ui/views/app_list/OWNERS
+This file was created on Wed, 10 Oct 2012 
+Over the course of one year, this file has had 2 commits
+
+chrome/browser/ui/views/apps/OWNERS
+This file was created on Thu, 19 Sep 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/ui/views/ash/OWNERS
+This file was created on Fri, 2 Mar 2012 
+1 lines deleted
+Over the course of one year, this file has had 2 commits
+
+chrome/browser/ui/views/autofill/OWNERS
+This file was created on Mon, 13 May 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/ui/views/bookmarks/OWNERS
+This file was created on Tue, 22 Mar 2011 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/ui/views/frame/OWNERS
+This file was created on Mon, 14 Jan 2013 
+Over the course of one year, this file has had 2 commits
+
+chrome/browser/ui/views/infobars/OWNERS
+This file was created on Sat, 20 Jul 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/ui/views/location_bar/OWNERS
+This file was created on Sat, 20 Jul 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/ui/views/message_center/OWNERS
+This file was created on Fri, 1 Mar 2013 
+Over the course of one year, this file has had 2 commits
+
+chrome/browser/ui/views/notifications/OWNERS
+This file was created on Wed, 5 Dec 2012 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/ui/views/omnibox/OWNERS
+This file was created on Sat, 20 Jul 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/ui/views/panels/OWNERS
+This file was created on Thu, 27 Sep 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/ui/views/tabs/OWNERS
+This file was created on Tue, 22 Mar 2011 
+1 lines deleted
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/ui/views/website_settings/OWNERS
+This file was created on Wed, 27 Jun 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/ui/web_applications/OWNERS
+This file was created on Fri, 10 May 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/ui/website_settings/OWNERS
+This file was created on Tue, 5 Jun 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/ui/webui/OWNERS
+This file was created on Sun, 27 Feb 2011 
+2 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 7 commits
+
+chrome/browser/ui/webui/chromeos/OWNERS
+This file was created on Thu, 13 Oct 2011 
+1 lines deleted
+Over the course of one year, this file has had 4 commits
+
+chrome/browser/ui/webui/chromeos/diagnostics/OWNERS
+This file was created on Thu, 2 Aug 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/ui/webui/chromeos/first_run/OWNERS
+This file was created on Mon, 2 Sep 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/ui/webui/chromeos/login/OWNERS
+This file was created on Fri, 16 Mar 2012 
+2 lines deleted
+1 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 4 commits
+
+chrome/browser/ui/webui/extensions/OWNERS
+This file was created on Wed, 28 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/ui/webui/local_discovery/OWNERS
+This file was created on Wed, 17 Jul 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/ui/webui/memory_internals/OWNERS
+This file was created on Tue, 29 Jan 2013 
+2 lines deleted
+Over the course of one year, this file has had 3 commits
+
+chrome/browser/ui/webui/net_internals/OWNERS
+This file was created on Wed, 11 Jan 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/ui/webui/ntp/OWNERS
+This file was created on Wed, 28 Mar 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/ui/webui/ntp/android/OWNERS
+This file was created on Sat, 22 Dec 2012 
+1 lines deleted
+Over the course of one year, this file has had 2 commits
+
+chrome/browser/ui/webui/options/OWNERS
+This file was created on Sat, 26 Feb 2011 
+1 lines deleted
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/ui/webui/options/chromeos/OWNERS
+This file was created on Sun, 19 Aug 2012 
+4 lines deleted
+Over the course of one year, this file has had 2 commits
+
+chrome/browser/ui/webui/performance_monitor/OWNERS
+This file was created on Tue, 25 Sep 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/ui/webui/predictors/OWNERS
+This file was created on Wed, 2 May 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/ui/webui/print_preview/OWNERS
+This file was created on Wed, 11 Jan 2012 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/ui/webui/quota_internals/OWNERS
+This file was created on Tue, 11 Jun 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/ui/webui/sync_file_system_internals/OWNERS
+This file was created on Wed, 15 May 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/ui/webui/task_manager/OWNERS
+This file was created on Mon, 5 Mar 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/ui/webui/uber/OWNERS
+This file was created on Wed, 4 Jul 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/ui/zoom/OWNERS
+This file was created on Fri, 16 Nov 2012 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/usb/OWNERS
+This file was created on Tue, 31 Jul 2012 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/value_store/OWNERS
+This file was created on Wed, 22 Aug 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/browser/web_applications/OWNERS
+This file was created on Mon, 8 Oct 2012 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/web_resource/OWNERS
+This file was created on Mon, 9 Apr 2012 
+Over the course of one year, this file has had 1 commits
+
+chrome/browser/webdata/OWNERS
+This file was created on Thu, 8 Nov 2012 
+1 lines deleted
+4 lines deleted
+Over the course of one year, this file has had 3 commits
+
+chrome/common/OWNERS
+This file was created on Wed, 7 Nov 2012 
+7 lines deleted
+5 lines deleted
+2 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 11 commits
+
+chrome/common/cloud_print/OWNERS
+This file was created on Wed, 27 Feb 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/common/extensions/OWNERS
+This file was created on Wed, 14 Sep 2011 
+1 lines deleted
+6 lines deleted
+4 lines deleted
+1 lines deleted
+1 lines deleted
+1 lines deleted
+7 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 12 commits
+
+chrome/common/extensions/api/OWNERS
+This file was created on Wed, 1 Jun 2011 
+7 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 2 commits
+
+chrome/common/extensions/api/devtools/OWNERS
+This file was created on Mon, 5 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/common/extensions/docs/OWNERS
+This file was created on Tue, 9 Oct 2012 
+2 lines deleted
+Over the course of one year, this file has had 4 commits
+
+chrome/common/extensions/docs/examples/apps/calculator/OWNERS
+This file was created on Tue, 12 Mar 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/common/importer/OWNERS
+This file was created on Tue, 9 Jul 2013 
+1 lines deleted
+Over the course of one year, this file has had 2 commits
+
+chrome/common/local_discovery/OWNERS
+This file was created on Thu, 4 Jul 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/common/mac/OWNERS
+This file was created on Fri, 19 Aug 2011 
+Over the course of one year, this file has had 0 commits
+
+chrome/common/media_galleries/OWNERS
+This file was created on Wed, 26 Jun 2013 
+Over the course of one year, this file has had 2 commits
+
+chrome/common/metrics/OWNERS
+This file was created on Tue, 4 Sep 2012 
+Over the course of one year, this file has had 1 commits
+
+chrome/common/metrics/variations/OWNERS
+This file was created on Wed, 15 Aug 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/common/omaha_query_params/OWNERS
+This file was created on Sat, 27 Apr 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/common/safe_browsing/OWNERS
+This file was created on Fri, 9 Nov 2012 
+1 lines deleted
+7 lines deleted
+Over the course of one year, this file has had 4 commits
+
+chrome/common/translate/OWNERS
+This file was created on Thu, 6 Jun 2013 
+1 lines deleted
+Over the course of one year, this file has had 2 commits
+
+chrome/installer/OWNERS
+This file was created on Thu, 29 Mar 2012 
+Over the course of one year, this file has had 1 commits
+
+chrome/installer/gcapi_mac/OWNERS
+This file was created on Mon, 13 Aug 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/installer/linux/OWNERS
+This file was created on Wed, 5 Jun 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/installer/mac/OWNERS
+This file was created on Thu, 14 Apr 2011 
+Over the course of one year, this file has had 0 commits
+
+chrome/nacl/OWNERS
+This file was created on Tue, 31 Jul 2012 
+3 lines deleted
+Over the course of one year, this file has had 2 commits
+
+chrome/renderer/autofill/OWNERS
+This file was created on Fri, 25 May 2012 
+1 lines deleted
+Over the course of one year, this file has had 2 commits
+
+chrome/renderer/extensions/OWNERS
+This file was created on Wed, 14 Sep 2011 
+8 lines deleted
+1 lines deleted
+1 lines deleted
+1 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 7 commits
+
+chrome/renderer/media/OWNERS
+This file was created on Fri, 13 Sep 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/renderer/net/OWNERS
+This file was created on Mon, 16 Sep 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/renderer/pepper/OWNERS
+This file was created on Wed, 22 Aug 2012 
+1 lines deleted
+Over the course of one year, this file has had 3 commits
+
+chrome/renderer/plugins/OWNERS
+This file was created on Wed, 22 Aug 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/renderer/prerender/OWNERS
+This file was created on Fri, 25 May 2012 
+1 lines deleted
+Over the course of one year, this file has had 1 commits
+
+chrome/renderer/printing/OWNERS
+This file was created on Wed, 23 Jan 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/renderer/resources/extensions/OWNERS
+This file was created on Mon, 6 Aug 2012 
+8 lines deleted
+5 lines deleted
+1 lines deleted
+1 lines deleted
+1 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 12 commits
+
+chrome/renderer/safe_browsing/OWNERS
+This file was created on Wed, 22 Aug 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/renderer/searchbox/OWNERS
+This file was created on Sat, 11 Aug 2012 
+1 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 2 commits
+
+chrome/renderer/spellchecker/OWNERS
+This file was created on Wed, 22 Aug 2012 
+2 lines deleted
+Over the course of one year, this file has had 1 commits
+
+chrome/renderer/translate/OWNERS
+This file was created on Sat, 13 Apr 2013 
+Over the course of one year, this file has had 2 commits
+
+chrome/service/OWNERS
+This file was created on Fri, 18 Mar 2011 
+Over the course of one year, this file has had 0 commits
+
+chrome/test/OWNERS
+This file was created on Wed, 19 Jan 2011 
+Over the course of one year, this file has had 0 commits
+
+chrome/test/android/OWNERS
+This file was created on Fri, 23 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/test/automation/OWNERS
+This file was created on Thu, 19 Jul 2012 
+1 lines deleted
+Over the course of one year, this file has had 1 commits
+
+chrome/test/chromedriver/OWNERS
+This file was created on Tue, 23 Oct 2012 
+1 lines deleted
+Over the course of one year, this file has had 3 commits
+
+chrome/test/data/OWNERS
+This file was created on Fri, 22 Apr 2011 
+Over the course of one year, this file has had 0 commits
+
+chrome/test/data/extensions/api_test/file_browser/OWNERS
+This file was created on Mon, 9 Sep 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/test/data/extensions/api_test/file_manager_browsertest/OWNERS
+This file was created on Mon, 9 Sep 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/test/data/extensions/platform_apps/web_view/OWNERS
+This file was created on Fri, 16 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/test/data/nacl/OWNERS
+This file was created on Wed, 15 Aug 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/test/data/translate/OWNERS
+This file was created on Fri, 26 Apr 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/test/ext_auto/OWNERS
+This file was created on Mon, 26 Nov 2012 
+Over the course of one year, this file has had 1 commits
+
+chrome/test/functional/OWNERS
+This file was created on Thu, 27 Jan 2011 
+2 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 2 commits
+
+chrome/test/functional/ispy/OWNERS
+This file was created on Tue, 11 Jun 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/test/functional/media/OWNERS
+This file was created on Thu, 2 Aug 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/test/gpu/OWNERS
+This file was created on Tue, 25 Oct 2011 
+1 lines deleted
+Over the course of one year, this file has had 1 commits
+
+chrome/test/install_test/OWNERS
+This file was created on Mon, 8 Oct 2012 
+Over the course of one year, this file has had 1 commits
+
+chrome/test/logging/win/OWNERS
+This file was created on Mon, 12 Mar 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/test/mini_installer/OWNERS
+This file was created on Tue, 6 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/test/nacl/OWNERS
+This file was created on Wed, 15 Aug 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/test/nacl_test_injection/OWNERS
+This file was created on Tue, 21 Aug 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/test/perf/OWNERS
+This file was created on Tue, 18 Sep 2012 
+Over the course of one year, this file has had 0 commits
+
+chrome/test/perf/frame_rate/OWNERS
+This file was created on Wed, 30 Nov 2011 
+1 lines deleted
+Over the course of one year, this file has had 1 commits
+
+chrome/test/perf/rendering/OWNERS
+This file was created on Tue, 3 Jan 2012 
+1 lines deleted
+Over the course of one year, this file has had 1 commits
+
+chrome/test/ppapi/OWNERS
+This file was created on Mon, 9 Jul 2012 
+1 lines deleted
+Over the course of one year, this file has had 1 commits
+
+chrome/test/pyautolib/OWNERS
+This file was created on Thu, 27 Jan 2011 
+2 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 2 commits
+
+chrome/test/telemetry/OWNERS
+This file was created on Thu, 11 Apr 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/tools/build/OWNERS
+This file was created on Wed, 15 Aug 2012 
+Over the course of one year, this file has had 1 commits
+
+chrome/tools/build/mac/OWNERS
+This file was created on Thu, 28 Apr 2011 
+Over the course of one year, this file has had 0 commits
+
+chrome/tools/build/win/OWNERS
+This file was created on Wed, 15 Aug 2012 
+Over the course of one year, this file has had 2 commits
+
+chrome/utility/extensions/OWNERS
+This file was created on Thu, 11 Jul 2013 
+1 lines deleted
+Over the course of one year, this file has had 2 commits
+
+chrome/utility/importer/OWNERS
+This file was created on Tue, 16 Jul 2013 
+1 lines deleted
+Over the course of one year, this file has had 2 commits
+
+chrome/utility/local_discovery/OWNERS
+This file was created on Thu, 4 Jul 2013 
+Over the course of one year, this file has had 1 commits
+
+chrome/utility/media_galleries/OWNERS
+This file was created on Wed, 26 Jun 2013 
+1 lines deleted
+Over the course of one year, this file has had 2 commits
+
+chrome_frame/OWNERS
+This file was created on Wed, 6 Jul 2011 
+Over the course of one year, this file has had 0 commits
+
+chromeos/OWNERS
+This file was created on Wed, 21 Mar 2012 
+1 lines deleted
+Over the course of one year, this file has had 2 commits
+
+chromeos/attestation/OWNERS
+This file was created on Fri, 19 Apr 2013 
+Over the course of one year, this file has had 1 commits
+
+chromeos/audio/OWNERS
+This file was created on Thu, 2 May 2013 
+Over the course of one year, this file has had 1 commits
+
+chromeos/dbus/ibus/OWNERS
+This file was created on Mon, 24 Sep 2012 
+Over the course of one year, this file has had 0 commits
+
+chromeos/display/OWNERS
+This file was created on Tue, 14 Aug 2012 
+1 lines deleted
+Over the course of one year, this file has had 2 commits
+
+chromeos/docs/OWNERS
+This file was created on Wed, 19 Dec 2012 
+Over the course of one year, this file has had 1 commits
+
+chromeos/ime/OWNERS
+This file was created on Mon, 25 Mar 2013 
+Over the course of one year, this file has had 1 commits
+
+chromeos/network/OWNERS
+This file was created on Tue, 15 Jan 2013 
+1 lines deleted
+Over the course of one year, this file has had 3 commits
+
+chromeos/process_proxy/OWNERS
+This file was created on Tue, 12 Mar 2013 
+Over the course of one year, this file has had 1 commits
+
+chromeos/test/data/OWNERS
+This file was created on Tue, 5 Mar 2013 
+Over the course of one year, this file has had 1 commits
+
+chromeos/tools/onc_validator/OWNERS
+This file was created on Mon, 28 Jan 2013 
+Over the course of one year, this file has had 1 commits
+
+cloud_print/OWNERS
+This file was created on Thu, 5 May 2011 
+1 lines deleted
+Over the course of one year, this file has had 1 commits
+
+components/OWNERS
+This file was created on Thu, 27 Dec 2012 
+4 lines deleted
+2 lines deleted
+4 lines deleted
+3 lines deleted
+1 lines deleted
+4 lines deleted
+4 lines deleted
+4 lines deleted
+2 lines deleted
+Over the course of one year, this file has had 27 commits
+
+components/auto_login_parser/OWNERS
+This file was created on Fri, 18 Jan 2013 
+Over the course of one year, this file has had 1 commits
+
+components/autofill/OWNERS
+This file was created on Thu, 7 Mar 2013 
+1 lines deleted
+Over the course of one year, this file has had 3 commits
+
+components/autofill/content/browser/wallet/OWNERS
+This file was created on Mon, 10 Jun 2013 
+Over the course of one year, this file has had 1 commits
+
+components/autofill/core/common/OWNERS
+This file was created on Tue, 18 Jun 2013 
+Over the course of one year, this file has had 1 commits
+
+components/breakpad/OWNERS
+This file was created on Tue, 18 Jun 2013 
+3 lines deleted
+Over the course of one year, this file has had 3 commits
+
+components/browser_context_keyed_service/OWNERS
+This file was created on Wed, 29 May 2013 
+Over the course of one year, this file has had 1 commits
+
+components/dom_distiller/OWNERS
+This file was created on Tue, 17 Sep 2013 
+3 lines deleted
+Over the course of one year, this file has had 3 commits
+
+components/json_schema/OWNERS
+This file was created on Tue, 13 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+components/nacl/OWNERS
+This file was created on Fri, 21 Jun 2013 
+2 lines deleted
+6 lines deleted
+Over the course of one year, this file has had 5 commits
+
+components/nacl/common/OWNERS
+This file was created on Tue, 23 Jul 2013 
+1 lines deleted
+Over the course of one year, this file has had 2 commits
+
+components/nacl/loader/OWNERS
+This file was created on Wed, 31 Jul 2013 
+Over the course of one year, this file has had 1 commits
+
+components/navigation_interception/OWNERS
+This file was created on Wed, 23 Jan 2013 
+1 lines deleted
+Over the course of one year, this file has had 2 commits
+
+components/policy/OWNERS
+This file was created on Wed, 14 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+components/sessions/OWNERS
+This file was created on Wed, 1 May 2013 
+Over the course of one year, this file has had 1 commits
+
+components/startup_metric_utils/OWNERS
+This file was created on Tue, 3 Sep 2013 
+Over the course of one year, this file has had 1 commits
+
+components/test/data/web_database/OWNERS
+This file was created on Tue, 30 Jul 2013 
+Over the course of one year, this file has had 1 commits
+
+components/tracing/OWNERS
+This file was created on Fri, 28 Dec 2012 
+1 lines deleted
+7 lines deleted
+Over the course of one year, this file has had 5 commits
+
+components/user_prefs/OWNERS
+This file was created on Wed, 6 Mar 2013 
+Over the course of one year, this file has had 1 commits
+
+components/variations/OWNERS
+This file was created on Thu, 29 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+components/visitedlink/OWNERS
+This file was created on Wed, 23 Jan 2013 
+Over the course of one year, this file has had 1 commits
+
+components/visitedlink/common/OWNERS
+This file was created on Wed, 23 Jan 2013 
+1 lines deleted
+7 lines deleted
+Over the course of one year, this file has had 4 commits
+
+components/web_contents_delegate_android/OWNERS
+This file was created on Sat, 12 Jan 2013 
+Over the course of one year, this file has had 1 commits
+
+components/web_modal/OWNERS
+This file was created on Tue, 20 Aug 2013 
+2 lines deleted
+Over the course of one year, this file has had 3 commits
+
+components/webdata/OWNERS
+This file was created on Sat, 13 Apr 2013 
+1 lines deleted
+Over the course of one year, this file has had 2 commits
+
+components/webdata/encryptor/OWNERS
+This file was created on Sun, 24 Mar 2013 
+1 lines deleted
+Over the course of one year, this file has had 2 commits
+
+content/OWNERS
+This file was created on Fri, 18 Feb 2011 
+1 lines deleted
+1 lines deleted
+1 lines deleted
+3 lines deleted
+1 lines deleted
+3 lines deleted
+2 lines deleted
+Over the course of one year, this file has had 17 commits
+
+content/app/OWNERS
+This file was created on Sat, 1 Oct 2011 
+Over the course of one year, this file has had 0 commits
+
+content/app/android/OWNERS
+This file was created on Fri, 1 Jun 2012 
+1 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 2 commits
+
+content/browser/OWNERS
+This file was created on Thu, 24 Feb 2011 
+3 lines deleted
+7 lines deleted
+Over the course of one year, this file has had 6 commits
+
+content/browser/accessibility/OWNERS
+This file was created on Thu, 23 Jun 2011 
+Over the course of one year, this file has had 0 commits
+
+content/browser/android/OWNERS
+This file was created on Wed, 25 Apr 2012 
+4 lines deleted
+1 lines deleted
+1 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 5 commits
+
+content/browser/appcache/OWNERS
+This file was created on Wed, 11 May 2011 
+Over the course of one year, this file has had 0 commits
+
+content/browser/aura/OWNERS
+This file was created on Mon, 29 Jul 2013 
+Over the course of one year, this file has had 2 commits
+
+content/browser/browser_plugin/OWNERS
+This file was created on Fri, 30 Nov 2012 
+Over the course of one year, this file has had 1 commits
+
+content/browser/device_orientation/OWNERS
+This file was created on Wed, 30 Mar 2011 
+Over the course of one year, this file has had 1 commits
+
+content/browser/devtools/OWNERS
+This file was created on Wed, 19 Dec 2012 
+2 lines deleted
+Over the course of one year, this file has had 3 commits
+
+content/browser/dom_storage/OWNERS
+This file was created on Thu, 15 Mar 2012 
+3 lines deleted
+Over the course of one year, this file has had 1 commits
+
+content/browser/download/OWNERS
+This file was created on Thu, 14 Jul 2011 
+Over the course of one year, this file has had 0 commits
+
+content/browser/fileapi/OWNERS
+This file was created on Thu, 1 Mar 2012 
+Over the course of one year, this file has had 0 commits
+
+content/browser/gamepad/OWNERS
+This file was created on Tue, 26 Jun 2012 
+Over the course of one year, this file has had 0 commits
+
+content/browser/geolocation/OWNERS
+This file was created on Wed, 13 Apr 2011 
+2 lines deleted
+1 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 3 commits
+
+content/browser/gpu/OWNERS
+This file was created on Mon, 9 May 2011 
+1 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 2 commits
+
+content/browser/indexed_db/OWNERS
+This file was created on Tue, 20 Dec 2011 
+Over the course of one year, this file has had 1 commits
+
+content/browser/loader/OWNERS
+This file was created on Fri, 8 Mar 2013 
+Over the course of one year, this file has had 1 commits
+
+content/browser/media/OWNERS
+This file was created on Mon, 14 Jan 2013 
+Over the course of one year, this file has had 1 commits
+
+content/browser/media/android/OWNERS
+This file was created on Fri, 13 Sep 2013 
+Over the course of one year, this file has had 1 commits
+
+content/browser/net/OWNERS
+This file was created on Tue, 12 Jul 2011 
+Over the course of one year, this file has had 1 commits
+
+content/browser/renderer_host/OWNERS
+This file was created on Thu, 17 May 2012 
+2 lines deleted
+16 lines deleted
+Over the course of one year, this file has had 6 commits
+
+content/browser/renderer_host/input/OWNERS
+This file was created on Fri, 19 Jul 2013 
+1 lines deleted
+2 lines deleted
+Over the course of one year, this file has had 4 commits
+
+content/browser/renderer_host/java/OWNERS
+This file was created on Fri, 6 Jan 2012 
+Over the course of one year, this file has had 0 commits
+
+content/browser/renderer_host/media/OWNERS
+This file was created on Tue, 14 Jun 2011 
+2 lines deleted
+2 lines deleted
+2 lines deleted
+1 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 9 commits
+
+content/browser/renderer_host/p2p/OWNERS
+This file was created on Tue, 12 Apr 2011 
+1 lines deleted
+Over the course of one year, this file has had 1 commits
+
+content/browser/renderer_host/pepper/OWNERS
+This file was created on Thu, 29 Nov 2012 
+Over the course of one year, this file has had 3 commits
+
+content/browser/resources/gpu/OWNERS
+This file was created on Thu, 31 Jan 2013 
+Over the course of one year, this file has had 1 commits
+
+content/browser/resources/indexed_db/OWNERS
+This file was created on Mon, 8 Apr 2013 
+Over the course of one year, this file has had 1 commits
+
+content/browser/resources/media/OWNERS
+This file was created on Wed, 30 Jan 2013 
+Over the course of one year, this file has had 1 commits
+
+content/browser/service_worker/OWNERS
+This file was created on Sat, 21 Sep 2013 
+Over the course of one year, this file has had 1 commits
+
+content/browser/speech/OWNERS
+This file was created on Sat, 26 Feb 2011 
+1 lines deleted
+Over the course of one year, this file has had 3 commits
+
+content/browser/ssl/OWNERS
+This file was created on Tue, 14 Jun 2011 
+Over the course of one year, this file has had 0 commits
+
+content/browser/streams/OWNERS
+This file was created on Wed, 20 Mar 2013 
+Over the course of one year, this file has had 1 commits
+
+content/browser/tracing/OWNERS
+This file was created on Fri, 1 Feb 2013 
+1 lines deleted
+Over the course of one year, this file has had 4 commits
+
+content/browser/web_contents/OWNERS
+This file was created on Thu, 17 May 2012 
+2 lines deleted
+Over the course of one year, this file has had 2 commits
+
+content/browser/webui/OWNERS
+This file was created on Tue, 3 May 2011 
+Over the course of one year, this file has had 0 commits
+
+content/browser/worker_host/OWNERS
+This file was created on Tue, 31 May 2011 
+Over the course of one year, this file has had 0 commits
+
+content/browser/worker_host/test/OWNERS
+This file was created on Thu, 29 Mar 2012 
+Over the course of one year, this file has had 0 commits
+
+content/browser/zygote_host/OWNERS
+This file was created on Tue, 24 Jul 2012 
+Over the course of one year, this file has had 0 commits
+
+content/child/OWNERS
+This file was created on Fri, 21 Jun 2013 
+Over the course of one year, this file has had 1 commits
+
+content/child/appcache/OWNERS
+This file was created on Mon, 12 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+content/child/fileapi/OWNERS
+This file was created on Tue, 4 Jun 2013 
+1 lines deleted
+8 lines deleted
+Over the course of one year, this file has had 3 commits
+
+content/child/indexed_db/OWNERS
+This file was created on Tue, 4 Jun 2013 
+8 lines deleted
+Over the course of one year, this file has had 2 commits
+
+content/child/npapi/OWNERS
+This file was created on Fri, 19 Jul 2013 
+Over the course of one year, this file has had 1 commits
+
+content/common/OWNERS
+This file was created on Tue, 31 May 2011 
+1 lines deleted
+8 lines deleted
+3 lines deleted
+3 lines deleted
+6 lines deleted
+Over the course of one year, this file has had 11 commits
+
+content/common/android/OWNERS
+This file was created on Fri, 13 Jul 2012 
+1 lines deleted
+1 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 3 commits
+
+content/common/browser_plugin/OWNERS
+This file was created on Tue, 5 Mar 2013 
+1 lines deleted
+7 lines deleted
+Over the course of one year, this file has had 4 commits
+
+content/common/device_orientation/OWNERS
+This file was created on Mon, 5 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+content/common/dom_storage/OWNERS
+This file was created on Wed, 7 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+content/common/fileapi/OWNERS
+This file was created on Thu, 1 Mar 2012 
+1 lines deleted
+8 lines deleted
+Over the course of one year, this file has had 4 commits
+
+content/common/gpu/OWNERS
+This file was created on Fri, 8 Apr 2011 
+13 lines deleted
+1 lines deleted
+1 lines deleted
+8 lines deleted
+Over the course of one year, this file has had 6 commits
+
+content/common/gpu/media/OWNERS
+This file was created on Thu, 16 Jun 2011 
+1 lines deleted
+Over the course of one year, this file has had 1 commits
+
+content/common/indexed_db/OWNERS
+This file was created on Tue, 20 Dec 2011 
+8 lines deleted
+Over the course of one year, this file has had 5 commits
+
+content/common/input/OWNERS
+This file was created on Sat, 7 Sep 2013 
+Over the course of one year, this file has had 1 commits
+
+content/common/media/OWNERS
+This file was created on Fri, 17 Jun 2011 
+8 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 4 commits
+
+content/common/net/OWNERS
+This file was created on Tue, 13 Sep 2011 
+Over the course of one year, this file has had 0 commits
+
+content/gpu/OWNERS
+This file was created on Mon, 21 Mar 2011 
+1 lines deleted
+Over the course of one year, this file has had 1 commits
+
+content/plugin/OWNERS
+This file was created on Tue, 31 May 2011 
+Over the course of one year, this file has had 0 commits
+
+content/port/OWNERS
+This file was created on Thu, 16 Feb 2012 
+Over the course of one year, this file has had 0 commits
+
+content/ppapi_plugin/OWNERS
+This file was created on Tue, 31 May 2011 
+Over the course of one year, this file has had 1 commits
+
+content/public/OWNERS
+This file was created on Sat, 1 Oct 2011 
+Over the course of one year, this file has had 0 commits
+
+content/public/android/OWNERS
+This file was created on Wed, 9 May 2012 
+2 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 4 commits
+
+content/public/android/java/resource_map/OWNERS
+This file was created on Wed, 10 Jul 2013 
+Over the course of one year, this file has had 1 commits
+
+content/public/browser/android/OWNERS
+This file was created on Mon, 24 Sep 2012 
+2 lines deleted
+Over the course of one year, this file has had 1 commits
+
+content/public/common/OWNERS
+This file was created on Thu, 10 Jan 2013 
+Over the course of one year, this file has had 1 commits
+
+content/public/renderer/android/OWNERS
+This file was created on Wed, 1 May 2013 
+6 lines deleted
+Over the course of one year, this file has had 3 commits
+
+content/public/test/OWNERS
+This file was created on Sat, 2 Jun 2012 
+2 lines deleted
+Over the course of one year, this file has had 2 commits
+
+content/public/test/android/OWNERS
+This file was created on Tue, 25 Sep 2012 
+2 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 2 commits
+
+content/renderer/OWNERS
+This file was created on Thu, 28 Apr 2011 
+1 lines deleted
+Over the course of one year, this file has had 3 commits
+
+content/renderer/accessibility/OWNERS
+This file was created on Fri, 8 Feb 2013 
+Over the course of one year, this file has had 1 commits
+
+content/renderer/android/OWNERS
+This file was created on Fri, 13 Jul 2012 
+1 lines deleted
+1 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 3 commits
+
+content/renderer/browser_plugin/OWNERS
+This file was created on Fri, 30 Nov 2012 
+Over the course of one year, this file has had 1 commits
+
+content/renderer/device_orientation/OWNERS
+This file was created on Thu, 11 Jul 2013 
+Over the course of one year, this file has had 1 commits
+
+content/renderer/devtools/OWNERS
+This file was created on Wed, 19 Dec 2012 
+2 lines deleted
+Over the course of one year, this file has had 3 commits
+
+content/renderer/dom_storage/OWNERS
+This file was created on Thu, 10 May 2012 
+1 lines deleted
+Over the course of one year, this file has had 2 commits
+
+content/renderer/gpu/OWNERS
+This file was created on Wed, 25 May 2011 
+Over the course of one year, this file has had 0 commits
+
+content/renderer/java/OWNERS
+This file was created on Fri, 6 Jan 2012 
+Over the course of one year, this file has had 0 commits
+
+content/renderer/media/OWNERS
+This file was created on Wed, 11 May 2011 
+1 lines deleted
+Over the course of one year, this file has had 2 commits
+
+content/renderer/media/android/OWNERS
+This file was created on Sat, 22 Jun 2013 
+1 lines deleted
+Over the course of one year, this file has had 2 commits
+
+content/renderer/p2p/OWNERS
+This file was created on Thu, 31 Mar 2011 
+Over the course of one year, this file has had 0 commits
+
+content/renderer/pepper/OWNERS
+This file was created on Thu, 29 Nov 2012 
+Over the course of one year, this file has had 4 commits
+
+content/shell/OWNERS
+This file was created on Fri, 13 Jul 2012 
+9 lines deleted
+Over the course of one year, this file has had 3 commits
+
+content/shell/android/OWNERS
+This file was created on Fri, 30 Mar 2012 
+1 lines deleted
+1 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 3 commits
+
+content/test/OWNERS
+This file was created on Fri, 30 Mar 2012 
+2 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 4 commits
+
+content/test/data/OWNERS
+This file was created on Fri, 30 Mar 2012 
+Over the course of one year, this file has had 0 commits
+
+content/test/data/accessibility/OWNERS
+This file was created on Thu, 29 Mar 2012 
+Over the course of one year, this file has had 0 commits
+
+content/test/data/media/OWNERS
+This file was created on Mon, 14 Jan 2013 
+Over the course of one year, this file has had 1 commits
+
+content/test/gpu/OWNERS
+This file was created on Wed, 25 Jan 2012 
+1 lines deleted
+Over the course of one year, this file has had 1 commits
+
+content/test/net/OWNERS
+This file was created on Thu, 15 Mar 2012 
+Over the course of one year, this file has had 0 commits
+
+content/utility/OWNERS
+This file was created on Tue, 14 Jun 2011 
+Over the course of one year, this file has had 1 commits
+
+content/worker/OWNERS
+This file was created on Tue, 31 May 2011 
+Over the course of one year, this file has had 0 commits
+
+content/zygote/OWNERS
+This file was created on Fri, 1 Jun 2012 
+Over the course of one year, this file has had 0 commits
+
+courgette/OWNERS
+This file was created on Tue, 13 Mar 2012 
+Over the course of one year, this file has had 0 commits
+
+crypto/OWNERS
+This file was created on Thu, 14 Apr 2011 
+1 lines deleted
+Over the course of one year, this file has had 1 commits
+
+dbus/OWNERS
+This file was created on Tue, 14 Feb 2012 
+1 lines deleted
+Over the course of one year, this file has had 1 commits
+
+device/OWNERS
+This file was created on Mon, 22 Oct 2012 
+1 lines deleted
+Over the course of one year, this file has had 2 commits
+
+device/bluetooth/OWNERS
+This file was created on Thu, 18 Oct 2012 
+1 lines deleted
+Over the course of one year, this file has had 2 commits
+
+device/media_transfer_protocol/OWNERS
+This file was created on Fri, 4 Jan 2013 
+2 lines deleted
+Over the course of one year, this file has had 3 commits
+
+device/usb/OWNERS
+This file was created on Wed, 5 Dec 2012 
+Over the course of one year, this file has had 2 commits
+
+extensions/OWNERS
+This file was created on Thu, 14 Feb 2013 
+6 lines deleted
+1 lines deleted
+1 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 6 commits
+
+extensions/common/matcher/OWNERS
+This file was created on Mon, 4 Feb 2013 
+Over the course of one year, this file has had 1 commits
+
+google_apis/OWNERS
+This file was created on Fri, 7 Sep 2012 
+1 lines deleted
+2 lines deleted
+Over the course of one year, this file has had 2 commits
+
+google_apis/cup/OWNERS
+This file was created on Fri, 7 Jun 2013 
+Over the course of one year, this file has had 1 commits
+
+google_apis/gaia/OWNERS
+This file was created on Fri, 7 Sep 2012 
+Over the course of one year, this file has had 0 commits
+
+google_update/OWNERS
+This file was created on Tue, 13 Mar 2012 
+Over the course of one year, this file has had 0 commits
+
+gpu/OWNERS
+This file was created on Sun, 3 Jul 2011 
+1 lines deleted
+Over the course of one year, this file has had 2 commits
+
+gpu/command_buffer/OWNERS
+This file was created on Mon, 26 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+gpu/config/OWNERS
+This file was created on Tue, 21 May 2013 
+1 lines deleted
+5 lines deleted
+Over the course of one year, this file has had 4 commits
+
+ios/OWNERS
+This file was created on Thu, 30 May 2013 
+Over the course of one year, this file has had 1 commits
+
+ipc/OWNERS
+This file was created on Sun, 3 Jul 2011 
+Over the course of one year, this file has had 3 commits
+
+jingle/OWNERS
+This file was created on Fri, 18 Mar 2011 
+Over the course of one year, this file has had 0 commits
+
+media/OWNERS
+This file was created on Fri, 17 Jun 2011 
+1 lines deleted
+Over the course of one year, this file has had 2 commits
+
+media/audio/OWNERS
+This file was created on Tue, 24 Jan 2012 
+3 lines deleted
+Over the course of one year, this file has had 4 commits
+
+media/base/android/OWNERS
+This file was created on Thu, 19 Apr 2012 
+1 lines deleted
+1 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 3 commits
+
+media/cast/OWNERS
+This file was created on Wed, 21 Aug 2013 
+Over the course of one year, this file has had 2 commits
+
+media/video/capture/OWNERS
+This file was created on Fri, 21 Dec 2012 
+1 lines deleted
+Over the course of one year, this file has had 2 commits
+
+mojo/OWNERS
+This file was created on Tue, 24 Sep 2013 
+Over the course of one year, this file has had 1 commits
+
+native_client_sdk/OWNERS
+This file was created on Fri, 31 Aug 2012 
+1 lines deleted
+Over the course of one year, this file has had 3 commits
+
+native_client_sdk/src/doc/OWNERS
+This file was created on Wed, 28 Aug 2013 
+Over the course of one year, this file has had 2 commits
+
+net/OWNERS
+This file was created on Thu, 20 Jan 2011 
+1 lines deleted
+Over the course of one year, this file has had 4 commits
+
+net/android/OWNERS
+This file was created on Fri, 20 Apr 2012 
+1 lines deleted
+1 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 3 commits
+
+net/base/OWNERS
+This file was created on Fri, 24 May 2013 
+Over the course of one year, this file has had 1 commits
+
+net/base/registry_controlled_domains/OWNERS
+This file was created on Fri, 20 Jul 2012 
+Over the course of one year, this file has had 0 commits
+
+net/cookies/OWNERS
+This file was created on Thu, 15 Mar 2012 
+Over the course of one year, this file has had 0 commits
+
+net/data/websocket/OWNERS
+This file was created on Tue, 16 Oct 2012 
+Over the course of one year, this file has had 1 commits
+
+net/disk_cache/simple/OWNERS
+This file was created on Thu, 11 Jul 2013 
+Over the course of one year, this file has had 1 commits
+
+net/ftp/OWNERS
+This file was created on Thu, 20 Jan 2011 
+Over the course of one year, this file has had 0 commits
+
+net/socket_stream/OWNERS
+This file was created on Wed, 13 Apr 2011 
+2 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 3 commits
+
+net/test/OWNERS
+This file was created on Tue, 22 Mar 2011 
+Over the course of one year, this file has had 0 commits
+
+net/test/android/OWNERS
+This file was created on Wed, 7 Nov 2012 
+1 lines deleted
+Over the course of one year, this file has had 2 commits
+
+net/test/embedded_test_server/OWNERS
+This file was created on Tue, 7 May 2013 
+Over the course of one year, this file has had 1 commits
+
+net/tools/testserver/OWNERS
+This file was created on Wed, 29 Jun 2011 
+5 lines deleted
+8 lines deleted
+Over the course of one year, this file has had 2 commits
+
+net/tools/tld_cleanup/OWNERS
+This file was created on Fri, 26 Apr 2013 
+Over the course of one year, this file has had 1 commits
+
+net/websockets/OWNERS
+This file was created on Wed, 13 Apr 2011 
+2 lines deleted
+1 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 4 commits
+
+ppapi/OWNERS
+This file was created on Wed, 29 Jun 2011 
+1 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 4 commits
+
+ppapi/api/OWNERS
+This file was created on Wed, 29 Jun 2011 
+Over the course of one year, this file has had 1 commits
+
+ppapi/examples/video_decode/OWNERS
+This file was created on Wed, 7 Mar 2012 
+Over the course of one year, this file has had 0 commits
+
+ppapi/generators/OWNERS
+This file was created on Wed, 29 Jun 2011 
+Over the course of one year, this file has had 2 commits
+
+ppapi/native_client/OWNERS
+This file was created on Thu, 25 Aug 2011 
+Over the course of one year, this file has had 0 commits
+
+ppapi/proxy/OWNERS
+This file was created on Wed, 29 Jun 2011 
+1 lines deleted
+7 lines deleted
+Over the course of one year, this file has had 4 commits
+
+printing/OWNERS
+This file was created on Tue, 12 Jul 2011 
+1 lines deleted
+Over the course of one year, this file has had 2 commits
+
+remoting/OWNERS
+This file was created on Mon, 28 Mar 2011 
+1 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 2 commits
+
+remoting/android/OWNERS
+This file was created on Fri, 19 Jul 2013 
+Over the course of one year, this file has had 1 commits
+
+remoting/client/jni/OWNERS
+This file was created on Thu, 11 Jul 2013 
+Over the course of one year, this file has had 1 commits
+
+remoting/host/OWNERS
+This file was created on Fri, 9 Nov 2012 
+1 lines deleted
+7 lines deleted
+Over the course of one year, this file has had 4 commits
+
+rlz/OWNERS
+This file was created on Fri, 22 Jun 2012 
+1 lines deleted
+Over the course of one year, this file has had 1 commits
+
+sandbox/OWNERS
+This file was created on Tue, 13 Mar 2012 
+2 lines deleted
+Over the course of one year, this file has had 1 commits
+
+sdch/OWNERS
+This file was created on Tue, 13 Mar 2012 
+Over the course of one year, this file has had 0 commits
+
+skia/OWNERS
+This file was created on Thu, 7 Jul 2011 
+1 lines deleted
+6 lines deleted
+Over the course of one year, this file has had 4 commits
+
+sql/OWNERS
+This file was created on Tue, 13 Mar 2012 
+Over the course of one year, this file has had 0 commits
+
+sync/OWNERS
+This file was created on Sat, 10 Mar 2012 
+1 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 3 commits
+
+sync/android/OWNERS
+This file was created on Sat, 12 Jan 2013 
+1 lines deleted
+Over the course of one year, this file has had 2 commits
+
+sync/test/android/OWNERS
+This file was created on Fri, 22 Feb 2013 
+1 lines deleted
+Over the course of one year, this file has had 2 commits
+
+sync/tools/testserver/OWNERS
+This file was created on Sun, 20 Jan 2013 
+Over the course of one year, this file has had 1 commits
+
+testing/OWNERS
+This file was created on Mon, 12 Mar 2012 
+Over the course of one year, this file has had 0 commits
+
+testing/android/OWNERS
+This file was created on Thu, 19 Apr 2012 
+1 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 2 commits
+
+testing/iossim/OWNERS
+This file was created on Fri, 27 Jul 2012 
+Over the course of one year, this file has had 1 commits
+
+third_party/JSON/OWNERS
+This file was created on Sat, 8 Jun 2013 
+2 lines deleted
+Over the course of one year, this file has had 3 commits
+
+third_party/OWNERS
+This file was created on Mon, 12 Mar 2012 
+1 lines deleted
+Over the course of one year, this file has had 2 commits
+
+third_party/adobe/OWNERS
+This file was created on Fri, 7 Jun 2013 
+Over the course of one year, this file has had 1 commits
+
+third_party/android_platform/OWNERS
+This file was created on Wed, 10 Jul 2013 
+Over the course of one year, this file has had 1 commits
+
+third_party/android_testrunner/OWNERS
+This file was created on Tue, 11 Jun 2013 
+Over the course of one year, this file has had 1 commits
+
+third_party/apple_apsl/OWNERS
+This file was created on Tue, 4 Jun 2013 
+Over the course of one year, this file has had 1 commits
+
+third_party/apple_sample_code/OWNERS
+This file was created on Tue, 4 Jun 2013 
+Over the course of one year, this file has had 1 commits
+
+third_party/ashmem/OWNERS
+This file was created on Tue, 26 Mar 2013 
+Over the course of one year, this file has had 1 commits
+
+third_party/bintrees/OWNERS
+This file was created on Wed, 5 Jun 2013 
+Over the course of one year, this file has had 1 commits
+
+third_party/cacheinvalidation/OWNERS
+This file was created on Fri, 7 Jun 2013 
+Over the course of one year, this file has had 1 commits
+
+third_party/cld/OWNERS
+This file was created on Sun, 24 Mar 2013 
+Over the course of one year, this file has had 2 commits
+
+third_party/cld_2/OWNERS
+This file was created on Thu, 5 Sep 2013 
+3 lines deleted
+Over the course of one year, this file has had 3 commits
+
+third_party/closure_linter/OWNERS
+This file was created on Fri, 14 Jun 2013 
+Over the course of one year, this file has had 1 commits
+
+third_party/cros_dbus_cplusplus/OWNERS
+This file was created on Mon, 1 Jul 2013 
+Over the course of one year, this file has had 1 commits
+
+third_party/devscripts/OWNERS
+This file was created on Sat, 8 Jun 2013 
+Over the course of one year, this file has had 1 commits
+
+third_party/eyesfree/OWNERS
+This file was created on Fri, 7 Jun 2013 
+Over the course of one year, this file has had 1 commits
+
+third_party/freetype2/OWNERS
+This file was created on Thu, 21 Feb 2013 
+Over the course of one year, this file has had 1 commits
+
+third_party/handlebar/OWNERS
+This file was created on Thu, 31 May 2012 
+Over the course of one year, this file has had 0 commits
+
+third_party/harfbuzz-ng/OWNERS
+This file was created on Thu, 13 Jun 2013 
+4 lines deleted
+Over the course of one year, this file has had 3 commits
+
+third_party/iaccessible2/OWNERS
+This file was created on Fri, 7 Jun 2013 
+Over the course of one year, this file has had 1 commits
+
+third_party/iccjpeg/OWNERS
+This file was created on Mon, 10 Jun 2013 
+Over the course of one year, this file has had 1 commits
+
+third_party/isimpledom/OWNERS
+This file was created on Fri, 7 Jun 2013 
+Over the course of one year, this file has had 1 commits
+
+third_party/jinja2/OWNERS
+This file was created on Mon, 2 Sep 2013 
+Over the course of one year, this file has had 1 commits
+
+third_party/jsoncpp/OWNERS
+This file was created on Tue, 11 Jun 2013 
+Over the course of one year, this file has had 1 commits
+
+third_party/jstemplate/OWNERS
+This file was created on Wed, 12 Jun 2013 
+Over the course of one year, this file has had 1 commits
+
+third_party/khronos/OWNERS
+This file was created on Tue, 26 Feb 2013 
+1 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 3 commits
+
+third_party/leveldatabase/OWNERS
+This file was created on Fri, 22 Mar 2013 
+Over the course of one year, this file has had 1 commits
+
+third_party/libexif/OWNERS
+This file was created on Mon, 3 Jun 2013 
+Over the course of one year, this file has had 1 commits
+
+third_party/libjingle/OWNERS
+This file was created on Thu, 28 Feb 2013 
+Over the course of one year, this file has had 1 commits
+
+third_party/libphonenumber/OWNERS
+This file was created on Tue, 25 Jun 2013 
+Over the course of one year, this file has had 1 commits
+
+third_party/libusb/OWNERS
+This file was created on Wed, 3 Jul 2013 
+Over the course of one year, this file has had 1 commits
+
+third_party/libva/OWNERS
+This file was created on Thu, 13 Jun 2013 
+Over the course of one year, this file has had 1 commits
+
+third_party/libwebp/OWNERS
+This file was created on Fri, 26 Apr 2013 
+Over the course of one year, this file has had 1 commits
+
+third_party/mach_override/OWNERS
+This file was created on Tue, 4 Jun 2013 
+Over the course of one year, this file has had 1 commits
+
+third_party/markupsafe/OWNERS
+This file was created on Fri, 6 Sep 2013 
+Over the course of one year, this file has had 1 commits
+
+third_party/mesa/OWNERS
+This file was created on Tue, 12 Mar 2013 
+Over the course of one year, this file has had 1 commits
+
+third_party/modp_b64/OWNERS
+This file was created on Tue, 11 Jun 2013 
+Over the course of one year, this file has had 1 commits
+
+third_party/mozilla/OWNERS
+This file was created on Tue, 4 Jun 2013 
+Over the course of one year, this file has had 1 commits
+
+third_party/mt19937ar/OWNERS
+This file was created on Wed, 12 Jun 2013 
+1 lines deleted
+Over the course of one year, this file has had 2 commits
+
+third_party/mtpd/OWNERS
+This file was created on Thu, 27 Jun 2013 
+Over the course of one year, this file has had 1 commits
+
+third_party/npapi/bindings/OWNERS
+This file was created on Thu, 21 Apr 2011 
+Over the course of one year, this file has had 0 commits
+
+third_party/ocmock/OWNERS
+This file was created on Tue, 4 Jun 2013 
+Over the course of one year, this file has had 1 commits
+
+third_party/opus/OWNERS
+This file was created on Wed, 12 Jun 2013 
+Over the course of one year, this file has had 1 commits
+
+third_party/pexpect/OWNERS
+This file was created on Tue, 18 Jun 2013 
+Over the course of one year, this file has had 1 commits
+
+third_party/polymer/OWNERS
+This file was created on Thu, 20 Jun 2013 
+Over the course of one year, this file has had 1 commits
+
+third_party/pyftpdlib/OWNERS
+This file was created on Sat, 3 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+third_party/pymock/OWNERS
+This file was created on Fri, 22 Feb 2013 
+Over the course of one year, this file has had 1 commits
+
+third_party/python_gflags/OWNERS
+This file was created on Fri, 14 Jun 2013 
+Over the course of one year, this file has had 1 commits
+
+third_party/pywebsocket/OWNERS
+This file was created on Tue, 4 Jun 2013 
+Over the course of one year, this file has had 1 commits
+
+third_party/sfntly/OWNERS
+This file was created on Mon, 3 Jun 2013 
+Over the course of one year, this file has had 1 commits
+
+third_party/simplejson/OWNERS
+This file was created on Thu, 13 Jun 2013 
+Over the course of one year, this file has had 1 commits
+
+third_party/skia/OWNERS
+This file was created on Tue, 4 Jun 2013 
+Over the course of one year, this file has had 1 commits
+
+third_party/snappy/OWNERS
+This file was created on Tue, 11 Jun 2013 
+Over the course of one year, this file has had 1 commits
+
+third_party/speech-dispatcher/OWNERS
+This file was created on Fri, 7 Jun 2013 
+Over the course of one year, this file has had 1 commits
+
+third_party/sqlite/OWNERS
+This file was created on Sat, 16 Feb 2013 
+Over the course of one year, this file has had 1 commits
+
+third_party/sudden_motion_sensor/OWNERS
+This file was created on Tue, 4 Jun 2013 
+Over the course of one year, this file has had 1 commits
+
+third_party/tcmalloc/OWNERS
+This file was created on Tue, 19 Feb 2013 
+Over the course of one year, this file has had 1 commits
+
+third_party/tcmalloc/chromium/src/OWNERS
+This file was created on Tue, 19 Feb 2013 
+Over the course of one year, this file has had 1 commits
+
+third_party/tlslite/OWNERS
+This file was created on Mon, 4 Mar 2013 
+Over the course of one year, this file has had 1 commits
+
+third_party/usrsctp/OWNERS
+This file was created on Wed, 12 Jun 2013 
+Over the course of one year, this file has had 1 commits
+
+third_party/webdriver/OWNERS
+This file was created on Tue, 11 Jun 2013 
+Over the course of one year, this file has had 1 commits
+
+third_party/widevine/OWNERS
+This file was created on Sat, 6 Oct 2012 
+Over the course of one year, this file has had 1 commits
+
+third_party/x86inc/OWNERS
+This file was created on Thu, 6 Jun 2013 
+Over the course of one year, this file has had 1 commits
+
+third_party/yasm/OWNERS
+This file was created on Fri, 7 Jun 2013 
+Over the course of one year, this file has had 1 commits
+
+third_party/zlib/OWNERS
+This file was created on Tue, 9 Apr 2013 
+Over the course of one year, this file has had 1 commits
+
+third_party/zlib/google/OWNERS
+This file was created on Thu, 2 May 2013 
+2 lines deleted
+Over the course of one year, this file has had 3 commits
+
+tools/OWNERS
+This file was created on Mon, 12 Mar 2012 
+Over the course of one year, this file has had 1 commits
+
+tools/android/OWNERS
+This file was created on Wed, 15 Feb 2012 
+3 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 3 commits
+
+tools/checklicenses/OWNERS
+This file was created on Wed, 14 Sep 2011 
+Over the course of one year, this file has had 0 commits
+
+tools/checkperms/OWNERS
+This file was created on Tue, 30 Oct 2012 
+Over the course of one year, this file has had 1 commits
+
+tools/clang/OWNERS
+This file was created on Sun, 25 Sep 2011 
+Over the course of one year, this file has had 0 commits
+
+tools/clang/plugins/OWNERS
+This file was created on Sun, 25 Sep 2011 
+Over the course of one year, this file has had 0 commits
+
+tools/deep_memory_profiler/OWNERS
+This file was created on Wed, 13 Mar 2013 
+Over the course of one year, this file has had 1 commits
+
+tools/deep_memory_profiler/visualizer/static/third_party/jqTree/OWNERS
+This file was created on Tue, 17 Sep 2013 
+Over the course of one year, this file has had 1 commits
+
+tools/find_runtime_symbols/OWNERS
+This file was created on Wed, 13 Mar 2013 
+Over the course of one year, this file has had 1 commits
+
+tools/gn/OWNERS
+This file was created on Mon, 29 Jul 2013 
+1 lines deleted
+Over the course of one year, this file has had 3 commits
+
+tools/metrics/OWNERS
+This file was created on Tue, 2 Apr 2013 
+2 lines deleted
+Over the course of one year, this file has had 4 commits
+
+tools/metrics/actions/OWNERS
+This file was created on Wed, 3 Apr 2013 
+Over the course of one year, this file has had 1 commits
+
+tools/oopif/OWNERS
+This file was created on Wed, 13 Mar 2013 
+Over the course of one year, this file has had 1 commits
+
+tools/perf/OWNERS
+This file was created on Wed, 3 Oct 2012 
+2 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 5 commits
+
+tools/telemetry/OWNERS
+This file was created on Thu, 8 Nov 2012 
+1 lines deleted
+Over the course of one year, this file has had 5 commits
+
+tools/telemetry/telemetry/core/timeline/OWNERS
+This file was created on Tue, 2 Jul 2013 
+Over the course of one year, this file has had 1 commits
+
+tools/valgrind/OWNERS
+This file was created on Tue, 19 Apr 2011 
+Over the course of one year, this file has had 0 commits
+
+tools/valgrind/drmemory/OWNERS
+This file was created on Mon, 27 Feb 2012 
+Over the course of one year, this file has had 0 commits
+
+tools/valgrind/gtest_exclude/OWNERS
+This file was created on Thu, 21 Apr 2011 
+Over the course of one year, this file has had 0 commits
+
+tools/valgrind/memcheck/OWNERS
+This file was created on Tue, 19 Apr 2011 
+Over the course of one year, this file has had 0 commits
+
+tools/valgrind/tsan/OWNERS
+This file was created on Tue, 19 Apr 2011 
+Over the course of one year, this file has had 0 commits
+
+ui/OWNERS
+This file was created on Fri, 14 Jan 2011 
+1 lines deleted
+Over the course of one year, this file has had 4 commits
+
+ui/android/OWNERS
+This file was created on Sat, 22 Sep 2012 
+1 lines deleted
+Over the course of one year, this file has had 2 commits
+
+ui/android/java/resource_map/OWNERS
+This file was created on Wed, 10 Jul 2013 
+Over the course of one year, this file has had 1 commits
+
+ui/app_list/OWNERS
+This file was created on Wed, 9 May 2012 
+Over the course of one year, this file has had 2 commits
+
+ui/aura/OWNERS
+This file was created on Wed, 14 Sep 2011 
+1 lines deleted
+Over the course of one year, this file has had 2 commits
+
+ui/aura/gestures/OWNERS
+This file was created on Thu, 19 Jan 2012 
+1 lines deleted
+Over the course of one year, this file has had 1 commits
+
+ui/base/OWNERS
+This file was created on Fri, 14 Jan 2011 
+Over the course of one year, this file has had 2 commits
+
+ui/base/accessibility/OWNERS
+This file was created on Mon, 5 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+ui/base/clipboard/OWNERS
+This file was created on Wed, 22 Feb 2012 
+Over the course of one year, this file has had 0 commits
+
+ui/base/cocoa/OWNERS
+This file was created on Mon, 2 Apr 2012 
+Over the course of one year, this file has had 0 commits
+
+ui/base/cursor/OWNERS
+This file was created on Fri, 2 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+ui/base/gtk/OWNERS
+This file was created on Tue, 22 Nov 2011 
+Over the course of one year, this file has had 0 commits
+
+ui/base/ime/OWNERS
+This file was created on Fri, 11 Nov 2011 
+1 lines deleted
+Over the course of one year, this file has had 1 commits
+
+ui/base/keycodes/OWNERS
+This file was created on Wed, 13 Jun 2012 
+2 lines deleted
+3 lines deleted
+Over the course of one year, this file has had 2 commits
+
+ui/base/l10n/OWNERS
+This file was created on Thu, 9 Feb 2012 
+Over the course of one year, this file has had 0 commits
+
+ui/base/resource/OWNERS
+This file was created on Thu, 10 May 2012 
+Over the course of one year, this file has had 0 commits
+
+ui/base/strings/OWNERS
+This file was created on Mon, 5 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+ui/base/text/OWNERS
+This file was created on Mon, 5 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+ui/base/touch/OWNERS
+This file was created on Mon, 26 Sep 2011 
+Over the course of one year, this file has had 0 commits
+
+ui/base/x/OWNERS
+This file was created on Sun, 26 Feb 2012 
+Over the course of one year, this file has had 0 commits
+
+ui/compositor/OWNERS
+This file was created on Sat, 5 May 2012 
+1 lines deleted
+Over the course of one year, this file has had 2 commits
+
+ui/events/OWNERS
+This file was created on Wed, 18 Sep 2013 
+Over the course of one year, this file has had 1 commits
+
+ui/events/gestures/OWNERS
+This file was created on Wed, 25 Sep 2013 
+Over the course of one year, this file has had 1 commits
+
+ui/events/ozone/OWNERS
+This file was created on Mon, 23 Sep 2013 
+Over the course of one year, this file has had 1 commits
+
+ui/gfx/OWNERS
+This file was created on Fri, 3 Feb 2012 
+Over the course of one year, this file has had 3 commits
+
+ui/gfx/android/OWNERS
+This file was created on Thu, 1 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+ui/gfx/codec/OWNERS
+This file was created on Thu, 22 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+ui/gfx/image/OWNERS
+This file was created on Fri, 2 Dec 2011 
+Over the course of one year, this file has had 1 commits
+
+ui/gfx/ozone/OWNERS
+This file was created on Mon, 23 Sep 2013 
+Over the course of one year, this file has had 1 commits
+
+ui/gfx/range/OWNERS
+This file was created on Fri, 6 Sep 2013 
+Over the course of one year, this file has had 1 commits
+
+ui/gl/OWNERS
+This file was created on Sat, 12 May 2012 
+1 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 3 commits
+
+ui/gl/android/OWNERS
+This file was created on Wed, 24 Apr 2013 
+Over the course of one year, this file has had 1 commits
+
+ui/keyboard/OWNERS
+This file was created on Tue, 23 Apr 2013 
+Over the course of one year, this file has had 1 commits
+
+ui/keyboard/resources/OWNERS
+This file was created on Tue, 25 Jun 2013 
+Over the course of one year, this file has had 2 commits
+
+ui/message_center/OWNERS
+This file was created on Fri, 2 Nov 2012 
+1 lines deleted
+Over the course of one year, this file has had 3 commits
+
+ui/metro_viewer/OWNERS
+This file was created on Fri, 9 Nov 2012 
+1 lines deleted
+7 lines deleted
+Over the course of one year, this file has had 4 commits
+
+ui/resources/OWNERS
+This file was created on Wed, 13 Jun 2012 
+Over the course of one year, this file has had 0 commits
+
+ui/shell_dialogs/gtk/OWNERS
+This file was created on Wed, 16 Jan 2013 
+Over the course of one year, this file has had 1 commits
+
+ui/snapshot/OWNERS
+This file was created on Tue, 10 Sep 2013 
+Over the course of one year, this file has had 1 commits
+
+ui/surface/OWNERS
+This file was created on Thu, 3 May 2012 
+1 lines deleted
+Over the course of one year, this file has had 1 commits
+
+ui/views/OWNERS
+This file was created on Tue, 1 Feb 2011 
+1 lines deleted
+Over the course of one year, this file has had 1 commits
+
+ui/views/accessibility/OWNERS
+This file was created on Mon, 14 Nov 2011 
+Over the course of one year, this file has had 0 commits
+
+ui/views/bubble/OWNERS
+This file was created on Wed, 19 Sep 2012 
+Over the course of one year, this file has had 0 commits
+
+ui/views/controls/textfield/OWNERS
+This file was created on Fri, 17 May 2013 
+Over the course of one year, this file has had 1 commits
+
+ui/views/ime/OWNERS
+This file was created on Thu, 17 Nov 2011 
+1 lines deleted
+Over the course of one year, this file has had 1 commits
+
+ui/views/linux_ui/OWNERS
+This file was created on Tue, 10 Sep 2013 
+Over the course of one year, this file has had 1 commits
+
+ui/views/touchui/OWNERS
+This file was created on Wed, 16 Nov 2011 
+Over the course of one year, this file has had 0 commits
+
+ui/views/widget/desktop_aura/OWNERS
+This file was created on Tue, 6 Aug 2013 
+Over the course of one year, this file has had 1 commits
+
+ui/webui/OWNERS
+This file was created on Thu, 17 Jan 2013 
+3 lines deleted
+Over the course of one year, this file has had 5 commits
+
+url/OWNERS
+This file was created on Wed, 10 Apr 2013 
+Over the course of one year, this file has had 2 commits
+
+webkit/OWNERS
+This file was created on Fri, 14 Jan 2011 
+1 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 4 commits
+
+webkit/browser/blob/OWNERS
+This file was created on Wed, 29 May 2013 
+Over the course of one year, this file has had 1 commits
+
+webkit/browser/fileapi/OWNERS
+This file was created on Tue, 25 Jun 2013 
+Over the course of one year, this file has had 1 commits
+
+webkit/browser/quota/OWNERS
+This file was created on Tue, 25 Jun 2013 
+Over the course of one year, this file has had 1 commits
+
+webkit/common/fileapi/OWNERS
+This file was created on Tue, 28 May 2013 
+Over the course of one year, this file has had 1 commits
+
+webkit/common/gpu/OWNERS
+This file was created on Sun, 26 May 2013 
+1 lines deleted
+1 lines deleted
+Over the course of one year, this file has had 3 commits
+
+webkit/renderer/compositor_bindings/OWNERS
+This file was created on Wed, 15 May 2013 
+Over the course of one year, this file has had 1 commits
+
+webkit/tools/layout_tests/OWNERS
+This file was created on Fri, 14 Jan 2011 
+Over the course of one year, this file has had 0 commits
+
+win8/OWNERS
+This file was created on Thu, 6 Sep 2012 
+Over the course of one year, this file has had 0 commits
+
+win8/metro_driver/OWNERS
+This file was created on Fri, 7 Sep 2012 
+Over the course of one year, this file has had 0 commits
+
+Average number of commits in the last year: 1.479002624671916
+Average number of commits without zeros 1.9771929824561403
+Average number deletions per file in one year 1.1222076215505914
