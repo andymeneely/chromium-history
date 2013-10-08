@@ -1,0 +1,5 @@
+adapter: mysql
+database: chromium_history
+username: root
+password: ""
+host: localhost
