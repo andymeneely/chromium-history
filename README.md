@@ -18,3 +18,6 @@ RietveldScraper.rb: class of utilities related to scrapeing code reviews for inf
 
 dbcheck_rids.txt: list of rietveld ids that ran into erros when scraping. Many of these are restricted 
 access even though thier google code issue id is open.  
+
+model:
+
