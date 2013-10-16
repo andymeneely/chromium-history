@@ -11,6 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 20131016144416) do
+
+  create_table "code_reviews", force: true do |t|
+    t.text     "description"
+    t.string   "subject"
+    t.date     "modified"
+    t.integer  "issue"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
 end
