@@ -10,6 +10,10 @@ gem 'rails', '4.0.0'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.0'
 
+# Use msgpack for packing and unpacking our JSON files
+gem 'msgpack'
+gem 'oj'
+
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 
