@@ -3,6 +3,15 @@ require "active_record"
 
 Dir[File.dirname(__FILE__) + '/model/*.rb'].each{|file| require file} #require Models and Base
 
+# Add your own tasks in files placed in lib/tasks ending in .rake,
+# for example lib/tasks/capistrano.rake, and they will automatically be available to Rake.
+
+require File.expand_path('../config/application', __FILE__)
+
+ChromiumHistory::Application.load_tasks
+
+# TODO: Move these tasks below into lib/tasks, as described above
+
 #run rake -T to see all available rake commands and their descriptions
 namespace :db do 
 
