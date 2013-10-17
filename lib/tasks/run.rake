@@ -1,4 +1,5 @@
-require 'oj'
+# Our custom Rakefile tasks for loading the data
+require_relative '../chromium_history/loaders/code_review_loader.rb'
 
 task :run => [:environment, "db:reset", "run:load", "run:optimize", "run:verify", "run:analyze"] do
   puts "Run task completed"
@@ -14,15 +15,7 @@ namespace :run do
 
   desc "Load data into tables"
   task :load => :environment do |t, args|
-    obj = Oj.load_file("#{Rails.configuration.datadir}/9141024.json")
-    # TODO: Refactor out to a CodeReview parser to a separate class
-    c = CodeReview.create(description: obj['description'], subject: obj['subject'], created: obj['created'], modified: obj['modified'], issue: obj['issue'])
-    obj['patchsets'].each do |id| 
-      pobj = Oj.load_file("test/data/9141024/#{id}.json")
-      p = PatchSet.create(message: pobj['message'], num_comments: pobj['num_comments'], patchset: pobj['patchset'], created: obj['created'], modified: obj['modified'])
-      c.patch_sets << p
-    end
-    puts "Loading done."
+    CodeReviewLoader.load
   end
   
   desc "Alias for run:clean then run:load"
