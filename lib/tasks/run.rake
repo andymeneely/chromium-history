@@ -15,8 +15,7 @@ namespace :run do
 
   desc "Load data into tables"
   task :load => :environment do |t, args|
-    # TODO: Read from our test directory
-    obj = Oj.load_file('test/data/9141024.json')
+    obj = Oj.load_file("#{Rails.configuration.datadir}/9141024.json")
     # TODO: Refactor out to a CodeReview parser to a separate class
     c = CodeReview.create(description: obj['description'], subject: obj['subject'], created: obj['created'], modified: obj['modified'], issue: obj['issue'])
     obj['patchsets'].each do |id| 

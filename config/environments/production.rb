@@ -1,6 +1,9 @@
 ChromiumHistory::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
+  # Where we keep all of our data to load into the database
+  config.datadir=""
+  
   # Code is not reloaded between requests.
   config.cache_classes = true
 
