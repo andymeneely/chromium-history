@@ -11,13 +11,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131016144416) do
+ActiveRecord::Schema.define(version: 20131017173452) do
 
   create_table "code_reviews", force: true do |t|
     t.text     "description"
     t.string   "subject"
     t.date     "modified"
     t.integer  "issue"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "patch_sets", force: true do |t|
+    t.integer  "code_review_id"
+    t.integer  "patchset"
+    t.datetime "modified"
+    t.datetime "created"
+    t.integer  "num_comments"
+    t.text     "message"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

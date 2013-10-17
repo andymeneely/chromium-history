@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  patchset: 1
+  modified: 2013-10-17
+  num_comments: 1
+  message: MyText
+
+two:
+  patchset: 1
+  modified: 2013-10-17
+  num_comments: 1
+  message: MyText
