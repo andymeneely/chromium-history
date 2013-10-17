@@ -30,3 +30,4 @@ rdoc
 spec/reports
 
 
+config/database.yml
