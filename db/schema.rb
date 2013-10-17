@@ -11,15 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131017173452) do
+ActiveRecord::Schema.define(version: 20131017181525) do
 
   create_table "code_reviews", force: true do |t|
     t.text     "description"
     t.string   "subject"
     t.date     "modified"
     t.integer  "issue"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created"
   end
 
   create_table "patch_sets", force: true do |t|
@@ -29,8 +28,6 @@ ActiveRecord::Schema.define(version: 20131017173452) do
     t.datetime "created"
     t.integer  "num_comments"
     t.text     "message"
-    t.datetime "created_at"
-    t.datetime "updated_at"
   end
 
 end
