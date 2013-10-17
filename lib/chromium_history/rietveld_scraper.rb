@@ -1,22 +1,5 @@
 #!/usr/bin/env ruby
-require 'typhoeus'
-require 'oj'
 require 'set'
-require 'msgpack'
-require 'highline/import'
-require 'ruby-progressbar'
-
-class Array
-  def avg
-    inject { |sum, el| sum + el } / size
-  end
-
-  def std_dev
-    a = avg
-    sum = inject(0) { |accum, i| accum + (i - a)**2 }
-    Math.sqrt(sum / (size - 1)).to_f
-  end
-end
 
 # 
 # This is a class for basic state storage and 
@@ -71,8 +54,8 @@ class RietveldScraper
   # @return RietveldScraper Our new object
   def initialize
     @cursor = nil
-    @ids = if File.file?(@@file_location + "ids.msg") 
-      MessagePack.load( File.open(@@file_location + "ids.msg") ).to_set 
+    @ids = if File.file?(@@file_location + "ids.json") 
+      Oj.load_file(@@file_location + "ids.json").to_set 
     else 
       Set.new
     end
@@ -104,7 +87,9 @@ class RietveldScraper
         print '.'  # A way to tell how many responses we've dealt with
       end
     end
-    File.open(@@file_location + "ids.msg", "w") { |file| MessagePack.pack(@ids.to_a, file) }
+
+    Oj.to_file(@@file_location + "ids.json", @ids.to_a)
+
     @ids
   end
 
@@ -128,20 +113,24 @@ class RietveldScraper
       "messages" => true  # We don't just put with_messages here. Instead, we
     } if with_messages  # protect against possibly throwing a string into the hash we pass to the request
 
-
+    logfile = File.open(@@file_location + "ids_grabbed.json" 'a')
     hydra = Typhoeus::Hydra.new(max_concurrency: 1) # make a new concurrent run area
     progress_bar = ProgressBar.create(:title => "Patchsets", :total => our_ids.count, :format => '%a |%b>>%i| %p%% %t')
 
 
     time_then = Time.now
     our_ids.each do |id|  # for each of the IDs in the pool
+
+      # TODO: Need to insert check if "id".json exists, if so, don't add that id to the queue
+
       issue_request = Typhoeus::Request.new(@@baseurl + "/api/#{id}", params: issue_args)  # make a new request
       issue_request.on_complete do |resp|
         progress_bar.increment
         if resp.success?
-          result = Oj.load(resp.body) # push a Hash of the response onto our issues list
-          File.open(@@file_location + "#{result['issue']}.msg", "w") { |file| MessagePack.pack(result, file) }
-          @issues << result['issue']
+          #result = Oj.load(resp.body) # push a Hash of the response onto our issues list
+          #Oj.to_file(@@file_location + "#{result['issue']}.json", result)
+          File.open(@@file_location + "#{id}.json", "w") { |f| f << resp.body}
+          @issues << id #result['issue']
           times << Time.now - time_then
           sleep(delay)
           time_then = Time.now
@@ -158,8 +147,6 @@ class RietveldScraper
 
     File.open(@@file_location + "error.log", "a") { |io| errors.each { |error| io << error << "\n" } }
     puts "We have #{errors.count} errors"
-    puts "Avg Time per request: #{times.avg}"
-    puts "Standard Deviation of times: #{times.std_dev}"
     @issues
   end
 
@@ -169,7 +156,7 @@ class RietveldScraper
   # @param  with_comments=true Bool whether we want comments in the response
   # 
   # @return Array The patches we've grabbed (a reference to our IVAR)
-  def get_patches(ids=nil,with_comments=true)
+  def get_patches(ids=nil, delay=0.5, with_comments=true)
     puts "Fetching Patchsets:"
     if (not ids) and @issues.empty?
       get_data
@@ -182,12 +169,12 @@ class RietveldScraper
 
     hydra = Typhoeus::Hydra.new(max_concurrency: 1)
     patch_count = Array.new
-    errors = Array.new
+    File.open(@@file_location + "patch_error.log", "a") { |io| io << "ID, Failed_Patch" }
     progress_bar = nil 
 
     ids.each do |id|
-      if File.exist?(@@file_location + "#{id}.msg")
-        issue = MessagePack.load(File.open(@@file_location + "#{id}.msg"))
+      if File.exist?(@@file_location + "#{id}.json")
+        issue = Oj.load_file(@@file_location + "#{id}.json")
         patch_count << issue['patchsets'].count
         issue['patchsets'].each do |patch|
           request = Typhoeus::Request.new(@@baseurl + "/api/#{id}/#{patch}", params: patch_args, followlocation: true)
@@ -198,15 +185,11 @@ class RietveldScraper
               if not File.directory?(@@file_location + "/#{result['issue']}")
                 FileUtils.mkdir(@@file_location + "/#{result['issue']}")
               end
-              File.open(@@file_location + "/#{result['issue']}/#{result['patchset']}.msg", "w") { |file| MessagePack.pack(result, file) }
+              Oj.to_file(@@file_location + "/#{result['issue']}/#{result['patchset']}.json", result)
               @patches << result['patchset']
-              #sleep(0.5)
+              sleep(delay)
             else
-              if errors.key? id
-                errors[id] <<  patch
-              else
-                errors[id] = [patch]
-              end
+              File.open(@@file_location + "patch_error.log", "a") { |io| io << "#{id}, #{patch}" }
             end
           end
           hydra.queue request
@@ -218,19 +201,6 @@ class RietveldScraper
     progress_bar = ProgressBar.create(:title => "Patchsets", :total => patch_total, :format => '%a |%b>>%i| %p%% %t')
 
     hydra.run
-
-    File.open(@@file_location + "patch_error.log", "a") { |io| io << p(errors) }
-    puts "Average patch count: #{patch_count.avg}"
-    puts "Standard deviation is: #{patch_count.std_dev}"
     @patches
   end
-
 end
-
-# r.get_ids
-
-
-# puts "Latest issue: #{element}" 
-# puts "Issue Id: #{element['issue']}"
-# puts "Patchsets: #{element['patchsets']}"
-# puts "First Patchset:" + get_json_response(baseurl + "/api/#{element['issue']}/#{element['patchsets'][0]}").to_s
