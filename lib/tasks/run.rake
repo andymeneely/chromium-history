@@ -18,13 +18,12 @@ namespace :run do
     # TODO: Read from our test directory
     obj = Oj.load_file('test/data/9141024.json')
     # TODO: Refactor out to a CodeReview parser to a separate class
-    c = CodeReview.create(description: obj['description'], subject: obj['subject'])
+    c = CodeReview.create(description: obj['description'], subject: obj['subject'], created: obj['created'], modified: obj['modified'], issue: obj['issue'])
     obj['patchsets'].each do |id| 
       pobj = Oj.load_file("test/data/9141024/#{id}.json")
-      p = PatchSet.create(message: pobj['message'], num_comments: pobj['num_comments'], patchset: pobj['patchset'])
+      p = PatchSet.create(message: pobj['message'], num_comments: pobj['num_comments'], patchset: pobj['patchset'], created: obj['created'], modified: obj['modified'])
       c.patch_sets << p
     end
-    
     puts "Loading done."
   end
   
