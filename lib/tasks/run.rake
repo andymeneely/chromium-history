@@ -7,9 +7,8 @@ end
 namespace :run do
   desc "Delete data from all tables."
   task :clean => :environment do 
-    # TODO: make this more flexible so we don't have to maintain this list
-    PatchSet.delete_all
-    CodeReview.delete_all
+    Rails.application.eager_load! 
+    ActiveRecord::Base.subclasses.each { |model| model.delete_all }
     puts "Tables cleaned."
   end
 
