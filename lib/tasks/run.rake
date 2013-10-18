@@ -15,7 +15,7 @@ namespace :run do
 
   desc "Load data into tables"
   task :load => :environment do |t, args|
-    CodeReviewLoader.load
+    CodeReviewLoader.new.load
   end
   
   desc "Alias for run:clean then run:load"

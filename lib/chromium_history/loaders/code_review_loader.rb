@@ -1,26 +1,29 @@
 require 'oj'
+require_relative 'data_transfer'
 
 class CodeReviewLoader
+  @@CODE_REVIEW_PROPS = [:description, :subject, :created, :modified, :issue]
+  @@PATCH_SET_PROPS = [:message, :num_comments, :patchset, :created, :modified]
 
-  def self.load
-    obj = Oj.load_file("#{Rails.configuration.datadir}/9141024.json")
+  # Mix in the DataTransfer module
+  include DataTransfer
+  
+  def load
+    Dir["#{Rails.configuration.datadir}/*.json"].each do |file|
+      obj = Oj.load_file(file)
       CodeReview.transaction do
-        c = CodeReview.create
-        transfer(c, obj, [:description, :subject, :created, :modified, :issue])
-        obj['patchsets'].each do |id| 
-          pobj = Oj.load_file("test/data/9141024/#{id}.json")
-          p = PatchSet.create(message: pobj['message'], num_comments: pobj['num_comments'], patchset: pobj['patchset'], created: obj['created'], modified: obj['modified'])
+        c = transfer(CodeReview.create, obj, @@CODE_REVIEW_PROPS)
+        obj['patchsets'].each do |pid| 
+          pobj = Oj.load_file("#{file[0..-5]}/#{pid}.json")
+          p = transfer(PatchSet.create, pobj, @@PATCH_SET_PROPS)
+          #TODO Bring in comments relation
           c.patch_sets << p
         end
+        #TODO Bring in messages relation
+        #TODO Bring in connection to the Developer model for owner. Look it up first and then make the connection.
       end 
-      puts "Loading done."
-  end
-
-  def self.transfer(model, json, properties)
-    properties.each do |p|
-      model[p] = json[p.to_s]
     end
-    model.save
+    puts "Loading done."
   end
   
 end
