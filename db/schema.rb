@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131018141506) do
+ActiveRecord::Schema.define(version: 20131018145059) do
 
   create_table "code_reviews", force: true do |t|
     t.text     "description"
@@ -21,6 +21,16 @@ ActiveRecord::Schema.define(version: 20131018141506) do
     t.datetime "modified"
   end
 
+  create_table "comments", force: true do |t|
+    t.string   "author_email"
+    t.text     "text"
+    t.boolean  "draft"
+    t.integer  "lineno"
+    t.datetime "date"
+    t.boolean  "left"
+    t.integer  "patch_set_file_id"
+  end
+
   create_table "messages", force: true do |t|
     t.string   "sender"
     t.text     "text"
@@ -28,6 +38,18 @@ ActiveRecord::Schema.define(version: 20131018141506) do
     t.boolean  "disapproval"
     t.datetime "date"
     t.integer  "code_review_id"
+  end
+
+  create_table "patch_set_files", force: true do |t|
+    t.string  "filepath"
+    t.string  "status"
+    t.integer "num_chunks"
+    t.boolean "no_base_file"
+    t.boolean "property_changes"
+    t.integer "num_added"
+    t.integer "num_removed"
+    t.boolean "is_binary"
+    t.integer "patch_set_id"
   end
 
   create_table "patch_sets", force: true do |t|

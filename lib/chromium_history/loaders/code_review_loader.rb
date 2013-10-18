@@ -28,8 +28,25 @@ class CodeReviewLoader
     pids.each do |pid| 
       pobj = Oj.load_file("#{file[0..-5]}/#{pid}.json")
       p = transfer(PatchSet.create, pobj, @@PATCH_SET_PROPS)
-      #TODO Bring in comments relation here
+      load_patch_set_files(p, pobj['files'])
       codereview.patch_sets << p
+    end
+  end
+  
+  @@PATCH_SET_FILE_PROPS = [:status,:num_chunks,:no_base_file,:property_changes,:num_added,:num_removed,:is_binary]
+  def load_patch_set_files(patchset, psfiles)
+    psfiles.each do |psfile|
+      psf = transfer(PatchSetFile.new(:filepath => psfile[0].to_s), psfile[1], @@PATCH_SET_FILE_PROPS)
+      load_comments(psf, psfile[1]['messages']) unless psfile[1]['messages'].nil? #Yes, Rietveld conflates "messages" with "comments" here
+      patchset.files << psf
+    end
+  end
+  
+  @@COMMENT_PROPS = [:author_email,:text,:draft,:lineno,:date,:left]
+  def load_comments(patchset_file, comments)
+    comments.each do |comment|
+      c = transfer(Comment.new, comment, @@COMMENT_PROPS)
+      patchset_file.comments << c
     end
   end
   
