@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131017183919) do
+ActiveRecord::Schema.define(version: 20131018141506) do
 
   create_table "code_reviews", force: true do |t|
     t.text     "description"
@@ -19,6 +19,15 @@ ActiveRecord::Schema.define(version: 20131017183919) do
     t.integer  "issue"
     t.datetime "created"
     t.datetime "modified"
+  end
+
+  create_table "messages", force: true do |t|
+    t.string   "sender"
+    t.text     "text"
+    t.boolean  "approval"
+    t.boolean  "disapproval"
+    t.datetime "date"
+    t.integer  "code_review_id"
   end
 
   create_table "patch_sets", force: true do |t|
