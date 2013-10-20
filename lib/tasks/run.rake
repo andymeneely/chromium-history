@@ -23,7 +23,8 @@ namespace :run do
   
   desc "Optimize the tables once data is loaded"
   task :optimize => :environment do
-    # TODO: Read in some SQL and execute to pack our indexes
+    ENV["VERSION"] = "20131020225616"
+    Rake::Task["db:migrate:up"].invoke
   end
   
   desc "Run our data verification tests"
