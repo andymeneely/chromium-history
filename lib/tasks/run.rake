@@ -6,15 +6,15 @@ task :run => [:environment, "db:reset", "run:load", "run:optimize", "run:verify"
 end
 
 namespace :run do
+
   desc "Delete data from all tables."
-  task :clean => :environment do 
-    Rails.application.eager_load! 
+  task :clean => [:environment, :eager_load] do 
     ActiveRecord::Base.subclasses.each { |model| model.delete_all }
     puts "Tables cleaned."
   end
 
   desc "Load data into tables"
-  task :load => :environment do |t, args|
+  task :load => :environment do
     CodeReviewLoader.new.load
   end
   
@@ -22,9 +22,12 @@ namespace :run do
   task :clean_load => ["run:clean", "run:load"]
   
   desc "Optimize the tables once data is loaded"
-  task :optimize => :environment do
-    ENV["VERSION"] = "20131020225616"
-    Rake::Task["db:migrate:up"].invoke
+  task :optimize => [:environment, :eager_load] do
+    Dir[Rails.root.join('app/models/*.rb').to_s].each do |filename|
+      klass = File.basename(filename, '.rb').camelize.constantize
+      next unless klass.ancestors.include?(ActiveRecord::Base)
+      klass.send(:on_optimize)
+    end
   end
   
   desc "Run our data verification tests"
@@ -36,5 +39,10 @@ namespace :run do
   task :analyze => :environment do
     # TODO: Delegate this out to a list of classes that will assemble metrics and ask questions
   end
+  
+  desc "Eager load"
+  task :eager_load => :environment do
+    Rails.application.eager_load! 
+  end 
   
 end
