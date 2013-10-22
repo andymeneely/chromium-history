@@ -1,5 +1,14 @@
 #!/usr/bin/env ruby
 require 'set'
+require 'trollop'
+
+#Trollop options for command-line
+opts = Trollop::options do
+	opt :setAmountDelay, "Set the amount of delay (in ms) between get calls."
+	opt :concurrentConnections, "Set the number of concurrent connections."
+	
+end
+
 
 # 
 # This is a class for basic state storage and 
