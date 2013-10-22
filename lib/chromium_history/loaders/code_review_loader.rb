@@ -7,7 +7,7 @@ class CodeReviewLoader
   
   @@CODE_REVIEW_PROPS = [:description, :subject, :created, :modified, :issue]
   def load
-    Dir["#{Rails.configuration.datadir}/*.json"].each do |file|
+    Dir["#{Rails.configuration.datadir}/codereviews/*.json"].each do |file|
       cobj = Oj.load_file(file)
       CodeReview.transaction do
         c = transfer(CodeReview.create, cobj, @@CODE_REVIEW_PROPS)
