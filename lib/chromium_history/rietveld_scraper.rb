@@ -63,13 +63,31 @@ class RietveldScraper
   # @return RietveldScraper Our new object
   def initialize
     @cursor = nil
-    @ids = if File.file?(@@file_location + "ids.json") 
+    @ids = if File.exist?(@@file_location + "ids.json") 
       Oj.load_file(@@file_location + "ids.json").to_set 
     else 
       Set.new
     end
-    @issues = Array.new
-    @patches = Array.new
+
+    @issues = if condition
+      File.readlines(@@file_location + "issues_completed.log").collect { |l| l.strip.to_i }
+    else
+      Array.new
+    end
+
+    @patches = if File.exist? @@file_location + "patches_completed.log"
+      t = {}
+      CSV.foreach(@@file_location + "patches_completed.log", headers: true, header_converters: :symbol, converters: :all) do |row| 
+        if t.has_key?(r.fields[0])
+          t[r.fields[0]] << r.fields[1] 
+        else 
+          t[r.fields[0]] = [r.fields[1]] 
+        end 
+      end
+      t
+    else
+      {}
+    end
   end
 
   # 
@@ -108,7 +126,7 @@ class RietveldScraper
   # @param  with_messages=true Bool whether we want messages in the response
   # 
   # @return Array The data we've grabbed (a reference to our IVAR)
-  def get_data(our_ids=nil, delay=0.5, with_messages=true)
+  def get_data(our_ids=nil, delay=0.5, with_messages_and_comments=true)
     puts "Fetching Data:"
     if (not our_ids) and @ids.empty?  # let's make sure we've got some ids
       get_ids
@@ -116,100 +134,102 @@ class RietveldScraper
     end
 
     errors = Array.new
-    times = Array.new
 
     issue_args = {
-      "messages" => true  # We don't just put with_messages here. Instead, we
-    } if with_messages  # protect against possibly throwing a string into the hash we pass to the request
+      "messages" => true             # We don't just put with_messages here. Instead, we
+    } if with_messages_and_comments  # protect against possibly throwing a string into the hash we pass to the request
 
-    logfile = File.open(@@file_location + "ids_grabbed.json" 'a')
+    patch_args = {
+      'comments' => true
+    } if with_messages_and_comments
+
+
+    patches_error_log = if File.exists? @@file_location + "patch_error.log"
+      f = File.open(@@file_location + "patch_error.log", "a") 
+      f << "ID, Failed_Patch"
+    else
+      File.open(@@file_location + "patch_error.log", "a")
+    end
+
+    issue_error_log = if File.exists? @@file_location + "issue_error.log"
+      f = File.open(@@file_location + "issue_error.log", "a") 
+      f << "ID"
+    else
+      File.open(@@file_location + "issue_error.log", "a")
+    end
+
+    issues_completed_log = File.open(@@file_location + "issues_completed.log", "a")
+
+    patches_completed_log = if File.exist? @@file_location + "patches_completed.log"
+      File.open(@@file_location + "patches_completed.log", "a") 
+    else
+      f = File.open(@@file_location + "patches_completed.log", "a") 
+      f << "Issue, Patch"
+    end
+
+
     hydra = Typhoeus::Hydra.new(max_concurrency: 1) # make a new concurrent run area
-    progress_bar = ProgressBar.create(:title => "Patchsets", :total => our_ids.count, :format => '%a |%b>>%i| %p%% %t')
+    # TODO: Fix progress bar
+    #progress_bar = ProgressBar.create(:title => "Patchsets", :total => our_ids.count, :format => '%a |%b>>%i| %p%% %t')
 
 
-    time_then = Time.now
-    our_ids.each do |id|  # for each of the IDs in the pool
+    our_ids.each do |issue_id|  # for each of the IDs in the pool
+      if not @issues.include? issue_id
+        issue_request = Typhoeus::Request.new(@@baseurl + "/api/#{id}", params: issue_args)  # make a new request
+        issue_request.on_complete do |issue_resp|
+          #progress_bar.increment
+          if issue_resp.success?
+            issue_result = Oj.load(issue_resp.body) # push a Hash of the response onto our issues list
 
-      # TODO: Need to insert check if "id".json exists, if so, don't add that id to the queue
+            #Save the issue
+            Oj.to_file(@@file_location + "#{id}.json", issue_result)
 
-      issue_request = Typhoeus::Request.new(@@baseurl + "/api/#{id}", params: issue_args)  # make a new request
-      issue_request.on_complete do |resp|
-        progress_bar.increment
-        if resp.success?
-          #result = Oj.load(resp.body) # push a Hash of the response onto our issues list
-          #Oj.to_file(@@file_location + "#{result['issue']}.json", result)
-          File.open(@@file_location + "#{id}.json", "w") { |f| f << resp.body}
-          @issues << id #result['issue']
-          times << Time.now - time_then
-          sleep(delay)
-          time_then = Time.now
-        else
-          errors << id
-          time_then = Time.now
+            issue_result['patchsets'].each do |patch_id|
+              if @patches[issue_id] and not @patches[issue_id].include?(patch_id)
+                patch_request = Typhoeus::Request.new(@@baseurl + "/api/#{issue_id}/#{patch_id}", 
+                                                      params: patch_args, followlocation: true)
+                patch_request.on_complete do |patch_resp|
+                  if patch_resp.success?
+                    patch_result = Oj.load(resp.body)
+
+                    # We need to make a directory if one isn't there
+                    FileUtils.mkdir(@@file_location + "/#{issue_id}") unless File.directory?(@@file_location + "/#{issue_id}")
+
+                    # Save the patch
+                    Oj.to_file(@@file_location + "/#{issue_id}/#{patch_id}.json", patch_result)
+                    patches_completed_log << "#{issue_id}, #{patch_id}"
+
+                    if @patches.has_key?(r.fields[0])
+                      @patches[id] << patch 
+                    else 
+                      @patches[id] = [patch] 
+                    end 
+
+                    # Wait some amount of time
+                    sleep(delay)
+                  else
+                    patches_error_log << "#{issue_id}, #{patch_id}"
+                  end
+                end
+                hydra.queue_front patch_request
+              end
+            end
+            issues_completed_log << "#{issue_id}"
+            @issues << issue_id
+            sleep(delay)
+          else
+            issue_error_log << issue_id
+          end
         end
+        hydra.queue issue_request  # and enqueue the request
       end
-      hydra.queue issue_request  # and enqueue the request
     end
 
     # BLOCKING CALL
     hydra.run  # This runs all the requests that are queued
 
-    File.open(@@file_location + "error.log", "a") { |io| errors.each { |error| io << error << "\n" } }
+    File.open(@@file_location + "issue_error.log", "a") { |io| errors.each { |error| io << error << "\n" } }
     puts "We have #{errors.count} errors"
     @issues
-  end
-
-  
-  # 
-  # Grab all the patchsets for the issues we've got
-  # @param  with_comments=true Bool whether we want comments in the response
-  # 
-  # @return Array The patches we've grabbed (a reference to our IVAR)
-  def get_patches(ids=nil, delay=0.5, with_comments=true)
-    puts "Fetching Patchsets:"
-    if (not ids) and @issues.empty?
-      get_data
-      ids = @issues
-    end
-
-    patch_args = {
-      'comments' => true
-    } if with_comments
-
-    hydra = Typhoeus::Hydra.new(max_concurrency: 1)
-    patch_count = Array.new
-    File.open(@@file_location + "patch_error.log", "a") { |io| io << "ID, Failed_Patch" }
-    progress_bar = nil 
-
-    ids.each do |id|
-      if File.exist?(@@file_location + "#{id}.json")
-        issue = Oj.load_file(@@file_location + "#{id}.json")
-        patch_count << issue['patchsets'].count
-        issue['patchsets'].each do |patch|
-          request = Typhoeus::Request.new(@@baseurl + "/api/#{id}/#{patch}", params: patch_args, followlocation: true)
-          request.on_complete do |resp|
-            progress_bar.increment
-            if resp.success?
-              result = Oj.load(resp.body)
-              if not File.directory?(@@file_location + "/#{result['issue']}")
-                FileUtils.mkdir(@@file_location + "/#{result['issue']}")
-              end
-              Oj.to_file(@@file_location + "/#{result['issue']}/#{result['patchset']}.json", result)
-              @patches << result['patchset']
-              sleep(delay)
-            else
-              File.open(@@file_location + "patch_error.log", "a") { |io| io << "#{id}, #{patch}" }
-            end
-          end
-          hydra.queue request
-        end
-      end
-    end
-
-    patch_total = patch_count.inject(:+)
-    progress_bar = ProgressBar.create(:title => "Patchsets", :total => patch_total, :format => '%a |%b>>%i| %p%% %t')
-
-    hydra.run
-    @patches
   end
 end
