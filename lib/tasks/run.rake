@@ -8,8 +8,13 @@ end
 namespace :run do
 
   desc "Delete data from all tables."
-  task :clean => [:environment, :eager_load] do 
-    ActiveRecord::Base.subclasses.each { |model| model.delete_all }
+  task :clean => [:environment] do
+    # Iterate over our models
+    Dir[Rails.root.join('app/models/*.rb').to_s].each do |filename|
+      klass = File.basename(filename, '.rb').camelize.constantize
+      next unless klass.ancestors.include?(ActiveRecord::Base)
+      klass.delete_all
+    end
     puts "Tables cleaned."
   end
 
@@ -22,7 +27,9 @@ namespace :run do
   task :clean_load => ["run:clean", "run:load"]
   
   desc "Optimize the tables once data is loaded"
-  task :optimize => [:environment, :eager_load] do
+  task :optimize => [:environment] do
+    # Iterate over our models
+    # TODO Refactor this out with rake run:clean so we're not repetitive
     Dir[Rails.root.join('app/models/*.rb').to_s].each do |filename|
       klass = File.basename(filename, '.rb').camelize.constantize
       next unless klass.ancestors.include?(ActiveRecord::Base)
@@ -39,10 +46,5 @@ namespace :run do
   task :analyze => :environment do
     # TODO: Delegate this out to a list of classes that will assemble metrics and ask questions
   end
-  
-  desc "Eager load"
-  task :eager_load => :environment do
-    Rails.application.eager_load! 
-  end 
   
 end
