@@ -8,7 +8,7 @@ opts = Trollop::options do
 	opt :concurrentConnections, "Set the number of concurrent connections."
 	
 end
-
+p opts
 
 # 
 # This is a class for basic state storage and 
