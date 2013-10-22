@@ -5,4 +5,7 @@ class PatchSet < ActiveRecord::Base
   def files
     self.patch_set_files
   end 
+  
+  def self.on_optimize
+  end
 end
