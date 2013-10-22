@@ -20,8 +20,8 @@ gem 'typhoeus'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 
-# Using MySQL as our database
-gem 'mysql2', '~> 0.3.13'
+# Using PostgreSQL as our database
+gem 'pg'
 
 # Make sqlite3 available as a fallback
 gem 'sqlite3'
