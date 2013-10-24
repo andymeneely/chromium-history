@@ -47,4 +47,9 @@ namespace :run do
     # TODO: Delegate this out to a list of classes that will assemble metrics and ask questions
   end
   
+  desc "Which environment are we in?"
+  task :which_env => :environment do
+    puts Rails.env
+  end
+  
 end
