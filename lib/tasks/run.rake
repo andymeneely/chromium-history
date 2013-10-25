@@ -20,7 +20,9 @@ namespace :run do
 
   desc "Load data into tables"
   task :load => :environment do
-    CodeReviewLoader.new.load
+    Benchmark.bm(16) do |x|
+      x.report("Loading code reviews: ") {CodeReviewLoader.new.load}
+    end
   end
   
   desc "Alias for run:clean then run:load"

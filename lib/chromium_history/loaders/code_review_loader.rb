@@ -1,5 +1,4 @@
 require 'oj'
-require 'benchmark'
 require_relative 'data_transfer'
 
 class CodeReviewLoader
@@ -7,21 +6,18 @@ class CodeReviewLoader
   include DataTransfer
   
   @@CODE_REVIEW_PROPS = [:description, :subject, :created, :modified, :issue]
-  def load
-    b = Benchmark.realtime do
-      Dir["#{Rails.configuration.datadir}/codereviews/*.json"].each do |file|
-        cobj = Oj.load_file(file)
-        CodeReview.transaction do
-          c = transfer(CodeReview.new, cobj, @@CODE_REVIEW_PROPS)
-          #TODO Bring in connection to the Developer model for owner, cc's, reviewers, and various others.
-          #TODO For the Developer connections, ideally look it up first and then make the connection. Maybe check if it's there by email first, then add one if it's not there.
-          load_patchsets(file, c, cobj['patchsets'])
-          load_messages(file, c, cobj['messages'])
-          c.save
-        end
+  def load    
+    Dir["#{Rails.configuration.datadir}/codereviews/*.json"].each do |file|
+      cobj = Oj.load_file(file)
+      CodeReview.transaction do
+        c = transfer(CodeReview.new, cobj, @@CODE_REVIEW_PROPS)
+        #TODO Bring in connection to the Developer model for owner, cc's, reviewers, and various others.
+        #TODO For the Developer connections, ideally look it up first and then make the connection. Maybe check if it's there by email first, then add one if it's not there.
+        load_patchsets(file, c, cobj['patchsets'])
+        load_messages(file, c, cobj['messages'])
+        c.save
       end
-    end    
-    puts "Loading done in #{b}ms."
+    end
   end
   
   private  
