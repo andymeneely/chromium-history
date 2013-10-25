@@ -2,7 +2,7 @@ ChromiumHistory::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Where we keep all of our data to load into the database
-  config.datadir=""
+  config.datadir = YAML.load_file("#{Rails.root}/config/data.yml")
   
   # Code is not reloaded between requests.
   config.cache_classes = true

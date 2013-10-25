@@ -1,0 +1,11 @@
+# Configuration locations for the raw data tree
+ 
+# Nothing for development - that's in our source tree 
+ 
+# Our larger data set on nitron
+test:
+  dir: "C:/data/chromium-data/test/"
+
+# To be run on our server
+production:
+  dir: /home/someone/data

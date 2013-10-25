@@ -1,12 +1,11 @@
 # Our custom Rakefile tasks for loading the data
 require_relative '../chromium_history/loaders/code_review_loader.rb'
 
-task :run => [:environment, "db:reset", "run:load", "run:optimize", "run:verify", "run:analyze"] do
+task :run => [:environment, "run:show_env", "db:reset", "run:load", "run:optimize", "run:verify", "run:analyze"] do
   puts "Run task completed"
 end
 
 namespace :run do
-
   desc "Delete data from all tables."
   task :clean => [:environment] do
     # Iterate over our models
@@ -49,9 +48,10 @@ namespace :run do
     # TODO: Delegate this out to a list of classes that will assemble metrics and ask questions
   end
   
-  desc "Which environment are we in?"
-  task :which_env => :environment do
-    puts Rails.env
+  desc "Show current environment information"
+  task :show_env => :environment do
+      puts "\tEnv.: #{Rails.env}"
+      puts "\tData: #{Rails.configuration.datadir}"
   end
   
 end
