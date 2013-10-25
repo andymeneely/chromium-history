@@ -6,7 +6,6 @@ module DataTransfer
     properties.each do |p|
       model[p] = json[p.to_s]
     end
-    model.save
     model
   end
   
