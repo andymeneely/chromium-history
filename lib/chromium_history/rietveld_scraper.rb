@@ -2,13 +2,6 @@
 require 'set'
 require 'trollop'
 
-#Trollop options for command-line
-opts = Trollop::options do
-	opt :setAmountDelay, "Set the amount of delay (in ms) between get calls."
-	opt :concurrentConnections, "Set the number of concurrent connections."
-	
-end
-p opts
 
 # 
 # This is a class for basic state storage and 
@@ -31,6 +24,15 @@ class RietveldScraper
   def self.baseurl
     @@baseurl
   end
+
+
+#Trollop options for command-line
+opts = Trollop::options do
+  opt :setAmountDelay, "Set the amount of delay (in ms) between get calls.", :delay => 0.5
+  opt :concurrentConnections, "Set the number of concurrent connections.", :max_concurrency=> 1
+end
+p opts
+
 
   # 
   # Get one more page of search results in json format
