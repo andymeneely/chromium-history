@@ -1,13 +1,13 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
-one:
-  description: MyText
-  subject: MyString
-  modified: 2013-10-16
-  issue: 1
+# one:
+  # description: MyText
+  # subject: MyString
+  # modified: 2013-10-16
+  # issue: 1
 
-two:
-  description: MyText
-  subject: MyString
-  modified: 2013-10-16
-  issue: 1
+# two:
+  # description: MyText
+  # subject: MyString
+  # modified: 2013-10-16
+  # issue: 1
