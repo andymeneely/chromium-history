@@ -28,10 +28,11 @@ class RietveldScraper
 
 #Trollop options for command-line
 opts = Trollop::options do
-  opt :setAmountDelay, "Set the amount of delay (in ms) between get calls.", :delay => 0.5
-  opt :concurrentConnections, "Set the number of concurrent connections.", :max_concurrency=> 1
+  opt :setAmountDelay, "Set the amount of delay (in ms) between get calls.", :default => 500
+  opt :concurrentConnections, "Set the number of concurrent connections.", :default=> 1
 end
 p opts
+#use opts[:setAmountDelay], etc in code when you're trying to use that value
 
 
   # 
