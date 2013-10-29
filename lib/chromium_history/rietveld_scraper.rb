@@ -28,11 +28,12 @@ class RietveldScraper
 
 #Trollop options for command-line
 opts = Trollop::options do
-  opt :setAmountDelay, "Set the amount of delay (in ms) between get calls.", :default => 500
-  opt :concurrentConnections, "Set the number of concurrent connections.", :default=> 1
+  opt :setAmountDelay, "Set the amount of delay (in seconds) between get calls.", :default => 0.5
+  opt :setConcurrentConnections, "Set the number of concurrent connections.", :default=> 1
 end
 p opts
 #use opts[:setAmountDelay], etc in code when you're trying to use that value
+#to test in commandline, 'ruby rietveld_scraper.rb --setAmountDelay 300'
 
 
   # 
@@ -129,7 +130,7 @@ p opts
   # @param  with_messages=true Bool whether we want messages in the response
   # 
   # @return Array The data we've grabbed (a reference to our IVAR)
-  def get_data(our_ids=nil, delay=0.5, with_messages_and_comments=true)
+  def get_data(our_ids=nil, delay=opts[:setAmountDelay], with_messages_and_comments=true)
     puts "Fetching Data:"
     if (not our_ids) and @ids.empty?  # let's make sure we've got some ids
       get_ids
@@ -171,7 +172,7 @@ p opts
     end
 
 
-    hydra = Typhoeus::Hydra.new(max_concurrency: 1) # make a new concurrent run area
+    hydra = Typhoeus::Hydra.new(max_concurrency: opts[:setConcurrentConnections]) # make a new concurrent run area
     # TODO: Fix progress bar
     #progress_bar = ProgressBar.create(:title => "Patchsets", :total => our_ids.count, :format => '%a |%b>>%i| %p%% %t')
 
