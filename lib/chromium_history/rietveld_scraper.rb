@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 require 'set'
 require 'trollop'
-
+require 'typhoeus'
 
 # 
 # This is a class for basic state storage and 
