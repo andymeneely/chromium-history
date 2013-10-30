@@ -1,8 +1,5 @@
 ChromiumHistory::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
-
-  # Where we keep all of our data to load into the database
-  config.datadir = "#{Rails.root}/test/data/"
   
   # In the development environment your application's code is reloaded on
   # every request. This slows down response time but is perfect for development
