@@ -21,6 +21,8 @@ namespace :run do
   task :load => :environment do
     Benchmark.bm(16) do |x|
       x.report("Loading code reviews: ") {CodeReviewLoader.new.load}
+      #x.report("Loading CVE number and reviews: ") {CveLoader.new.load_cve}
+      # ^ Commented out because doesn't work yet
     end
   end
   
