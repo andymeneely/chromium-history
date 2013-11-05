@@ -65,6 +65,7 @@ class GitLogLoader
 	#
 	def pre_process_commit(arr, hash)
 		message = ""
+		filepaths = ""
 		end_message_index = 0
 
 		#index 5 should be the start
@@ -88,6 +89,7 @@ class GitLogLoader
 			end
 		end
 
+		hash[:message] = message
 		arr[5] = message
 
 		#remove the multi line 
@@ -114,6 +116,11 @@ class GitLogLoader
 
 			elsif element.match(/^R=/)
 				hash[:reviewers] = element
+
+			elsif element.match(/( \|  \d+ \+*\-*)/)
+				#TO-DO: Remove the churn data from 
+				#the line
+				filepaths = filepaths + " " + element
 
 			end
 				
@@ -152,29 +159,6 @@ class GitLogLoader
 				#add parent_commit_hash
 				hash[:parent_commit_hash] = element
 
-			elsif index == 5
-				#add message
-				#over multiple lines
-				hash[:message] = element
-
-			elsif index == 6
-				#add BUG
-				#if exists
-
-			elsif index == 7
-				#add Reviewers
-				#R
-			elsif index == 8 
-				#add review url
-
-			elsif index == 9
-				#add svn - git revision num
-
-			elsif index == 10
-				#another hash
-
-			elsif index == 11
-				#add filepaths
 			end
 
 		end#loop
