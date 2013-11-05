@@ -1,6 +1,11 @@
 # Our custom Rakefile tasks for loading the data
 require_relative '../chromium_history/loaders/code_review_loader.rb'
 require_relative '../../test/data_integrity/data_integrity_test.rb'
+require_relative '../chromium_history/loaders/git_log_loader.rb'
+
+#Uncomment to require all loader files
+#Dir[File.expand_path('../chromium_history/loaders/*.rb', File.dirname(__FILE__))].each {|file| require file}
+
 
 task :run => [:environment, "run:show_env", "db:reset", "run:load", "run:optimize", "run:verify", "run:analyze"] do
   puts "Run task completed"
@@ -21,8 +26,9 @@ namespace :run do
   desc "Load data into tables"
   task :load => :environment do
     Benchmark.bm(16) do |x|
-      x.report("Loading code reviews: ") {CodeReviewLoader.new.load}
+      #x.report("Loading code reviews: ") {CodeReviewLoader.new.load}
       #x.report("Loading CVE number and reviews: ") {CveLoader.new.load_cve}
+      x.report("Loading git log commits: ") {GitLogLoader.new.load}
       # ^ Commented out because doesn't work yet
     end
   end
