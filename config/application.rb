@@ -21,12 +21,12 @@ module ChromiumHistory
     # config.i18n.default_locale = :de
     
     # Where we keep all of our data to load into the database
-    data_yml = YAML.load_file("#{Rails.root}/config/data.yml")
-    config.datadir = Rails.root + "/" if 'true'.eql? data_yml['data']['src-relative']
-    # config.datadir += data_yml['data']['dir']
-    
-    # Our bigger datasets might be here:
-    #config.datadir = "C:/data..."
-    
+    if Rails.env == "development"
+      Rails.configuration.datadir = "test/data"
+    else
+      data_yml = YAML.load_file("#{Rails.root}/config/data.yml")[Rails.env]
+      Rails.configuration.datadir = data_yml['src-relative'] == "true" ? Rails.root + "/" : ""
+      Rails.configuration.datadir += data_yml['dir']
+    end
   end
 end

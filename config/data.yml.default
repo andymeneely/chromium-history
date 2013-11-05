@@ -4,8 +4,10 @@
  
 # Our larger data set on nitron
 test:
-  dir: "C:/data/chromium-data/test/"
+  src-relative: false
+  dir: C:/data/chromium-data/test
 
 # To be run on our server
 production:
+  src-relative: false
   dir: /home/someone/data
