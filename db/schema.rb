@@ -11,10 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131024215323) do
-
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
+ActiveRecord::Schema.define(version: 20131105085816) do
 
   create_table "code_reviews", force: true do |t|
     t.text     "description"
@@ -33,6 +30,28 @@ ActiveRecord::Schema.define(version: 20131024215323) do
     t.datetime "date"
     t.boolean  "left"
     t.integer  "patch_set_file_id"
+  end
+
+  create_table "commit_files", force: true do |t|
+    t.integer "commit_id"
+    t.string  "filepath"
+  end
+
+  add_index "commit_files", ["commit_id"], name: "index_commit_files_on_commit_id"
+
+  create_table "commits", force: true do |t|
+    t.string "commit_hash"
+    t.string "parent_commit_hash"
+    t.string "author_email"
+    t.string "author_name"
+    t.string "committer_email"
+    t.string "committer_name"
+    t.text   "message"
+    t.string "filepaths"
+    t.string "bug"
+    t.string "reviewers"
+    t.string "test"
+    t.string "svn_revision"
   end
 
   create_table "cves", force: true do |t|
