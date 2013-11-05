@@ -6,12 +6,15 @@
 # file into memory. More effecient approach requires
 # more reliance on regular expression processing
 #
+# TODO- Test against the large gitlog.txt for all cases
+# @author - Christopher C. Ketant
+#
 class GitLogLoader
 
 	include DataTransfer
 	
-	@@GIT_LOG_PROPERTIES = [:commit_hash, :parent_commit_hash, :author_email, :author_name, 
-		:committer_name, :committer_email, :message, :filepaths, :bug, :reviewers, :test, :svn_revision]
+	@@GIT_LOG_PROPERTIES = [:commit_hash, :parent_commit_hash, :author_email,
+		:message, :filepaths, :bug, :reviewers, :test, :svn_revision]
 	def load
 		Dir["#{Rails.configuration.datadir}/logfiles/*.txt"].each do |log|
 			get_commit(File.open(log, "r"))
@@ -20,8 +23,9 @@ class GitLogLoader
 
 	#
 	# Get each commit from the log file
-	# Process each commit in the log file
-	# filled with commits
+	# individually which are separated by
+	# ":::" then process each commit 
+	# in the log file
 	#
 	# @param - file
 	#
@@ -52,21 +56,37 @@ class GitLogLoader
 				#avoid adding empty string
 				#or havent started yet
 				commit_queue.push(line) unless line.strip == "" or !isStarted
-			end
+			end#if
 
-		end
+		end#loop
 
 	end#get_commit
 
 	#
-	# Determine the length of the message
-	# since its variable length we need to
-	# pre-process it and condense it
+	# Processes the commits 
+	# using our processing
+	# methods
 	#
-	def pre_process_commit(arr, hash)
+	# @param - Commit array
+	#
+	def process_commit(arr)
+		commit, hash = regex_process_commit(arr)
+		index_process_commit(commit, hash)
+	end
+
+	#
+	# 
+	#
+	# @param - Array for each commit
+	# @param - Hash to pass in data transfer
+	#
+	# @return - Array, Hash
+	#
+	def regex_process_commit(arr)
 		message = ""
 		filepaths = ""
 		end_message_index = 0
+		hash = Hash.new
 
 		#index 5 should be the start
 		#of the message
@@ -94,12 +114,12 @@ class GitLogLoader
 
 		#remove the multi line 
 		#message since we 
-		#condensed
+		#condensed it
 		for i in (6..end_message_index) 
 			arr.delete(i) 
 		end
 
-		#TO-DO only get the
+		#TODO only get the
 		#part of string we need
 		arr.each do |element|
 			if element.match(/^TEST=/)
@@ -118,7 +138,7 @@ class GitLogLoader
 				hash[:reviewers] = element
 
 			elsif element.match(/( \|  \d+ \+*\-*)/)
-				#TO-DO: Remove the churn data from 
+				#TODO: Remove the churn data from 
 				#the line
 				filepaths = filepaths + " " + element
 
@@ -126,16 +146,20 @@ class GitLogLoader
 				
 		end 
 
-		return arr
+		return arr, hash
 
 	end#pre_process_commit
 
-
-	def process_commit(arr)
-
-		hash = Hash.new
-
-		arr = pre_process_commit(arr, hash)
+	#
+	# Process each of the commit
+	# by sequentially going through
+	# by index and inserting in 
+	# to hash
+	#
+	# @param- Array of commit
+	# @param- Hash 
+	#
+	def index_process_commit(arr, hash)
 
 		arr.each_with_index do |element,index|
 
@@ -145,7 +169,7 @@ class GitLogLoader
 
 			elsif index == 1
 				#add email
-				hash[:commiterr_email] = element
+				hash[:committer_email] = element
 
 			elsif index == 2
 				#add email w/ hash
@@ -163,12 +187,25 @@ class GitLogLoader
 
 		end#loop
 
-		ctf = transfer(Commit.new, hash ,@@GIT_LOG_PROPERTIES)
-
-		ctf.save
+		add_commit_to_db(hash)
 
 		arr.clear
 
 	end#process_commit
+
+	#
+	# After the commits are 
+	# processed and structured
+	# in hash then save to db
+	#
+	# @param- Hash
+	#
+	def add_commit_to_db(hash)
+
+		ctf = parse_transfer(Commit.new, hash ,@@GIT_LOG_PROPERTIES)
+
+		ctf.save
+
+	end#add_commit_to_db
 
 end#class

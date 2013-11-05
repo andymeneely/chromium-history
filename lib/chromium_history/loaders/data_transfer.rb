@@ -8,6 +8,14 @@ module DataTransfer
     end
     model
   end
+
+  #Given a model, a hash, and a list of symbol properties, transfer the same attributees
+  def parse_transfer(model, hash, properties)
+  	properties.each do |p|
+  		model[p] = hash[p]
+  	end
+  	model
+  end
   
 end
   
