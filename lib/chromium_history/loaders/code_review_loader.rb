@@ -24,8 +24,8 @@ class CodeReviewLoader
   
   @@PATCH_SET_PROPS = [:message, :num_comments, :patchset, :created, :modified]
   def load_patchsets(file, codereview, pids)
-    pids.each do |pid| 
-      pobj = Oj.load_file("#{file[0..-5]}/#{pid}.json")
+    pids.each do |pid|
+      pobj = Oj.load_file("#{file.gsub(/\.json$/,'')}/#{pid}.json")
       p = transfer(PatchSet.new, pobj, @@PATCH_SET_PROPS)
       load_patch_set_files(p, pobj['files'])
       codereview.patch_sets << p
