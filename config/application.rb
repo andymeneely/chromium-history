@@ -19,5 +19,14 @@ module ChromiumHistory
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
+    
+    # Where we keep all of our data to load into the database
+    if Rails.env == "development"
+      Rails.configuration.datadir = "test/data"
+    else
+      data_yml = YAML.load_file("#{Rails.root}/config/data.yml")[Rails.env]
+      Rails.configuration.datadir = data_yml['src-relative'] == "true" ? Rails.root + "/" : ""
+      Rails.configuration.datadir += data_yml['dir']
+    end
   end
 end

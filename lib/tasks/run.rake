@@ -1,5 +1,6 @@
 # Our custom Rakefile tasks for loading the data
 require_relative '../chromium_history/loaders/code_review_loader.rb'
+require_relative '../../test/data_integrity/data_integrity_test.rb'
 
 task :run => [:environment, "run:show_env", "db:reset", "run:load", "run:optimize", "run:verify", "run:analyze"] do
   puts "Run task completed"
@@ -42,7 +43,7 @@ namespace :run do
   
   desc "Run our data verification tests"
   task :verify => :environment do
-    # TODO: Delegate this off to a series of unit-test-like checks on our data.
+    DataIntegrityTest.new.run_all
   end
   
   desc "Analyze the data for metrics & questions"
