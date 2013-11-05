@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131105085816) do
+ActiveRecord::Schema.define(version: 20131105145951) do
 
   create_table "code_reviews", force: true do |t|
     t.text     "description"
@@ -36,8 +36,6 @@ ActiveRecord::Schema.define(version: 20131105085816) do
     t.integer "commit_id"
     t.string  "filepath"
   end
-
-  add_index "commit_files", ["commit_id"], name: "index_commit_files_on_commit_id"
 
   create_table "commits", force: true do |t|
     t.string "commit_hash"
