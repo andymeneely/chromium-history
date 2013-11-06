@@ -22,6 +22,8 @@ ActiveRecord::Schema.define(version: 20131105145951) do
     t.integer  "issue",       limit: 8
   end
 
+  add_index "code_reviews", ["issue"], name: "index_code_reviews_on_issue", unique: true, using: :btree
+
   create_table "comments", force: true do |t|
     t.string   "author_email"
     t.text     "text"
