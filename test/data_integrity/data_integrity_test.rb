@@ -37,10 +37,10 @@ class DataIntegrityTest
   private
   def print_results(test_name, error_count, table, foreign_column)
     if error_count == 0
-      result = "PASS"
+      result = "[#{"PASS".green}]"
       @pass += 1
     else
-      result = "FAIL: #{error_count.to_s} inconsistent #{foreign_column} in the #{table} table"
+      result = "[#{"FAIL".red}] #{error_count.to_s} inconsistent #{foreign_column} in the #{table} table"
       @fail += 1
     end
     printf "  %-60s %s\n", test_name, result
