@@ -11,10 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131105152755) do
-
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
+ActiveRecord::Schema.define(version: 20131107222257) do
 
   create_table "code_reviews", force: true do |t|
     t.text     "description"
@@ -24,8 +21,6 @@ ActiveRecord::Schema.define(version: 20131105152755) do
     t.string   "cve"
     t.integer  "issue",       limit: 8
   end
-
-  add_index "code_reviews", ["issue"], name: "index_code_reviews_on_issue", unique: true, using: :btree
 
   create_table "comments", force: true do |t|
     t.string   "author_email"
