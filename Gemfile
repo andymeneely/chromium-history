@@ -28,7 +28,7 @@ gem 'uglifier', '>= 1.3.0'
 gem 'pg'
 
 # Make sqlite3 available as a fallback
-gem 'sqlite3'
+gem 'sqlite3', :platforms => [:mswin, :mingw]
 
 # Use CoffeeScript for .js.coffee assets and views
 gem 'coffee-rails', '~> 4.0.0'
