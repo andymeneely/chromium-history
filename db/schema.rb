@@ -11,7 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131107222257) do
+ActiveRecord::Schema.define(version: 20131108001442) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "code_reviews", force: true do |t|
     t.text     "description"
@@ -53,6 +56,11 @@ ActiveRecord::Schema.define(version: 20131107222257) do
     t.string "cve"
   end
 
+  create_table "developers", force: true do |t|
+    t.string "name"
+    t.string "email"
+  end
+
   create_table "messages", force: true do |t|
     t.string   "sender"
     t.text     "text"
@@ -81,6 +89,7 @@ ActiveRecord::Schema.define(version: 20131107222257) do
     t.text     "message"
     t.datetime "modified"
     t.integer  "patchset",       limit: 8
+    t.string   "owner"
   end
 
 end

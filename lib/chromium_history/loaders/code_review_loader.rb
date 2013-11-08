@@ -15,6 +15,7 @@ class CodeReviewLoader
         #TODO For the Developer connections, ideally look it up first and then make the connection. Maybe check if it's there by email first, then add one if it's not there.
         load_patchsets(file, c, cobj['patchsets'])
         load_messages(file, c, cobj['messages'])
+        load_developers(file, c, cobj['cc'], cobj['reviewers'])
         c.save
       end
     end
@@ -60,4 +61,24 @@ class CodeReviewLoader
       m.save
     end
   end
+
+  def load_developers(file, codereview, cc, reviewers)
+    cc.each do |email|
+      if (Developer.find_by_email(email) == nil) 
+        developer = Developer.new
+        developer["email"] = email
+        developer.save
+      end
+    end
+
+    reviewers.each do |email|
+      if (Developer.find_by_email(email) == nil) 
+        developer = Developer.new
+        developer["email"] = email
+        developer.save
+      end
+    end
+
+  end
+
 end
