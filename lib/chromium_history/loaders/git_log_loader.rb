@@ -1,3 +1,7 @@
+require 'Date'
+require 'Time'
+
+
 #
 # GitLogLoader class
 # parses git log commit files and extracts the
@@ -14,7 +18,7 @@ class GitLogLoader
 	include DataTransfer
 	
 	@@GIT_LOG_PROPERTIES = [:commit_hash, :parent_commit_hash, :author_email,
-		:message, :filepaths, :bug, :reviewers, :test, :svn_revision]
+		:message, :filepaths, :bug, :reviewers, :test, :svn_revision, :created_at]
 	def load
 		Dir["#{Rails.configuration.datadir}/logfiles/*.txt"].each do |log|
 			get_commit(File.open(log, "r"))
@@ -75,7 +79,10 @@ class GitLogLoader
 	end
 
 	#
-	# 
+	# The commits have information that we 
+	# can only extract information by
+	# regular expression matching
+	#
 	#
 	# @param - Array for each commit
 	# @param - Hash to pass in data transfer
@@ -119,28 +126,25 @@ class GitLogLoader
 			arr.delete(i) 
 		end
 
-		#TODO only get the
-		#part of string we need
 		arr.each do |element|
 			if element.match(/^TEST=/)
-				hash[:test] = element
+				hash[:test] = element.strip.sub("TEST=", "")
 
 			elsif element.match(/^git-svn-id:/)
-				hash[:svn_revision] = element
+				hash[:svn_revision] = element.strip.sub("git-svn-id:", "")
 
 			elsif element.match(/^Review URL:/)
 				#hash[:reviewers] = element
 
 			elsif element.match(/^BUG=/)
-				hash[:bug] = element
+				hash[:bug] = element.strip.sub("BUG=", "")
 
 			elsif element.match(/^R=/)
-				hash[:reviewers] = element
+				hash[:reviewers] = element.strip.sub("R=", "")
 
 			elsif element.match(/( \|  \d+ \+*\-*)/)
-				#TODO: Remove the churn data from 
 				#the line
-				filepaths = filepaths + " " + element
+				filepaths = filepaths + " " + (element.slice!(element.strip.index('|'), element.strip.length).strip)
 
 			end
 				
@@ -165,11 +169,11 @@ class GitLogLoader
 
 			if index == 0
 				#add parent hash
-				hash[:commit_hash] = element
+				hash[:commit_hash] = element.strip
 
 			elsif index == 1
 				#add email
-				hash[:committer_email] = element
+				hash[:committer_email] = element.strip
 
 			elsif index == 2
 				#add email w/ hash
@@ -177,11 +181,11 @@ class GitLogLoader
 
 			elsif index == 3
 				#Date/Time created
-				#Do we add this?
+				hash[:created_at] = DateTime.parse(element.strip)
 
 			elsif index == 4
 				#add parent_commit_hash
-				hash[:parent_commit_hash] = element
+				hash[:parent_commit_hash] = element.strip
 
 			end
 
@@ -202,7 +206,8 @@ class GitLogLoader
 	#
 	def add_commit_to_db(hash)
 
-		ctf = parse_transfer(Commit.new, hash ,@@GIT_LOG_PROPERTIES)
+		# Returns Commit Model
+		ctf = parse_transfer(Commit.new, hash, @@GIT_LOG_PROPERTIES)
 
 		ctf.save
 

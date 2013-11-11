@@ -11,10 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131108001442) do
-
-  # These are extensions that must be enabled in order to support this database
-  #enable_extension "plpgsql"
+ActiveRecord::Schema.define(version: 20131111014821) do
 
   create_table "code_reviews", force: true do |t|
     t.text     "description"
@@ -50,6 +47,7 @@ ActiveRecord::Schema.define(version: 20131108001442) do
     t.string "reviewers"
     t.string "test"
     t.string "svn_revision"
+    t.date   "created_at"
   end
 
   create_table "cves", force: true do |t|
