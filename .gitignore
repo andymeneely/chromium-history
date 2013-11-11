@@ -29,6 +29,11 @@ lib/bundler/man
 rdoc
 spec/reports
 
-
+# Config files for which we have default file counterparts
+# These can contain sensitive authentication information
 config/database.yml
 config/data.yml
+
+# Ignoring platform-specific Gemfile.lock
+# Yes, this is not supposed to be how it works. But https://github.com/bundler/bundler-features/issues/4 references a long history of complaints and they are fixing this to make Gemfile.lock be more cross-platform. If we don't ignore it, we'll be checking in this file over and over again if we want to work on Windows, Mac, and Linux.
+Gemfile.lock
