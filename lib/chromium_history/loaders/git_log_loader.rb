@@ -91,7 +91,7 @@ class GitLogLoader
 	#
 	def regex_process_commit(arr)
 		message = ""
-		filepaths = ""
+		filepaths = Array.new
 		end_message_index = 0
 		hash = Hash.new
 
@@ -144,11 +144,14 @@ class GitLogLoader
 
 			elsif element.match(/( \|  \d+ \+*\-*)/)
 				#the line
-				filepaths = filepaths + " " + (element.slice!(element.strip.index('|'), element.strip.length).strip)
+				filepaths.push(element.slice(0,element.index('|')).strip)
 
 			end
 				
 		end 
+
+		#convert to string & add to hash
+		hash[:filepaths] = filepaths.map{|path| path}.join(", ")
 
 		return arr, hash
 
