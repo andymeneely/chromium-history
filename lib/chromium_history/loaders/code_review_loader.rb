@@ -15,8 +15,22 @@ class CodeReviewLoader
         #TODO For the Developer connections, ideally look it up first and then make the connection. Maybe check if it's there by email first, then add one if it's not there.
         load_patchsets(file, c, cobj['patchsets'])
         load_messages(file, c, cobj['messages'])
-        load_developers(file, c, cobj['cc'], cobj['reviewers'])
+        load_developers(file, c, cobj['cc'], cobj['reviewers'], cobj['messages'])
         c.save
+
+        if (Developer.find_by_email(cobj['owner_email']) == nil) 
+          developer = Developer.new
+          developer["email"] = cobj['owner_email']
+          developer["name"] = cobj['owner']
+          developer.save
+        else
+          dobj = Developer.find_by_email(cobj['owner_email'])
+          if (Developer.find_by_name(cobj['owner']) == nil) 
+            dobj["name"] = cobj['owner'] #if there is already an owner there and they dont match, that a problem
+          end
+        end
+      end
+
       end
     end
   end
@@ -62,7 +76,8 @@ class CodeReviewLoader
     end
   end
 
-  def load_developers(file, codereview, cc, reviewers)
+
+  def load_developers(file, codereview, cc, reviewers, messages)
     cc.each do |email|
       if (Developer.find_by_email(email) == nil) 
         developer = Developer.new
@@ -76,6 +91,16 @@ class CodeReviewLoader
         developer = Developer.new
         developer["email"] = email
         developer.save
+      end
+    end
+
+    messages.each do |message|
+      message["recipients"].each do |email|  #the sender is always included in the recipients so theres no need to do that seperately
+        if (Developer.find_by_email(email) == nil) 
+          developer = Developer.new
+          developer["email"] = email
+          developer.save
+        end
       end
     end
 
