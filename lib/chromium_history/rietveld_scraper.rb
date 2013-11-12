@@ -63,7 +63,8 @@ class RietveldScraper
   # This should match the output of to_hash
   # 
   # @return RietveldScraper Our new object
-  def initialize
+  def initialize(opts)
+    @opts = opts
     @cursor = nil
     @ids = if File.exist?(@@file_location + "ids.json") 
       Oj.load_file(@@file_location + "ids.json").to_set 
@@ -83,7 +84,7 @@ class RietveldScraper
   # @param  with_messages=true Bool whether we want messages in the response
   # 
   # @return Array The data we've grabbed (a reference to our IVAR)
-  def get_data(delay=opts[:setAmountDelay], concurrent_connections=opts[:setConcurrentConnections], with_messages_and_comments=true)
+  def get_data(delay=@opts[:setAmountDelay], concurrent_connections=@opts[:setConcurrentConnections], with_messages_and_comments=true)
     puts "Fetching Data:"
     if @ids.empty?  # let's make sure we've got some ids
       $stderr.puts "There appear to be no IDs, exiting."
@@ -155,7 +156,7 @@ class RietveldScraper
 end
 
 
-r = RietveldScraper.new
+r = RietveldScraper.new(opts)
 ids = Array.new
 File.open("./random_uniq_review_ids.txt", "r") do |file|
   file.each_line do |id|
