@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131111014821) do
+ActiveRecord::Schema.define(version: 20131112152513) do
 
   create_table "code_reviews", force: true do |t|
     t.text     "description"
@@ -33,22 +33,26 @@ ActiveRecord::Schema.define(version: 20131111014821) do
   end
 
   create_table "commit_files", force: true do |t|
-    t.integer "commit_id"
     t.string  "filepath"
+    t.integer "commit_id"
   end
 
+  add_index "commit_files", ["commit_id"], name: "index_commit_files_on_commit_id"
+
   create_table "commits", force: true do |t|
-    t.string "commit_hash"
-    t.string "parent_commit_hash"
-    t.string "author_email"
-    t.text   "message"
-    t.string "filepaths"
-    t.string "bug"
-    t.string "reviewers"
-    t.string "test"
-    t.string "svn_revision"
-    t.date   "created_at"
+    t.string   "commit_hash"
+    t.string   "parent_commit_hash"
+    t.string   "author_email"
+    t.text     "message"
+    t.string   "bug"
+    t.string   "reviewers"
+    t.string   "test"
+    t.string   "svn_revision"
+    t.datetime "created_at"
+    t.integer  "commit_files_id"
   end
+
+  add_index "commits", ["commit_files_id"], name: "index_commits_on_commit_files_id"
 
   create_table "cves", force: true do |t|
     t.string "cve"

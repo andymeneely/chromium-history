@@ -1,5 +1,6 @@
 require 'Date'
-require 'Time'
+require_relative 'data_transfer'
+
 
 
 #
@@ -18,7 +19,10 @@ class GitLogLoader
 	include DataTransfer
 	
 	@@GIT_LOG_PROPERTIES = [:commit_hash, :parent_commit_hash, :author_email,
-		:message, :filepaths, :bug, :reviewers, :test, :svn_revision, :created_at]
+		:message, :bug, :reviewers, :test, :svn_revision, :created_at]
+
+	@@GIT_LOG_FILE_PROPERTIES = [:commit_id, :filepath]
+
 	def load
 		Dir["#{Rails.configuration.datadir}/logfiles/*.txt"].each do |log|
 			get_commit(File.open(log, "r"))
@@ -60,9 +64,13 @@ class GitLogLoader
 				#avoid adding empty string
 				#or havent started yet
 				commit_queue.push(line) unless line.strip == "" or !isStarted
+
 			end#if
 
 		end#loop
+		
+		#process last commit in queue
+		process_commit(commit_queue)
 
 	end#get_commit
 
@@ -98,10 +106,10 @@ class GitLogLoader
 		#index 5 should be the start
 		#of the message
 		for i in (5..arr.size-1)
-			if not arr.fetch(i).match(/^TEST/) or
-				not arr.fetch(i).match(/^git-svn-id:/) or
-				not arr.fetch(i).match(/^Review URL:/) or
-				not arr.fetch(i).match(/^BUG/) or
+			if not arr.fetch(i).match(/^TEST/) and
+				not arr.fetch(i).match(/^git-svn-id:/) and
+				not arr.fetch(i).match(/^Review URL:/) and
+				not arr.fetch(i).match(/^BUG/) and
 				not arr.fetch(i).match(/^R=/)
 
 				#concat the message into 1
@@ -127,6 +135,7 @@ class GitLogLoader
 		end
 
 		arr.each do |element|
+
 			if element.match(/^TEST=/)
 				hash[:test] = element.strip.sub("TEST=", "")
 
@@ -142,7 +151,7 @@ class GitLogLoader
 			elsif element.match(/^R=/)
 				hash[:reviewers] = element.strip.sub("R=", "")
 
-			elsif element.match(/( \|  \d+ \+*\-*)/)
+			elsif element.match(/([\s-]*\|[\s-]*\d+ \+*\-*)/)
 				#the line
 				filepaths.push(element.slice(0,element.index('|')).strip)
 
@@ -151,7 +160,7 @@ class GitLogLoader
 		end 
 
 		#convert to string & add to hash
-		hash[:filepaths] = filepaths.map{|path| path}.join(", ")
+		hash["filepaths"] = filepaths.map{|path| path}.join(", ")
 
 		return arr, hash
 
@@ -176,7 +185,7 @@ class GitLogLoader
 
 			elsif index == 1
 				#add email
-				hash[:committer_email] = element.strip
+				hash[:author_email] = element.strip
 
 			elsif index == 2
 				#add email w/ hash
@@ -210,10 +219,38 @@ class GitLogLoader
 	def add_commit_to_db(hash)
 
 		# Returns Commit Model
-		ctf = parse_transfer(Commit.new, hash, @@GIT_LOG_PROPERTIES)
-
-		ctf.save
+		commit = parse_transfer(Commit.new, hash, @@GIT_LOG_PROPERTIES)
+		commit.save
+		commit_file = create_commit_file(hash["filepaths"])
+		add_foreign_keys(commit, commit_file)
 
 	end#add_commit_to_db
+
+	#
+	# Adding the commit file path model
+	# @return- CommitFile model
+	# @param- Committedd file paths
+	#
+	def create_commit_file(file_paths)
+
+		#
+		commit_file = CommitFile.new
+		commit_file[:filepath] = file_paths
+		commit_file.save 
+		commit_file
+	end
+
+	#
+	# Add the id's to eachother after saved
+	#
+	# @param- Commit
+	# @param - CommitFile
+	def add_foreign_keys(commit, commit_file)
+		commit.commit_files_id = commit_file.id
+		commit_file.commit_id = commit.id
+
+		commit.save
+		commit_file.save
+	end
 
 end#class
