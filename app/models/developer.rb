@@ -1,5 +1,5 @@
 class Developer < ActiveRecord::Base
-  #belongs_to :code_review
+  has_many :code_reviews
 
   def self.on_optimize
     

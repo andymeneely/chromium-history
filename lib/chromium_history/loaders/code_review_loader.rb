@@ -79,6 +79,10 @@ class CodeReviewLoader
 
   def load_developers(file, codereview, cc, reviewers, messages)
     cc.each do |email|
+      #get rid of the plus sign and after
+      if (email.index('+') != nil) 
+        email = email.slice(0, email.index('+')) + email.slice(email.index('@'), (email.length()-1))
+      end
       if (Developer.find_by_email(email) == nil) 
         developer = Developer.new
         developer["email"] = email
@@ -87,6 +91,10 @@ class CodeReviewLoader
     end
 
     reviewers.each do |email|
+      #get rid of the plus sign and after
+      if (email.index('+') != nil) 
+        email = email.slice(0, email.index('+')) + email.slice(email.index('@'), (email.length()-1))
+      end
       if (Developer.find_by_email(email) == nil) 
         developer = Developer.new
         developer["email"] = email
@@ -96,6 +104,10 @@ class CodeReviewLoader
 
     messages.each do |message|
       message["recipients"].each do |email|  #the sender is always included in the recipients so theres no need to do that seperately
+        #get rid of the plus sign and after
+        if (email.index('+') != nil) 
+          email = email.slice(0, email.index('+')) + email.slice(email.index('@'), (email.length()-1))
+        end
         if (Developer.find_by_email(email) == nil) 
           developer = Developer.new
           developer["email"] = email
