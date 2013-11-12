@@ -2,11 +2,12 @@
 require 'set'
 require 'trollop'
 require 'typhoeus'
+require 'oj'
 
 #Trollop options for command-line
 opts = Trollop::options do
-  opt :setAmountDelay, "Set the amount of delay (in seconds) between get calls.", :default => 0.5
-  opt :setConcurrentConnections, "Set the number of concurrent connections.", :default=> 1
+  opt :setAmountDelay, "Set the amount of delay (in seconds) between get calls.", :default => 0.25
+  opt :setConcurrentConnections, "Set the number of concurrent connections.", :default=> 2
 end
 #use opts[:setAmountDelay], etc in code when you're trying to use that value
 #to test in commandline, 'ruby rietveld_scraper.rb --setAmountDelay 300'
@@ -100,37 +101,33 @@ class RietveldScraper
     } if with_messages_and_comments
 
     hydra = Typhoeus::Hydra.new(max_concurrency: 1) # make a new concurrent run area
-    progress_bar = ProgressBar.create(:title => "Patchsets", :total => our_ids.count, :format => '%a |%b>>%i| %p%% %t')
 
 
     @ids.each do |issue_id|  # for each of the IDs in the pool
       if not @issues.include? issue_id
-        issue_request = Typhoeus::Request.new(@@baseurl + "/api/#{id}", params: issue_args)  # make a new request
+        issue_request = Typhoeus::Request.new(@@baseurl + "/api/#{issue_id}", params: issue_args)  # make a new request
         issue_request.on_complete do |issue_resp|
-          progress_bar.increment
           if issue_resp.success?
             issue_result = Oj.load(issue_resp.body) # push a Hash of the response onto our issues list
 
             #Save the issue
-            Oj.to_file(@@file_location + "#{id}.json", issue_result)
+            Oj.to_file(@@file_location + "#{issue_id}.json", issue_result)
 
             issue_result['patchsets'].each do |patch_id|
               patch_request = Typhoeus::Request.new(@@baseurl + "/api/#{issue_id}/#{patch_id}", 
                                                     params: patch_args, followlocation: true)
               patch_request.on_complete do |patch_resp|
                 if patch_resp.success?
-                  patch_result = Oj.load(resp.body)
-
                   # We need to make a directory if one isn't there
-                  FileUtils.mkdir(@@file_location + "/#{issue_id}") unless File.directory?(@@file_location + "/#{issue_id}")
+                  FileUtils.mkdir(@@file_location + "#{issue_id}") unless File.directory?(@@file_location + "#{issue_id}")
 
                   # Save the patch
-                  File.open(@@file_location + "/#{issue_id}/#{patch_id}.json") { |f| f.write(resp.body) }
+                  File.open(@@file_location + "#{issue_id}/#{patch_id}.json", "w") { |f| f.write(patch_resp.body) }
 
                   # Wait some amount of time
                   sleep(delay)
                 else
-                   $stderr.puts "We could not fetch patch #{patch_id} for issue #{issue_id}"
+                  $stderr.puts "We could not fetch patch #{patch_id} for issue #{issue_id}"
                 end
               end
 
