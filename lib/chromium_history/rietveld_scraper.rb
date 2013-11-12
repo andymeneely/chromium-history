@@ -1,14 +1,16 @@
 #!/usr/bin/env ruby
 require 'set'
 require 'trollop'
+require 'typhoeus'
 
 #Trollop options for command-line
 opts = Trollop::options do
-	opt :setAmountDelay, "Set the amount of delay (in ms) between get calls."
-	opt :concurrentConnections, "Set the number of concurrent connections."
-	
+  opt :setAmountDelay, "Set the amount of delay (in seconds) between get calls.", :default => 0.5
+  opt :setConcurrentConnections, "Set the number of concurrent connections.", :default=> 1
 end
-p opts
+#use opts[:setAmountDelay], etc in code when you're trying to use that value
+#to test in commandline, 'ruby rietveld_scraper.rb --setAmountDelay 300'
+
 
 # 
 # This is a class for basic state storage and 
@@ -31,17 +33,6 @@ class RietveldScraper
   def self.baseurl
     @@baseurl
   end
-
-
-#Trollop options for command-line
-opts = Trollop::options do
-  opt :setAmountDelay, "Set the amount of delay (in seconds) between get calls.", :default => 0.5
-  opt :setConcurrentConnections, "Set the number of concurrent connections.", :default=> 1
-end
-p opts
-#use opts[:setAmountDelay], etc in code when you're trying to use that value
-#to test in commandline, 'ruby rietveld_scraper.rb --setAmountDelay 300'
-
 
   # 
   # Get one more page of search results in json format
@@ -92,7 +83,7 @@ p opts
   # @param  with_messages=true Bool whether we want messages in the response
   # 
   # @return Array The data we've grabbed (a reference to our IVAR)
-  def get_data(delay=0.5, with_messages_and_comments=true)
+  def get_data(delay=opts[:setAmountDelay], concurrent_connections=opts[:setConcurrentConnections], with_messages_and_comments=true)
     puts "Fetching Data:"
     if @ids.empty?  # let's make sure we've got some ids
       $stderr.puts "There appear to be no IDs, exiting."
@@ -162,3 +153,15 @@ p opts
     @issues
   end
 end
+
+
+r = RietveldScraper.new
+ids = Array.new
+File.open("./random_uniq_review_ids.txt", "r") do |file|
+  file.each_line do |id|
+    ids << id.to_i
+  end
+end
+r.ids = ids
+r.get_data
+
