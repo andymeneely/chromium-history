@@ -6,12 +6,30 @@ require 'oj'
 
 #Trollop options for command-line
 opts = Trollop::options do
-  opt :setAmountDelay, "Set the amount of delay (in seconds) between get calls.", :default => 0.25
-  opt :setConcurrentConnections, "Set the number of concurrent connections.", :default=> 2
-end
-#use opts[:setAmountDelay], etc in code when you're trying to use that value
-#to test in commandline, 'ruby rietveld_scraper.rb --setAmountDelay 300'
+  version "Rietveld Scraper 1.0"
+  banner <<-EOS
+The Rietveld Scraper fetches JSON data from a Rietveld server (Chromium)
+Errors are directed to stderr.
+Files are saved to a directory called 'scrapes' in the current working directory.
 
+Usage:
+       test [options] <ids_file.json>
+
+ids_file.json is a JSON file containing an array of IDs to fetch
+
+where [options] are:
+EOS
+
+  opt :delay, "Set the amount of delay (in seconds) between get calls.", default: 0.25, type: Float
+  opt :connections, "Set the number of concurrent connections.", default: 2, type: Integer
+end
+
+Trollop::die :connections, "must be greater than 1" if opts[:connections] <= 0
+
+if not File.exist?(ARGV[0])
+  puts "Error! File #{ARGV[0]} not found"
+  exit(-1)
+end
 
 # 
 # This is a class for basic state storage and 
@@ -22,7 +40,7 @@ class RietveldScraper
   # Set whether we want verbose debug output or not
   Typhoeus::Config.verbose = false 
 
-  @@file_location = '../../data/scrapes/'
+  @@file_location = './'
   @@baseurl = 'https://codereview.chromium.org'
 
 
@@ -67,8 +85,8 @@ class RietveldScraper
   def initialize(opts)
     @opts = opts
     @cursor = nil
-    @ids = if File.exist?(@@file_location + "ids.json") 
-      Oj.load_file(@@file_location + "ids.json").to_set 
+    @ids = if File.exist?(ARGV[0]) 
+      Oj.load_file(ARGV[0]).to_set 
     else 
       Set.new
     end
@@ -85,7 +103,7 @@ class RietveldScraper
   # @param  with_messages=true Bool whether we want messages in the response
   # 
   # @return Array The data we've grabbed (a reference to our IVAR)
-  def get_data(delay=@opts[:setAmountDelay], concurrent_connections=@opts[:setConcurrentConnections], with_messages_and_comments=true)
+  def get_data(delay=@opts[:delay], concurrent_connections=@opts[:connections], with_messages_and_comments=true)
     puts "Fetching Data:"
     if @ids.empty?  # let's make sure we've got some ids
       $stderr.puts "There appear to be no IDs, exiting."
@@ -100,7 +118,7 @@ class RietveldScraper
       'comments' => true
     } if with_messages_and_comments
 
-    hydra = Typhoeus::Hydra.new(max_concurrency: 1) # make a new concurrent run area
+    hydra = Typhoeus::Hydra.new(max_concurrency: concurrent_connections) # make a new concurrent run area
 
 
     @ids.each do |issue_id|  # for each of the IDs in the pool
@@ -153,13 +171,6 @@ class RietveldScraper
 end
 
 
+# driver code
 r = RietveldScraper.new(opts)
-ids = Array.new
-File.open("./random_uniq_review_ids.txt", "r") do |file|
-  file.each_line do |id|
-    ids << id.to_i
-  end
-end
-r.ids = ids
 r.get_data
-
