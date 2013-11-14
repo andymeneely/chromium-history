@@ -25,6 +25,7 @@ EOS
 end
 
 Trollop::die :connections, "must be greater than 1" if opts[:connections] <= 0
+Trollop::die "Need to specify the filename." if ARGV.empty?
 
 if not File.exist?(ARGV[0])
   puts "Error! File #{ARGV[0]} not found"
