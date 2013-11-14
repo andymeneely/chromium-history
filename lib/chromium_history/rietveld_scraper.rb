@@ -8,9 +8,14 @@ require 'oj'
 opts = Trollop::options do
   version "Rietveld Scraper 1.0"
   banner <<-EOS
+
 The Rietveld Scraper fetches JSON data from a Rietveld server (Chromium)
+
+Files are saved in the current working directory, with directories for patchsets using the code review id
+
 Errors are directed to stderr.
-Files are saved to a directory called 'scrapes' in the current working directory.
+
+Finished downloads are stored in issues_completed.log, which is also read at the beginning to determine where to pick up.
 
 Usage:
        test [options] <ids_file.json>
@@ -37,6 +42,7 @@ end
 # collection of Rietveld-scraping methods
 # 
 # @author Katherine Whitlock
+# @author Danielle Neuberger
 class RietveldScraper  
   # Set whether we want verbose debug output or not
   Typhoeus::Config.verbose = false 
@@ -55,29 +61,6 @@ class RietveldScraper
   end
 
   # 
-  # Get one more page of search results in json format
-  # (2000 ids), using the cursor as reference
-  # @param  cursor=nil String The cursor to use as reference 
-  # 
-  # @return  Hash The response's body in a Ruby Hash
-  def self.get_more_ids(cursor=nil)
-    Oj.load(
-      Typhoeus.get(
-        @@baseurl + "/search", 
-        params: {
-          "closed" => "1",
-          "private" => "1", 
-          "commit" => "1",
-          "format" => "json",
-          "keys_only" => "True",
-          "with_messages" => "False",
-          "cursor" => "#{cursor}"
-        }
-      ).body  # we want the response's body
-    )
-  end
-
-  # 
   # Create a new instance
   # @param  initial=nil Hash The initial values we have.
   # This should match the output of to_hash
@@ -86,16 +69,16 @@ class RietveldScraper
   def initialize(opts)
     @opts = opts
     @cursor = nil
-    @ids = if File.exist?(ARGV[0]) 
-      Oj.load_file(ARGV[0]).to_set 
+    @ids = if File.exist?(ARGV[0])
+      (File.readlines(ARGV[0]).collect {|l| l.strip.to_i}).to_set
     else 
       Set.new
     end
 
     @issues = if File.exist?(@@file_location + "issues_completed.log")
-      File.readlines(@@file_location + "issues_completed.log").collect { |l| l.strip.to_i }
+      (File.readlines(@@file_location + "issues_completed.log").collect { |l| l.strip.to_i }).to_set
     else
-      Array.new
+      Set.new
     end
   end
 
@@ -161,6 +144,8 @@ class RietveldScraper
           end
         end
         hydra.queue issue_request  # and enqueue the request
+      else
+        puts "Skipping #{issue_id}, already downloaded"
       end
     end
 
