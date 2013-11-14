@@ -2,7 +2,8 @@ source 'https://rubygems.org'
 
 # Specify your gem's dependencies in chromium_history.gemspec
 # TODO: Should we really specify our dependencies here or in the gemspec?
-gemspec
+# This should no longer be here.
+#gemspec
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.0'
@@ -18,7 +19,7 @@ gem 'win32console', :platforms => [:mswin, :mingw]
 
 # Scraper requirements
 gem 'ruby-progressbar'
-gem 'typhoeus'
+gem 'typhoeus', '>= 0.6.6'
 gem 'trollop'
 
 # Use Uglifier as compressor for JavaScript assets
