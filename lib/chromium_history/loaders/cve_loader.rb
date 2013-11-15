@@ -25,15 +25,15 @@ class CveLoader
 					oldCVE = codeReview.cve
 					if (oldCVE != cve)
 						puts "Review Number " + reviewNum + " already has a CVE, " + oldCVE
-					end
+					end #checking for bad CVE match up
 				else
 					#add the cve number to the column "cve"
 					codeReview.cve = cve 
 					codeReview.save
-				end
-			end
-		end
-	end
+				end #if cve
+			end #if codereview
+		end #csv file line loop
+	end #load cve method
 
 	# Given a model, a cve number, and a list of symbol properties, transfer the same attributes
 	def transfer(model, cve, properties)
