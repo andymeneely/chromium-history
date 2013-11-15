@@ -33,6 +33,30 @@ class DataIntegrityTest
     error_count = PatchSet.where.not(code_review_id: CodeReview.select("id")).count
     print_results(__method__, error_count, "patch_sets", "code_review_id")
   end
+
+def test_issue_10854242_created_date
+    issue = CodeReview.where(issue: 10854242).first
+    #remember to convert dates to strings for comparison
+    if issue.created.to_s.eql?("2012-08-21 02:04:34 UTC") then 
+      error_count=0 
+    else
+      error_count=1
+    end
+    print_results(__method__, error_count, "code_reviews", "new test")
+end
+
+#TODO: finish checking patch set dates
+def test_patchset_9141024_created_date
+    issue = PatchSet.where(patchset: 9141024)
+    #remember to convert dates to strings for comparison
+    if issue.created.to_s.eql?("2012-01-20 23:53:25 UTC") then 
+      error_count=0 
+    else
+      error_count=1
+    end
+    print_results(__method__, error_count, "code_reviews", "new test")
+end
+
   
   private
   def print_results(test_name, error_count, table, foreign_column)
