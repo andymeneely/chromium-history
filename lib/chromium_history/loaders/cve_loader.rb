@@ -45,14 +45,3 @@ class CveLoader
 	end
 end
 
-
-### QUESTIONS ###
-
-#1 How can I query the data base from here? I want to be able to...
-# => check the code review table for a review number
-#    SELECT EXISTS (SELECT reviewNum FROM code_reviews WHERE column = "code_review_id"); should return true/false
-# => get the reviews corresponding cve
-#    ??? SELECT cve FROM code_reviews WHERE column = "" ???
-
-#2 This loader needs to load the CVE table and the code review table
-

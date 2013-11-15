@@ -6,7 +6,7 @@ require_relative 'data_transfer'
 #
 # GitLogLoader class
 # parses git log commit files and extracts the
-# relevant information form them
+# relevant information from them
 # Currently a brute force approach loading chunks of the 
 # file into memory. More effecient approach requires
 # more reliance on regular expression processing
