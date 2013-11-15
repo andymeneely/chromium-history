@@ -158,9 +158,7 @@ class GitLogLoader
 			end
 				
 		end 
-
-		#convert to string & add to hash
-		hash["filepaths"] = filepaths.map{|path| path}.join(", ")
+		hash["filepaths"] = filepaths
 
 		return arr, hash
 
@@ -221,36 +219,24 @@ class GitLogLoader
 		# Returns Commit Model
 		commit = parse_transfer(Commit.new, hash, @@GIT_LOG_PROPERTIES)
 		commit.save
-		commit_file = create_commit_file(hash["filepaths"])
-		add_foreign_keys(commit, commit_file)
+		commit_file = create_commit_file(hash["filepaths"], commit.id)
 
 	end#add_commit_to_db
 
 	#
 	# Adding the commit file path model
-	# @return- CommitFile model
-	# @param- Committedd file paths
+	# @param- Array of file paths
 	#
-	def create_commit_file(file_paths)
+	def create_commit_file(file_paths, id)
 
-		#
-		commit_file = CommitFile.new
-		commit_file[:filepath] = file_paths
-		commit_file.save 
-		commit_file
-	end
+		file_paths.each do |path|
+			puts "CREATECOMMITFILE: #{path}"
+			commit_file = CommitFile.new
+			commit_file[:filepath] = path
+			commit_file.commit_id = id
+			commit_file.save 
+		end
 
-	#
-	# Add the id's to eachother after saved
-	#
-	# @param- Commit
-	# @param - CommitFile
-	def add_foreign_keys(commit, commit_file)
-		commit.commit_files_id = commit_file.id
-		commit_file.commit_id = commit.id
-
-		commit.save
-		commit_file.save
-	end
+	end#create_commit_file
 
 end#class

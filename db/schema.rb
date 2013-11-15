@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131112152513) do
+ActiveRecord::Schema.define(version: 20131115081935) do
 
   create_table "code_reviews", force: true do |t|
     t.text     "description"
@@ -21,6 +21,8 @@ ActiveRecord::Schema.define(version: 20131112152513) do
     t.string   "cve"
     t.integer  "issue",       limit: 8
   end
+
+  add_index "code_reviews", ["issue"], name: "index_code_reviews_on_issue", unique: true
 
   create_table "comments", force: true do |t|
     t.string   "author_email"
@@ -49,10 +51,7 @@ ActiveRecord::Schema.define(version: 20131112152513) do
     t.string   "test"
     t.string   "svn_revision"
     t.datetime "created_at"
-    t.integer  "commit_files_id"
   end
-
-  add_index "commits", ["commit_files_id"], name: "index_commits_on_commit_files_id"
 
   create_table "cves", force: true do |t|
     t.string "cve"
