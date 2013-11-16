@@ -1,7 +1,7 @@
 # Our custom Rakefile tasks for loading the data
 #require_relative '../chromium_history/loaders/code_review_loader.rb'
 require_relative '../chromium_history/loaders/cve_loader.rb'
-require_relative '../../test/data_integrity/data_integrity_test.rb'
+require_relative '../chromium_history/verify/verify_runner.rb'
 require_relative '../chromium_history/loaders/git_log_loader.rb'
 
 #Uncomment to require all loader files
@@ -49,7 +49,7 @@ namespace :run do
   
   desc "Run our data verification tests"
   task :verify => :environment do
-    DataIntegrityTest.new.run_all
+    VerifyRunner.run_all
   end
   
   desc "Analyze the data for metrics & questions"
