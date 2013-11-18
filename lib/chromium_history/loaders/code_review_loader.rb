@@ -151,7 +151,7 @@ class CodeReviewLoader
     if (Developer.find_by_email(email) == nil) 
       developer = Developer.new
       developer["email"] = email
-      developer["name"] = owner
+      developer["name"] = name
       developer.save
     else 
       dobj = Developer.find_by_email(email)
