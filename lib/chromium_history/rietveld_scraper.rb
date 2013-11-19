@@ -136,7 +136,7 @@ class RietveldScraper
               hydra.queue_front patch_request  # push our request onto the front of the queue
             end
 
-            File.open(@@file_location + "issues_completed.log", "a") { |f| f << "#{issue_id}" }
+            File.open(@@file_location + "issues_completed.log", "a") { |f| f << "#{issue_id}\n" }
             @issues << issue_id
             sleep(delay)
           else
@@ -160,3 +160,5 @@ end
 # driver code
 r = RietveldScraper.new(opts)
 r.get_data
+
+puts "Done."
