@@ -4,19 +4,19 @@ class CveVerify < VerifyBase
 
   def verify_issue_10854242_has_cve
     issue = CodeReview.where(issue: 10854242).first
-    if issue.cve? == true then
-      return_result(__method__, true)
+    if issue.cve?
+      pass()
     else
-      return_result(__method__, false, "Issue 10854242 said it does not has a CVE when it does.")
+      fail("Issue 10854242 said it does not has a CVE when it does.")
     end
   end
 
   def verify_issue_23444043_has_no_cve
     issue = CodeReview.where(issue: 23444043).first
-    if issue.cve? == false then
-      return_result(__method__, true)
+    if issue.cve?
+      fail("Issue 23444043 said it has a CVE when it does not.")
     else
-      return_result(__method__, false, "Issue 23444043 said it has a CVE when it does not.")
+      pass
     end
   end
   
