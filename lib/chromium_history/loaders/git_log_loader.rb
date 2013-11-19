@@ -1,4 +1,4 @@
-require 'Date'
+require 'date'
 require_relative 'data_transfer'
 
 
