@@ -230,7 +230,6 @@ class GitLogLoader
 	def create_commit_file(file_paths, id)
 
 		file_paths.each do |path|
-			puts "CREATECOMMITFILE: #{path}"
 			commit_file = CommitFile.new
 			commit_file[:filepath] = path
 			commit_file.commit_id = id
