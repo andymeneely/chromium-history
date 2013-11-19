@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131119001433) do
+ActiveRecord::Schema.define(version: 20131119165521) do
 
   create_table "code_reviews", force: true do |t|
     t.text     "description"
@@ -33,8 +33,8 @@ ActiveRecord::Schema.define(version: 20131119001433) do
   end
 
   create_table "commit_files", force: true do |t|
-    t.string  "filepath"
     t.integer "commit_id"
+    t.string  "filepath",  limit: 1000
   end
 
   create_table "commits", force: true do |t|
@@ -44,7 +44,6 @@ ActiveRecord::Schema.define(version: 20131119001433) do
     t.text     "message"
     t.string   "bug"
     t.string   "reviewers"
-    t.string   "test"
     t.string   "svn_revision"
     t.datetime "created_at"
   end

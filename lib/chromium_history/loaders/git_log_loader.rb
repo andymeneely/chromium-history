@@ -1,9 +1,6 @@
 require 'date'
 require_relative 'data_transfer'
 
-
-
-#
 # GitLogLoader class
 # parses git log commit files and extracts the
 # relevant information from them
@@ -19,7 +16,7 @@ class GitLogLoader
 	include DataTransfer
 	
 	@@GIT_LOG_PROPERTIES = [:commit_hash, :parent_commit_hash, :author_email,
-		:message, :bug, :reviewers, :test, :svn_revision, :created_at]
+		:message, :bug, :reviewers, :svn_revision, :created_at]
 
 	@@GIT_LOG_FILE_PROPERTIES = [:commit_id, :filepath]
 
@@ -106,8 +103,7 @@ class GitLogLoader
 		#index 5 should be the start
 		#of the message
 		for i in (5..arr.size-1)
-			if not arr.fetch(i).match(/^TEST/) and
-				not arr.fetch(i).match(/^git-svn-id:/) and
+			if not arr.fetch(i).match(/^git-svn-id:/) and
 				not arr.fetch(i).match(/^Review URL:/) and
 				not arr.fetch(i).match(/^BUG/) and
 				not arr.fetch(i).match(/^R=/)
@@ -136,10 +132,7 @@ class GitLogLoader
 
 		arr.each do |element|
 
-			if element.match(/^TEST=/)
-				hash[:test] = element.strip.sub("TEST=", "")
-
-			elsif element.match(/^git-svn-id:/)
+			if element.match(/^git-svn-id:/)
 				hash[:svn_revision] = element.strip.sub("git-svn-id:", "")
 
 			elsif element.match(/^Review URL:/)
@@ -231,7 +224,7 @@ class GitLogLoader
 
 		file_paths.each do |path|
 			commit_file = CommitFile.new
-			commit_file[:filepath] = path
+			commit_file[:filepath] = path[0..999] #FIXME Hack for filepath parsing bug
 			commit_file.commit_id = id
 			commit_file.save 
 		end
