@@ -61,6 +61,7 @@ namespace :run do
   task :show_env => :environment do
       puts "\tEnv.: #{Rails.env}"
       puts "\tData: #{Rails.configuration.datadir}"
+      puts "\tStarted #{Time.now}"
   end
   
 end
