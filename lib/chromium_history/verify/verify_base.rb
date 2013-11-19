@@ -8,7 +8,24 @@ class VerifyBase
   end
 
   protected
-  def return_result(verify_name, pass, fail_message="")
+  def pass()
+    return_result(true)
+  end
+  
+  def fail(fail_message="")
+    return_result(false, fail_message)
+  end
+  
+  private
+  def return_result(pass, fail_message="")
+    verify_name = ""
+    caller.each do |frame|
+      method = frame[/`([^']*)'/, 1]
+      if method.start_with? "verify_"
+        verify_name = method
+      end
+    end
+    raise 'ERROR: Verification methods must start with verify_' if verify_name.empty?
     result = {}
     result[:verify_name] = verify_name
     result[:pass] = pass
