@@ -4,8 +4,8 @@ require_relative 'data_transfer'
 class CodeReviewLoader
   # Mix in the DataTransfer module
   include DataTransfer
-  
-  
+
+
   @@CODE_REVIEW_PROPS = [:description, :subject, :created, :modified, :issue]
   def load    
     Dir["#{Rails.configuration.datadir}/codereviews/*.json"].each do |file|
@@ -23,30 +23,33 @@ class CodeReviewLoader
       end #code review transaction loop
     end #each json file loop
   end #load method
-  
+
 
 
 
   private  
-  
+
   #param file = the json file we're working with
   #      codereview = code reivew model object
   #      pids = all the patch sets
   @@PATCH_SET_PROPS = [:message, :num_comments, :patchset, :created, :modified, :owner_email]
   def load_patchsets(file, codereview, pids)
     pids.each do |pid|
-      pobj = Oj.load_file("#{file.gsub(/\.json$/,'')}/#{pid}.json")
-      p = transfer(PatchSet.new, pobj, @@PATCH_SET_PROPS)
-
-      #this new method will load in the owner name and email to the developers table from this patch set
-      load_developer_names(pobj['owner_email'], pobj['owner'])
-
-      load_patch_set_files(p, pobj['files'])
-      codereview.patch_sets << p
-      p.save
+      patchset_file = "#{file.gsub(/\.json$/,'')}/#{pid}.json"
+      if File.exists? patchset_file
+        pobj = Oj.load_file(patchset_file)
+        p = transfer(PatchSet.new, pobj, @@PATCH_SET_PROPS)
+        #this new method will load in the owner name and email to the developers table from this patch set
+        load_developer_names(pobj['owner_email'], pobj['owner'])
+        load_patch_set_files(p, pobj['files'])
+        codereview.patch_sets << p
+        p.save
+      else
+        $stderr.puts "Patchset file should exist but doesn't: #{patchset_file}"
+      end
     end #patch set loop
   end #load patch set method
-  
+
 
 
 
@@ -61,7 +64,7 @@ class CodeReviewLoader
       psf.save
     end #patch set file loop
   end #load patch set file method
-  
+
 
 
 
@@ -75,7 +78,7 @@ class CodeReviewLoader
       c.save
     end #comments loop
   end #load comments method
-  
+
 
 
 
@@ -147,7 +150,7 @@ class CodeReviewLoader
     if (email.index('+') != nil) 
       email = email.slice(0, email.index('+')) + email.slice(email.index('@'), (email.length()-1))
     end #fixing the email
-  
+
     if (Developer.find_by_email(email) == nil) 
       developer = Developer.new
       developer["email"] = email
