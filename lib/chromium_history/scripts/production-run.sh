@@ -10,6 +10,7 @@ export RAILS_ENV="production"
 
 cd $HISTORY_DIR
 git pull
+bundle
 rake run 1>$LOG 2>$ERR
 
 #Email the status report
