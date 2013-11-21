@@ -1,0 +1,2 @@
+# Used to get random commits from our production database
+psql -U archeology chromium_real -c "select commit_hash from commits" | sort -R | tail -n 1000 > testdata/random-commits.txt
