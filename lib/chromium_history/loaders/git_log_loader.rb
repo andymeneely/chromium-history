@@ -8,22 +8,24 @@ require_relative 'data_transfer'
 # file into memory. More effecient approach requires
 # more reliance on regular expression processing
 #
-# TODO- Test against the large gitlog.txt for all cases
+# Based on the following git log command:
+#
+# git log --pretty=format:":::%n%H%n%an%n%ae%n%ad%n%P%n%s%n%b" --stat --ignore-space-change
+#
 # @author - Christopher C. Ketant
+# @author - Andy Meneely
 #
 class GitLogLoader
 
 	include DataTransfer
 	
 	@@GIT_LOG_PROPERTIES = [:commit_hash, :parent_commit_hash, :author_email,
-		:message, :bug, :reviewers, :svn_revision, :created_at]
+		:message, :bug, :reviewers, :code_review, :svn_revision, :created_at]
 
 	@@GIT_LOG_FILE_PROPERTIES = [:commit_id, :filepath]
 
 	def load
-		Dir["#{Rails.configuration.datadir}/logfiles/*.txt"].each do |log|
-			get_commit(File.open(log, "r"))
-		end
+	  get_commit(File.open("#{Rails.configuration.datadir}/chromium-gitlog.txt", "r"))
 	end
 
 	#
@@ -136,7 +138,7 @@ class GitLogLoader
 				hash[:svn_revision] = element.strip.sub("git-svn-id:", "")
 
 			elsif element.match(/^Review URL:/)
-				#hash[:reviewers] = element
+				hash[:code_review] = element[/(\d)+/].to_i # Greedy grab the first integer
 
 			elsif element.match(/^BUG=/)
 				hash[:bug] = element.strip.sub("BUG=", "")

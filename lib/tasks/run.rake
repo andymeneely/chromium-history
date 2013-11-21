@@ -8,7 +8,7 @@ require_relative '../chromium_history/loaders/git_log_loader.rb'
 #Dir[File.expand_path('../chromium_history/loaders/*.rb', File.dirname(__FILE__))].each {|file| require file}
 
 
-task :run => [:environment, "run:show_env", "db:reset", "run:load", "run:optimize", "run:verify", "run:analyze"] do
+task :run => [:environment, "run:env", "db:reset", "run:load", "run:optimize", "run:verify", "run:analyze"] do
   puts "Run task completed"
 end
 
@@ -58,7 +58,7 @@ namespace :run do
   end
   
   desc "Show current environment information"
-  task :show_env => :environment do
+  task :env => :environment do
       puts "\tEnv.:  #{Rails.env}"
       puts "\tData:  #{Rails.configuration.datadir}"
       puts "\tStart: #{Time.now}"

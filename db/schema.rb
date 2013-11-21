@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131119165521) do
+ActiveRecord::Schema.define(version: 20131121185452) do
 
   create_table "code_reviews", force: true do |t|
     t.text     "description"
@@ -46,6 +46,7 @@ ActiveRecord::Schema.define(version: 20131119165521) do
     t.string   "reviewers"
     t.string   "svn_revision"
     t.datetime "created_at"
+    t.integer  "code_review"
   end
 
   create_table "cves", force: true do |t|
