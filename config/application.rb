@@ -22,7 +22,7 @@ module ChromiumHistory
     
     # Where we keep all of our data to load into the database
     if Rails.env == "development"
-      Rails.configuration.datadir = "test/data"
+      Rails.configuration.datadir = "data/development"
     else
       data_yml = YAML.load_file("#{Rails.root}/config/data.yml")[Rails.env]
       Rails.configuration.datadir = data_yml['src-relative'] == "true" ? Rails.root + "/" : ""
