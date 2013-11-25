@@ -14,7 +14,7 @@ git-svn-id: svn://svn.chromium.org/chrome/trunk/src@222272 0039d316-1c4b-4281-b9
  ui/snapshot/OWNERS | 5 +++++
  1 file changed, 5 insertions(+)
 
- :::
+:::
 35f2ce184a5f480225965e9e6e2b11adcc993655
 danakj@chromium.org
 danakj@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
@@ -74,7 +74,7 @@ git-svn-id: svn://svn.chromium.org/chrome/trunk/src@222206 0039d316-1c4b-4281-b9
  chromeos/CHROMEOS_LKGM | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
- :::
+:::
 ee2815e28d408216cf94e874825b6bcf76c69083
 initial.commit
 initial.commit@0039d316-1c4b-4281-b951-d872f2087c98
@@ -143,6 +143,7 @@ git-svn-id: svn://svn.chromium.org/chrome/trunk/src@33807 0039d316-1c4b-4281-b95
  net/net.gyp                                        |  14 +-
  .../ftp_directory_listing_response_delegate.cc     |   2 +-
  21 files changed, 1176 insertions(+), 1015 deletions(-):::
+:::
 6eebdee7851c52b1f481fca1cdffcbc51c8ec061
 enne@chromium.org
 enne@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
