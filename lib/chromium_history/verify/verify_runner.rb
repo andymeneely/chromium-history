@@ -14,7 +14,9 @@ class VerifyRunner
     @@fail = 0
     run_verify "."
     run_verify Rails.env
-    puts "\nRun:Verify completed. #{@@pass} passed. #{@@fail} failed.\n"
+    num_pass = "#{@@pass} passed."
+    num_fail = "#{@@fail} failed."
+    puts "\nRun:Verify completed. #{num_pass.green} #{num_fail.red}\n"
   end
   
   private
