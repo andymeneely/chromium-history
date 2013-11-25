@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131125034646) do
+ActiveRecord::Schema.define(version: 20131125051854) do
 
   create_table "code_reviews", force: true do |t|
     t.text     "description"
@@ -34,7 +34,8 @@ ActiveRecord::Schema.define(version: 20131125034646) do
 
   create_table "commit_files", force: true do |t|
     t.integer "commit_id"
-    t.string  "filepath",  limit: 1000
+    t.string  "filepath",    limit: 1000
+    t.string  "commit_hash"
   end
 
   create_table "commits", force: true do |t|

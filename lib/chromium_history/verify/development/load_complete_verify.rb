@@ -14,6 +14,10 @@ class LoadCompleteVerify < VerifyBase
     verify_count("Comments", 14, Comment.count)
   end
 
+  def verify_commit_count
+    verify_count("Commits", 6, Commit.count)
+  end
+
   def verify_code_review_10854242_has_23_messages
     helper_count_messages(10854242, 23)
   end
@@ -44,6 +48,10 @@ class LoadCompleteVerify < VerifyBase
 
   def verify_code_review_5754053585797120_was_loaded
     helper_code_review_was_loaded(5754053585797120)
+  end
+
+  def verify_commit_6eebdee7_has_7_files
+    verify_count("Commit 6eebdee7851c52b1f481fca1cdffcbc51c8ec061",7, Commit.find_by_commit_hash("6eebdee7851c52b1f481fca1cdffcbc51c8ec061").commit_files.count)
   end
 
   private

@@ -214,7 +214,7 @@ class GitLogLoader
 		# Returns Commit Model
 		commit = parse_transfer(Commit.new, hash, @@GIT_LOG_PROPERTIES)
 		commit.save
-		commit_file = create_commit_file(hash["filepaths"], commit.id)
+		commit_file = create_commit_file(hash["filepaths"], hash[:commit_hash], commit.id)
 
 	end#add_commit_to_db
 
@@ -222,12 +222,13 @@ class GitLogLoader
 	# Adding the commit file path model
 	# @param- Array of file paths
 	#
-	def create_commit_file(file_paths, id)
+	def create_commit_file(file_paths, commit_hash, id)
 
 		file_paths.each do |path|
 			commit_file = CommitFile.new
 			commit_file[:filepath] = path[0..999] #FIXME Hack for filepath parsing bug
 			commit_file.commit_id = id
+      commit_file.commit_hash = commit_hash
 			commit_file.save 
 		end
 
