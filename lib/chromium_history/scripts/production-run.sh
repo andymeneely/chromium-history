@@ -21,8 +21,8 @@ rake run 1>$LOG 2>$ERR
 
 #Email the status report
 rm /tmp/email.txt
-echo -e "\n\n\n\n\n----------------git log -1------------------------\n\n\n\n\n" >> /tmp/email.txt
-git log -1 1>>/tmp/email.txt
+echo -e "\n\n\n\n\n----------------git log --since="1 day ago" --stat------------------------\n\n\n\n\n" >> /tmp/email.txt
+git log --since="1 day ago" --stat >> /tmp/email.txt
 echo -e "\n\n\n\n\n----------------stdout------------------------\n\n\n\n\n" >> /tmp/email.txt
 cat $LOG >> /tmp/email.txt
 echo -e "\n\n\n\n\n----------------stderr------------------------\n\n\n\n\n" >> /tmp/email.txt
