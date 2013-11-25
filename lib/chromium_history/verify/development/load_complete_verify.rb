@@ -3,36 +3,15 @@ require_relative "../verify_base"
 class LoadCompleteVerify < VerifyBase
 
   def verify_exactly_4_code_reviews_exist
-    count = CodeReview.count
-    if count > 4
-      fail("More than 4 code_reviews found.")
-    elsif count < 4
-      fail("Less than 4 code_reviews found.")
-    else
-      pass()
-    end
+    verify_count("Code Reviews", 5, CodeReview.count)
   end
 
   def verify_exactly_12_patch_sets_exist
-    count = PatchSet.count
-    if count > 12
-      fail("More than 12 patch_sets found.")
-    elsif count < 12
-      fail("Less than 12 patch_sets found.")
-    else
-      pass()
-    end
+    verify_count("Patch Sets", 16, PatchSet.count)
   end
 
   def verify_exactly_9_comments_exist
-    count = Comment.count
-    if count > 9
-      fail("More than 9 comments found.")
-    elsif count < 9
-      fail("Less than 9 comments found.")
-    else
-      pass()
-    end
+    verify_count("Comments", 14, Comment.count)
   end
 
   def verify_code_review_10854242_has_23_messages
@@ -78,13 +57,20 @@ class LoadCompleteVerify < VerifyBase
       pass()
     end
   end
-
   def helper_count_messages(code_review, expected)
     count = CodeReview.where(issue: code_review).first.messages.count
     if count > expected
       fail("More than #{expected} messages found.")
     elsif count < expected
       fail("Less than #{expected} messages found.")
+    end
+  end
+
+  def verify_count(name, expected, actual)
+    if actual > expected
+      fail("More than #{expected} #{name} found. Actual: #{actual}")
+    elsif actual < expected
+      fail("Less than #{expected} #{name} found. Actual: #{actual}")
     else
       pass()
     end

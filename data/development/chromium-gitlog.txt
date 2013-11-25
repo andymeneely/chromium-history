@@ -142,4 +142,30 @@ git-svn-id: svn://svn.chromium.org/chrome/trunk/src@33807 0039d316-1c4b-4281-b95
  net/ftp/ftp_util.h                                 |   6 +
  net/net.gyp                                        |  14 +-
  .../ftp_directory_listing_response_delegate.cc     |   2 +-
- 21 files changed, 1176 insertions(+), 1015 deletions(-)
+ 21 files changed, 1176 insertions(+), 1015 deletions(-):::
+6eebdee7851c52b1f481fca1cdffcbc51c8ec061
+enne@chromium.org
+enne@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Wed Jul 31 20:20:14 2013 +0000
+f247988723f2deb23bfefa46d7f5cc040b11bee0
+cc: Cleanup Layer::SetNeedsDisplayInRect
+This comment is no longer true.  Also, simplified the early out
+condition and added a test.
+
+R=danakj@chromium.org
+BUG=none
+
+Committed: https://src.chromium.org/viewvc/chrome?view=rev&revision=214103
+
+Review URL: https://chromiumcodereview.appspot.com/5831706594508800
+
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@214819 0039d316-1c4b-4281-b951-d872f2087c98
+
+ cc/layers/image_layer.cc            | 5 ++---
+ cc/layers/layer.cc                  | 9 ++++-----
+ cc/layers/layer.h                   | 1 +
+ cc/layers/layer_unittest.cc         | 8 +++++++-
+ cc/layers/nine_patch_layer.cc       | 5 ++---
+ cc/resources/image_layer_updater.cc | 9 +++++++++
+ cc/resources/image_layer_updater.h  | 3 ++-
+ 7 files changed, 27 insertions(+), 13 deletions(-)
