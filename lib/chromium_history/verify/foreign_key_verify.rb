@@ -27,6 +27,11 @@ class ForeignKeyVerify < VerifyBase
     get_results(error_count, "patch_sets", "code_review_id")
   end
 
+  def verify_commit_files_all_have_commits
+    error_count = CommitFile.where.not(commit_hash: Commit.select("commit_hash")).count
+    get_results(error_count, "commit files", "commit_hash")
+  end
+
   private
   def get_results(error_count, table, foreign_column)
     if error_count == 0
