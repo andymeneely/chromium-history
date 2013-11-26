@@ -10,17 +10,12 @@ class CodeReviewLoader
   def load    
     Dir["#{Rails.configuration.datadir}/codereviews/*.json"].each do |file|
       cobj = Oj.load_file(file)
-      CodeReview.transaction do
         c = transfer(CodeReview.new, cobj, @@CODE_REVIEW_PROPS)
-        #TODO Bring in connection to the Developer model for owner, cc's, reviewers, and various others.
-        #TODO For the Developer connections, ideally look it up first and then make the connection. Maybe check if it's there by email first, then add one if it's not there.
         load_patchsets(file, c, cobj['patchsets'])
         load_messages(file, c, cobj['messages'])
         load_developers(cobj['cc'], cobj['reviewers'], cobj['messages'])
         c.save
-
         load_developer_names(cobj['owner_email'], cobj['owner'])
-      end #code review transaction loop
     end #each json file loop
   end #load method
 
