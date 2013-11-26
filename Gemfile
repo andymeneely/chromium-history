@@ -17,6 +17,8 @@ gem 'oj'
 gem 'colorize'
 gem 'win32console', :platforms => [:mswin, :mingw]
 
+gem 'activerecord-import', '>=0.4.0'
+
 # Scraper requirements
 gem 'ruby-progressbar'
 gem 'typhoeus', '>= 0.6.6'
