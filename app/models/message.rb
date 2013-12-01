@@ -3,6 +3,6 @@ class Message < ActiveRecord::Base
   belongs_to :code_review
   
   def self.on_optimize
-
+    ActiveRecord::Base.connection.add_index :messages, :sender
   end
 end
