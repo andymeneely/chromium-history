@@ -32,36 +32,40 @@ namespace :run do
       x.report("Loading git log commits: ") {GitLogLoader.new.load}
     end
   end
-  
+
   desc "Alias for run:clean then run:load"
   task :clean_load => ["run:clean", "run:load"]
-  
+
   desc "Optimize the tables once data is loaded"
   task :optimize => [:environment] do
     # Iterate over our models
     # TODO Refactor this out with rake run:clean so we're not repetitive
-    Dir[Rails.root.join('app/models/*.rb').to_s].each do |filename|
-      klass = File.basename(filename, '.rb').camelize.constantize
-      next unless klass.ancestors.include?(ActiveRecord::Base)
-      klass.send(:on_optimize)
+    Benchmark.bm(16) do |x|
+      x.report("Executing on_optimize...") do
+        Dir[Rails.root.join('app/models/*.rb').to_s].each do |filename|
+          klass = File.basename(filename, '.rb').camelize.constantize
+          next unless klass.ancestors.include?(ActiveRecord::Base)
+          klass.send(:on_optimize)
+        end
+      end
     end
   end
-  
+
   desc "Run our data verification tests"
   task :verify => :environment do
     VerifyRunner.run_all
   end
-  
+
   desc "Analyze the data for metrics & questions"
   task :analyze => :environment do
     # TODO: Delegate this out to a list of classes that will assemble metrics and ask questions
   end
-  
+
   desc "Show current environment information"
   task :env => :environment do
-      puts "\tEnv.:  #{Rails.env}"
-      puts "\tData:  #{Rails.configuration.datadir}"
-      puts "\tStart: #{Time.now}"
+    puts "\tEnv.:  #{Rails.env}"
+    puts "\tData:  #{Rails.configuration.datadir}"
+    puts "\tStart: #{Time.now}"
   end
-  
+
 end
