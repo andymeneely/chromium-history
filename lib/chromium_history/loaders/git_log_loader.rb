@@ -212,6 +212,7 @@ class GitLogLoader
       Commit.import @commits_to_save 
       @commits_to_save = []
     end
+    #bug can't get the commit id because we are now importing
     commit_file = create_commit_file(hash["filepaths"], hash[:commit_hash], commit.id)
   end#add_commit_to_db
 

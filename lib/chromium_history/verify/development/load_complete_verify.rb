@@ -54,6 +54,14 @@ class LoadCompleteVerify < VerifyBase
     verify_count("Commit 6eebdee7851c52b1f481fca1cdffcbc51c8ec061",7, Commit.find_by_commit_hash("6eebdee7851c52b1f481fca1cdffcbc51c8ec061").commit_files.count)
   end
 
+  def verify_commit_files_have_no_ellipses
+    helper_check_file_path('\.{2,}', "File Paths with Ellipses")
+  end
+
+  def verify_commit_files_have_no_spaces
+    helper_check_file_path('\s', "File Paths with Spaces")
+  end
+
   private
   def helper_code_review_was_loaded(issue)
     count = CodeReview.where(issue: issue).count
@@ -84,4 +92,24 @@ class LoadCompleteVerify < VerifyBase
     end
   end
 
-end
+  def helper_check_file_path(regex, message)
+    #trying to display the commit that belongs to on fail
+    #but the commit id not being saved to commit_file
+    count = 0
+
+    # Get all the commit_files by the filepath column value
+    files = CommitFile.pluck(:filepath)
+    rgx = Regexp.new(regex)
+
+    files.each do |path| 
+      if path.match(rgx)
+        count+=1
+      end
+
+    end#end each
+    verify_count(message, 0, count)
+
+end #end verify_file_path
+
+
+end#end of class
