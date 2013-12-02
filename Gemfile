@@ -48,6 +48,9 @@ group :doc do
   gem 'sdoc', require: false
 end
 
+# Activerecord-import. Used for batch imports of loader information. 
+gem "activerecord-import", ">= 0.2.0"
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
