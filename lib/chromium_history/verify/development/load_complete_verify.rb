@@ -2,19 +2,19 @@ require_relative "../verify_base"
 
 class LoadCompleteVerify < VerifyBase
 
-  def verify_exactly_4_code_reviews_exist
+  def verify_number_of_code_reviews
     verify_count("Code Reviews", 5, CodeReview.count)
   end
 
-  def verify_exactly_12_patch_sets_exist
+  def verify_number_of_patchsets
     verify_count("Patch Sets", 16, PatchSet.count)
   end
 
-  def verify_exactly_9_comments_exist
+  def verify_number_of_comments
     verify_count("Comments", 14, Comment.count)
   end
 
-  def verify_commit_count
+  def verify_number_of_commits
     verify_count("Commits", 6, Commit.count)
   end
 
