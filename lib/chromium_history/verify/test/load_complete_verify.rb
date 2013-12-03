@@ -3,7 +3,11 @@ require_relative "../verify_base"
 class LoadCompleteVerify < VerifyBase
 
   def verify_exactly_995_code_reviews_exist
-    verify_count("Code Reviews", 995, CodeReview.count)
+    verify_count("Code Reviews", 837, CodeReview.count)
+  end
+
+  def verify_exactly_1000_commits
+    verify_count("Commits", 1000, Commit.count)
   end
 
   private
