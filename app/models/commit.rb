@@ -3,5 +3,8 @@ class Commit < ActiveRecord::Base
   
   def self.on_optimize
     ActiveRecord::Base.connection.add_index :commits, :commit_hash, unique: true
+    ActiveRecord::Base.connection.add_index :commits, :parent_commit_hash
+    ActiveRecord::Base.connection.add_index :commits, :author_email
+
   end
 end

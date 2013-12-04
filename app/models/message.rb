@@ -4,5 +4,6 @@ class Message < ActiveRecord::Base
   
   def self.on_optimize
     ActiveRecord::Base.connection.add_index :messages, :sender
+    ActiveRecord::Base.connection.add_index :messages, :code_review_id
   end
 end

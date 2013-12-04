@@ -7,5 +7,8 @@ class PatchSet < ActiveRecord::Base
   end 
   
   def self.on_optimize
+    ActiveRecord::Base.connection.add_index :patch_sets, :code_review_id
+    ActiveRecord::Base.connection.add_index :patch_sets, :patchset
+    ActiveRecord::Base.connection.add_index :patch_sets, :owner_email
   end
 end
