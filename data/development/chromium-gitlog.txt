@@ -1,4 +1,145 @@
 :::
+783770a2bb970dd33a30db21692daf6bfb2915dc
+skyostil@chromium.org
+skyostil@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Tue Sep 10 16:24:55 2013 +0000
+8a3c66a4730b7ec473cdf9d6d51edfd8ee8009e2
+Add Android owners in ui/snapshots
+NOTRY=true
+
+Review URL: https://chromiumcodereview.appspot.com/23707030
+
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@222272 0039d316-1c4b-4281-b951-d872f2087c98
+
+ ui/snapshot/OWNERS | 5 +++++
+ 1 file changed, 5 insertions(+)
+:::
+35f2ce184a5f480225965e9e6e2b11adcc993655
+danakj@chromium.org
+danakj@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Tue Sep 10 08:25:11 2013 +0000
+ce7e8b34fdc4538e230c8c84ce04fe5147446309
+cc: Drop ContextProvider references on the impl thread before quitting
+When passing a TextureMailbox from the impl thread out to the cc
+embedder on the main thread, we need to keep a ref on the ContextProvider
+that owns the texture in the mailbox, to keep the mailbox alive while
+the embedder is receiving it.
+
+However if the compositor shutsdown and the impl thread goes away, we
+must have already dropped the ref on the ContextProvider or it will be
+destroyed (a) on the wrong thread and (b) after the global GPU process
+objects it holds pointers to have been destroyed. Crash will occur.
+
+So, we add a TextureMailboxDeleter class that the GLRenderer uses to
+generate a TextureMailbox release callback for the main thread instead
+of rolling its own thing. The TMDeleter class' lifetime is bounded by
+the life of the compositor instance on the impl thread, so it is
+destroyed before the impl thread is joined. And when it is destroyed it
+deletes the textures it was meant to destroy, and drops its ref on the
+context provider.
+
+BUG=283625
+R=piman
+
+Review URL: https://chromiumcodereview.appspot.com/23454014
+
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@222207 0039d316-1c4b-4281-b951-d872f2087c98
+
+ cc/cc.gyp                                                         |  2 ++
+ cc/cc_tests.gyp                                                   |  1 +
+ cc/output/gl_renderer.cc                                          | 39 +++++++++------------------------------
+ cc/output/gl_renderer.h                                           |  8 +++++++-
+ cc/output/gl_renderer_unittest.cc                                 |  7 ++++++-
+ cc/resources/texture_mailbox_deleter.cc                           | 89 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ cc/resources/texture_mailbox_deleter.h                            | 46 ++++++++++++++++++++++++++++++++++++++++++++++
+ cc/resources/texture_mailbox_deleter_unittest.cc                  | 39 +++++++++++++++++++++++++++++++++++++++
+ cc/test/pixel_test.cc                                             |  5 +++++
+ cc/test/pixel_test.h                                              |  5 +++++
+ cc/trees/layer_tree_host_impl.cc                                  |  3 +++
+ cc/trees/layer_tree_host_impl.h                                   |  3 +++
+ cc/trees/layer_tree_host_impl_unittest.cc                         | 46 +++++++++++++++++++++++++++++++++++++++++++++-
+ content/browser/browser_plugin/browser_plugin_host_browsertest.cc |  8 +-------
+ 14 files changed, 261 insertions(+), 40 deletions(-)
+:::
+ce7e8b34fdc4538e230c8c84ce04fe5147446309
+chromeos-lkgm@google.com
+chromeos-lkgm@google.com@0039d316-1c4b-4281-b951-d872f2087c98
+Tue Sep 10 08:23:18 2013 +0000
+89f14e7de64ceba1d62792530a213fa5495d53b3
+Automated Commit: Committing new LKGM version 4663.0.0 for chromeos.
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@222206 0039d316-1c4b-4281-b951-d872f2087c98
+
+ chromeos/CHROMEOS_LKGM | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+:::
+ee2815e28d408216cf94e874825b6bcf76c69083
+initial.commit
+initial.commit@0039d316-1c4b-4281-b951-d872f2087c98
+Sat Jul 26 20:52:30 2008 +0000
+7e5ba5d125a2dc95132e765e949e53e1e779caaf
+Add the build directory to the repository.
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@7 0039d316-1c4b-4281-b951-d872f2087c98
+
+ build/README.google                                |  15 +++++++++++
+ build/SConscript.googleurl                         | 100 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ build/SConscript.main                              | 334 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ build/SConscript.v8                                |  78 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ build/common.vsprops                               |   7 ++++++
+ build/debug.vsprops                                |  23 +++++++++++++++++
+ build/external_code.vsprops                        |  14 +++++++++++
+ build/internal/README.google                       |  24 ++++++++++++++++++
+ build/internal/essential.vsprops                   |  77 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ build/internal/release_defaults.vsprops            |  24 ++++++++++++++++++
+ build/internal/release_impl.vsprops                |   8 ++++++
+ build/internal/release_impl_checksenabled.vsprops  |  24 ++++++++++++++++++
+ build/internal/release_impl_dom_stats.vsprops      |  23 +++++++++++++++++
+ build/internal/release_impl_official.vsprops       |  26 +++++++++++++++++++
+ build/internal/release_impl_pgo_instrument.vsprops |  32 +++++++++++++++++++++++
+ build/internal/release_impl_pgo_optimize.vsprops   |  28 +++++++++++++++++++++
+ build/internal/release_impl_purify.vsprops         |  19 ++++++++++++++
+ build/output_dll_copy.rules                        |  17 +++++++++++++
+ build/release.vsprops                              |   8 ++++++
+ 19 files changed, 881 insertions(+)
+:::
+1bcf224fd40b497997827af5f04b0628e648700f
+phajdan.jr@chromium.org
+phajdan.jr@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Fri Dec 4 09:58:32 2009 +0000
+a54839536b5d361b9bdf629714d32674687b98ef
+Split FTP LIST parsing code into individual files for each listing style.
+This turns out to be much better code organisation strategy. We're going
+to have even more parsers.
+
+TEST=Covered by net_unittests.
+BUG=25520
+
+Review URL: http://codereview.chromium.org/465035
+
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@33807 0039d316-1c4b-4281-b951-d872f2087c98
+
+ net/ftp/ftp_directory_listing_buffer.cc                  |  10 ++--
+ net/ftp/ftp_directory_listing_buffer_unittest.cc         |   2 +-
+ net/ftp/ftp_directory_listing_parser.cc                  |  12 +++++
+ net/ftp/ftp_directory_listing_parser.h                   |  53 +++++++++++++++++++++
+ net/ftp/ftp_directory_listing_parser_ls.cc               | 191 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ net/ftp/ftp_directory_listing_parser_ls.h                |  36 +++++++++++++++
+ net/ftp/ftp_directory_listing_parser_ls_unittest.cc      |  69 +++++++++++++++++++++++++++
+ net/ftp/ftp_directory_listing_parser_unittest.h          |  59 +++++++++++++++++++++++
+ net/ftp/ftp_directory_listing_parser_vms.cc              | 295 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ net/ftp/ftp_directory_listing_parser_vms.h               |  62 +++++++++++++++++++++++++
+ net/ftp/ftp_directory_listing_parser_vms_unittest.cc     | 118 ++++++++++++++++++++++++++++++++++++++++++++++
+ net/ftp/ftp_directory_listing_parser_windows.cc          | 109 +++++++++++++++++++++++++++++++++++++++++++
+ net/ftp/ftp_directory_listing_parser_windows.h           |  33 +++++++++++++
+ net/ftp/ftp_directory_listing_parser_windows_unittest.cc |  74 +++++++++++++++++++++++++++++
+ net/ftp/ftp_directory_listing_parsers.cc                 | 601 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ net/ftp/ftp_directory_listing_parsers.h                  | 138 ------------------------------------------------------
+ net/ftp/ftp_directory_listing_parsers_unittest.cc        | 267 --------------------------------------------------------------------------------------------------------
+ net/ftp/ftp_util.cc                                      |  40 ++++++++++++++++
+ net/ftp/ftp_util.h                                       |   6 +++
+ net/net.gyp                                              |  14 ++++--
+ webkit/glue/ftp_directory_listing_response_delegate.cc   |   2 +-
+ 21 files changed, 1176 insertions(+), 1015 deletions(-)
+:::
 6eebdee7851c52b1f481fca1cdffcbc51c8ec061
 enne@chromium.org
 enne@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
