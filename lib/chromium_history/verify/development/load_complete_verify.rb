@@ -18,6 +18,14 @@ class LoadCompleteVerify < VerifyBase
     verify_count("Commits", 6, Commit.count)
   end
 
+  def verify_number_of_messages
+    verify_count("Messages", 73, Message.count)
+  end
+
+  def verify_number_of_patch_set_files
+    verify_count("Patch Set Files", 70, PatchSetFile.count)
+  end
+
   def verify_code_review_10854242_has_23_messages
     helper_count_messages(10854242, 23)
   end
