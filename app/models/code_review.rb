@@ -1,6 +1,6 @@
 class CodeReview < ActiveRecord::Base
-  has_many :patch_sets
-  has_many :messages
+  has_many :patch_sets,  foreign_key: "code_review_id", primary_key: "issue"
+  has_many :messages, foreign_key: "code_review_id", primary_key: "issue"
   
   def self.on_optimize
     ActiveRecord::Base.connection.add_index :code_reviews, :issue, unique: true
