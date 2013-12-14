@@ -23,7 +23,7 @@ eos
   end
 
   def verify_patch_set_files_and_patch_sets_relationship
-    error_count = PatchSetFile.where.not(patch_set_id: PatchSet.select("id")).count
+    error_count = PatchSetFile.where.not(composite_patch_set_id: PatchSet.select("composite_patch_set_id")).count
     get_results(error_count, "patch_set_files", "patch_set_id")
   end
 
