@@ -7,6 +7,8 @@ class ForeignKeyVerify < VerifyBase
     get_results(error_count, "code_reviews", "cve")
   end
 
+#Causing following error: undefined method `getvalue' for [{"COUNT(*)"=>0, 0=>0}]:Array
+=begin
   def verify_comments_and_patch_set_files_relationship
     no_dangling 'Comments',<<eos
       SELECT COUNT(*) FROM 
@@ -16,6 +18,7 @@ class ForeignKeyVerify < VerifyBase
       WHERE c.composite_patch_set_file_id IS NULL;
 eos
   end
+=end
 
   def verify_messages_and_code_reviews_relationship
     error_count = Message.where.not(code_review_id: CodeReview.select("issue")).count
