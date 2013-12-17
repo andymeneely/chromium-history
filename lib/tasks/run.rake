@@ -29,7 +29,7 @@ namespace :run do
     Benchmark.bm(16) do |x|
       x.report("Loading code reviews: ") {CodeReviewLoader.new.load}
       x.report("Loading CVE number and reviews: ") {CveLoader.new.load_cve}
-      x.report("Loading git log commits: ") {GitLogLoader.new.load}
+      #x.report("Loading git log commits: ") {GitLogLoader.new.load}
     end
   end
 
