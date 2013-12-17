@@ -11,19 +11,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(version: 20131206004742) do
 
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-
-  create_table "cceds", force: true do |t|
-    t.string  "developer"
-    t.integer "issue"
-  end
-=======
-ActiveRecord::Schema.define(version: 20131211185612) do
->>>>>>> aee6365e26196ee05ca3efcc64fe9733b6c3882d
+ActiveRecord::Schema.define(version: 20131216014055) do
 
   create_table "code_reviews", force: true do |t|
     t.text     "description"
@@ -64,6 +53,11 @@ ActiveRecord::Schema.define(version: 20131211185612) do
     t.integer  "code_review",        limit: 8
   end
 
+  create_table "commits_filepaths", id: false, force: true do |t|
+    t.integer "commit_id",   null: false
+    t.integer "filepath_id", null: false
+  end
+
   create_table "cves", force: true do |t|
     t.string "cve"
   end
@@ -71,6 +65,12 @@ ActiveRecord::Schema.define(version: 20131211185612) do
   create_table "developers", force: true do |t|
     t.string "name"
     t.string "email"
+  end
+
+  create_table "filepaths", force: true do |t|
+    t.string   "path"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "messages", force: true do |t|
