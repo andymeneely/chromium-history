@@ -5,18 +5,33 @@ class CodeReviewLoader
   # Mix in the DataTransfer module
   include DataTransfer
 
+  @@BULK_IMPORT_BLOCK_SIZE = 10000
 
   @@CODE_REVIEW_PROPS = [:description, :subject, :created, :modified, :issue]
-  def load    
+  def load
+    @codereviews_to_save = []
+    @patchsets_to_save = []
+    @patchset_files_to_save = []
+    @comments_to_save = []
+    @messages_to_save = []
+
     Dir["#{Rails.configuration.datadir}/codereviews/*.json"].each do |file|
       cobj = Oj.load_file(file)
-        c = transfer(CodeReview.new, cobj, @@CODE_REVIEW_PROPS)
-        load_patchsets(file, c, cobj['patchsets'])
-        load_messages(file, c, cobj['messages'])
-        load_developers(cobj['cc'], cobj['reviewers'], cobj['messages'])
-        c.save
-        load_developer_names(cobj['owner_email'], cobj['owner'])
+      c = transfer(CodeReview.new, cobj, @@CODE_REVIEW_PROPS)
+      #c.save
+      bulk_save CodeReview,c, @codereviews_to_save
+      load_patchsets(file, c.issue, cobj['patchsets'])
+      load_messages(file, c.issue, cobj['messages'])
+      load_developers(cobj['cc'], cobj['reviewers'], cobj['messages'])
+      load_developer_names(cobj['owner_email'], cobj['owner'])
     end #each json file loop
+
+    CodeReview.import @codereviews_to_save
+    PatchSet.import @patchsets_to_save
+    PatchSetFile.import @patchset_files_to_save
+    Comment.import @comments_to_save
+    Message.import @messages_to_save
+
   end #load method
 
 
@@ -24,21 +39,24 @@ class CodeReviewLoader
 
   private  
 
+
+
   #param file = the json file we're working with
   #      codereview = code reivew model object
   #      pids = all the patch sets
   @@PATCH_SET_PROPS = [:message, :num_comments, :patchset, :created, :modified, :owner_email]
-  def load_patchsets(file, codereview, pids)
+  def load_patchsets(file, code_review_id, pids)
     pids.each do |pid|
       patchset_file = "#{file.gsub(/\.json$/,'')}/#{pid}.json"
       if File.exists? patchset_file
         pobj = Oj.load_file(patchset_file)
         p = transfer(PatchSet.new, pobj, @@PATCH_SET_PROPS)
+        p.composite_patch_set_id = "#{code_review_id}-#{p.patchset}"
+        p.code_review_id = code_review_id
+        bulk_save PatchSet,p, @patchsets_to_save
         #this new method will load in the owner name and email to the developers table from this patch set
         load_developer_names(pobj['owner_email'], pobj['owner'])
-        load_patch_set_files(p, pobj['files'])
-        codereview.patch_sets << p
-        p.save
+        load_patch_set_files(p.composite_patch_set_id, pobj['files'])
       else
         $stderr.puts "Patchset file should exist but doesn't: #{patchset_file}"
       end
@@ -50,13 +68,15 @@ class CodeReviewLoader
 
   #param patchset = patchset model object
   #      psfiles = the files within each patchset
-  @@PATCH_SET_FILE_PROPS = [:status,:num_chunks,:no_base_file,:property_changes,:num_added,:num_removed,:is_binary]
-  def load_patch_set_files(patchset, psfiles)
+  @@PATCH_SET_FILE_PROPS = [:status,:num_chunks,:num_added,:num_removed,:is_binary]
+  def load_patch_set_files(composite_patch_set_id, psfiles)
     psfiles.each do |psfile|
-      psf = transfer(PatchSetFile.new(:filepath => psfile[0].to_s), psfile[1], @@PATCH_SET_FILE_PROPS)
-      load_comments(psf, psfile[1]['messages']) unless psfile[1]['messages'].nil? #Yes, Rietveld conflates "messages" with "comments" here
-      patchset.files << psf
-      psf.save
+      psf = transfer(PatchSetFile.new, psfile[1], @@PATCH_SET_FILE_PROPS)
+      psf.filepath = psfile[0].to_s
+      psf.composite_patch_set_id = composite_patch_set_id
+      psf.composite_patch_set_file_id = "#{composite_patch_set_id}-#{psf.filepath}"
+      bulk_save PatchSetFile,psf, @patchset_files_to_save
+      load_comments(psf.composite_patch_set_file_id, psfile[1]['messages']) unless psfile[1]['messages'].nil? #Yes, Rietveld conflates "messages" with "comments" here
     end #patch set file loop
   end #load patch set file method
 
@@ -66,11 +86,11 @@ class CodeReviewLoader
   #param patchset = the patchset file that the comments are on
   #      comments = the comments on a particular patch set file 
   @@COMMENT_PROPS = [:author_email,:text,:draft,:lineno,:date,:left]
-  def load_comments(patchset_file, comments)
+  def load_comments(composite_patch_set_file_id, comments)
     comments.each do |comment|
       c = transfer(Comment.new, comment, @@COMMENT_PROPS)
-      patchset_file.comments << c
-      c.save
+      c.composite_patch_set_file_id = composite_patch_set_file_id
+      bulk_save Comment,c, @comments_to_save
     end #comments loop
   end #load comments method
 
@@ -81,11 +101,11 @@ class CodeReviewLoader
   #      codereview = code reivew model object
   #      msg = the messages sent out (about the review in general as opposed to a specific patch set)
   @@MESSAGE_PROPS = [:sender, :text, :disapproval, :date, :approval]
-  def load_messages(file, codereview, msgs)
+  def load_messages(file, code_review_id, msgs)
     msgs.each do |msg|
       m = transfer(Message.new, msg, @@MESSAGE_PROPS)
-      codereview.messages << m
-      m.save
+      m.code_review_id = code_review_id
+      bulk_save Message,m, @messages_to_save
     end #message loop
   end #load messages method
 
@@ -158,5 +178,18 @@ class CodeReviewLoader
       end #checking if the name exists
     end #checking if the email exists
   end #load developer names method
+
+
+
+  # Queue a model to be saved.
+  # @param model - the model to be saved
+  # @param to_save - the @model_to_save (e.g. @codereviews_to_save)
+  def bulk_save(model_class, model, to_save)
+    to_save << model
+    if to_save.size >= @@BULK_IMPORT_BLOCK_SIZE
+      model_class.import to_save
+      to_save.clear
+    end
+  end
 
 end

@@ -13,7 +13,7 @@ class ForeignKeyVerify < VerifyBase
   end
   
   def verify_messages_and_code_reviews_relationship
-    error_count = Message.where.not(code_review_id: CodeReview.select("id")).count
+    error_count = Message.where.not(code_review_id: CodeReview.select("issue")).count
     get_results(error_count, "messages", "code_review_id")
   end
   
@@ -23,7 +23,7 @@ class ForeignKeyVerify < VerifyBase
   end
   
   def verify_patch_sets_and_code_reviews_relationship
-    error_count = PatchSet.where.not(code_review_id: CodeReview.select("id")).count
+    error_count = PatchSet.where.not(code_review_id: CodeReview.select("issue")).count
     get_results(error_count, "patch_sets", "code_review_id")
   end
 

@@ -11,6 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 20131206004742) do
 
   # These are extensions that must be enabled in order to support this database
@@ -20,6 +21,9 @@ ActiveRecord::Schema.define(version: 20131206004742) do
     t.string  "developer"
     t.integer "issue"
   end
+=======
+ActiveRecord::Schema.define(version: 20131211185612) do
+>>>>>>> aee6365e26196ee05ca3efcc64fe9733b6c3882d
 
   create_table "code_reviews", force: true do |t|
     t.text     "description"
@@ -37,7 +41,8 @@ ActiveRecord::Schema.define(version: 20131206004742) do
     t.integer  "lineno"
     t.datetime "date"
     t.boolean  "left"
-    t.integer  "patch_set_file_id"
+    t.integer  "patch_set_file_id",           limit: 8
+    t.string   "composite_patch_set_file_id", limit: 1000
   end
 
   create_table "commit_files", force: true do |t|
@@ -55,6 +60,7 @@ ActiveRecord::Schema.define(version: 20131206004742) do
     t.string   "reviewers"
     t.string   "svn_revision"
     t.datetime "created_at"
+    t.integer  "commit_files_id"
     t.integer  "code_review",        limit: 8
   end
 
@@ -73,29 +79,30 @@ ActiveRecord::Schema.define(version: 20131206004742) do
     t.boolean  "approval"
     t.boolean  "disapproval"
     t.datetime "date"
-    t.integer  "code_review_id"
+    t.integer  "code_review_id", limit: 8
   end
 
   create_table "patch_set_files", force: true do |t|
     t.string  "filepath"
     t.string  "status"
     t.integer "num_chunks"
-    t.boolean "no_base_file"
-    t.boolean "property_changes"
     t.integer "num_added"
     t.integer "num_removed"
     t.boolean "is_binary"
-    t.integer "patch_set_id"
+    t.integer "patch_set_id",                limit: 8
+    t.string  "composite_patch_set_id"
+    t.string  "composite_patch_set_file_id", limit: 1000
   end
 
   create_table "patch_sets", force: true do |t|
-    t.integer  "code_review_id"
     t.datetime "created"
     t.integer  "num_comments"
     t.text     "message"
     t.datetime "modified"
-    t.integer  "patchset",       limit: 8
     t.string   "owner_email"
+    t.integer  "code_review_id",         limit: 8
+    t.integer  "patchset",               limit: 8
+    t.string   "composite_patch_set_id"
   end
 
   create_table "reviewers", force: true do |t|

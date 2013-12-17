@@ -18,8 +18,32 @@ class LoadCompleteVerify < VerifyBase
     verify_count("Commits", 6, Commit.count)
   end
 
+  def verify_number_of_messages
+    verify_count("Messages", 73, Message.count)
+  end
+
+  def verify_number_of_patch_set_files
+    verify_count("Patch Set Files", 70, PatchSetFile.count)
+  end
+
   def verify_code_review_10854242_has_23_messages
     helper_count_messages(10854242, 23)
+  end
+
+  def verify_code_review_10854242_has_4_patchsets
+    verify_count("Patchsets", 4, CodeReview.find_by_issue(10854242).patch_sets.count)
+  end
+  
+  def verify_code_review_10854242_patchset_17001_has_3_files
+    verify_count("Patch Set Files", 3, CodeReview.find_by_issue(10854242).patch_sets.find_by_patchset(17001).files.count)
+  end
+
+  def verify_code_review_10854242_last_comment
+    verify_count("Comments", 2, PatchSetFile.find_by_composite_patch_set_file_id('10854242-6006-content/browser/renderer_host/backing_store_gtk.cc').comments.count)
+  end
+
+  def verify_code_review_10854242_last_comment_associations
+    verify_count("Comments", 2, CodeReview.find_by_issue(10854242).patch_sets.find_by_patchset(6006).files.where(filepath: 'content/browser/renderer_host/backing_store_gtk.cc').first.comments.count)
   end
 
   def verify_code_review_23444043_has_16_messages
@@ -76,9 +100,9 @@ class LoadCompleteVerify < VerifyBase
   def helper_count_messages(code_review, expected)
     count = CodeReview.where(issue: code_review).first.messages.count
     if count > expected
-      fail("More than #{expected} messages found.")
+      fail("More than #{expected} messages found. Actual: #{count}")
     elsif count < expected
-      fail("Less than #{expected} messages found.")
+      fail("Less than #{expected} messages found. Actual: #{count}")
     end
   end
 
