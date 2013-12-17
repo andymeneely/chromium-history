@@ -11,8 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+ActiveRecord::Schema.define(version: 20131216210846) do
 
-ActiveRecord::Schema.define(version: 20131216014055) do
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "code_reviews", force: true do |t|
     t.text     "description"
@@ -107,7 +109,7 @@ ActiveRecord::Schema.define(version: 20131216014055) do
 
   create_table "reviewers", force: true do |t|
     t.string  "developer"
-    t.integer "issue"
+    t.integer "issue",     limit: 8
   end
 
 end
