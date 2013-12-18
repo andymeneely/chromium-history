@@ -33,7 +33,7 @@ class LoadCompleteVerify < VerifyBase
   def verify_code_review_10854242_has_4_patchsets
     verify_count("Patchsets", 4, CodeReview.find_by_issue(10854242).patch_sets.count)
   end
-  
+
   def verify_code_review_10854242_patchset_17001_has_3_files
     verify_count("Patch Set Files", 3, CodeReview.find_by_issue(10854242).patch_sets.find_by_patchset(17001).files.count)
   end
@@ -77,6 +77,16 @@ class LoadCompleteVerify < VerifyBase
   def verify_commit_6eebdee7_has_7_files
     verify_count("Commit 6eebdee7851c52b1f481fca1cdffcbc51c8ec061",7, Commit.find_by_commit_hash("6eebdee7851c52b1f481fca1cdffcbc51c8ec061").commit_files.count)
   end
+  
+  def verify_6eebdee_has_one_review
+    commit = Commit.find_by_commit_hash('6eebdee7851c52b1f481fca1cdffcbc51c8ec061')
+    code_review = commit.code_review
+    if(code_review.issue.eql? 5831706594508800)
+      pass()
+    else
+      fail('Commit should have had a reviewnqq:') 
+    end
+  end
 
   private
   def helper_code_review_was_loaded(issue)
@@ -89,6 +99,7 @@ class LoadCompleteVerify < VerifyBase
       pass()
     end
   end
+
   def helper_count_messages(code_review, expected)
     count = CodeReview.where(issue: code_review).first.messages.count
     if count > expected
@@ -107,5 +118,24 @@ class LoadCompleteVerify < VerifyBase
       pass()
     end
   end
+
+  def helper_check_file_path(regex, message)
+    #trying to display the commit that belongs to on fail
+    #but the commit id not being saved to commit_file
+    count = 0
+
+    # Get all the commit_files by the filepath column value
+    files = CommitFile.pluck(:filepath)
+    rgx = Regexp.new(regex)
+
+    files.each do |path| 
+      if path.match(rgx)
+        count+=1
+      end
+
+    end#end each
+    verify_count(message, 0, count)
+
+  end #end verify_file_path
 
 end#end of class

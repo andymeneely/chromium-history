@@ -13,9 +13,6 @@
 
 ActiveRecord::Schema.define(version: 20131216210846) do
 
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-
   create_table "code_reviews", force: true do |t|
     t.text     "description"
     t.string   "subject"
@@ -52,7 +49,7 @@ ActiveRecord::Schema.define(version: 20131216210846) do
     t.string   "svn_revision"
     t.datetime "created_at"
     t.integer  "commit_files_id"
-    t.integer  "code_review",        limit: 8
+    t.integer  "code_review_id",     limit: 8
   end
 
   create_table "commits_filepaths", id: false, force: true do |t|

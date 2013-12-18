@@ -7,37 +7,39 @@ class ForeignKeyVerify < VerifyBase
     get_results(error_count, "code_reviews", "cve")
   end
 
-#Causing following error: undefined method `getvalue' for [{"COUNT(*)"=>0, 0=>0}]:Array
-=begin
-  def verify_comments_and_patch_set_files_relationship
-    no_dangling 'Comments',<<eos
-      SELECT COUNT(*) FROM 
-        (comments c LEFT OUTER JOIN patch_set_files psf
-          ON (c.composite_patch_set_file_id=psf.composite_patch_set_file_id)
-        )
-      WHERE c.composite_patch_set_file_id IS NULL;
-eos
-  end
-=end
-
-  def verify_messages_and_code_reviews_relationship
-    error_count = Message.where.not(code_review_id: CodeReview.select("issue")).count
-    get_results(error_count, "messages", "code_review_id")
+  def verify_dangling_comments
+    no_dangling many_table: 'comments', \
+                many_table_key: 'composite_patch_set_file_id', \
+                one_table: 'patch_set_files',\
+                one_table_key: 'composite_patch_set_file_id'
   end
 
-  def verify_patch_set_files_and_patch_sets_relationship
-    error_count = PatchSetFile.where.not(composite_patch_set_id: PatchSet.select("composite_patch_set_id")).count
-    get_results(error_count, "patch_set_files", "patch_set_id")
+  def verify_dangling_messages
+    no_dangling many_table: 'messages', \
+                many_table_key: 'code_review_id', \
+                one_table: 'code_reviews',\
+                one_table_key: 'issue'
   end
 
-  def verify_patch_sets_and_code_reviews_relationship
-    error_count = PatchSet.where.not(code_review_id: CodeReview.select("issue")).count
-    get_results(error_count, "patch_sets", "code_review_id")
+  def verify_dangling_patch_set_files
+    no_dangling many_table: 'patch_set_files', \
+                many_table_key: 'composite_patch_set_id', \
+                one_table: 'patch_sets',\
+                one_table_key: 'composite_patch_set_id'
   end
 
-  def verify_commit_files_all_have_commits
-    error_count = CommitFile.where.not(commit_hash: Commit.select("commit_hash")).count
-    get_results(error_count, "commit files", "commit_hash")
+  def verify_dangling_patch_sets
+    no_dangling many_table: 'patch_sets', \
+                many_table_key: 'code_review_id', \
+                one_table: 'code_reviews',\
+                one_table_key: 'issue'
+  end
+
+  def verify_dangling_commit_files
+    no_dangling many_table: 'commit_files', \
+                many_table_key: 'commit_hash', \
+                one_table: 'commits',\
+                one_table_key: 'commit_hash'
   end
 
   private
@@ -49,7 +51,10 @@ eos
     end
   end
 
-  def no_dangling(name, query)
+  def no_dangling(arg={})
+    query = "SELECT COUNT(*) FROM #{arg[:many_table]} LEFT OUTER JOIN #{arg[:one_table]} " \
+      + "ON (#{arg[:many_table]}.#{arg[:many_table_key]} = #{arg[:one_table]}.#{arg[:one_table_key]}) " \
+      + "WHERE #{arg[:many_table]}.#{arg[:many_table_key]} IS NULL"
     st = ActiveRecord::Base.connection.execute query
     if st.getvalue(0,0).to_i == 0
       pass()

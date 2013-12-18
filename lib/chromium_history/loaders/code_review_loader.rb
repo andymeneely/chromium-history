@@ -18,7 +18,6 @@ class CodeReviewLoader
     Dir["#{Rails.configuration.datadir}/codereviews/*.json"].each do |file|
       cobj = Oj.load_file(file)
       c = transfer(CodeReview.new, cobj, @@CODE_REVIEW_PROPS)
-      #c.save
       bulk_save CodeReview,c, @codereviews_to_save
       load_patchsets(file, c.issue, cobj['patchsets'])
       load_messages(file, c.issue, cobj['messages'])
