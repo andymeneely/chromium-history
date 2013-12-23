@@ -10,7 +10,7 @@ NOTRY=true
 Review URL: https://chromiumcodereview.appspot.com/23707030
 
 git-svn-id: svn://svn.chromium.org/chrome/trunk/src@222272 0039d316-1c4b-4281-b951-d872f2087c98
-
+;;;
  ui/snapshot/OWNERS | 5 +++++
  1 file changed, 5 insertions(+)
 :::
@@ -44,7 +44,7 @@ R=piman
 Review URL: https://chromiumcodereview.appspot.com/23454014
 
 git-svn-id: svn://svn.chromium.org/chrome/trunk/src@222207 0039d316-1c4b-4281-b951-d872f2087c98
-
+;;;
  cc/cc.gyp                                                         |  2 ++
  cc/cc_tests.gyp                                                   |  1 +
  cc/output/gl_renderer.cc                                          | 39 +++++++++------------------------------
@@ -68,7 +68,7 @@ Tue Sep 10 08:23:18 2013 +0000
 89f14e7de64ceba1d62792530a213fa5495d53b3
 Automated Commit: Committing new LKGM version 4663.0.0 for chromeos.
 git-svn-id: svn://svn.chromium.org/chrome/trunk/src@222206 0039d316-1c4b-4281-b951-d872f2087c98
-
+;;;
  chromeos/CHROMEOS_LKGM | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 :::
@@ -79,7 +79,7 @@ Sat Jul 26 20:52:30 2008 +0000
 7e5ba5d125a2dc95132e765e949e53e1e779caaf
 Add the build directory to the repository.
 git-svn-id: svn://svn.chromium.org/chrome/trunk/src@7 0039d316-1c4b-4281-b951-d872f2087c98
-
+;;;
  build/README.google                                |  15 +++++++++++
  build/SConscript.googleurl                         | 100 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
  build/SConscript.main                              | 334 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -116,7 +116,7 @@ BUG=25520
 Review URL: http://codereview.chromium.org/465035
 
 git-svn-id: svn://svn.chromium.org/chrome/trunk/src@33807 0039d316-1c4b-4281-b951-d872f2087c98
-
+;;;
  net/ftp/ftp_directory_listing_buffer.cc                  |  10 ++--
  net/ftp/ftp_directory_listing_buffer_unittest.cc         |   2 +-
  net/ftp/ftp_directory_listing_parser.cc                  |  12 +++++
@@ -157,7 +157,7 @@ Committed: https://src.chromium.org/viewvc/chrome?view=rev&revision=214103
 Review URL: https://chromiumcodereview.appspot.com/5831706594508800
 
 git-svn-id: svn://svn.chromium.org/chrome/trunk/src@214819 0039d316-1c4b-4281-b951-d872f2087c98
-
+;;;
  cc/layers/image_layer.cc            | 5 ++---
  cc/layers/layer.cc                  | 9 ++++-----
  cc/layers/layer.h                   | 1 +
@@ -166,3 +166,64 @@ git-svn-id: svn://svn.chromium.org/chrome/trunk/src@214819 0039d316-1c4b-4281-b9
  cc/resources/image_layer_updater.cc | 9 +++++++++
  cc/resources/image_layer_updater.h  | 3 ++-
  7 files changed, 27 insertions(+), 13 deletions(-)
+:::
+14df51bb5a7ce0e5a8ecb12b24d845d9b4ae0318
+nduca@chromium.org
+nduca@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Thu Jun 9 00:03:08 2011 +0000
+e0ce5792acf4ca8c5ff074ba02c8465223566fa3
+Roll ANGLE to r686. Addresses screen flickering on resize and some regressions on webpages.
+------------------------------------------------------------------------
+r686 | nduca@chromium.org | 2011-06-08 16:50:48 -0700 (Wed, 08 Jun 2011) | 2 lin
+es
+
+Fix crlf newlines in surface.cpp
+TBR=apatrick@chromium.org
+------------------------------------------------------------------------
+r684 | daniel@transgaming.com | 2011-06-08 13:38:09 -0700 (Wed, 08 Jun 2011) | 1
+ line
+
+Revert copyImage changes from r682 as they cause regressions on some webpages
+------------------------------------------------------------------------
+r683 | nduca@chromium.org | 2011-06-08 11:43:16 -0700 (Wed, 08 Jun 2011) | 3 lin
+es
+
+Recommit r668, which got undone accidentally by r673.
+
+Review URL: http://codereview.appspot.com/4589043
+------------------------------------------------------------------------
+
+r682 | daniel@transgaming.com | 2011-06-08 05:42:28 -0700 (Wed, 08 Jun 2011) | 6 lines
+
+No need to update texture before overwriting it with CopyImage.
+
+Issue=163
+TRAC #17019
+Signed-off-by: Daniel Koch
+Author: Nicolas Capens
+------------------------------------------------------------------------
+r681 | daniel@transgaming.com | 2011-06-08 05:41:32 -0700 (Wed, 08 Jun 2011) | 6 lines
+
+Fix multi-sample state management.
+
+Issue=160
+TRAC #16817
+Signed-off-by: Daniel Koch
+Author: Nicolas Capens
+------------------------------------------------------------------------
+r680 | daniel@transgaming.com | 2011-06-08 05:40:23 -0700 (Wed, 08 Jun 2011) | 4 lines
+
+Add missing DWM libraries to Release project.
+
+Signed-off-by: Daniel Koch
+Author: Nicolas Capens
+------------------------------------------------------------------------
+
+BUG=84071
+
+Review URL: http://codereview.chromium.org/7046054
+
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@88444 0039d316-1c4b-4281-b951-d872f2087c98
+;;;
+ DEPS | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)

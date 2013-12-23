@@ -98,6 +98,7 @@ class GitLogLoader
     filepaths = Array.new
     end_message_index = 0
     hash = Hash.new
+    in_files = false # Have we gotten to the file portion yet? After the ;;; delimiter
 
     #index 5 should be the start
     #of the message
@@ -122,9 +123,7 @@ class GitLogLoader
     hash[:message] = message
     arr[5] = message
 
-    #remove the multi line 
-    #message since we 
-    #condensed it
+    #remove the multi line message since we condensed it
     for i in (6..end_message_index) 
       arr.delete(i) 
     end
@@ -143,9 +142,12 @@ class GitLogLoader
       elsif element.match(/^R=/)
         hash[:reviewers] = element.strip.sub("R=", "")
 
-      elsif element.match(/([\s-]*\|[\s-]*\d+ \+*\-*)/)
-        filepaths.push(element.slice(0,element.index('|')).strip)
+      elsif element.match(/^;;;$/)
+        in_files = true
 
+      elsif in_files && element.match(/([\s-]*\|[\s-]*\d+ \+*\-*)/)
+          filepaths.push(element.slice(0,element.index('|')).strip)
+ 
       end
 
     end 

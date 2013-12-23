@@ -3,11 +3,11 @@ require_relative "../verify_base"
 class LoadCompleteVerify < VerifyBase
 
   def verify_number_of_code_reviews
-    verify_count("Code Reviews", 5, CodeReview.count)
+    verify_count("Code Reviews", 6, CodeReview.count)
   end
 
   def verify_number_of_patchsets
-    verify_count("Patch Sets", 16, PatchSet.count)
+    verify_count("Patch Sets", 18, PatchSet.count)
   end
 
   def verify_number_of_comments
@@ -15,15 +15,15 @@ class LoadCompleteVerify < VerifyBase
   end
 
   def verify_number_of_commits
-    verify_count("Commits", 6, Commit.count)
+    verify_count("Commits", 7, Commit.count)
   end
 
   def verify_number_of_messages
-    verify_count("Messages", 73, Message.count)
+    verify_count("Messages", 75, Message.count)
   end
 
   def verify_number_of_patch_set_files
-    verify_count("Patch Set Files", 70, PatchSetFile.count)
+    verify_count("Patch Set Files", 72, PatchSetFile.count)
   end
 
   def verify_code_review_10854242_has_23_messages
@@ -78,6 +78,10 @@ class LoadCompleteVerify < VerifyBase
     verify_count("Commit 6eebdee7851c52b1f481fca1cdffcbc51c8ec061",7, Commit.find_by_commit_hash("6eebdee7851c52b1f481fca1cdffcbc51c8ec061").commit_files.count)
   end
   
+  def verify_commit_14df51bb_has_1_file
+    verify_count('Commit 14df51bb5a7ce0e5a8ecb12b24d845d9b4ae0318', 1, Commit.find_by_commit_hash('14df51bb5a7ce0e5a8ecb12b24d845d9b4ae0318').commit_files.count)
+  end
+
   def verify_6eebdee_has_one_review
     commit = Commit.find_by_commit_hash('6eebdee7851c52b1f481fca1cdffcbc51c8ec061')
     code_review = commit.code_review
