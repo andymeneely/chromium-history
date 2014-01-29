@@ -18,11 +18,10 @@ class CodeReviewLoader
     Dir["#{Rails.configuration.datadir}/codereviews/*.json"].each do |file|
       cobj = Oj.load_file(file)
       c = transfer(CodeReview.new, cobj, @@CODE_REVIEW_PROPS)
-      #c.save
       bulk_save CodeReview,c, @codereviews_to_save
       load_patchsets(file, c.issue, cobj['patchsets'])
       load_messages(file, c.issue, cobj['messages'])
-      load_developers(cobj['cc'], cobj['reviewers'], cobj['messages'])
+      load_developers(cobj['cc'], cobj['reviewers'], cobj['messages'], cobj['issue'])
       load_developer_names(cobj['owner_email'], cobj['owner'])
     end #each json file loop
 
@@ -115,12 +114,18 @@ class CodeReviewLoader
   #param cc = list of emails CCed on the code review
   #      reviewers = list of emails sent to the reviewers
   #      messages = list of messages on the code review
-  def load_developers(cc, reviewers, messages)
+  def load_developers(cc, reviewers, messages, issueNumber)
     cc.each do |email|
       #get rid of the plus sign and after
       if (email.index('+') != nil) 
         email = email.slice(0, email.index('+')) + email.slice(email.index('@'), (email.length()-1))
       end #fixing the email
+
+      #ccTable = Cc.new  #creates a new CC table object
+      #ccTable["developer"] = email #adds the developer getting CCed
+      #ccTable["issue"] = issueNumber #and the issue to which they were CCed
+      #ccTable.save
+
       if (Developer.find_by_email(email) == nil) 
         developer = Developer.new
         developer["email"] = email
@@ -133,6 +138,12 @@ class CodeReviewLoader
       if (email.index('+') != nil) 
         email = email.slice(0, email.index('+')) + email.slice(email.index('@'), (email.length()-1))
       end #fixing the email
+
+      reviewerTable = Reviewer.new  #creates a new CC table object
+      reviewerTable["developer"] = email #adds the developer getting CCed
+      reviewerTable["issue"] = issueNumber #and the issue to which they were CCed
+      reviewerTable.save
+
       if (Developer.find_by_email(email) == nil) 
         developer = Developer.new
         developer["email"] = email

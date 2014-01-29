@@ -19,6 +19,11 @@ git pull
 bundle
 rake run 1>$LOG 2>$ERR
 
+psql -U archeology chromium_test -c" SELECT pg_terminate_backend(pg_stat_activity.procpid) FROM pg_stat_activity WHERE pg_stat_activity.datname = 'chromium_real2' AND procpid <> pg_backend_pid()"
+psql -U archeology chromium_test -c" SELECT pg_terminate_backend(pg_stat_activity.procpid) FROM pg_stat_activity WHERE pg_stat_activity.datname = 'chromium_real' AND procpid <> pg_backend_pid()"
+psql -U archeology chromium_test -c "DROP DATABASE chromium_real" 1>>$LOG 2>>$ERR
+psql -U archeology chromium_test -c "ALTER DATABASE chromium_real2 RENAME TO chromium_real" 1>>$LOG 2>>$ERR
+
 #Email the status report
 rm /tmp/email.txt
 echo -e "\n\n\n\n\n----------------git log --since="1 day ago" --stat------------------------\n\n\n\n\n" >> /tmp/email.txt

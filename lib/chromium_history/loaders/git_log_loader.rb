@@ -20,7 +20,7 @@ class GitLogLoader
   include DataTransfer
 
   @@GIT_LOG_PROPERTIES = [:commit_hash, :parent_commit_hash, :author_email,
-                          :message, :bug, :reviewers, :code_review, :svn_revision, :created_at]
+                          :message, :bug, :reviewers, :code_review_id, :svn_revision, :created_at]
 
   @@GIT_LOG_FILE_PROPERTIES = [:commit_id, :filepath]
 
@@ -98,6 +98,7 @@ class GitLogLoader
     filepaths = Array.new
     end_message_index = 0
     hash = Hash.new
+    in_files = false # Have we gotten to the file portion yet? After the ;;; delimiter
 
     #index 5 should be the start
     #of the message
@@ -122,9 +123,7 @@ class GitLogLoader
     hash[:message] = message
     arr[5] = message
 
-    #remove the multi line 
-    #message since we 
-    #condensed it
+    #remove the multi line message since we condensed it
     for i in (6..end_message_index) 
       arr.delete(i) 
     end
@@ -135,7 +134,7 @@ class GitLogLoader
         hash[:svn_revision] = element.strip.sub("git-svn-id:", "")
 
       elsif element.match(/^Review URL:/)
-        hash[:code_review] = element[/(\d)+/].to_i # Greedy grab the first integer
+        hash[:code_review_id] = element[/(\d)+/].to_i # Greedy grab the first integer
 
       elsif element.match(/^BUG=/)
         hash[:bug] = element.strip.sub("BUG=", "")
@@ -143,9 +142,12 @@ class GitLogLoader
       elsif element.match(/^R=/)
         hash[:reviewers] = element.strip.sub("R=", "")
 
-      elsif element.match(/([\s-]*\|[\s-]*\d+ \+*\-*)/)
-        filepaths.push(element.slice(0,element.index('|')).strip)
+      elsif element.match(/^;;;$/)
+        in_files = true
 
+      elsif in_files && element.match(/([\s-]*\|[\s-]*\d+ \+*\-*)/)
+          filepaths.push(element.slice(0,element.index('|')).strip)
+ 
       end
 
     end 

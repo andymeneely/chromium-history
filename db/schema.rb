@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131216014055) do
+ActiveRecord::Schema.define(version: 20131216210846) do
 
   create_table "code_reviews", force: true do |t|
     t.text     "description"
@@ -49,7 +49,7 @@ ActiveRecord::Schema.define(version: 20131216014055) do
     t.string   "svn_revision"
     t.datetime "created_at"
     t.integer  "commit_files_id"
-    t.integer  "code_review",        limit: 8
+    t.integer  "code_review_id",     limit: 8
   end
 
   create_table "commits_filepaths", id: false, force: true do |t|
@@ -102,6 +102,11 @@ ActiveRecord::Schema.define(version: 20131216014055) do
     t.integer  "code_review_id",         limit: 8
     t.integer  "patchset",               limit: 8
     t.string   "composite_patch_set_id"
+  end
+
+  create_table "reviewers", force: true do |t|
+    t.string  "developer"
+    t.integer "issue",     limit: 8
   end
 
 end
