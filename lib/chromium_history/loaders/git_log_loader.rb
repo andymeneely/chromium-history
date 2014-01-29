@@ -29,6 +29,7 @@ class GitLogLoader
   def load
     @commits_to_save = []
     @commit_files_to_save = []
+    @file_paths_to_save = []
     get_commits(File.open("#{Rails.configuration.datadir}/chromium-gitlog.txt", "r"))
 
     Commit.import @commits_to_save #Import Whatever is left over
@@ -214,7 +215,11 @@ class GitLogLoader
       Commit.import @commits_to_save 
       @commits_to_save = []
     end
+
     #bug can't get the commit id because we are now importing
+    #To get around not being able to get the commit id,
+    #save the commit hash and find the commit id after it has
+    #been bulk saved. 
     commit_file = create_commit_file(hash["filepaths"], hash[:commit_hash], commit.id)
   end#add_commit_to_db
 
@@ -231,9 +236,36 @@ class GitLogLoader
       @commit_files_to_save << commit_file
       if @commit_files_to_save.size > @@BULK_IMPORT_BLOCK_SIZE
         CommitFile.import @commit_files_to_save
-        @commit_files_to_save = []
+        @commit_files_to_save = [] 
       end
     end
   end#create_commit_file
+
+  #
+  # Create the Filepath. Ensure there are no
+  # duplicates already in db. Bulk import 
+  # maybe useless cause the number of filepaths
+  # not that great
+  #
+  # @param - Filepaths that belong to the commit
+  # @return - Array of Filepath IDs that belong to commit
+  #
+  def create_filepath(file_paths)
+    filepath_id_arr = []
+    file_paths.each do |path|
+      path = path[0..999].strip
+      if not Filepath.exists?(path: path)#if the path does not already exist
+        filepath = Filepath.new 
+        filepath.path = path #FIXME Hack.
+        filepath.created_at = Time.now
+        filepath.save 
+      else #duplicate found
+        Filepath.where(path: path).id
+      end
+      filepath_id_arr.push filepath.id
+    end
+
+    filepath_id_arr #return the filepath id
+  end#create_filepath
 
 end#class
