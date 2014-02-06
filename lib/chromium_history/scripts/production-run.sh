@@ -26,8 +26,8 @@ psql -U archeology chromium_test -c "ALTER DATABASE chromium_real2 RENAME TO chr
 
 #Email the status report
 rm /tmp/email.txt
-echo -e "\n\n\n\n\n----------------git log --since="1 day ago" --stat------------------------\n\n\n\n\n" >> /tmp/email.txt
-git log --since="1 day ago" --stat >> /tmp/email.txt
+echo -e "\n\n\n\n\n----------------git log -5 --stat------------------------\n\n\n\n\n" >> /tmp/email.txt
+git log -5 --stat >> /tmp/email.txt
 echo -e "\n\n\n\n\n----------------stdout------------------------\n\n\n\n\n" >> /tmp/email.txt
 cat $LOG >> /tmp/email.txt
 echo -e "\n\n\n\n\n----------------stderr------------------------\n\n\n\n\n" >> /tmp/email.txt
