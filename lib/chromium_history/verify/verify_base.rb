@@ -17,6 +17,16 @@ class VerifyBase
   end
   
   private
+  def verify_count(name, expected, actual)
+    if actual > expected
+      fail("More than #{expected} #{name} found. Actual: #{actual}")
+    elsif actual < expected
+      fail("Less than #{expected} #{name} found. Actual: #{actual}")
+    else
+      pass
+    end
+  end
+
   def return_result(pass, fail_message="")
     verify_name = ""
     caller.each do |frame|
