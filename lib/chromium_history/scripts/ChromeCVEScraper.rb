@@ -1,9 +1,12 @@
-﻿require "nokogiri"
+﻿#!/usr/bin/env ruby
+
+require "nokogiri"
 require "open-uri"
-require "CSV"
-require "Set"
+require "csv"
+require "set"
 require "uri"
 require "openssl"
+
 #
 # Written by Brian Spates
 # script will find every CVE related to Chromium within a 
@@ -147,7 +150,7 @@ def checkForRedundancies(cves, cve)
 end
 
 def setupResultsFile(path)
-	CSV.open(path, 'w')  do |header|
+	CSV.open(path, 'w+')  do |header|
 		header << ['CVE', 'Rietveld Ids', 'Google Code Issue Ids', 'Open to Public?'] 
 	end
 end
@@ -160,22 +163,52 @@ def loadPrevCSVSet(path)
 end
 # name of csv file you want to write results to
 # script expects predefined headers
-resultsFile = "../results/chromium_scrape_res.csv"
+resultsFile = "data/CVEs/chromium_scrape_res.csv"
+
+nistYears = [
+	2003,
+	2004,
+	2005,
+	2006,
+	2007,
+	2008,
+	2009,
+	2010,
+	2011,
+	2012,
+	2013
+	];
+
+nistUrl = 'http://static.nvd.nist.gov/feeds/xml/cve/'
+nistFile = 'lib/assets/nvdcve-2.0-'
+
 # open XML given by argument
-doc = Nokogiri::XML(ARGF) 
 
+nistYears.each  do |year|
+	 
+	if not File.exists?("#{nistFile}#{year}.xml")
+		`wget #{nistUrl}#{year}.xml -P curdir/lib/assets/`	
+	end
 
-# loads the result set to avoid re-scrapping CVEs
-cves = loadPrevCSVSet(resultsFile)
+	doc = Nokogiri::XML("#{nistFile}#{nistFile}#{year}.xml")
+	if not File.exists?(resultsFile)
+		setupResultsFile(resultsFile)	
+	else
+		# loads the result set to avoid re-scrapping CVEs
+		cves = loadPrevCSVSet(resultsFile)
+	end
+	# open csv file for results to be written to s
+	res = CSV.open(resultsFile, 'ab')
 
-# open csv file for results to be written to s
-res = CSV.open(resultsFile, 'ab')
-# search by products affected by vulnerability
-entry1 = doc.xpath("//cpe-lang:fact-ref[starts-with(@name, 'cpe:/a:google:chrome:')]/../../..")
-getInfo(entry1, res, cves)
-# search by references to chromium in vuln links
-entry2 = doc.xpath("//vuln:reference[contains(@href, 'chromium')]/../..")
-# Make sure the two sets don't overlap
-entry = entry2 - entry1
-getInfo(entry, res, cves)
+	# search by products affected by vulnerability
+	entry1 = doc.xpath("//cpe-lang:fact-ref[starts-with(@name, 'cpe:/a:google:chrome:')]/../../..")
+	getInfo(entry1, res, cves)
+
+	# search by references to chromium in vuln links
+	entry2 = doc.xpath("//vuln:reference[contains(@href, 'chromium')]/../..")
+
+	# Make sure the two sets don't overlap
+	entry = entry2 - entry1
+	getInfo(entry, res, cves) 
+end
 
