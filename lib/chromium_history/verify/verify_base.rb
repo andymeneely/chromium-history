@@ -16,6 +16,14 @@ class VerifyBase
     return_result(false, fail_message)
   end
   
+  def assert_equal(exp,actual,fail_message="")
+    if exp.eql? actual
+      pass()
+    else
+      fail(fail_message)
+    end
+  end
+
   private
   def verify_count(name, expected, actual)
     if actual > expected
