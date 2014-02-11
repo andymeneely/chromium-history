@@ -8,7 +8,7 @@ require_relative '../chromium_history/loaders/git_log_loader.rb'
 #Dir[File.expand_path('../chromium_history/loaders/*.rb', File.dirname(__FILE__))].each {|file| require file}
 
 
-task :run => [:environment, "run:env", "db:reset", "run:load", "run:optimize", "run:verify", "run:analyze"] do
+task :run => [:environment, "run:env", "db:reset", "run:load", "run:verify", "run:analyze"] do
   puts "Run task completed"
 end
 
@@ -36,20 +36,6 @@ namespace :run do
   desc "Alias for run:clean then run:load"
   task :clean_load => ["run:clean", "run:load"]
 
-  desc "Optimize the tables once data is loaded"
-  task :optimize => [:environment] do
-    # Iterate over our models
-    # TODO Refactor this out with rake run:clean so we're not repetitive
-    Benchmark.bm(16) do |x|
-      x.report("Executing on_optimize...") do
-        Dir[Rails.root.join('app/models/*.rb').to_s].each do |filename|
-          klass = File.basename(filename, '.rb').camelize.constantize
-          next unless klass.ancestors.include?(ActiveRecord::Base)
-          klass.send(:on_optimize)
-        end
-      end
-    end
-  end
 
   desc "Run our data verification tests"
   task :verify => :environment do
