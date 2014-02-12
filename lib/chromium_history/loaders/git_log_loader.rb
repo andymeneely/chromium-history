@@ -20,7 +20,7 @@ class GitLogLoader
   include DataTransfer
 
   @@GIT_LOG_PROPERTIES = [:commit_hash, :parent_commit_hash, :author_email,
-                          :message, :bug, :reviewers, :code_review_id, :svn_revision, :created_at]
+                          :message, :bug, :code_review_id, :svn_revision, :created_at]
 
   @@GIT_LOG_FILE_PROPERTIES = [:commit_id, :filepath]
 
