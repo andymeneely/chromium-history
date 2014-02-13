@@ -9,7 +9,7 @@ require_relative '../chromium_history/loaders/git_log_loader.rb'
 
 
 task :run => [:environment, "run:env", "db:reset", "run:load", "run:optimize", "run:verify", "run:analyze"] do
-  puts "Run task completed"
+  puts "Run task completed. Current time is #{Time.now}"
 end
 
 namespace :run do
@@ -52,7 +52,7 @@ namespace :run do
   end
 
   desc "Run our data verification tests"
-  task :verify => :environment do
+  task :verify => :env do
     VerifyRunner.run_all
   end
 
@@ -63,8 +63,9 @@ namespace :run do
 
   desc "Show current environment information"
   task :env => :environment do
-    puts "\tEnv.:  #{Rails.env}"
-    puts "\tData:  #{Rails.configuration.datadir}"
+    puts "\tEnv.:     #{Rails.env}"
+    puts "\tData:     #{Rails.configuration.datadir}"
+    puts "\tDatabase: #{Rails.configuration.database_configuration[Rails.env]["database"]}"
     puts "\tStart: #{Time.now}"
   end
 
