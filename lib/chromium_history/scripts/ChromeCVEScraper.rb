@@ -6,6 +6,7 @@ require "csv"
 require "set"
 require "uri"
 require "openssl"
+require "net/http"
 
 #
 # Written by Brian Spates
@@ -118,6 +119,7 @@ def getInfo(entry, res, cves)
 		gId = Array.new
 		open = -1
 		id = nodes.xpath("vuln:cve-id")
+		puts id
 		id.each do |n|
 			cve = n.content
 		end
@@ -150,10 +152,11 @@ def checkForRedundancies(cves, cve)
 end
 
 def setupResultsFile(path)
-	CSV.open(path, 'w+')  do |header|
+	CSV.open(path, 'ab')  do |header|
 		header << ['CVE', 'Rietveld Ids', 'Google Code Issue Ids', 'Open to Public?'] 
 	end
 end
+
 def loadPrevCSVSet(path)
 	cves = Set.new
 	CSV.foreach(path, :headers => true) do |row|
@@ -166,31 +169,26 @@ end
 resultsFile = "data/CVEs/chromium_scrape_res.csv"
 
 nistYears = [
-	2003,
-	2004,
-	2005,
-	2006,
-	2007,
 	2008,
 	2009,
 	2010,
 	2011,
 	2012,
 	2013
-	];
+	]
 
-nistUrl = 'http://static.nvd.nist.gov/feeds/xml/cve/'
-nistFile = 'lib/assets/nvdcve-2.0-'
+nistDomain = 'http://static.nvd.nist.gov'
+nistUrl = '/feeds/xml/cve/'
+nistFile = 'lib/assets/nist_data/'
+nistPrefix = 'nvdcve-2.0-'
+nistSuffix = '.xml'
 
-# open XML given by argument
-
-nistYears.each  do |year|
-	 
-	if not File.exists?("#{nistFile}#{year}.xml")
-		`wget #{nistUrl}#{year}.xml -P curdir/lib/assets/`	
-	end
-
-	doc = Nokogiri::XML("#{nistFile}#{nistFile}#{year}.xml")
+#open XML given by argument
+nistYears.each  do | year |
+	nistFilePath = "#{nistFile}#{nistPrefix}#{year}#{nistSuffix}"
+	puts nistFilePath
+	file = open(nistFilePath)
+	doc = Nokogiri::XML(file)
 	if not File.exists?(resultsFile)
 		setupResultsFile(resultsFile)	
 	else
