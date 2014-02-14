@@ -84,24 +84,18 @@ class CodeReviewLoader
 
   #
   # Create the Filepath. Ensure there are no
-  # duplicates already in db. Bulk import 
-  # may be useless because the number of
-  # filepaths are not that great
+  # duplicates already in db. 
   #
   # @param - Filepaths that belong to the commit
   #
   def create_filepath(file_paths)
-    filepath_id_arr = []
     file_paths.each do |path|
       path = path[0..999].strip
-      if Filepath.exists?(path: path) #duplicate found
-        filepath_id_arr += Filepath.where(path: path).ids
-      else #if the path does not already exist
+      if not Filepath.exists?(path: path) #duplicate found
         filepath = Filepath.new
         filepath.path = path #FIXME Hack.
         filepath.created_at = Time.now
         filepath.save
-        filepath_id_arr.push filepath.id
       end
     end
   end#create_filepath
