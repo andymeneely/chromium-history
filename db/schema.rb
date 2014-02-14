@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140212160049) do
+ActiveRecord::Schema.define(version: 20140214015402) do
 
   create_table "code_reviews", force: true do |t|
     t.text     "description"
@@ -33,27 +33,22 @@ ActiveRecord::Schema.define(version: 20140212160049) do
     t.string   "composite_patch_set_file_id", limit: 1000
   end
 
-  create_table "commit_files", force: true do |t|
-    t.integer "commit_id"
-    t.string  "filepath",    limit: 1000
-    t.string  "commit_hash"
-  end
-
   create_table "commits", force: true do |t|
     t.string   "commit_hash"
     t.string   "parent_commit_hash"
     t.string   "author_email"
     t.text     "message"
     t.string   "bug"
+    t.string   "reviewers"
     t.string   "svn_revision"
     t.datetime "created_at"
     t.integer  "commit_files_id"
     t.integer  "code_review_id",     limit: 8
   end
 
-  create_table "commit_filepaths", id: false, force: true do |t|
-    t.integer "commit_id",   null: false
-    t.integer "filepath_id", null: false
+  create_table "commits_filepaths", force: true do |t|
+    t.integer "filepath_id"
+    t.string  "commit_hash"
   end
 
   create_table "cves", force: true do |t|

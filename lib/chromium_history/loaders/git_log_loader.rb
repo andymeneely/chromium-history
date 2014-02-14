@@ -33,7 +33,7 @@ class GitLogLoader
     get_commits(File.open("#{Rails.configuration.datadir}/chromium-gitlog.txt", "r"))
 
     Commit.import @commits_to_save #Import Whatever is left over
-    CommitFile.import @commit_files_to_save
+    Filepath.import @commit_files_to_save
 
   end
 
@@ -210,62 +210,57 @@ class GitLogLoader
   #
   def add_commit_to_db(hash)
     commit = parse_transfer(Commit.new, hash, @@GIT_LOG_PROPERTIES)
-    @commits_to_save << commit
+    @commits_to_save << commit #add commit to commits to be imported array
     if @commits_to_save.size > @@BULK_IMPORT_BLOCK_SIZE
       Commit.import @commits_to_save 
       @commits_to_save = []
     end
 
-    #FIXME: can't get the commit id because we are now importing
-    #To get around not being able to get the commit id,
-    #save the commit hash and find the commit id after it has
-    #been bulk saved. 
-    commit_file = create_commit_file(hash["filepaths"], hash[:commit_hash], commit.id)
-    GitLogLoader::create_filepath(hash["filepaths"])
+    #create the filepaths assoc w/ commit
+    create_filepath(hash["filepaths"], hash[:commit_hash])
   end#add_commit_to_db
 
   #
-  # Adding the commit file path model
+  # Adding the Filepath Model
+  # Filepath to the files associated
+  # with the commit
+  #
+  # Checks if filepath already exists
   # @param- Array of file paths
   #
-  def create_commit_file(file_paths, commit_hash, id)
-    file_paths.each do |path|
-      commit_file = CommitFile.new
-      commit_file[:filepath] = path[0..999] #FIXME Hack for filepath parsing bug
-      commit_file.commit_id = id
-      commit_file.commit_hash = commit_hash
-      @commit_files_to_save << commit_file
-      if @commit_files_to_save.size > @@BULK_IMPORT_BLOCK_SIZE
-        CommitFile.import @commit_files_to_save
-        @commit_files_to_save = [] 
+  def create_filepath(filepaths, commit_hash)
+    filepaths.each do |path|
+      str_path = path[0..999].strip #FIXME Hack for filepath parsing bug
+
+      #if filepath already exists 
+      if Filepath.where(path: str_path).exists? #if duplicate found
+        #now check if already associated
+        temp_path = Filepath.where(path: str_path).take #Get the id of the filepath that already exists
+        if not CommitsFilepaths.where(filepath_id: temp_path.id, commit_hash: commit_hash).exists? then
+          #Make join
+          create_join(temp_path.id, commit_hash)
+        end
+      else #if filepath does not already exist
+        commit_file = Filepath.new
+        commit_file.path = str_path
+        commit_file.created_at = Time.now
+        commit_file.save
+        create_join(commit_file.id, commit_hash)#create the join
       end
     end
-  end#create_commit_file
+  end#create_filepath
 
   #
-  # Create the Filepath. Ensure there are no
-  # duplicates already in db. Bulk import 
-  # may be useless because the number of
-  # filepaths are not that great
+  # Make the join between the Filepath
+  # and Commit Hash.
   #
-  # @param - Filepaths that belong to the commit
-  # @return - Array of Filepath IDs that belong to commit
-  #
-  def self.create_filepath(file_paths)
-    filepath_id_arr = []
-    file_paths.each do |path|
-      path = path[0..999].strip
-      if Filepath.exists?(path: path) #duplicate found
-        filepath_id_arr += Filepath.where(path: path).ids
-      else #if the path does not already exist
-        filepath = Filepath.new
-        filepath.path = path #FIXME Hack.
-        filepath.created_at = Time.now
-        filepath.save
-        filepath_id_arr.push filepath.id
-      end
-    end
-    return filepath_id_arr
-  end#create_filepath
+  # @param - the File path
+  # @param - The commit hash
+  def create_join(path_id, commit_hash)
+    join = CommitsFilepaths.new
+    join.filepath_id = path_id
+    join.commit_hash = commit_hash
+    join.save
+  end
 
 end#class
