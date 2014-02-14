@@ -9,7 +9,10 @@ class Filepath < ActiveRecord::Base
   #If a Filepath has ever been involved in a code review that inspected
   #a vulnerability, then this should return true.
   def vulnerable?
-    #self.cve?
+    #filepath = self.Filepath;
+    #commit = filepath.commit;
+    #codeRev = commit.code_review;
+    #codeRev.is_inspecting_vulnerability?
   end
 
   def reviewers
