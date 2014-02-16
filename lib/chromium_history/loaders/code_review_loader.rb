@@ -192,21 +192,7 @@ class CodeReviewLoader
   #param email = email of a developer
   #      name = name of the same developer
   def load_developer_names(email, name)
-    if (email.index('+') != nil) 
-      email = email.slice(0, email.index('+')) + email.slice(email.index('@'), (email.length()-1))
-    end #fixing the email
-
-    if (Developer.find_by_email(email) == nil) 
-      developer = Developer.new
-      developer["email"] = email
-      developer["name"] = name
-      developer.save
-    else 
-      dobj = Developer.find_by_email(email)
-      if (Developer.find_by_name(name) == nil) 
-        dobj["name"] = name #if there is already an owner there and they dont match, that a problem
-      end #checking if the name exists
-    end #checking if the email exists
+    Developer.search_or_add(email, name);
   end #load developer names method
 
 
