@@ -11,7 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140214015402) do
+ActiveRecord::Schema.define(version: 20140216205132) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
+  create_table "ccs", force: true do |t|
+    t.string  "developer"
+    t.integer "issue",     limit: 8
+  end
 
   create_table "code_reviews", force: true do |t|
     t.text     "description"
@@ -31,6 +39,17 @@ ActiveRecord::Schema.define(version: 20140214015402) do
     t.boolean  "left"
     t.integer  "patch_set_file_id",           limit: 8
     t.string   "composite_patch_set_file_id", limit: 1000
+  end
+
+  create_table "commit_filepaths", id: false, force: true do |t|
+    t.integer "commit_id",   null: false
+    t.integer "filepath_id", null: false
+  end
+
+  create_table "commit_files", force: true do |t|
+    t.integer "commit_id"
+    t.string  "filepath",    limit: 1000
+    t.string  "commit_hash"
   end
 
   create_table "commits", force: true do |t|

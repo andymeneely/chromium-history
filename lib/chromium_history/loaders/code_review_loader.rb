@@ -140,10 +140,10 @@ class CodeReviewLoader
         email = email.slice(0, email.index('+')) + email.slice(email.index('@'), (email.length()-1))
       end #fixing the email
 
-      #ccTable = Cc.new  #creates a new CC table object
-      #ccTable["developer"] = email #adds the developer getting CCed
-      #ccTable["issue"] = issueNumber #and the issue to which they were CCed
-      #ccTable.save
+      ccTable = Cc.new  #creates a new CC table object
+      ccTable["developer"] = email #adds the developer getting CCed
+      ccTable["issue"] = issueNumber #and the issue to which they were CCed
+      ccTable.save
 
       if (Developer.find_by_email(email) == nil) 
         developer = Developer.new
