@@ -140,8 +140,6 @@ class GitLogLoader
       elsif element.match(/^BUG=/)
         hash[:bug] = element.strip.sub("BUG=", "")
 
-      elsif element.match(/^R=/)
-        hash[:reviewers] = element.strip.sub("R=", "")
 
       elsif element.match(/^;;;$/)
         in_files = true
