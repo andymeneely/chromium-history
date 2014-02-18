@@ -1,5 +1,4 @@
 class Developer < ActiveRecord::Base
-  has_many :code_reviews
   belongs_to :reviewer
   belongs_to :cc
 
