@@ -31,7 +31,7 @@ class FilepathVerify < VerifyBase
 	    count = 0
 
 	    # Get all the commit_files by the filepath column value
-	    files = CommitFile.pluck(:filepath)
+	    files = CommitFilepath.pluck(:filepath)
 	    rgx = Regexp.new(regex)
 
 	    files.each do |path| 

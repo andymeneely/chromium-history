@@ -75,11 +75,11 @@ class LoadCompleteVerify < VerifyBase
   end
 
   def verify_commit_6eebdee7_has_7_files
-    verify_count("Commit 6eebdee7851c52b1f481fca1cdffcbc51c8ec061",7, Commit.find_by_commit_hash("6eebdee7851c52b1f481fca1cdffcbc51c8ec061").commit_files.count)
+    verify_count("Commit 6eebdee7851c52b1f481fca1cdffcbc51c8ec061",7, Commit.find_by_commit_hash("6eebdee7851c52b1f481fca1cdffcbc51c8ec061").commit_filepaths.count)
   end
   
   def verify_commit_14df51bb_has_1_file
-    verify_count('Commit 14df51bb5a7ce0e5a8ecb12b24d845d9b4ae0318', 1, Commit.find_by_commit_hash('14df51bb5a7ce0e5a8ecb12b24d845d9b4ae0318').commit_files.count)
+    verify_count('Commit 14df51bb5a7ce0e5a8ecb12b24d845d9b4ae0318', 1, Commit.find_by_commit_hash('14df51bb5a7ce0e5a8ecb12b24d845d9b4ae0318').commit_filepaths.count)
   end
 
   def verify_6eebdee_has_one_review

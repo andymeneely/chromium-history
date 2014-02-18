@@ -36,7 +36,7 @@ class ForeignKeyVerify < VerifyBase
   end
 
   def verify_dangling_commit_files
-    no_dangling many_table: 'commit_files', \
+    no_dangling many_table: 'commit_filepaths', \
                 many_table_key: 'commit_hash', \
                 one_table: 'commits',\
                 one_table_key: 'commit_hash'
