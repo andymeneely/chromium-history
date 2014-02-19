@@ -135,55 +135,28 @@ class CodeReviewLoader
   #      messages = list of messages on the code review
   def load_developers(cc, reviewers, messages, issueNumber)
     cc.each do |email|
-      #get rid of the plus sign and after
-      if (email.index('+') != nil) 
-        email = email.slice(0, email.index('+')) + email.slice(email.index('@'), (email.length()-1))
-      end #fixing the email
-
       ccTable = Cc.new  #creates a new CC table object
       ccTable["developer"] = email #adds the developer getting CCed
       ccTable["issue"] = issueNumber #and the issue to which they were CCed
       ccTable.save
-
-      if (Developer.find_by_email(email) == nil) 
-        developer = Developer.new
-        developer["email"] = email
-        developer.save
-      end #checking if the email exists
+      Developer.search_or_add(email)
     end #cc loop
 
     reviewers.each do |email|
-      #get rid of the plus sign and after
-      if (email.index('+') != nil) 
-        email = email.slice(0, email.index('+')) + email.slice(email.index('@'), (email.length()-1))
-      end #fixing the email
-
       reviewerTable = Reviewer.new  #creates a new CC table object
       reviewerTable["developer"] = email #adds the developer getting CCed
       reviewerTable["issue"] = issueNumber #and the issue to which they were CCed
       reviewerTable.save
-
-      if (Developer.find_by_email(email) == nil) 
-        developer = Developer.new
-        developer["email"] = email
-        developer.save
-      end #checking if the email exists
+	  Developer.search_or_add(email)
     end #reviewers loop
 
     #possibly this message part should go in the load_messages method????
     messages.each do |message|
       message["recipients"].each do |email|  #the sender is always included in the recipients so theres no need to do that seperately
-        #get rid of the plus sign and after
-        if (email.index('+') != nil) 
-          email = email.slice(0, email.index('+')) + email.slice(email.index('@'), (email.length()-1))
-        end #fixing the email
-        if (Developer.find_by_email(email) == nil) 
-          developer = Developer.new
-          developer["email"] = email
-          developer.save
-        end #checking if the email exists
+        Developer.search_or_add(email)
       end #emails in the messages loop
     end #messages loop
+
   end #load developers method
 
 
