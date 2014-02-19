@@ -74,32 +74,12 @@ class CodeReviewLoader
     psfiles.each do |psfile|
       psf = transfer(PatchSetFile.new, psfile[1], @@PATCH_SET_FILE_PROPS)
       psf.filepath = psfile[0].to_s
-      create_filepath([psfile[0].to_s]) #need to remove this
       psf.composite_patch_set_id = composite_patch_set_id
       psf.composite_patch_set_file_id = "#{composite_patch_set_id}-#{psf.filepath}"
       bulk_save PatchSetFile,psf, @patchset_files_to_save
       load_comments(psf.composite_patch_set_file_id, psfile[1]['messages']) unless psfile[1]['messages'].nil? #Yes, Rietveld conflates "messages" with "comments" here
     end #patch set file loop
   end #load patch set file method
-
-  #
-  # Create the Filepath. Ensure there are no
-  # duplicates already in db. 
-  #
-  # @param - Filepaths that belong to the commit
-  #
-  def create_filepath(file_paths)
-    file_paths.each do |path|
-      path = path[0..999].strip
-      if not Filepath.exists?(path: path) #duplicate found
-        filepath = Filepath.new
-        filepath.path = path #FIXME Hack.
-        filepath.created_at = Time.now
-        filepath.save
-      end
-    end
-  end#create_filepath
-
 
   #param patchset = the patchset file that the comments are on
   #      comments = the comments on a particular patch set file 
