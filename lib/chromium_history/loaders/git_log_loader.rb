@@ -51,7 +51,7 @@ class GitLogLoader
     isStarted = false
 
     file.each_line do |line|
-      if line.strip.match(/^:::$/)
+      if line.strip.match(/^:::$/) or line.strip.match(/^;;;:::$/)
         #begin processing, encountered
         #first commit (:::) avoid adding 
         #any garbage before first commit

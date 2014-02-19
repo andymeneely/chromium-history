@@ -167,6 +167,14 @@ git-svn-id: svn://svn.chromium.org/chrome/trunk/src@214819 0039d316-1c4b-4281-b9
  cc/resources/image_layer_updater.h  | 3 ++-
  7 files changed, 27 insertions(+), 13 deletions(-)
 :::
+6fb323424f52120c38904802a9679e742a9c687d
+maruel@chromium.org
+maruel@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Fri May 29 14:05:47 2009 +0000
+5fdac28d09b64037dbdb6e3a9802cf08e696f052
+svn:ignore binaries added in revision 16826.
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@17184 0039d316-1c4b-4281-b951-d872f2087c98
+;;;:::
 14df51bb5a7ce0e5a8ecb12b24d845d9b4ae0318
 nduca@chromium.org
 nduca@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
