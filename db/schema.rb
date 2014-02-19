@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140218204626) do
+ActiveRecord::Schema.define(version: 20140219160140) do
 
   create_table "ccs", force: true do |t|
     t.string  "developer"
@@ -66,9 +66,9 @@ ActiveRecord::Schema.define(version: 20140218204626) do
   end
 
   create_table "filepaths", force: true do |t|
-    t.string   "path"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "filepath",   limit: 500
   end
 
   create_table "messages", force: true do |t|

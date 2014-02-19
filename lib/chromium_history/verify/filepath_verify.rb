@@ -15,14 +15,13 @@ class FilepathVerify < VerifyBase
 		helper_check_file_path('^\s', "File Paths with leading spaces")
 	end
 
-  # Commenting this test out until we get #87 done
-  #def verify_filepaths_are_present
-  #  if Filepath.count > 0
-  #    pass
-  #  else
-  #    fail("No Filepaths exist")
-  #  end
-  #end
+  def verify_filepaths_are_present
+    if Filepath.count > 0
+      pass
+    else
+      fail("No Filepaths exist")
+    end
+  end
 
 	private
 	def helper_check_file_path(regex, message, allowrgx="")

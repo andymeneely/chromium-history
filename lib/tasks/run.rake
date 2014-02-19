@@ -3,12 +3,13 @@ require_relative '../chromium_history/loaders/code_review_loader.rb'
 require_relative '../chromium_history/loaders/cve_loader.rb'
 require_relative '../chromium_history/verify/verify_runner.rb'
 require_relative '../chromium_history/loaders/git_log_loader.rb'
+require_relative '../chromium_history/consolidators/filepath_consolidator.rb'
 
 #Uncomment to require all loader files
 #Dir[File.expand_path('../chromium_history/loaders/*.rb', File.dirname(__FILE__))].each {|file| require file}
 
 
-task :run => [:environment, "run:env", "db:reset", "run:load", "run:optimize", "run:verify", "run:analyze"] do
+task :run => [:environment, "run:env", "db:reset", "run:load", "run:optimize", "run:consolidate","run:verify", "run:analyze"] do
   puts "Run task completed. Current time is #{Time.now}"
 end
 
@@ -26,9 +27,9 @@ namespace :run do
 
   desc "Load data into tables"
   task :load => :environment do
-    Benchmark.bm(16) do |x|
+    Benchmark.bm(25) do |x|
       x.report("Loading code reviews: ") {CodeReviewLoader.new.load}
-      x.report("Loading CVE number and reviews: ") {CveLoader.new.load_cve}
+      x.report("Loading CVE reviews: ") {CveLoader.new.load_cve}
       x.report("Loading git log commits: ") {GitLogLoader.new.load}
     end
   end
@@ -40,14 +41,21 @@ namespace :run do
   task :optimize => [:environment] do
     # Iterate over our models
     # TODO Refactor this out with rake run:clean so we're not repetitive
-    Benchmark.bm(16) do |x|
-      x.report("Executing on_optimize...") do
+    Benchmark.bm(25) do |x|
+      x.report("Optimizing tables:") do
         Dir[Rails.root.join('app/models/*.rb').to_s].each do |filename|
           klass = File.basename(filename, '.rb').camelize.constantize
           next unless klass.ancestors.include?(ActiveRecord::Base)
           klass.send(:on_optimize)
         end
       end
+    end
+  end
+
+  desc "Consolidate data from join tables into one model"
+  task :consolidate => [:environment] do
+    Benchmark.bm(25) do |x|
+      x.report("Consolidating filepaths: ") {FilepathConsolidator.new.consolidate}
     end
   end
 
