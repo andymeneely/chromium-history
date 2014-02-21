@@ -12,4 +12,15 @@ class CodeReview < ActiveRecord::Base
   	self.cve?
   end
 
+  def contributors
+    #anyone who commented on this code review
+    codeReview = self.CodeReview;
+    issueNumber = codeReview.issue;
+
+    #take the issue number and look up in messages or comments
+    mess = Message.find_by code_review_id: issueNumber;
+
+    }
+  end
+
 end
