@@ -1,5 +1,7 @@
 require 'oj'
 require_relative 'data_transfer'
+require_relative 'git_log_loader'
+
 
 class CodeReviewLoader
   # Mix in the DataTransfer module
@@ -72,14 +74,13 @@ class CodeReviewLoader
     psfiles.each do |psfile|
       psf = transfer(PatchSetFile.new, psfile[1], @@PATCH_SET_FILE_PROPS)
       psf.filepath = psfile[0].to_s
+      GitLogLoader::create_filepath([psfile[0].to_s])
       psf.composite_patch_set_id = composite_patch_set_id
       psf.composite_patch_set_file_id = "#{composite_patch_set_id}-#{psf.filepath}"
       bulk_save PatchSetFile,psf, @patchset_files_to_save
       load_comments(psf.composite_patch_set_file_id, psfile[1]['messages']) unless psfile[1]['messages'].nil? #Yes, Rietveld conflates "messages" with "comments" here
     end #patch set file loop
   end #load patch set file method
-
-
 
 
   #param patchset = the patchset file that the comments are on

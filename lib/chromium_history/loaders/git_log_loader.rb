@@ -216,11 +216,12 @@ class GitLogLoader
       @commits_to_save = []
     end
 
-    #bug can't get the commit id because we are now importing
+    #FIXME: can't get the commit id because we are now importing
     #To get around not being able to get the commit id,
     #save the commit hash and find the commit id after it has
     #been bulk saved. 
     commit_file = create_commit_file(hash["filepaths"], hash[:commit_hash], commit.id)
+    GitLogLoader::create_filepath(hash["filepaths"])
   end#add_commit_to_db
 
   #
@@ -244,28 +245,27 @@ class GitLogLoader
   #
   # Create the Filepath. Ensure there are no
   # duplicates already in db. Bulk import 
-  # maybe useless cause the number of filepaths
-  # not that great
+  # may be useless because the number of
+  # filepaths are not that great
   #
   # @param - Filepaths that belong to the commit
   # @return - Array of Filepath IDs that belong to commit
   #
-  def create_filepath(file_paths)
+  def self.create_filepath(file_paths)
     filepath_id_arr = []
     file_paths.each do |path|
       path = path[0..999].strip
-      if not Filepath.exists?(path: path)#if the path does not already exist
-        filepath = Filepath.new 
+      if Filepath.exists?(path: path) #duplicate found
+        filepath_id_arr += Filepath.where(path: path).ids
+      else #if the path does not already exist
+        filepath = Filepath.new
         filepath.path = path #FIXME Hack.
         filepath.created_at = Time.now
-        filepath.save 
-      else #duplicate found
-        Filepath.where(path: path).id
+        filepath.save
+        filepath_id_arr.push filepath.id
       end
-      filepath_id_arr.push filepath.id
     end
-
-    filepath_id_arr #return the filepath id
+    return filepath_id_arr
   end#create_filepath
 
 end#class

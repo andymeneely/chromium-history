@@ -52,7 +52,7 @@ ActiveRecord::Schema.define(version: 20131216210846) do
     t.integer  "code_review_id",     limit: 8
   end
 
-  create_table "commits_filepaths", id: false, force: true do |t|
+  create_table "commit_filepaths", id: false, force: true do |t|
     t.integer "commit_id",   null: false
     t.integer "filepath_id", null: false
   end
