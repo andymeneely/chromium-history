@@ -20,7 +20,7 @@ class CodeReview < ActiveRecord::Base
     #take the issue number and look up in messages or comments
     mess = Message.find_by code_review_id: issueNumber;
 
-    }
+    
   end
 
 end
