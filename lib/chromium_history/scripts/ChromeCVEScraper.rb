@@ -43,9 +43,9 @@ class ChromeCveScraper
 	NIST_FILE_R_PATH = '../../assets/'
 	NIST_PREFIX = 'nvdcve-2.0-'
 	NIST_SUFFIX = '.xml'
-	RESULT_FILE_PATH = "/chromium_scrape_res.csv"
-	MANUAL_FILE_PATH = "/chromium_manual_check.csv"
-	REMOVED_FILE_PATH = "/chromium_removed_from_study.csv"
+	RESULT_FILE_PATH = "/cves/chromium_scrape_res.csv"
+	MANUAL_FILE_PATH = "/cves/chromium_manual_check.csv"
+	REMOVED_FILE_PATH = "/cves/chromium_removed_from_study.csv"
 
 	def initialize() 
 		# Setup file paths
