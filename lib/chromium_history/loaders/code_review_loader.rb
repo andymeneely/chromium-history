@@ -74,14 +74,12 @@ class CodeReviewLoader
     psfiles.each do |psfile|
       psf = transfer(PatchSetFile.new, psfile[1], @@PATCH_SET_FILE_PROPS)
       psf.filepath = psfile[0].to_s
-      GitLogLoader::create_filepath([psfile[0].to_s])
       psf.composite_patch_set_id = composite_patch_set_id
       psf.composite_patch_set_file_id = "#{composite_patch_set_id}-#{psf.filepath}"
       bulk_save PatchSetFile,psf, @patchset_files_to_save
       load_comments(psf.composite_patch_set_file_id, psfile[1]['messages']) unless psfile[1]['messages'].nil? #Yes, Rietveld conflates "messages" with "comments" here
     end #patch set file loop
   end #load patch set file method
-
 
   #param patchset = the patchset file that the comments are on
   #      comments = the comments on a particular patch set file 
@@ -117,55 +115,28 @@ class CodeReviewLoader
   #      messages = list of messages on the code review
   def load_developers(cc, reviewers, messages, issueNumber)
     cc.each do |email|
-      #get rid of the plus sign and after
-      if (email.index('+') != nil) 
-        email = email.slice(0, email.index('+')) + email.slice(email.index('@'), (email.length()-1))
-      end #fixing the email
-
-      #ccTable = Cc.new  #creates a new CC table object
-      #ccTable["developer"] = email #adds the developer getting CCed
-      #ccTable["issue"] = issueNumber #and the issue to which they were CCed
-      #ccTable.save
-
-      if (Developer.find_by_email(email) == nil) 
-        developer = Developer.new
-        developer["email"] = email
-        developer.save
-      end #checking if the email exists
+      ccTable = Cc.new  #creates a new CC table object
+      ccTable["developer"] = email #adds the developer getting CCed
+      ccTable["issue"] = issueNumber #and the issue to which they were CCed
+      ccTable.save
+      Developer.search_or_add(email)
     end #cc loop
 
     reviewers.each do |email|
-      #get rid of the plus sign and after
-      if (email.index('+') != nil) 
-        email = email.slice(0, email.index('+')) + email.slice(email.index('@'), (email.length()-1))
-      end #fixing the email
-
       reviewerTable = Reviewer.new  #creates a new CC table object
       reviewerTable["developer"] = email #adds the developer getting CCed
       reviewerTable["issue"] = issueNumber #and the issue to which they were CCed
       reviewerTable.save
-
-      if (Developer.find_by_email(email) == nil) 
-        developer = Developer.new
-        developer["email"] = email
-        developer.save
-      end #checking if the email exists
+	  Developer.search_or_add(email)
     end #reviewers loop
 
     #possibly this message part should go in the load_messages method????
     messages.each do |message|
       message["recipients"].each do |email|  #the sender is always included in the recipients so theres no need to do that seperately
-        #get rid of the plus sign and after
-        if (email.index('+') != nil) 
-          email = email.slice(0, email.index('+')) + email.slice(email.index('@'), (email.length()-1))
-        end #fixing the email
-        if (Developer.find_by_email(email) == nil) 
-          developer = Developer.new
-          developer["email"] = email
-          developer.save
-        end #checking if the email exists
+        Developer.search_or_add(email)
       end #emails in the messages loop
     end #messages loop
+
   end #load developers method
 
 
@@ -174,21 +145,7 @@ class CodeReviewLoader
   #param email = email of a developer
   #      name = name of the same developer
   def load_developer_names(email, name)
-    if (email.index('+') != nil) 
-      email = email.slice(0, email.index('+')) + email.slice(email.index('@'), (email.length()-1))
-    end #fixing the email
-
-    if (Developer.find_by_email(email) == nil) 
-      developer = Developer.new
-      developer["email"] = email
-      developer["name"] = name
-      developer.save
-    else 
-      dobj = Developer.find_by_email(email)
-      if (Developer.find_by_name(name) == nil) 
-        dobj["name"] = name #if there is already an owner there and they dont match, that a problem
-      end #checking if the name exists
-    end #checking if the email exists
+    Developer.search_or_add(email, name);
   end #load developer names method
 
 

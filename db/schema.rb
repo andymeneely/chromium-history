@@ -11,7 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131216210846) do
+ActiveRecord::Schema.define(version: 20140219160140) do
+
+  create_table "ccs", force: true do |t|
+    t.string  "developer"
+    t.integer "issue",     limit: 8
+  end
 
   create_table "code_reviews", force: true do |t|
     t.text     "description"
@@ -33,10 +38,9 @@ ActiveRecord::Schema.define(version: 20131216210846) do
     t.string   "composite_patch_set_file_id", limit: 1000
   end
 
-  create_table "commit_files", force: true do |t|
-    t.integer "commit_id"
-    t.string  "filepath",    limit: 1000
-    t.string  "commit_hash"
+  create_table "commit_filepaths", force: true do |t|
+    t.string "commit_hash"
+    t.string "filepath"
   end
 
   create_table "commits", force: true do |t|
@@ -52,11 +56,6 @@ ActiveRecord::Schema.define(version: 20131216210846) do
     t.integer  "code_review_id",     limit: 8
   end
 
-  create_table "commit_filepaths", id: false, force: true do |t|
-    t.integer "commit_id",   null: false
-    t.integer "filepath_id", null: false
-  end
-
   create_table "cves", force: true do |t|
     t.string "cve"
   end
@@ -67,9 +66,9 @@ ActiveRecord::Schema.define(version: 20131216210846) do
   end
 
   create_table "filepaths", force: true do |t|
-    t.string   "path"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "filepath",   limit: 500
   end
 
   create_table "messages", force: true do |t|

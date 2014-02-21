@@ -19,7 +19,8 @@ class FilepathVulnerableVerify < VerifyBase
 
 	#Test a Filepath that is vulnerable
 	def verify_vulnerable
-		issue = CodeReview.where(issue: 10854242).first
+		issue = CodeReview.where(issue: 10854242)
+
     # Commented out to keep the build
 		#filepath = _____ #replace with a reference to the filepath
 		#filepath.vulnerable? ? pass() : fail("Filepath declared not vulnerable when it is.")

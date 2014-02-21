@@ -20,7 +20,7 @@ class GitLogLoader
   include DataTransfer
 
   @@GIT_LOG_PROPERTIES = [:commit_hash, :parent_commit_hash, :author_email,
-                          :message, :bug, :reviewers, :code_review_id, :svn_revision, :created_at]
+                          :message, :bug, :code_review_id, :svn_revision, :created_at]
 
   @@GIT_LOG_FILE_PROPERTIES = [:commit_id, :filepath]
 
@@ -28,12 +28,11 @@ class GitLogLoader
 
   def load
     @commits_to_save = []
-    @commit_files_to_save = []
-    @file_paths_to_save = []
+    @commit_filepaths_to_save = []
     get_commits(File.open("#{Rails.configuration.datadir}/chromium-gitlog.txt", "r"))
 
     Commit.import @commits_to_save #Import Whatever is left over
-    CommitFile.import @commit_files_to_save
+    CommitFilepath.import @commit_filepaths_to_save
 
   end
 
@@ -52,7 +51,7 @@ class GitLogLoader
     isStarted = false
 
     file.each_line do |line|
-      if line.strip.match(/^:::$/)
+      if line.strip.match(/^:::$/) or line.strip.match(/^;;;:::$/)
         #begin processing, encountered
         #first commit (:::) avoid adding 
         #any garbage before first commit
@@ -140,15 +139,13 @@ class GitLogLoader
       elsif element.match(/^BUG=/)
         hash[:bug] = element.strip.sub("BUG=", "")
 
-      elsif element.match(/^R=/)
-        hash[:reviewers] = element.strip.sub("R=", "")
 
       elsif element.match(/^;;;$/)
         in_files = true
 
       elsif in_files && element.match(/([\s-]*\|[\s-]*\d+ \+*\-*)/)
-          filepaths.push(element.slice(0,element.index('|')).strip)
- 
+        filepaths.push(element.slice(0,element.index('|')).strip)
+
       end
 
     end 
@@ -210,62 +207,34 @@ class GitLogLoader
   #
   def add_commit_to_db(hash)
     commit = parse_transfer(Commit.new, hash, @@GIT_LOG_PROPERTIES)
-    @commits_to_save << commit
+    @commits_to_save << commit #add commit to commits to be imported array
     if @commits_to_save.size > @@BULK_IMPORT_BLOCK_SIZE
       Commit.import @commits_to_save 
       @commits_to_save = []
     end
 
-    #FIXME: can't get the commit id because we are now importing
-    #To get around not being able to get the commit id,
-    #save the commit hash and find the commit id after it has
-    #been bulk saved. 
-    commit_file = create_commit_file(hash["filepaths"], hash[:commit_hash], commit.id)
-    GitLogLoader::create_filepath(hash["filepaths"])
+    #create the filepaths assoc w/ commit
+    create_commit_filepath(hash["filepaths"], hash[:commit_hash])
   end#add_commit_to_db
 
   #
-  # Adding the commit file path model
+  # Adding the Filepath Model
+  # Filepath to the files associated
+  # with the commit
+  #
+  # Checks if filepath already exists
   # @param- Array of file paths
   #
-  def create_commit_file(file_paths, commit_hash, id)
-    file_paths.each do |path|
-      commit_file = CommitFile.new
-      commit_file[:filepath] = path[0..999] #FIXME Hack for filepath parsing bug
-      commit_file.commit_id = id
-      commit_file.commit_hash = commit_hash
-      @commit_files_to_save << commit_file
-      if @commit_files_to_save.size > @@BULK_IMPORT_BLOCK_SIZE
-        CommitFile.import @commit_files_to_save
-        @commit_files_to_save = [] 
-      end
-    end
-  end#create_commit_file
+  def create_commit_filepath(filepaths, commit_hash)
+    filepaths.each do |str_path|
 
-  #
-  # Create the Filepath. Ensure there are no
-  # duplicates already in db. Bulk import 
-  # may be useless because the number of
-  # filepaths are not that great
-  #
-  # @param - Filepaths that belong to the commit
-  # @return - Array of Filepath IDs that belong to commit
-  #
-  def self.create_filepath(file_paths)
-    filepath_id_arr = []
-    file_paths.each do |path|
-      path = path[0..999].strip
-      if Filepath.exists?(path: path) #duplicate found
-        filepath_id_arr += Filepath.where(path: path).ids
-      else #if the path does not already exist
-        filepath = Filepath.new
-        filepath.path = path #FIXME Hack.
-        filepath.created_at = Time.now
-        filepath.save
-        filepath_id_arr.push filepath.id
+      @commit_filepaths_to_save << CommitFilepath.new(commit_hash: commit_hash, filepath: str_path)
+      if @commit_filepaths_to_save.size > @@BULK_IMPORT_BLOCK_SIZE
+        CommitFilepath.import @commit_filepaths_to_save
+        @commit_filepaths_to_save = []
       end
-    end
-    return filepath_id_arr
-  end#create_filepath
+
+    end#loop
+  end
 
 end#class
