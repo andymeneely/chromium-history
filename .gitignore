@@ -20,6 +20,10 @@
 *.gem
 *.rbc
 
+.DS_Store
+
+/lib/assets/nvdcve*
+/data/development/chromium*.csv
 # Coverage
 coverage
 
