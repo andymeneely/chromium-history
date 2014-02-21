@@ -23,7 +23,7 @@
 .DS_Store
 
 /lib/assets/nvdcve*
-/data/development/chromium*.csv
+/data/development/cves/chromium*.csv
 # Coverage
 coverage
 

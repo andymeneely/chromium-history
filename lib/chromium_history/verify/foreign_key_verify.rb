@@ -2,11 +2,6 @@ require_relative "verify_base"
 
 class ForeignKeyVerify < VerifyBase
 
-  def verify_code_reviews_and_cves_relationship
-    error_count = CodeReview.where.not(cve: Cve.select("cve")).count
-    get_results(error_count, "code_reviews", "cve")
-  end
-
   def verify_dangling_comments
     no_dangling many_table: 'comments', \
                 many_table_key: 'composite_patch_set_file_id', \

@@ -23,12 +23,12 @@ class ChromeCveScraper
 
 	# Years included in this study
 	CHROMIUM_NIST_YEARS = [
-			2008,
-			2009,
-			2010,
-			2011,
-			2012,
-			2013
+		2008,
+		2009,
+		2010,
+		2011,
+		2012,
+		2013
 	]
 
 	# Csv headers for result files
@@ -207,7 +207,7 @@ class ChromeCveScraper
 		vId = checkForCodeR(page)
 		if(vId[0] == nil)
 			puts "none from google code page"
-			scrapeDeep(page, rIds)
+			scrapeDeep(page, gIds, rIds)
 		end
 		parseCodeRId(vId, rIds)
 	end
@@ -215,14 +215,14 @@ class ChromeCveScraper
 	# Method invoked when a reitveld id is not present on a google code issue
 	# It searches the issue page for repository links, that might have reitveld ids
 	# It navigates to said repo page and scrapes for reitveld ids.
-	def scrapeDeep(tempDoc, rId)
+	def scrapeDeep(tempDoc, gIds, rIds)
 		tId = tempDoc.xpath("//a[contains(@href, 'src.chromium.org/viewvc/chrome?view=rev')]")
 		tId.each do | last |
 			link = last.attribute("href")
 			begin
 				lastDoc = Nokogiri::HTML(open(link))
 				vId = checkForCodeR(lastDoc)
-				parseCodeRId(vId, rId)
+				parseCodeRId(vId, rIds)
 			rescue OpenURI::HTTPError => e
 				puts e
 				access_forbidden = e.to_s.scan(/404/)
@@ -311,10 +311,10 @@ class ChromeCveScraper
 	end
 
 	# parses rietveld ids from from a url and adds them to the set rId
-	def parseCodeRId(vId, rId)
+	def parseCodeRId(vId, rIds)
 		vId.each do | found |
 			uri = URI.parse(found.content)
-			rId << uri.path.to_s.gsub(/\//, '').gsub(/show/, '')
+			rIds << uri.path.to_s.gsub(/\//, '').gsub(/show/, '').gsub(/(?<=\d)diff.*/, '')
 		end
 	end
 
@@ -338,6 +338,6 @@ end
 
 
 # Drive it, needs to be run under rails enviroment
-# in Terminal rails r <path to this script>
+# in Terminal `rails r <path to this script>`
 scraper = ChromeCveScraper.new
 scraper.runAll()
