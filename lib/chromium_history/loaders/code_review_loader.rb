@@ -129,7 +129,7 @@ class CodeReviewLoader
       reviewerTable = Reviewer.new  #creates a new CC table object
       reviewerTable["developer"] = email #adds the developer getting CCed
       reviewerTable["issue"] = issueNumber #and the issue to which they were CCed
-      bulk_save Reviewer,reviewerTable @reviewer_to_save
+      bulk_save Reviewer,reviewerTable, @reviewer_to_save
 	  Developer.search_or_add(email)
     end #reviewers loop
 
