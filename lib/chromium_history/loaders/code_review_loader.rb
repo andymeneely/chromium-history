@@ -16,6 +16,9 @@ class CodeReviewLoader
     @patchset_files_to_save = []
     @comments_to_save = []
     @messages_to_save = []
+    @cc_to_save = []
+    @reviewer_to_save = []
+
 
     Dir["#{Rails.configuration.datadir}/codereviews/*.json"].each do |file|
       cobj = Oj.load_file(file)
@@ -118,7 +121,7 @@ class CodeReviewLoader
       ccTable = Cc.new  #creates a new CC table object
       ccTable["developer"] = email #adds the developer getting CCed
       ccTable["issue"] = issueNumber #and the issue to which they were CCed
-      ccTable.save
+      bulk_save Cc,ccTable, @cc_to_save
       Developer.search_or_add(email)
     end #cc loop
 
@@ -126,7 +129,7 @@ class CodeReviewLoader
       reviewerTable = Reviewer.new  #creates a new CC table object
       reviewerTable["developer"] = email #adds the developer getting CCed
       reviewerTable["issue"] = issueNumber #and the issue to which they were CCed
-      reviewerTable.save
+      bulk_save Reviewer,reviewerTable @reviewer_to_save
 	  Developer.search_or_add(email)
     end #reviewers loop
 
@@ -136,7 +139,6 @@ class CodeReviewLoader
         Developer.search_or_add(email)
       end #emails in the messages loop
     end #messages loop
-
   end #load developers method
 
 
@@ -151,6 +153,7 @@ class CodeReviewLoader
 
 
   # Queue a model to be saved.
+  # @param model_class = 
   # @param model - the model to be saved
   # @param to_save - the @model_to_save (e.g. @codereviews_to_save)
   def bulk_save(model_class, model, to_save)
