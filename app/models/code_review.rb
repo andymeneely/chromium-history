@@ -3,6 +3,10 @@ class CodeReview < ActiveRecord::Base
   has_many :messages, foreign_key: "code_review_id", primary_key: "issue"
   has_many :reviewers, foreign_key: "issue", primary_key: "issue"
   has_many :ccs, foreign_key: "issue", primary_key: "issue"
+
+  has_one :commit, foreign_key: "code_review_id", primary_key: "issue"
+  
+  has_and_belongs_to_many :cvenums
   
   def self.on_optimize
     ActiveRecord::Base.connection.add_index :code_reviews, :issue, unique: true
