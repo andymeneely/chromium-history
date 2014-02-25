@@ -120,19 +120,21 @@ class CodeReviewLoader
   #      messages = list of messages on the code review
   def load_developers(cc, reviewers, messages, issueNumber)
     cc.each do |email|
+      Developer.search_or_add(email)
       ccTable = Cc.new  #creates a new CC table object
+      ccTable["developer"] = Developer.find_by email: email
       #ccTable["developer"] = email #adds the developer getting CCed
       ccTable["issue"] = issueNumber #and the issue to which they were CCed
       bulk_save Cc,ccTable, @cc_to_save
-      Developer.search_or_add(email)
     end #cc loop
 
     reviewers.each do |email|
+      Developer.search_or_add(email)
       reviewerTable = Reviewer.new  #creates a new Reviewer table object
-      #reviewerTable["developer"] = email #adds the developer getting reviewed
+      reviewerTable["developer"] = Developer.find_by email: email #adds the developer getting reviewed
+      #reviewerTable["developer"] = email
       reviewerTable["issue"] = issueNumber #and the issue to which they were reviewed
       bulk_save Reviewer,reviewerTable, @reviewer_to_save
-	  Developer.search_or_add(email)
     end #reviewers loop
 
     #possibly this message part should go in the load_messages method????
