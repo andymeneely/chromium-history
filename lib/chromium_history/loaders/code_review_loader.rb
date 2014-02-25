@@ -35,6 +35,8 @@ class CodeReviewLoader
     PatchSetFile.import @patchset_files_to_save
     Comment.import @comments_to_save
     Message.import @messages_to_save
+    Cc.import @cc_to_save
+    Reviewer.import @reviewer_to_save
 
   end #load method
 
@@ -119,16 +121,16 @@ class CodeReviewLoader
   def load_developers(cc, reviewers, messages, issueNumber)
     cc.each do |email|
       ccTable = Cc.new  #creates a new CC table object
-      ccTable["developer"] = email #adds the developer getting CCed
+      #ccTable["developer"] = email #adds the developer getting CCed
       ccTable["issue"] = issueNumber #and the issue to which they were CCed
       bulk_save Cc,ccTable, @cc_to_save
       Developer.search_or_add(email)
     end #cc loop
 
     reviewers.each do |email|
-      reviewerTable = Reviewer.new  #creates a new CC table object
-      reviewerTable["developer"] = email #adds the developer getting CCed
-      reviewerTable["issue"] = issueNumber #and the issue to which they were CCed
+      reviewerTable = Reviewer.new  #creates a new Reviewer table object
+      #reviewerTable["developer"] = email #adds the developer getting reviewed
+      reviewerTable["issue"] = issueNumber #and the issue to which they were reviewed
       bulk_save Reviewer,reviewerTable, @reviewer_to_save
 	  Developer.search_or_add(email)
     end #reviewers loop
