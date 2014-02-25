@@ -2,7 +2,7 @@ class Commit < ActiveRecord::Base
   	
   has_many :commit_filepaths, foreign_key: 'commit_hash', primary_key: 'commit_hash' # For join table assoc
   
-  belongs_to :code_review, :class_name => 'CodeReview', foreign_key: 'code_review_id', primary_key: 'issue'
+  belongs_to :code_review, primary_key: "issue", foreign_key: "code_review_id"
 
   def self.on_optimize
     ActiveRecord::Base.connection.add_index :commits, :commit_hash, unique: true
