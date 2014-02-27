@@ -27,7 +27,7 @@ class CveLoader
 		issues.each do |issue|
 			codeReview = CodeReview.find_by_issue(issue)
 			if codeReview.nil?
-				puts "Issue #{issue} related to #{cve} not found in Code Review Table"
+				$stderr.puts "Issue #{issue} related to #{cve} not found in Code Review Table"
 				next
 			end
 			codeReview.cvenums << cveRecord 
