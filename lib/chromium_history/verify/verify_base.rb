@@ -20,7 +20,7 @@ class VerifyBase
     if exp.eql? actual
       pass()
     else
-      fail(fail_message)
+      fail("Expected: #{exp}, Actual: #{actual},#{fail_message}")
     end
   end
 
