@@ -11,14 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140221135700) do
-
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
+ActiveRecord::Schema.define(version: 20140227180435) do
 
   create_table "ccs", force: true do |t|
-    t.string  "developer"
-    t.integer "issue",     limit: 8
+    t.integer "issue", limit: 8
+    t.string  "email"
   end
 
   create_table "code_reviews", force: true do |t|
@@ -114,8 +111,8 @@ ActiveRecord::Schema.define(version: 20140221135700) do
   end
 
   create_table "reviewers", force: true do |t|
-    t.string  "developer"
-    t.integer "issue",     limit: 8
+    t.integer "issue", limit: 8
+    t.string  "email"
   end
 
 end
