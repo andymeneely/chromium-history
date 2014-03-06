@@ -1,6 +1,6 @@
 class Filepath < ActiveRecord::Base
 
-	has_many :commits, :through => :commits_filepaths, foreign_key: 'filepath_id', primary_key: 'filepath_id' # For join table assoc
+  has_many :commit_filepaths, primary_key: 'filepath', foreign_key: 'filepath'
 
 	def self.on_optimize
     ActiveRecord::Base.connection.add_index :filepaths, :filepath, unique: true

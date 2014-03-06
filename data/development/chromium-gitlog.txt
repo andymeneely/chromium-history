@@ -235,3 +235,22 @@ git-svn-id: svn://svn.chromium.org/chrome/trunk/src@88444 0039d316-1c4b-4281-b95
 ;;;
  DEPS | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
+:::
+5310d2470d215590ed6bbffe32da70fcbd45d12a
+palmer@chromium.org
+palmer@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Mon Sep 24 16:26:46 2012 +0000
+0d0a983550d37d8cc1562dfbe2bfbe778cdaed0a
+Make shared memory segments writable only by their rightful owners.
+BUG=143859
+TEST=Chrome's UI still works on Linux and Chrome OS
+Review URL: https://chromiumcodereview.appspot.com/10854242
+
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@158289 0039d316-1c4b-4281-b951-d872f2087c98
+;;;
+ content/browser/renderer_host/backing_store_gtk.cc | 11 ++++++++++-
+ ui/base/x/x11_util.cc                              | 27 +++++++++++++++++++++++----
+ ui/surface/transport_dib_linux.cc                  |  7 +++----
+ 3 files changed, 36 insertions(+), 9 deletions(-)
+
+

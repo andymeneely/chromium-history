@@ -15,7 +15,7 @@ class LoadCompleteVerify < VerifyBase
   end
 
   def verify_number_of_commits
-    verify_count("Commits", 8, Commit.count)
+    verify_count("Commits", 9, Commit.count)
   end
 
   def verify_number_of_messages
