@@ -14,6 +14,7 @@ class Developer < ActiveRecord::Base
   # 	email:: the email address of a developer
   # 	name:: the name of a developer, associated with the email, default is a blank string
   def self.search_or_add(email, name="")
+    email.downcase!
   	if (email.index('+') != nil) 
       email = email.slice(0, email.index('+')) + email.slice(email.index('@'), (email.length()-1))
     end #fixing the email
