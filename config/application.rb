@@ -27,6 +27,7 @@ module ChromiumHistory
       data_yml = YAML.load_file("#{Rails.root}/config/data.yml")[Rails.env]
       Rails.configuration.datadir = data_yml['src-relative'] == "true" ? Rails.root + "/" : ""
       Rails.configuration.datadir += data_yml['dir']
+      Rails.configuration.google_spreadsheets = data_yml['google-spreadsheet-ids']
     end
   end
 end

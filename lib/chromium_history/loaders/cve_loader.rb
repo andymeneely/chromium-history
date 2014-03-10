@@ -6,11 +6,15 @@ require "csv"
 require "google_drive"
 
 class CveLoader
-
+	RESULTS_FILE = "/cves/cves.csv"
 	@@CVES_PROPS = [:cve]
 	def load_cve
 
-		resultFile = get_google_spreadsheet()
+		if Rails.env == 'development' 
+			resultFile = "#{Rails.configuration.datadir}#{RESULTS_FILE}"
+		else
+			resultFile = build_result_set()
+		end
 
 		CSV.foreach(resultFile, :headers => true) do | row |
 			cve = row[0]
@@ -44,7 +48,7 @@ class CveLoader
 			File.delete(downloadFile)
 		end
 		session = get_gdocs_session()
-		spreadsheet = session.spreadsheet_by_key("0AitmN6wcrwF3dG14cDk1S2ZIZFJxMzBwRHIxd3N5TUE")
+		spreadsheet = session.spreadsheet_by_key(Rails.configuration.google_spreadsheets[:key])
 		spreadsheet.export_as_file(downloadFile, 'csv', 22)
 		downloadFile
 	end
@@ -58,29 +62,33 @@ class CveLoader
 	# Munge data from different results sets to produce a holistic result set
 	def build_result_set
 		session = get_gdocs_session()
+
 		manualFile = "#{Rails.configuration.datadir}/cves/manuals.csv"
+		puts(manualFile)
 		oldScrapeFile = "#{Rails.configuration.datadir}/cves/gen1_scrape.csv"
 		newScrapeFile = "#{Rails.configuration.datadir}/cves/gen2_scrape.csv"
-		spreadsheet = session.spreadsheet_by_key("0AitmN6wcrwF3dG14cDk1S2ZIZFJxMzBwRHIxd3N5TUE")
-		spreadsheet.export_as_file(manualFile, 'csv', 25)
-		spreadsheet.export_as_file(oldScrapeFile, 'csv', 15)
-		spreadsheet.export_as_file(newScrapeFile, 'csv', 18)
+		spreadsheet = session.spreadsheet_by_key(Rails.configuration.google_spreadsheets[:key])
+		spreadsheet.export_as_file(manualFile, 'csv', Rails.configuration.google_spreadsheets[:manualinspection])
+		spreadsheet.export_as_file(oldScrapeFile, 'csv', Rails.configuration.google_spreadsheets[:oldscrape])
+		spreadsheet.export_as_file(newScrapeFile, 'csv', Rails.configuration.google_spreadsheets[:newscrape])
 		list = Hash.new
 
 		list = addCveIssues(list, manualFile, 0, 2)
 		list = addCveIssues(list, oldScrapeFile, 0, 1)
 		list = addCveIssues(list, newScrapeFile, 0, 1)
 
-		CSV.open("#{Rails.configuration.datadir}/cves/cves.csv", 'wb')  do |header|
+		resultFile = "#{Rails.configuration.datadir}#{RESULTS_FILE}"
+		CSV.open(resultFile, 'wb')  do |header|
 			header << ['CVE','Issue']
 		end
-		cveFile = CSV.open("#{Rails.configuration.datadir}/cves/cves.csv", 'ab')
+		cveFile = CSV.open(resultFile, 'ab')
 		list.each do |cve, issues|
 			cveFile << [cve, issues.to_a.join(' ')]
 		end
 		File.delete(manualFile)
 		File.delete(oldScrapeFile)
 		File.delete(newScrapeFile)
+		resultFile
 	end
 
 	# Add to unique CVE -> Rietvel Issues list

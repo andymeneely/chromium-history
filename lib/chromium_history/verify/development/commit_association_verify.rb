@@ -9,7 +9,7 @@ class CommitAssociationVerify < VerifyBase
 
   def verify_commit_filepath_to_cve
     cf = CommitFilepath.where(filepath: 'ui/base/x/x11_util.cc').take
-    assert_equal true, cf.commit.code_review.cve?
+    assert_equal false, cf.commit.code_review.cvenums.empty?
   end
 end
 

@@ -1,13 +1,24 @@
 # Configuration locations for the raw data tree
- 
+
 # Nothing for development - that's in our source tree 
- 
+
 # Our larger data set on nitron
 test:
   src-relative: false
   dir: C:/data/chromium-data/test
+  google-spreadsheet-ids:
+    key: 0AitmN6wcrwF3dG14cDk1S2ZIZFJxMzBwRHIxd3N5TUE
+    manualinspection: 25
+    oldscrape: 15
+    newscrape: 18
+
 
 # To be run on our server
 production:
   src-relative: false
   dir: /home/someone/data
+  google-spreadsheet-ids:
+    key: 0AitmN6wcrwF3dG14cDk1S2ZIZFJxMzBwRHIxd3N5TUE
+    manualinspection: 25
+    oldscrape: 15
+    newscrape: 18
