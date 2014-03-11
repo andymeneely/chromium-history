@@ -15,8 +15,16 @@ class Filepath < ActiveRecord::Base
     #codeRev.is_inspecting_vulnerability?
   end
 
+  # Delegates to the static method with the where clause
   def reviewers
-    # Some stuff here
+    Filepath.reviewers.where(filepath: filepath)
   end
+  
+  # All of the Reviewers for this given filepath at any time
+  #   Note: this uses multi-level nested associations
+  def self.reviewers
+    Filepath.joins(commit_filepaths: [commit: [code_review: :reviewers]])
+  end
+
 end
 
