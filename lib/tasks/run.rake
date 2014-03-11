@@ -75,6 +75,12 @@ namespace :run do
     puts "\tData:     #{Rails.configuration.datadir}"
     puts "\tDatabase: #{Rails.configuration.database_configuration[Rails.env]["database"]}"
     puts "\tStart: #{Time.now}"
+
+    #Only proceed if we are SURE, or not in production
+    if 'production'.eql?(Rails.env) && !ENV['RAILS_BLAST_PRODUCTION'].eql?('YesPlease')
+      $stderr.puts "WOAH! Hold on there. Are you trying to blow away our production database. Better use the proper environment variable (see our source)"
+      raise "Reset with production flag not set"
+    end
   end
 
 end
