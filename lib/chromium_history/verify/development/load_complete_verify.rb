@@ -3,11 +3,11 @@ require_relative "../verify_base"
 class LoadCompleteVerify < VerifyBase
 
   def verify_number_of_code_reviews
-    verify_count("Code Reviews", 11, CodeReview.count)
+    verify_count("Code Reviews", 12, CodeReview.count)
   end
 
   def verify_number_of_patchsets
-    verify_count("Patch Sets", 37, PatchSet.count)
+    verify_count("Patch Sets", 56, PatchSet.count)
   end
 
   def verify_number_of_comments
@@ -15,15 +15,15 @@ class LoadCompleteVerify < VerifyBase
   end
 
   def verify_number_of_commits
-    verify_count("Commits", 9, Commit.count)
+    verify_count("Commits", 10, Commit.count)
   end
 
   def verify_number_of_messages
-    verify_count("Messages", 113, Message.count)
+    verify_count("Messages", 119, Message.count)
   end
 
   def verify_number_of_patch_set_files
-    verify_count("Patch Set Files", 247, PatchSetFile.count)
+    verify_count("Patch Set Files", 452, PatchSetFile.count)
   end
 
   def verify_code_review_10854242_has_23_messages

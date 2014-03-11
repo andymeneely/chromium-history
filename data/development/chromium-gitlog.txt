@@ -253,4 +253,35 @@ git-svn-id: svn://svn.chromium.org/chrome/trunk/src@158289 0039d316-1c4b-4281-b9
  ui/surface/transport_dib_linux.cc                  |  7 +++----
  3 files changed, 36 insertions(+), 9 deletions(-)
 
+:::
+ed23657fa5708e337a112cd18f681f24496be06c
+sadrul@chromium.org
+sadrul@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Thu Nov 7 07:31:48 2013 +0000
+ee30020b058d950d1cc46791146bde89925a9bfd
+x11: Move XInput2 availability information out of the message pump.
+BUG=302696
+R=darin@chromium.org, derat@chromium.org
+
+Previously committed in r233414, but reverted in r233416 because it collided with r233347.
+
+Review URL: https://codereview.chromium.org/52823002
+
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@233528 0039d316-1c4b-4281-b951-d872f2087c98
+;;;
+ base/message_loop/message_pump_x11.cc                        | 12 +-----------
+ base/message_loop/message_pump_x11.h                         |  3 ---
+ ui/aura/root_window_host_x11.cc                              |  6 ++++--
+ ui/base/x/x11_util.cc                                        |  4 ++++
+ ui/base/x/x11_util.h                                         |  4 +++-
+ ui/events/events.gyp                                         | 20 ++++++++++++++------
+ ui/events/x/device_data_manager.cc                           | 21 +++++++++++++++++++--
+ ui/events/x/device_data_manager.h                            |  7 +++++--
+ ui/events/x/device_list_cache_x.cc                           | 12 ++++++------
+ ui/events/x/device_list_cache_x.h                            | 13 +++++++++----
+ ui/events/x/touch_factory_x11.cc                             |  8 +++++---
+ ui/events/x/touch_factory_x11.h                              |  4 ++--
+ ui/views/widget/desktop_aura/desktop_root_window_host_x11.cc |  3 ++-
+ 13 files changed, 74 insertions(+), 43 deletions(-)
+
 

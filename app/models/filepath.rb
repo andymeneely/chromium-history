@@ -17,7 +17,7 @@ class Filepath < ActiveRecord::Base
 
   # Delegates to the static method with the where clause
   def reviewers
-    Filepath.reviewers.where(filepath: filepath)
+    Filepath.reviewers.where(filepath: filepath).uniq
   end
   
   # All of the Reviewers for this given filepath at any time
