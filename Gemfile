@@ -19,6 +19,9 @@ gem 'win32console', :platforms => [:mswin, :mingw]
 
 gem 'activerecord-import', '>=0.4.0'
 
+# Aggregate is for histograms
+gem 'aggregate'
+
 # Scraper requirements
 gem 'ruby-progressbar'
 gem 'typhoeus', '>= 0.6.6'

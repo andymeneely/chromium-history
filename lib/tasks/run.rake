@@ -4,6 +4,7 @@ require_relative '../chromium_history/loaders/cve_loader.rb'
 require_relative '../chromium_history/verify/verify_runner.rb'
 require_relative '../chromium_history/loaders/git_log_loader.rb'
 require_relative '../chromium_history/consolidators/filepath_consolidator.rb'
+require_relative '../chromium_history/stats.rb'
 
 #Uncomment to require all loader files
 #Dir[File.expand_path('../chromium_history/loaders/*.rb', File.dirname(__FILE__))].each {|file| require file}
@@ -81,6 +82,11 @@ namespace :run do
       $stderr.puts "WOAH! Hold on there. Are you trying to blow away our production database. Better use the proper environment variable (see our source)"
       raise "Reset with production flag not set"
     end
+  end
+
+  desc "Show some stats on the data set"
+  task :stats => :env do
+    Stats.new.run_all
   end
 
 end
