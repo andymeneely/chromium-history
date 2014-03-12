@@ -5,7 +5,7 @@ export GEM_PATH="/home/axmvse/.gems/:$GEM_PATH"
 export PATH="$PATH:/home/axmvse/.gems/bin"
 export RUBYOPT=rubygems
 
-RAILS_BLAST_PRODUCTION=YesPlease
+
 HISTORY_DIR=/home/axmvse/chromium/production-history
 LOGS_DIR=/home/axmvse/logs
 DATE=$(date +"%Y_%m_%d_%H_%M_%s")
@@ -13,6 +13,8 @@ ERR="/home/axmvse/logs/err_$DATE.log"
 LOG="/home/axmvse/logs/log_$DATE.log"
 
 export RAILS_ENV="production"
+export RAILS_BLAST_PRODUCTION="YesPlease"
+
 
 cd $HISTORY_DIR
 git clean -f
