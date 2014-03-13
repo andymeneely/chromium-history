@@ -53,6 +53,7 @@ class ChromeCveScraper
 		@manualFilePath = "#{Rails.configuration.datadir}#{MANUAL_FILE_PATH}"
 		@removedFilePath = "#{Rails.configuration.datadir}#{REMOVED_FILE_PATH}"
 		@nistFile = File.expand_path(NIST_FILE_R_PATH, File.dirname(__FILE__)) + '/'
+		@waitTime = 3
 	end 
 
 	def downloadNistData(year, filePath)
@@ -108,7 +109,7 @@ class ChromeCveScraper
 
 			cveLinks = findNistLinks(entry1, cveManualFile, prevCves)
 
-			scrapeResults = scrapeCveLinks(cveLinks, cveRemovedFile)
+			scrapeResults = scrapeCveLinks(cveLinks, cveRemovedFile, cveManualFile)
 
 			saveResults(cveResultsFile, scrapeResults)
 
@@ -120,7 +121,7 @@ class ChromeCveScraper
 
 			cveLinks2 = findNistLinks(entry, cveManualFile, prevCves)
 
-			scrapeResults2 = scrapeCveLinks(cveLinks2, cveRemovedFile)
+			scrapeResults2 = scrapeCveLinks(cveLinks2, cveRemovedFile, cveManualFile)
 
 			saveResults(cveResultsFile, scrapeResults2)
 		end
@@ -163,7 +164,7 @@ class ChromeCveScraper
 	def getPage(link)
 
 		# sleep needed to avoid being banned from website
-		sleep(4)
+		sleep(@waitTime)
 	
 		begin
 			tempDoc = Nokogiri::HTML(open(link))
@@ -237,7 +238,7 @@ class ChromeCveScraper
 	end
 
 	# Iterate over all the links found for a list of CVEs and scrape them
-	def scrapeCveLinks(cves, removedFile)
+	def scrapeCveLinks(cves, removedFile, manualFile)
 		results = Hash.new
 		cves.each do | cve, links |
 
@@ -261,9 +262,7 @@ class ChromeCveScraper
 					removedFile << [cve, 'webkit']
 					puts "#{cve} removed from study because its a webkit bug, with no related chromium reviews."
 				else
-					results[cve] = Hash.new
-					results[cve]['g_ids'] = gIds
-					results[cve]['r_ids'] = rIds
+					manualFile << [cve, '', "#{gIds.join(" ")}"]
 				end
 			end
 		end
@@ -333,6 +332,28 @@ class ChromeCveScraper
 			cves.add(row[0])
 		end
 		return cves
+	end
+
+	def checkForDoubles()
+		cves = Hash.new
+		jah = Hash.new
+		CSV.foreach(@resultsFilePath, :headers => true) do |row|
+			cves[row[0]] = Array.new
+			cves[row[0]] = row[1].scan(/\d+/)
+		end
+		cves.each do |key, array| 
+			array.each do | issue| 
+				if not jah.has_key? issue
+					jah[issue] = Array.new
+				end
+				jah[issue] << key
+			end
+		end
+
+		results = jah.find_all { |k, v| v.count  > 1} 
+		results.each do | r | 
+			puts r.to_s
+		end
 	end
 end
 
