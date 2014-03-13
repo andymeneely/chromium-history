@@ -34,7 +34,9 @@ class CveLoader
 		issues.each do |issue|
 			codeReview = CodeReview.find_by_issue(issue)
 			if codeReview.nil?
-				$stderr.puts "Issue #{issue} related to #{cve} not found in Code Review Table"
+        # Suppressing this because we'll assume it was a backport.
+        # Commenting it out because we might want it later.
+				# $stderr.puts "Issue #{issue} related to #{cve} not found in Code Review Table"
 				next
 			end
 			codeReview.cvenums << cveRecord 
@@ -48,7 +50,7 @@ class CveLoader
 			File.delete(downloadFile)
 		end
 		session = get_gdocs_session()
-		spreadsheet = session.spreadsheet_by_key(Rails.configuration.google_spreadsheets[:key])
+		spreadsheet = session.spreadsheet_by_key(Rails.configuration.google_spreadsheets['key'])
 		spreadsheet.export_as_file(downloadFile, 'csv', 22)
 		downloadFile
 	end
@@ -64,13 +66,12 @@ class CveLoader
 		session = get_gdocs_session()
 
 		manualFile = "#{Rails.configuration.datadir}/cves/manuals.csv"
-		puts(manualFile)
 		oldScrapeFile = "#{Rails.configuration.datadir}/cves/gen1_scrape.csv"
 		newScrapeFile = "#{Rails.configuration.datadir}/cves/gen2_scrape.csv"
-		spreadsheet = session.spreadsheet_by_key(Rails.configuration.google_spreadsheets[:key])
-		spreadsheet.export_as_file(manualFile, 'csv', Rails.configuration.google_spreadsheets[:manualinspection])
-		spreadsheet.export_as_file(oldScrapeFile, 'csv', Rails.configuration.google_spreadsheets[:oldscrape])
-		spreadsheet.export_as_file(newScrapeFile, 'csv', Rails.configuration.google_spreadsheets[:newscrape])
+		spreadsheet = session.spreadsheet_by_key(Rails.configuration.google_spreadsheets['key'])
+		spreadsheet.export_as_file(manualFile, 'csv', Rails.configuration.google_spreadsheets['manualinspection'])
+		spreadsheet.export_as_file(oldScrapeFile, 'csv', Rails.configuration.google_spreadsheets['oldscrape'])
+		spreadsheet.export_as_file(newScrapeFile, 'csv', Rails.configuration.google_spreadsheets['newscrape'])
 		list = Hash.new
 
 		list = addCveIssues(list, manualFile, 0, 2)
