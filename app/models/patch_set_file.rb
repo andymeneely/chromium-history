@@ -8,4 +8,8 @@ class PatchSetFile < ActiveRecord::Base
     ActiveRecord::Base.connection.add_index :patch_set_files, :composite_patch_set_id
     ActiveRecord::Base.connection.add_index :patch_set_files, :composite_patch_set_file_id, unique: true
   end
+
+  def churn
+    num_added + num_removed
+  end
 end

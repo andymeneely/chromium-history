@@ -6,6 +6,10 @@ class PatchSet < ActiveRecord::Base
     self.patch_set_files
   end 
   
+  def churn
+    patch_set_files.sum('num_added + num_removed')
+  end
+
   def self.on_optimize
     ActiveRecord::Base.connection.add_index :patch_sets, :code_review_id
     ActiveRecord::Base.connection.add_index :patch_sets, :patchset

@@ -27,4 +27,14 @@ class CodeReview < ActiveRecord::Base
     
   end
 
+  # Adds up the number of add and remove lines from the associated patch set files.
+  def total_churn
+    CodeReview.joins(patch_sets: :patch_set_files).where(issue: issue).sum('num_added + num_removed')
+  end
+
+  # Add up the churn for the patch sets, and find the maximum
+  def max_churn
+    
+  end
+
 end
