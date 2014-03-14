@@ -18,20 +18,16 @@ class CodeReview < ActiveRecord::Base
 
   def contributors
     #anyone who commented on this code review
-    puts "hi"
-    codeReview = self.CodeReview
-    issueNumber = codeReview.issue
-
+    
+    issueNumber = self.issue
     #take the issue number and look up in messages or comments
-    mess = Message.find_by code_review_id: issueNumber
-
+    mess = Message.where("code_review_id = ?", issueNumber)
     contri = Array.new
-
     for m in mess 
       txt = m.text
       if txt.length > 20
-        puts txt
-        contri.add(m.sender)
+        puts m.sender
+        contri.push(m.sender) unless contri.include?(m.sender)
       end
     end
 
