@@ -18,13 +18,24 @@ class CodeReview < ActiveRecord::Base
 
   def contributors
     #anyone who commented on this code review
-    codeReview = self.CodeReview;
-    issueNumber = codeReview.issue;
+    puts "hi"
+    codeReview = self.CodeReview
+    issueNumber = codeReview.issue
 
     #take the issue number and look up in messages or comments
-    mess = Message.find_by code_review_id: issueNumber;
+    mess = Message.find_by code_review_id: issueNumber
 
-    
+    contri = Array.new
+
+    for m in mess 
+      txt = m.text
+      if txt.length > 20
+        puts txt
+        contri.add(m.sender)
+      end
+    end
+
+    return contri
   end
 
   # Adds up the number of add and remove lines from the associated patch set files.
