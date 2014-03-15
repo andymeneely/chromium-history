@@ -10,7 +10,7 @@ require_relative '../chromium_history/stats.rb'
 #Dir[File.expand_path('../chromium_history/loaders/*.rb', File.dirname(__FILE__))].each {|file| require file}
 
 
-task :run => [:environment, "run:env", "db:reset", "run:load", "run:optimize", "run:consolidate","run:verify", "run:analyze"] do
+task :run => [:environment, "run:env", "run:prod_check" "db:reset", "run:load", "run:optimize", "run:consolidate","run:verify", "run:analyze"] do
   puts "Run task completed. Current time is #{Time.now}"
 end
 
@@ -76,8 +76,10 @@ namespace :run do
     puts "\tData:     #{Rails.configuration.datadir}"
     puts "\tDatabase: #{Rails.configuration.database_configuration[Rails.env]["database"]}"
     puts "\tStart: #{Time.now}"
+  end
 
-    #Only proceed if we are SURE, or not in production
+  desc "Only proceed if we are SURE, or not in production"
+  task :prod_check => :env do
     if 'production'.eql?(Rails.env) && !ENV['RAILS_BLAST_PRODUCTION'].eql?('YesPlease')
       $stderr.puts "WOAH! Hold on there. Are you trying to blow away our production database. Better use the proper environment variable (see our source)"
       raise "Reset with production flag not set"
