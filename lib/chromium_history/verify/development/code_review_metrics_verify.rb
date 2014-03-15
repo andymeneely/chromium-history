@@ -14,4 +14,9 @@ class CodeReviewMetricsVerify < VerifyBase
   def verify_10854242_total_churn
     assert_equal 149, CodeReview.find_by(issue: 10854242).total_churn
   end
+
+  def verify_10854242_max_churn
+    assert_equal 49, CodeReview.find_by(issue: 10854242).max_churn  
+  end
+
 end

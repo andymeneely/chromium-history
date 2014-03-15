@@ -41,7 +41,7 @@ class CodeReview < ActiveRecord::Base
 
   # Add up the churn for the patch sets, and find the maximum
   def max_churn
-    
+    PatchSet.joins(:patch_set_files).where(code_review_id: issue).group('patch_sets.composite_patch_set_id').sum('num_added + num_removed').max[1].to_i   
   end
 
 end
