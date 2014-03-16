@@ -22,10 +22,14 @@ git pull
 bundle
 rake run run:stats 1>$LOG 2>$ERR
 
-psql -U archeology chromium_test -c" SELECT pg_terminate_backend(pg_stat_activity.procpid) FROM pg_stat_activity WHERE pg_stat_activity.datname = 'chromium_real2' AND procpid <> pg_backend_pid()"
-psql -U archeology chromium_test -c" SELECT pg_terminate_backend(pg_stat_activity.procpid) FROM pg_stat_activity WHERE pg_stat_activity.datname = 'chromium_real' AND procpid <> pg_backend_pid()"
-psql -U archeology chromium_test -c "DROP DATABASE chromium_real" 1>>$LOG 2>>$ERR
-psql -U archeology chromium_test -c "ALTER DATABASE chromium_real2 RENAME TO chromium_real" 1>>$LOG 2>>$ERR
+if [[ -s $ERR ]]; then
+    echo "Errors in the error log - not changing to chromium_real" 1>>$LOG
+else
+    psql -U archeology chromium_test -c" SELECT pg_terminate_backend(pg_stat_activity.procpid) FROM pg_stat_activity WHERE pg_stat_activity.datname = 'chromium_real2' AND procpid <> pg_backend_pid()"
+    psql -U archeology chromium_test -c" SELECT pg_terminate_backend(pg_stat_activity.procpid) FROM pg_stat_activity WHERE pg_stat_activity.datname = 'chromium_real' AND procpid <> pg_backend_pid()"
+    psql -U archeology chromium_test -c "DROP DATABASE chromium_real" 1>>$LOG 2>>$ERR
+    psql -U archeology chromium_test -c "ALTER DATABASE chromium_real2 RENAME TO chromium_real" 1>>$LOG 2>>$ERR
+fi ; 
 
 #Email the status report
 rm /tmp/email.txt
