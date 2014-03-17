@@ -17,6 +17,7 @@
 /test/tmp
 /test/version_tmp
 *.swp
+*.swo
 *.gem
 *.rbc
 
