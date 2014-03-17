@@ -46,8 +46,15 @@ class CodeReview < ActiveRecord::Base
     result[1].to_i if !result.nil?
   end
 
-  # Query for all max churn and all code reviews
-  def self.max_churn
-    #(PatchSet.joins(:patch_set_files).group('patch_sets.composite_patch_set_id').sum('num_added + num_removed')).group('code_review_id')
+  # An overlooked patchset is one that was created AFTER a reviwer approved the code review
+  # It's a potential opportunity for un-reviewed code to be introduced.
+  def self.overlooked_patchsets
+    CodeReview.joins(:patch_sets, :messages)\
+              .where('approval=true AND patch_sets.created > messages.date')
   end
+
+  def overlooked_patchset?
+    CodeReview.overlooked_patchsets.where(issue: issue).any?
+  end
+
 end

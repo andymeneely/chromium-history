@@ -19,4 +19,11 @@ class CodeReviewMetricsVerify < VerifyBase
     assert_equal 49, CodeReview.find_by(issue: 10854242).max_churn  
   end
 
+  def verify_10854242_no_overlooked_patchsets
+    assert_equal false, CodeReview.find_by(issue: 10854242).overlooked_patchset?
+  end
+  
+  def verify_9141024_overlooked_patchsets
+    assert_equal true, CodeReview.find_by(issue: 9141024).overlooked_patchset?
+  end
 end
