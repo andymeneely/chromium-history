@@ -1,5 +1,7 @@
 class Developer < ActiveRecord::Base
   belongs_to :reviewer
+  has_many :participants, primary_key: 'email', foreign_key: 'email'
+
   belongs_to :cc
 
   def self.on_optimize

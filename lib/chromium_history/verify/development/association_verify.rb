@@ -16,4 +16,12 @@ class AssociationVerify < VerifyBase
     assert_equal false, Filepath.find_by(filepath: 'content/renderer/media/webrtc_audio_renderer.cc').vulnerable?
   end
 
+  def verify_participants_for_code_review
+    assert_equal 6, CodeReview.find_by(issue: 10854242).participants.count
+  end
+
+  def verify_participants_for_dev
+    assert_equal 1, Developer.find_by(email: 'enne@chromium.org').participants.count
+  end
+
 end#end of class

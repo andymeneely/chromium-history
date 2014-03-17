@@ -4,6 +4,7 @@ require_relative '../chromium_history/loaders/cve_loader.rb'
 require_relative '../chromium_history/verify/verify_runner.rb'
 require_relative '../chromium_history/loaders/git_log_loader.rb'
 require_relative '../chromium_history/consolidators/filepath_consolidator.rb'
+require_relative '../chromium_history/consolidators/developer_consolidator.rb'
 require_relative '../chromium_history/stats.rb'
 
 #Uncomment to require all loader files
@@ -57,6 +58,7 @@ namespace :run do
   task :consolidate => [:environment] do
     Benchmark.bm(25) do |x|
       x.report("Consolidating filepaths: ") {FilepathConsolidator.new.consolidate}
+      x.report("Consolidating participants: ") {DeveloperConsolidator.new.consolidate}
     end
   end
 
