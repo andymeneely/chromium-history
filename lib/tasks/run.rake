@@ -10,7 +10,7 @@ require_relative '../chromium_history/stats.rb'
 #Dir[File.expand_path('../chromium_history/loaders/*.rb', File.dirname(__FILE__))].each {|file| require file}
 
 
-task :run => [:environment, "run:env", "run:prod_check" "db:reset", "run:load", "run:optimize", "run:consolidate","run:verify", "run:analyze"] do
+task :run => [:environment, "run:env", "run:prod_check", "db:reset", "run:load", "run:optimize", "run:consolidate","run:verify", "run:analyze"] do
   puts "Run task completed. Current time is #{Time.now}"
 end
 
