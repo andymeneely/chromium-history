@@ -13,7 +13,7 @@ gem 'sass-rails', '~> 4.0.0'
 
 # Oj for our JSON files
 gem 'oj'
-
+gem 'hirb'
 gem 'colorize'
 gem 'win32console', :platforms => [:mswin, :mingw]
 
