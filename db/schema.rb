@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140227180435) do
+ActiveRecord::Schema.define(version: 20140317142229) do
 
   create_table "ccs", force: true do |t|
     t.integer "issue", limit: 8
@@ -85,6 +85,11 @@ ActiveRecord::Schema.define(version: 20140227180435) do
     t.boolean  "disapproval"
     t.datetime "date"
     t.integer  "code_review_id", limit: 8
+  end
+
+  create_table "participants", force: true do |t|
+    t.string  "email"
+    t.integer "issue", limit: 8
   end
 
   create_table "patch_set_files", force: true do |t|
