@@ -23,12 +23,12 @@ class DeveloperConsolidator
 
   def consolidate_contributors
     # Copy participants table
-    query=<<-eos
-      INSERT INTO contributors (email, issue) 
-      SELECT email, issue FROM participants
-    eos
-    
-    ActiveRecord::Base.connection.execute query
+   # query=<<-eos
+   #   INSERT INTO contributors (email, issue) 
+   #   SELECT email, issue FROM participants
+   # eos
+
+   # ActiveRecord::Base.connection.execute query
 
     # Iterate over the model with batch processing (see ActiveRecord docs) 
     ##   - delete the record if it's not a contribution
