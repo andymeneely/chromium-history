@@ -8,8 +8,7 @@ class DeveloperConsolidator
 
   def consolidate_participants
     query=<<-eos
-
-    INSERT INTO participants (email, issue) 
+      INSERT INTO participants (email, issue) 
       SELECT email, issue FROM(
         SELECT owner_email as email, code_review_id as issue FROM patch_sets
         UNION
@@ -18,12 +17,21 @@ class DeveloperConsolidator
       ) all_participants
       WHERE email!='commit-bot@chromium.org'
     eos
+
     ActiveRecord::Base.connection.execute query
   end
 
   def consolidate_contributors
     # Copy participants table
-    # Iterate over the model with batch processing (see ActiveRecord docs) - delete the record if it's not a contribution
+    query=<<-eos
+      INSERT INTO contributors (email, issue) 
+      SELECT email, issue FROM participants
+    eos
+    
+    ActiveRecord::Base.connection.execute query
+
+    # Iterate over the model with batch processing (see ActiveRecord docs) 
+    ##   - delete the record if it's not a contribution
     # 
   end
 

@@ -1,6 +1,7 @@
 class Developer < ActiveRecord::Base
   belongs_to :reviewer
   has_many :participants, primary_key: 'email', foreign_key: 'email'
+  has_many :contributors, primary_key: 'email', foreign_key: 'email'
 
   belongs_to :cc
 

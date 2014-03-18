@@ -137,9 +137,10 @@ class CodeReviewLoader
 
     #possibly this message part should go in the load_messages method????
     messages.each do |message|
-      message["recipients"].each do |email|  #the sender is always included in the recipients so theres no need to do that seperately
+      message["recipients"].each do |email|  
         Developer.search_or_add(email)
       end #emails in the messages loop
+      Developer.search_or_add(message["sender"])  # putting the sender in
     end #messages loop
   end #load developers method
 

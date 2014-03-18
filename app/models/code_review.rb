@@ -3,6 +3,7 @@ class CodeReview < ActiveRecord::Base
   has_many :messages, foreign_key: "code_review_id", primary_key: "issue"
   has_many :reviewers, foreign_key: "issue", primary_key: "issue"
   has_many :participants, foreign_key: "issue", primary_key: "issue"
+  has_many :contributors, foreign_key: "issue", primary_key: "issue"
   has_many :ccs, foreign_key: "issue", primary_key: "issue"
 
   has_one :commit, foreign_key: "code_review_id", primary_key: "issue"
@@ -19,7 +20,6 @@ class CodeReview < ActiveRecord::Base
 
   def contributors
     #anyone who commented on this code review
-    
     issueNumber = self.issue
     #take the issue number and look up in messages or comments
     mess = Message.where("code_review_id = ?", issueNumber)
@@ -31,7 +31,6 @@ class CodeReview < ActiveRecord::Base
         contri.push(m.sender) unless contri.include?(m.sender)
       end
     end
-
     return contri
   end
 
