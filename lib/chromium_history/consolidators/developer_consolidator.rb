@@ -22,15 +22,28 @@ class DeveloperConsolidator
   end
 
   def consolidate_contributors
-    # Copy participants table
-   # query=<<-eos
-   #   INSERT INTO contributors (email, issue) 
-   #   SELECT email, issue FROM participants
-   # eos
+     #Copy participants table
+    query=<<-eos
+      INSERT INTO contributors (email, issue) 
+      SELECT email, issue FROM participants
+    eos
 
-   # ActiveRecord::Base.connection.execute query
+    ActiveRecord::Base.connection.execute query
 
     # Iterate over the model with batch processing (see ActiveRecord docs) 
+    Contributors.all.find_in_batches(batch_size: 1000) do |group|
+      group.each { |contributor| 
+        issueNumber = contributor.issue
+        #take the issue number and look up in messages or comments
+        mess = Message.where("code_review_id = ?", issueNumber)
+        for m in mess 
+          txt = m.text
+          if contribution?(txt)  #this is wrong..
+            puts m.sender
+          end
+        end
+      }
+    end
     ##   - delete the record if it's not a contribution
     # 
   end

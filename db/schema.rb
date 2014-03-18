@@ -69,9 +69,7 @@ ActiveRecord::Schema.define(version: 20140318142229) do
   create_table "cvenums", force: true do |t|
     t.string "cve"
   end
-
-  add_index "cvenums", ["cve"], name: "index_cvenums_on_cve", unique: true, using: :btree
-
+  
   create_table "cves", force: true do |t|
     t.string "cve"
   end
