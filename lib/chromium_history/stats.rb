@@ -76,7 +76,15 @@ class Stats
     end
     puts a.to_s
     puts "\n"
-    
+
+    puts "@@@ Comments per CodeReview Histogram @@@"
+    a = Aggregate.new(0,50,1)
+    CodeReview.joins(patch_sets: [patch_set_files: :comments]).group(:issue).count.each do |id,count|
+      a << count
+    end
+    puts a.to_s(120)
+    puts "\n"
+
     puts "@@@ PatchSets per CodeReview Histogram @@@"
     a = Aggregate.new(0,50,1)
     PatchSet.group(:code_review_id).count.each do |id,count|
@@ -91,6 +99,15 @@ class Stats
       a << count
     end
     puts a.to_s
+
+    puts "@@@ Max Churn per CodeReview Histogram @@@"
+    a = Aggregate.new(0,1000,10)
+    CodeReview.all.find_each do |c|
+      mc = c.max_churn
+      a << mc if !mc.nil?
+    end
+    puts a.to_s(120)
+    puts "\n"
   end
 
 end
