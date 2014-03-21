@@ -56,4 +56,15 @@ class CodeReview < ActiveRecord::Base
     CodeReview.overlooked_patchsets.where(issue: issue).any?
   end
 
+  def num_nonparticipating_reviewers
+  	totalNonparticipating = 0;
+  	reviewers = self.reviewers
+  	for reviewer in reviewers 
+  		if self.participants.where(["email=? and issue=?", reviewer.email, reviewer.issue]).exists?
+  			totalNonparticipating += 1
+  		end
+  	end
+  	return totalNonparticipating
+  end
+
 end

@@ -26,4 +26,9 @@ class CodeReviewMetricsVerify < VerifyBase
   def verify_9141024_overlooked_patchsets
     assert_equal true, CodeReview.find_by(issue: 9141024).overlooked_patchset?
   end
+
+  def verify_10854242_num_nonparticipating_reviewers
+    assert_equal 3, CodeReview.find_by(issue: 10854242).num_nonparticipating_reviewers
+  end
+
 end
