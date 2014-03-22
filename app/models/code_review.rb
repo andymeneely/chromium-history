@@ -15,7 +15,7 @@ class CodeReview < ActiveRecord::Base
   end
 
   def is_inspecting_vulnerability?
-  	self.cve?
+  	self.cvenums.empty?
   end
 
   def contributors

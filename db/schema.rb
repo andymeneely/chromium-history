@@ -11,7 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140318142229) do
+ActiveRecord::Schema.define(version: 20140322175610) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "ccs", force: true do |t|
     t.integer "issue", limit: 8
@@ -23,7 +26,6 @@ ActiveRecord::Schema.define(version: 20140318142229) do
     t.string   "subject"
     t.datetime "created"
     t.datetime "modified"
-    t.string   "cve"
     t.integer  "issue",       limit: 8
   end
 
@@ -69,10 +71,6 @@ ActiveRecord::Schema.define(version: 20140318142229) do
   create_table "cvenums", force: true do |t|
     t.string "cve"
   end
-  
-  create_table "cves", force: true do |t|
-    t.string "cve"
-  end
 
   create_table "developers", force: true do |t|
     t.string "name"
@@ -84,7 +82,6 @@ ActiveRecord::Schema.define(version: 20140318142229) do
     t.datetime "updated_at"
     t.string   "filepath",   limit: 500
   end
-
 
   create_table "messages", force: true do |t|
     t.string   "sender"
