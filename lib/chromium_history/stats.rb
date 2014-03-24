@@ -108,6 +108,15 @@ class Stats
     end
     puts a.to_s(120)
     puts "\n"
+
+    puts "@@@ Number Non-participating Reviewers per CodeReview Histogram @@@"
+    a = Aggregate.new(0,50,1)
+    CodeReview.all.find_each do |c|
+      np = c.num_nonparticipating_reviewers
+      a << np
+    end
+    puts a.to_s
+    puts "\n"
   end
 
 end
