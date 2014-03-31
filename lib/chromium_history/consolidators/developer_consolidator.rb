@@ -40,19 +40,22 @@ class DeveloperConsolidator
           txt = m.text
           if !contribution?(txt)  
             #delete this row of the table
-            Contributor.delete_all(:issue => issueNumber, :email => contributor.email)
+            Contributor.delete_all(["issue = ? AND email = ?", issueNumber, contributor.email])
           end
         end
       }
     end
-    ##   - delete the record if it's not a contribution
     # 
   end
 
   def contribution?(txt)
-    if txt.length > 20
-      #check for duplicates
+    #remove any line that starts with >
+    txt_filtered = ''
+    txt.to_s.lines {|line| txt_filtered << line unless (line[0] == '>' or (line.start_with?("On ") and line.end_with?(" wrote:"))) }
+    if txt_filtered.length > 20
       return true
+    else 
+      return false
     end
   end
 
