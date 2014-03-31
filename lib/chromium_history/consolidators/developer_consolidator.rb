@@ -36,25 +36,39 @@ class DeveloperConsolidator
         issueNumber = contributor.issue
         #take the issue number and look up in messages or comments
         mess = Message.where("code_review_id = ? AND sender = ?", issueNumber, contributor.email)  # and sender is the contributor
-        for m in mess 
+        
+        c = false  #default assumption is they did not contribute
+        for m in mess  #we need to check all of the messages they sent to see if any of them were useful
           txt = m.text
-          if !contribution?(txt)  
-            #delete this row of the table
-            Contributor.delete_all(["issue = ? AND email = ?", issueNumber, contributor.email])
+          # this message may not be a contribution but there may be one farther down...
+          if contribution?(txt)  #if this is not a contribution
+            c = true
           end
         end
+
+        #delete this row of the table once we get all done checking
+        if !c
+          Contributor.delete_all(["issue = ? AND email = ?", issueNumber, contributor.email])
+        end
+
       }
     end
     # 
   end
 
   def contribution?(txt)
-    #remove any line that starts with >
     txt_filtered = ''
-    txt.to_s.lines {|line| txt_filtered << line unless (line[0] == '>' or (line.start_with?("On ") and line.end_with?(" wrote:"))) }
-    if txt_filtered.length > 20
+    txt.to_s.lines { |line| 
+       txt_filtered << line unless (line[0] == '>' or (line.start_with?("On ") and line.include?(" wrote:")) or (line.starts_with?("https://codereview.chromium.org/")) or (line.starts_with?("http://codereview.chromium.org/")))
+#      txt_filtered << line unless (line[0] == '>'     #remove any line that starts with >
+#      or (line.start_with?("On ") and line.end_with?(" wrote:"))   #remove the lines introducing the copied text
+#      or (line.starts_with?("https://codereview.chromium.org/")))  #remove the links to the in line comments
+    }
+
+    if txt_filtered.length > 50
       return true
     else 
+      puts txt_filtered
       return false
     end
   end
