@@ -18,22 +18,6 @@ class CodeReview < ActiveRecord::Base
   	self.cvenums.empty?
   end
 
-  def contributors
-    #anyone who commented on this code review
-    issueNumber = self.issue
-    #take the issue number and look up in messages or comments
-    mess = Message.where("code_review_id = ?", issueNumber)
-    contri = Array.new
-    for m in mess 
-      txt = m.text
-      if txt.length > 20
-        puts m.sender
-        contri.push(m.sender) unless contri.include?(m.sender)
-      end
-    end
-    return contri
-  end
-
   # Adds up the number of add and remove lines from the associated patch set files.
   def total_churn
     CodeReview.joins(patch_sets: :patch_set_files).where(issue: issue).sum('num_added + num_removed')
@@ -65,6 +49,14 @@ class CodeReview < ActiveRecord::Base
   		end
   	end
   	return totalNonparticipating
+  end
+
+  def total_familiarity
+    return "not done"
+  end
+
+  def average_familiarity
+    return "not done"
   end
 
 end

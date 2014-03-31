@@ -10,6 +10,7 @@ class Stats
     filepath_stats
     developer_stats
     cve_stats
+    collaborator_familiarity
     histograms
   end
 
@@ -65,6 +66,13 @@ class Stats
   def show(stat,desc)
     printf "|%9.2f %s\n", stat, desc if stat.is_a? Float
     printf "|%9d %s\n", stat, desc if stat.is_a? Integer
+  end
+
+  def collaborator_familiarity
+    puts "--Collaborators"
+    show CodeReview.take.total_familiarity, "Total Familiarity"
+    show CodeReview.take.average_familiarity, "Average Familiarity"
+    puts "|"
   end
 
   def histograms
