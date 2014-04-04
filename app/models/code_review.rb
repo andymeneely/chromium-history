@@ -52,11 +52,31 @@ class CodeReview < ActiveRecord::Base
   end
 
   def total_familiarity
-    return "not done"
+    puts familiarity(self.reviewers.last, self.reviewers.last)
   end
 
   def average_familiarity
     return "not done"
+  end
+
+
+  def familiarity(developer1, developer2)
+    puts "*********"
+    puts developer1.email
+    familiar = 0
+    beforeReviews = CodeReview.where("created < ?", self.created)  #get all the reviews that happened before the date of this review
+    for review in beforeReviews
+      puts "****"
+      for reviewer in review.reviewers
+        puts reviewer.email
+      end
+      puts "*****"
+      if (review.reviewers.include?(developer1.email)) # && review.reviewers.include?(developer2))
+        familiar += 1
+        puts familiar
+      end
+    end
+    return familiar
   end
 
 end
