@@ -68,7 +68,6 @@ class DeveloperConsolidator
     if txt_filtered.length > 50
       return true
     else 
-      puts txt_filtered
       return false
     end
   end
