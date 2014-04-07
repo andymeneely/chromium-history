@@ -8,5 +8,8 @@ class CommitFilepath < ActiveRecord::Base
   end
 
 	def self.on_optimize
+    ActiveRecord::Base.connection.add_index :commit_filepaths, :commit_hash
+    ActiveRecord::Base.connection.add_index :commit_filepaths, :filepath
+    ActiveRecord::Base.connection.add_index :commit_filepaths, [:commit_hash, :filepath], unique: true
 	end
 end
