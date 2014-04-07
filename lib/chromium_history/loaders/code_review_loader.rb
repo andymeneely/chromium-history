@@ -136,12 +136,13 @@ class CodeReviewLoader
     end #reviewers loop
 
     #possibly this message part should go in the load_messages method????
-    messages.each do |message|
-      message["recipients"].each do |email|  
-        Developer.search_or_add(email)
-      end #emails in the messages loop
-      Developer.search_or_add(message["sender"])  # putting the sender in
-    end #messages loop
+    # For some reason this code was slowing down the build - disabling for now to see how it goes tonight. -Andy
+    #messages.each do |message|
+    #  message["recipients"].each do |email|  
+    #   Developer.search_or_add(email)
+    #  end #emails in the messages loop
+    #  Developer.search_or_add(message["sender"])  # putting the sender in
+    #end #messages loop
   end #load developers method
 
 
