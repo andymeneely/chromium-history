@@ -84,7 +84,8 @@ class LoadCompleteVerify < VerifyBase
 
   def verify_6eebdee_has_one_review
     commit = Commit.find_by_commit_hash('6eebdee7851c52b1f481fca1cdffcbc51c8ec061')
-    code_review = commit.code_review
+    assert_equal 1,commit.code_reviews.count, "6eebdee should have one review"
+    code_review = commit.code_reviews.take
     if(code_review.issue.eql? 5831706594508800)
       pass()
     else

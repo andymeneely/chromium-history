@@ -6,7 +6,7 @@ class CodeReview < ActiveRecord::Base
   has_many :contributors, foreign_key: "issue", primary_key: "issue"
   has_many :ccs, foreign_key: "issue", primary_key: "issue"
 
-  has_one :commit, foreign_key: "code_review_id", primary_key: "issue"
+  belongs_to :commit, foreign_key: "commit_hash", primary_key: "commit_hash"
   
   has_and_belongs_to_many :cvenums
   

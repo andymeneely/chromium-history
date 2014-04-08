@@ -13,7 +13,7 @@ class Filepath < ActiveRecord::Base
   end
 
   def cves
-    Filepath.joins(commit_filepaths: [commit: [code_review: :cvenums]]).where(filepath: filepath)
+    Filepath.joins(commit_filepaths: [commit: [code_reviews: :cvenums]]).where(filepath: filepath)
   end
 
   # Delegates to the static method with the where clause
@@ -24,7 +24,7 @@ class Filepath < ActiveRecord::Base
   # All of the Reviewers for this given filepath at any time
   #   Note: this uses multi-level nested associations
   def self.reviewers
-    Filepath.joins(commit_filepaths: [commit: [code_review: :reviewers]])
+    Filepath.joins(commit_filepaths: [commit: [code_reviews: :reviewers]])
   end
 
 end

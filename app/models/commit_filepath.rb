@@ -4,7 +4,7 @@ class CommitFilepath < ActiveRecord::Base
 
 
   def cve?
-    commit.code_review.cvenums.any?
+    Commit.joins(code_reviews: :cvenums).where(commit_hash: commit_hash).any?
   end
 
 	def self.on_optimize

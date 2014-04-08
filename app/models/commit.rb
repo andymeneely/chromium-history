@@ -2,11 +2,10 @@ class Commit < ActiveRecord::Base
   	
   has_many :commit_filepaths, foreign_key: 'commit_hash', primary_key: 'commit_hash' # For join table assoc
   
-  
-  belongs_to :code_review, primary_key: "issue", foreign_key: "code_review_id"
+  has_many :code_reviews, primary_key: "commit_hash", foreign_key: "commit_hash"
 
   def reviewers
-    self.code_review.reviewers
+    Commit.joins(code_reviews: :reviewers).where(commit_hash: commit_hash)
   end
 
   def self.on_optimize

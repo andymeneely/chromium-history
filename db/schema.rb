@@ -11,10 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140322175610) do
-
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
+ActiveRecord::Schema.define(version: 20140408185148) do
 
   create_table "ccs", force: true do |t|
     t.integer "issue", limit: 8
@@ -27,6 +24,7 @@ ActiveRecord::Schema.define(version: 20140322175610) do
     t.datetime "created"
     t.datetime "modified"
     t.integer  "issue",       limit: 8
+    t.string   "commit_hash"
   end
 
   create_table "code_reviews_cvenums", id: false, force: true do |t|
@@ -60,7 +58,6 @@ ActiveRecord::Schema.define(version: 20140322175610) do
     t.string   "svn_revision"
     t.datetime "created_at"
     t.integer  "commit_files_id"
-    t.integer  "code_review_id",     limit: 8
   end
 
   create_table "contributors", force: true do |t|
