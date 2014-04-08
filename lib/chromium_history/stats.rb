@@ -69,10 +69,7 @@ class Stats
   end
 
   def collaborator_familiarity
-    puts "--Collaborators"
-    show CodeReview.take.total_familiarity, "Total Familiarity"
-    show CodeReview.take.average_familiarity, "Average Familiarity"
-    puts "|"
+
   end
 
   def histograms
@@ -110,7 +107,7 @@ class Stats
 
     puts "@@@ Max Churn per CodeReview Histogram @@@"
     a = Aggregate.new(0,1000,10)
-    CodeReview.all.find_each do |c|
+    CodeReview.find_each do |c|
       mc = c.max_churn
       a << mc if !mc.nil?
     end
@@ -119,7 +116,7 @@ class Stats
 
     puts "@@@ Number Non-participating Reviewers per CodeReview Histogram @@@"
     a = Aggregate.new(0,50,1)
-    CodeReview.all.find_each do |c|
+    CodeReview.find_each do |c|
       np = c.num_nonparticipating_reviewers
       a << np
     end

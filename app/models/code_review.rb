@@ -52,6 +52,7 @@ class CodeReview < ActiveRecord::Base
   end
 
   def total_familiarity
+    #FIXME self.reviewers.last isn't the right query for this. 
     puts familiarity(self.reviewers.last, self.reviewers.last)
   end
 
@@ -60,20 +61,19 @@ class CodeReview < ActiveRecord::Base
   end
 
 
+  # Given two developers on this code review, return the number of prior code reviews they have both participated in together. 
   def familiarity(developer1, developer2)
-    puts "*********"
-    puts developer1.email
     familiar = 0
+    #FIXME This needs to be querying CodeReview joined with Participants. 
     beforeReviews = CodeReview.where("created < ?", self.created)  #get all the reviews that happened before the date of this review
     for review in beforeReviews
-      puts "****"
       for reviewer in review.reviewers
-        puts reviewer.email
+        # Don't print stuff to the console - it goes into stdout which gets mailed to Andy and pollutes the log with debug outputs.
+        # puts reviewer.email 
       end
-      puts "*****"
       if (review.reviewers.include?(developer1.email)) # && review.reviewers.include?(developer2))
         familiar += 1
-        puts familiar
+        #puts familiar
       end
     end
     return familiar
