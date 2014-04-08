@@ -39,7 +39,6 @@ class Stats
     puts "--Commits"
     show Commit.count, "Commits"
     show CommitFilepath.count, "Commit-filepaths"
-    show Commit.where(code_review_id: nil).count, "Commits without code reviews"
     puts "|"
   end
 
