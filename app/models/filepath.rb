@@ -21,11 +21,20 @@ class Filepath < ActiveRecord::Base
     Filepath.reviewers.where(filepath: filepath).uniq
   end
   
-  # All of the Reviewers for this given filepath at any time
+  # All of the Reviewers for all filepaths joined together
   #   Note: this uses multi-level nested associations
   def self.reviewers
     Filepath.joins(commit_filepaths: [commit: [code_reviews: :reviewers]])
   end
 
+  # All of the participants joined
+  def self.participants
+    Filepath.joins(commit_filepaths: [commit: [code_reviews: :participants]])
+  end
+
+  # All of the contributors joined
+  def self.contributors
+    Filepath.joins(commit_filepaths: [commit: [code_reviews: :contributors]])
+  end
 end
 

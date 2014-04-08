@@ -121,6 +121,38 @@ class Stats
     end
     puts a.to_s
     puts "\n"
+
+    puts "@@@ Distinct Reviewers per Filepath Histogram @@@"
+    a = Aggregate.new(0,100,1)
+    Filepath.reviewers\
+      .group('filepaths.filepath')\
+      .count('distinct(reviewers.email)')\
+      .each do |filepath,count|
+      a << count
+    end
+    puts a.to_s
+
+
+    puts "@@@ Distinct Participants per Filepath Histogram @@@"
+    a = Aggregate.new(0,100,1)
+    Filepath.participants\
+      .group('filepaths.filepath')\
+      .count('distinct(participants.email)')\
+      .each do |filepath,count|
+      a << count
+    end
+    puts a.to_s
+
+
+    puts "@@@ Distinct Contributors per Filepath Histogram @@@"
+    a = Aggregate.new(0,100,1)
+    Filepath.contributors\
+      .group('filepaths.filepath')\
+      .count('distinct(contributors.email)')\
+      .each do |filepath,count|
+      a << count
+    end
+    puts a.to_s
   end
 
 end
