@@ -153,6 +153,24 @@ class Stats
       a << count
     end
     puts a.to_s
+
+    puts "@@@ Vulnerability Fixes Over Time Histogram @@@"
+    dates = CodeReview.joins(:cvenums).order(:created).pluck(:created)
+    low = dates.first.to_i
+    high = dates.last.to_i
+    inc = (high-low)/50
+    high = low + 50*inc #integer rounding...
+    a = Aggregate.new(low,high,inc)
+    dates.each{|d| a << d.to_i}
+    str = ''
+    a.to_s.each_line do |line|
+      if line[/^\d{9}/]
+        str << DateTime.strptime(line[0..9], '%s').strftime('%F') << " #{line}\n"
+      else
+        str << " "*11 << line << "\n"
+      end
+    end
+    puts str
   end
 
 end
