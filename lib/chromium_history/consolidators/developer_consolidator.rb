@@ -19,6 +19,19 @@ class DeveloperConsolidator
     eos
 
     ActiveRecord::Base.connection.execute query
+
+    #get the participant, and the owner
+    Participant.all.find_in_batches(batch_size: 1000) do |group|
+      group.each { |participant| 
+        issueNumber = participant.issue
+        c = CodeReview.find_by issue: issueNumber
+        owner = Developer.find_by email: c.owner_email
+        #CodeReview.joins(:participants).where(participants { email: participant.email })
+      }
+    end
+    #if this participant and the owner have worked together before, add one to this number
+
+
   end
 
   def consolidate_contributors
