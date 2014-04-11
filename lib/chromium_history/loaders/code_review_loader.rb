@@ -9,7 +9,7 @@ class CodeReviewLoader
 
   @@BULK_IMPORT_BLOCK_SIZE = 10000
 
-  @@CODE_REVIEW_PROPS = [:description, :subject, :created, :modified, :issue]
+  @@CODE_REVIEW_PROPS = [:description, :subject, :created, :modified, :issue, :owner_email]
   def load
     @codereviews_to_save = []
     @patchsets_to_save = []
