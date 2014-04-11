@@ -55,7 +55,7 @@ class Developer < ActiveRecord::Base
     #if date is a string then convert to Time object
     if date.class == String then date = Time.new(date) end
 
-    reviewer = self.reviewer
+    reviewer = self.reviewers
 
     #Are we a reviewer
     if reviewer.size > 0
