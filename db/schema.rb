@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140411132955) do
+ActiveRecord::Schema.define(version: 20140411141015) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -95,7 +95,8 @@ ActiveRecord::Schema.define(version: 20140411132955) do
 
   create_table "participants", force: true do |t|
     t.string  "email"
-    t.integer "issue", limit: 8
+    t.integer "issue",              limit: 8
+    t.integer "reviews_with_owner"
   end
 
   create_table "patch_set_files", force: true do |t|
