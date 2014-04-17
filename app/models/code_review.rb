@@ -67,4 +67,15 @@ class CodeReview < ActiveRecord::Base
   	return totalNonparticipating
   end
 
+  #
+  # Number of Security Experienced Participants
+  # Return the number of participants that have
+  # secuirty experience who has participated
+  # in a code review that also involved a 
+  # CVE. 
+  def num_security_experienced_parts
+
+
+  end#num_security_experienced_parts
+
 end

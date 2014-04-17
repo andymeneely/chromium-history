@@ -28,6 +28,10 @@ class Filepath < ActiveRecord::Base
     Filepath.joins(commit_filepaths: [commit: [code_review: :reviewers]])
   end
 
+  def participants
+    Participant.joins("INNER JOIN code_reviews ON participants.issue=code_reviews.issue INNER JOIN commits ON code_reviews.issue=commits.code_review_id INNER JOIN commit_filepaths ON commit_filepaths.commit_hash=commits.commit_hash INNER JOIN filepaths ON filepaths.filepath=commit_filepaths.filepath WHERE filepaths.filepath='#{self.filepath}'")
+  end
+
   # Get the number of developers
   # who have reviewed vulnerablities up until 
   # the param date who have also inspected
@@ -41,15 +45,15 @@ class Filepath < ActiveRecord::Base
     #if date is a string then convert to Time object
     if date.class == String then date = Time.new(date) end
 
-    #Get all the reviewers associated w/
+    #Get all the participants associated w/
     #this Filepath
-    reviewers = self.reviewers
+    parts = self.participants
     dev_vul_count = 0
-    reviewers.each do |reviewer| 
-      
-      #Get the developer who is this reviewer
-      dev = reviewer.developer
 
+    parts.each do |p| 
+
+      #Get the developer who is this participant so that can call num_vulnerable_inpspects
+      dev = p.developer
       #if the dev inspected vulnerable reveiews then this is a vulnerability dev
       if dev.num_vulnerable_inspects(date) > 0 then dev_vul_count+=1 end
 
