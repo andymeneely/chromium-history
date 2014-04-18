@@ -67,15 +67,86 @@ class CodeReview < ActiveRecord::Base
   	return totalNonparticipating
   end
 
-  #
-  # Number of Security Experienced Participants
-  # Return the number of participants that have
-  # secuirty experience who has participated
-  # in a code review that also involved a 
-  # CVE. 
-  def num_security_experienced_parts
 
+  #
+  # Security Experienced Participants
+  # Return participants who participated
+  # in a code review of a prior security fixing
+  # code review. Ensure that the prior code reviews
+  # came before this one
+  #
+  # @return - Array of Participants 
+  def security_experienced_parts
+
+    experienced_participants = Array.new
+    start_date = self.created
+
+    #get all participants for this code review
+    participants = self.participants
+
+    participants.each do |p|
+
+      #get the developer 
+      dev = p.developer
+
+      #they inspected a code review with a CVE before this code review
+      if dev.num_vulnerable_inspects(start_date) > 0 
+
+        #add participant to array
+        experienced_participants.push(p)
+
+      end#if
+
+    end#loop
+
+    return experienced_participants
 
   end#num_security_experienced_parts
 
-end
+  #
+  # Determine whether or not total 
+  # churn for all patchsets exceeds
+  # @param Lines of Code per hour
+  #
+  # @param - lines of code
+  # @return - boolean 
+  def loc_per_hour_exceeded?(lines=200)
+
+    #get total churn for all patchsets
+    total_churn = self.total_churn
+
+    #date codereview created
+    created = self.created
+
+    #get all messages for this codereview
+    messages = self.messages.order(date: :asc)
+
+    #date of approval message
+    date_approval_mess = nil
+
+    messages.each do |mess|
+
+      #find 1st message w/ approval message (LGTM)
+      if mess.text.match('LGTM') then
+        date_approval_mess = mess.date
+        break
+      end#if
+
+    end#loop
+
+    #no approval message - RETURN FALSE
+    if date_approval_mess.nil? then return false end
+
+    total_time = date_approval_mess - created
+
+    #get total hours
+    total_time_hours = (total_time / 60) / 60
+
+    #divide total amount of churn by total hours that passed
+    loc_per_hour = (total_churn / total_time_hours)
+
+    if loc_per_hour > lines then return true else return false end
+
+  end#loc_per_hour_exceeded?
+
+end#class

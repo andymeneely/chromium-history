@@ -65,6 +65,7 @@ class Developer < ActiveRecord::Base
         #Do we have a code_review for this participant
         if code_review=p.code_review   
 
+          #Is the code review before this date
           if code_review.created < date
 
             if code_review.is_inspecting_vulnerability? then vul_count+=1 end
