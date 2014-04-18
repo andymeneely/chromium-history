@@ -74,12 +74,10 @@ class CodeReview < ActiveRecord::Base
       if (review.reviewers.include?(developer1.email)) # && review.reviewers.include?(developer2))
         familiar += 1
         #puts familiar
-      end
-    end
+      end #if 
+    end #loop
     return familiar
-  end
-
-end
+  end#familiarity
 
   #
   # Security Experienced Participants

@@ -25,13 +25,15 @@ class DeveloperConsolidator
       group.each { |participant| 
         issueNumber = participant.issue
         c = CodeReview.find_by issue: issueNumber
-        owner = Developer.find_by email: c.owner_email
-        #CodeReview.joins(:participants).where(participants { email: participant.email })
+        #owner = Developer.find_by email: c.owner_email
+
+        #find all the code reviews where the owner is owner and one of the reviewers is participant
+        #and only include reviews that were done before this one
+        reviews = CodeReview.joins(:participants).where("owner_email = ? AND created < ? AND email = ? ", c.owner_email, c.created, participant.email)
+        participant.update(reviews_with_owner: reviews.count)
       }
     end
     #if this participant and the owner have worked together before, add one to this number
-
-
   end
 
   def consolidate_contributors
