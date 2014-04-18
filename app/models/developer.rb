@@ -55,17 +55,19 @@ class Developer < ActiveRecord::Base
     #if date is a string then convert to Time object
     if date.class == String then date = Time.new(date) end
 
-    reviewer = self.reviewers
 
-    #Are we a reviewer
-    if reviewer.size > 0
+    participant = self.participants
+
+    #Are we a participant
+    if participant.size > 0
 
       vul_count = 0
-      reviewer.each do |review| 
+      participant.each do |p| 
 
-        #Do we have a code_reviewer for this reviewer
-        if code_review=review.code_review   
+        #Do we have a code_review for this participant
+        if code_review=p.code_review   
 
+          #Is the code review before this date
           if code_review.created < date
 
             if code_review.is_inspecting_vulnerability? then vul_count+=1 end
@@ -79,12 +81,12 @@ class Developer < ActiveRecord::Base
       #return the number of vulnerable inspections
       return vul_count
 
-    else#reviewer check
+    else#participant check
 
-      #Not a reviewer so no vulnerable inspections
+      #Not a participant so no vulnerable inspections
       return 0
 
-    end#reviewer nil check
+    end#participant nil check
 
   end#num_inspected_vulnerables
 
