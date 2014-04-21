@@ -117,6 +117,26 @@ class Stats
     end
     puts a.to_s
     puts "\n"
-  end
 
-end
+    puts "@@@ Max Churn per CodeReview Histogram @@@"
+    a = Aggregate.new(0,1000,10)
+    CodeReview.all.find_each do |c|
+      mc = c.max_churn
+      a << mc if !mc.nil?
+    end
+    puts a.to_s(120)
+    puts "\n"
+
+    puts "@@@ Number of Participants per Vulnerability Inspection Histogram @@@"
+    a = Aggregate.new(0, 1000, 10)
+    Developer.all.find_each do |c|
+      nd = c.num_vulnerable_inspects
+      a << nd if !nd.nil?
+    end
+    puts a.t_s(120)
+    puts "\n"
+  end#histograms
+
+
+
+end#class
