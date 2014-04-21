@@ -22,18 +22,18 @@ class Stats
     show PatchSet.count, "Patch sets"
     show PatchSetFile.count, "Patch set files"
     show PatchSet.count.to_f / CodeReview.count.to_f, "Patch sets per code review"
-    show overlooked_stats, "Code Reviews with an overlooked patchset"
+    #show overlooked_stats, "Code Reviews with an overlooked patchset"
     puts "|"
   end
 
-  def overlooked_stats
+=begin  def overlooked_stats
     total = 0
     CodeReview.find_each do |c|
       total = total + 1 if c.overlooked_patchset?
     end
     return total
   end
-
+=end
   def commit_stats
     puts "--Commits"
     show Commit.count, "Commits"
@@ -127,14 +127,33 @@ class Stats
     puts a.to_s(120)
     puts "\n"
 
-    puts "@@@ Number of Participants per Vulnerability Inspection Histogram @@@"
-    a = Aggregate.new(0, 1000, 10)
+    puts "@@@ Number of Vulnerabilities per Participant Inspection Histogram @@@"
+    a = Aggregate.new(0, 10, 1)
     Developer.all.find_each do |c|
       nd = c.num_vulnerable_inspects
-      a << nd if !nd.nil?
+      a << nd
     end
-    puts a.t_s(120)
+    puts a.to_s(120)
     puts "\n"
+
+    puts "@@@ Number of Vulnerabilities per Filepath Inspection Histogram @@@"
+    a = Aggregate.new(0, 10, 1)
+    Filepath.all.find_each do |c|
+      vf = c.num_vulnerable_devs
+      a << vf
+    end
+    puts a.to_s(120)
+    puts "\n"
+
+    puts "@@@ Code Reviews that fall below or over 200 Lines of Code per Hour @@@"
+    a = Aggregate.new(0, 2, 1)
+    CodeReview.all.find_each do |c|
+      cl = if c.loc_per_hour_exceeded? then 1 else 0 end
+      a << cl  
+    end
+    puts a.to_s(120)
+    puts "\n"
+
   end#histograms
 
 
