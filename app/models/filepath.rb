@@ -53,7 +53,7 @@ class Filepath < ActiveRecord::Base
   # @param- date Time object or string. Str format: "DD-MM-YYYY HH:MM:SS"
   # @return - number of vulnerability developers
   def num_vulnerable_devs(date=Time.now)
-
+ 
     #if date is a string then convert to Time object
     if date.class == String then date = Time.new(date) end
 
