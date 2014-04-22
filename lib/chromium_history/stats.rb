@@ -171,8 +171,7 @@ class Stats
       end
     end
     puts str
-  end
-
+  
     puts "@@@ Max Churn per CodeReview Histogram @@@"
     a = Aggregate.new(0,1000,10)
     CodeReview.all.find_each do |c|
