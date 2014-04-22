@@ -145,7 +145,7 @@ class Stats
     puts a.to_s(120)
     puts "\n"
 
-    puts "@@@ Code Reviews that fall below or over 200 Lines of Code per Hour @@@"
+    puts "@@@ Code Reviews that fall below or over 200 Lines of Code per Hour (0=false, 1=true) @@@"
     a = Aggregate.new(0, 2, 1)
     CodeReview.all.find_each do |c|
       cl = if c.loc_per_hour_exceeded? then 1 else 0 end
