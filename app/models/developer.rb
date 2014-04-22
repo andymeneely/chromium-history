@@ -55,7 +55,7 @@ class Developer < ActiveRecord::Base
     #if date is a string then convert to Time object
     if date.class == String then date = Time.new(date) end
 
-
+    #get the participant who is this developer
     participant = self.participants
 
     #Are we a participant

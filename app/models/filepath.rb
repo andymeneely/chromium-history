@@ -66,6 +66,7 @@ class Filepath < ActiveRecord::Base
 
       #Get the developer who is this participant so that can call num_vulnerable_inpspects
       dev = p.developer
+      
       #if the dev inspected vulnerable reveiews then this is a vulnerability dev
       if dev.num_vulnerable_inspects(date) > 0 then dev_vul_count+=1 end
 
