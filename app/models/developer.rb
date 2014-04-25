@@ -51,7 +51,6 @@ class Developer < ActiveRecord::Base
 			
 			return m.address, true
 		rescue Exception => e
-			$stderr.puts e
 			return nil, false
 		end
 	end
