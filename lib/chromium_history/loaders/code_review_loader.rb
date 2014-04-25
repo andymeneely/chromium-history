@@ -1,7 +1,7 @@
 require 'oj'
 require_relative 'data_transfer'
 require_relative 'git_log_loader'
-
+require 'set'
 
 class CodeReviewLoader
   # Mix in the DataTransfer module
@@ -16,7 +16,6 @@ class CodeReviewLoader
     @patchset_files_to_save = []
     @comments_to_save = []
     @messages_to_save = []
-    @cc_to_save = []
     @reviewer_to_save = []
 
 
@@ -26,7 +25,7 @@ class CodeReviewLoader
       bulk_save CodeReview,c, @codereviews_to_save
       load_patchsets(file, c.issue, cobj['patchsets'])
       load_messages(file, c.issue, cobj['messages'])
-      load_developers(cobj['cc'], cobj['reviewers'], cobj['messages'], cobj['issue'])
+      load_developers(cobj['reviewers'], cobj['messages'], cobj['issue'])
       load_developer_names(cobj['owner_email'], cobj['owner'])
     end #each json file loop
 
@@ -35,7 +34,6 @@ class CodeReviewLoader
     PatchSetFile.import @patchset_files_to_save
     Comment.import @comments_to_save
     Message.import @messages_to_save
-    Cc.import @cc_to_save
     Reviewer.import @reviewer_to_save
 
   end #load method
@@ -118,23 +116,20 @@ class CodeReviewLoader
   #param cc = list of emails CCed on the code review
   #      reviewers = list of emails sent to the reviewers
   #      messages = list of messages on the code review
-  def load_developers(cc, reviewers, messages, issueNumber)
-    cc.each do |email|
-      dev = Developer.search_or_add(email)
-      ccTable = Cc.new  #creates a new CC table object
-      ccTable["email"] = dev.email
-      ccTable["issue"] = issueNumber #and the issue to which they were CCed
-      bulk_save Cc,ccTable,@cc_to_save
-    end #cc loop
-
+  def load_developers(reviewers, messages, issueNumber)
+		distinct_developers = Set.new
     reviewers.each do |email|
-      dev= Developer.search_or_add(email)
+			email, valid = Developer.sanitize_validate_email email
+			next if not valid 
+			next if distinct_developers.add?(email).nil?
+			
+      dev = Developer.search_or_add(email)	
       reviewerTable = Reviewer.new  #creates a new Reviewer table object
       reviewerTable["email"] = dev.email #adds the developer getting reviewed
       reviewerTable["issue"] = issueNumber #and the issue to which they were reviewed
       bulk_save Reviewer,reviewerTable, @reviewer_to_save
     end #reviewers loop
-
+		
     #possibly this message part should go in the load_messages method????
     # For some reason this code was slowing down the build - disabling for now to see how it goes tonight. -Andy
     #messages.each do |message|

@@ -1,3 +1,5 @@
+require 'mail'
+
 class Developer < ActiveRecord::Base
 
 
@@ -12,7 +14,69 @@ class Developer < ActiveRecord::Base
     ActiveRecord::Base.connection.add_index :developers, :email, unique: true
     ActiveRecord::Base.connection.add_index :developers, :name
   end
+	
+	
+	def self.sanitize_validate_email email 
+		begin
+			if (email.index('+') != nil) 
+				email = email.slice(0, email.index('+')) + email.slice(email.index('@'), (email.length()-1))
+			end
+			email.downcase!
 
+			# Performs basic email validation on creation
+			# will throw exception for invalid email 
+			m = Mail::Address.new(email)
+			
+			if m.domain.nil? or m.address != email
+				raise Exception, "Invalid email address: #{email}"
+			end
+			
+			t = m.__send__(:tree)
+			if t.domain.dot_atom_text.elements.size < 2
+				raise Exception, "Invalid email address: #{email}"
+			end
+			
+			if m.domain == 'gtempaccount.com'
+				match = /^(\w+)\W(\w+.\w+)(?=@gtempaccount.com)/.match m.address
+				m = Mail::Address.new(match[1] + match[2])
+			end
+			
+			if m.domain == 'google.com' 
+				m = Mail::Address.new("#{m.local}@chromium.org")
+			end
+			
+			if self.blacklisted_email_local? m.local or self.blacklisted_email_domain? m.domain
+				raise Exception, "Blacklisted email!"
+			end
+			
+			return m.address, true
+		rescue Exception => e
+			$stderr.puts e
+			return nil, false
+		end
+	end
+	
+	def self.blacklisted_email_local? local
+		blacklist = ['reply', 'chromium-reviews']
+		blacklist.include? local
+	end
+	
+	def self.blacklisted_email_domain? domain
+		blacklist = ['googlegroups.com']
+		blacklist.include? domain
+	end
+	
+	def self.blacklisted_email? email
+		blacklist = [/\Areply@/, /@googlegroups...\w\z/]
+		blacklist.each do |pattern|
+			if not pattern.match(email).nil?
+				puts email
+				return true 
+			end
+		end
+		false
+	end
+	
   # Given an email and name, parses the email and searches to see if the developer
   # is already in the database. If they are, returns the name of the developer.
   # If not, adds the developer's information to database.
@@ -20,12 +84,7 @@ class Developer < ActiveRecord::Base
   # 	email:: the email address of a developer
   # 	name:: the name of a developer, associated with the email, default is a blank string
   def self.search_or_add(email, name="")
-    email.downcase!
-  	if (email.index('+') != nil) 
-      email = email.slice(0, email.index('+')) + email.slice(email.index('@'), (email.length()-1))
-    end #fixing the email
-
-    if (Developer.find_by_email(email) == nil) 
+    if (Developer.find_by_email(email).nil?) 
       developer = Developer.new
       developer["email"] = email
       developer["name"] = name
