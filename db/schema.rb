@@ -11,15 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140411141015) do
-
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-
-  create_table "ccs", force: true do |t|
-    t.integer "issue", limit: 8
-    t.string  "email"
-  end
+ActiveRecord::Schema.define(version: 20140425033412) do
 
   create_table "code_reviews", force: true do |t|
     t.text     "description"
