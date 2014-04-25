@@ -30,6 +30,7 @@ class Filepath < ActiveRecord::Base
 
 
   # All of the participants joined
+  # Returns participants relation
   def self.participants
     Filepath.joins(commit_filepaths: [commit: [code_reviews: :participants]])
   end
@@ -39,22 +40,19 @@ class Filepath < ActiveRecord::Base
     Filepath.joins(commit_filepaths: [commit: [code_reviews: :contributors]])
   end
 
-  #Returns participants
+  #Returns participants objects
   def participants_on_filepath
-    Participant.joins("INNER JOIN code_reviews ON participants.issue=code_reviews.issue INNER JOIN commits ON code_reviews.issue=commits.code_review_id INNER JOIN commit_filepaths ON commit_filepaths.commit_hash=commits.commit_hash INNER JOIN filepaths ON filepaths.filepath=commit_filepaths.filepath WHERE filepaths.filepath='#{self.filepath}'")
+    Participant.joins("INNER JOIN code_reviews ON participants.issue=code_reviews.issue INNER JOIN commits ON code_reviews.commit_hash=commits.commit_hash INNER JOIN commit_filepaths ON commit_filepaths.commit_hash=commits.commit_hash INNER JOIN filepaths ON filepaths.filepath=commit_filepaths.filepath WHERE filepaths.filepath='#{self.filepath}'")
   end
 
-  # Have to fix the participants on filepath method
-  # you could have many reviews for one commit
   # Get the number of developers
   # who have reviewed vulnerablities up until 
   # the param date who have also inspected
-  # this Filepath. Does not work b/c self.reviewers
-  # returns Filepath, not reviewers
+  # this Filepath. 
   #
   # @param- date Time object or string. Str format: "DD-MM-YYYY HH:MM:SS"
   # @return - number of vulnerability developers
-=begin  def num_vulnerable_devs(date=Time.now)
+  def num_vulnerable_devs(date=Time.now)
  
     #if date is a string then convert to Time object
     if date.class == String then date = Time.new(date) end
@@ -70,14 +68,13 @@ class Filepath < ActiveRecord::Base
       dev = p.developer
       
       #if the dev inspected vulnerable reveiews then this is a vulnerability dev
-      if dev.num_vulnerable_inspects(date) > 0 then dev_vul_count+=1 end
+      if !dev.nil? and dev.num_vulnerable_inspects(date) > 0 then dev_vul_count+=1 end
 
     end#loop
 
     return dev_vul_count
 
   end#num_of_vulnerable_devs
-=end
 
 end
 

@@ -190,7 +190,7 @@ class Stats
     puts a.to_s(120)
     puts "\n"
 
-=begin  puts "@@@ Number of Vulnerabilities per Filepath Inspection Histogram @@@"
+  puts "@@@ Number of Vulnerability Participants per Filepath Inspection Histogram @@@"
     a = Aggregate.new(0, 10, 1)
     Filepath.all.find_each do |c|
       vf = c.num_vulnerable_devs
@@ -198,7 +198,6 @@ class Stats
     end
     puts a.to_s(120)
     puts "\n"
-=end
 
     puts "@@@ Code Reviews that fall below or over 200 Lines of Code per Hour (0=false, 1=true) @@@"
     a = Aggregate.new(0, 2, 1)
