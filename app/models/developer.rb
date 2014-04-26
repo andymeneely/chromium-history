@@ -6,6 +6,7 @@ class Developer < ActiveRecord::Base
   has_many :participants, primary_key: 'email', foreign_key: 'email'
   has_many :contributors, primary_key: 'email', foreign_key: 'email'
   has_many :reviewers, primary_key: 'email', foreign_key: 'email'
+  has_many :sheriffs, primary_key: 'email', foreign_key: 'email'
 
 
   belongs_to :cc
