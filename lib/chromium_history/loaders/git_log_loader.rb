@@ -129,11 +129,10 @@ class GitLogLoader
     end
 
     arr.each do |element|
-
-      if element.match(/^git-svn-id:/)
+      if not (element =~ /^git-svn-id:/).nil?
         hash[:svn_revision] = element.strip.sub("git-svn-id:", "")
 
-      elsif element.match(/^Review URL:/)
+      elsif not (element =~ /^Review URL:/).nil?
         issue = element[/(\d)+/].to_i # Greedy grab the first integer
         c = CodeReview.find_by(issue: issue)
         if !c.nil? #If the code review doesn't exist then it was not in Chromium
@@ -141,14 +140,13 @@ class GitLogLoader
           c.save
         end
 
-      elsif element.match(/^BUG=/)
+      elsif not (element =~ /^BUG=/).nil?
         hash[:bug] = element.strip.sub("BUG=", "")
 
-
-      elsif element.match(/^;;;$/)
+      elsif not (element =~ /^;;;/).nil?
         in_files = true
 
-      elsif in_files && element.match(/([\s-]*\|[\s-]*\d+ \+*\-*)/)
+      elsif (in_files and not (element =~ /([\s-]*\|[\s-]*\d+ \+*\-*)/).nil?)
         filepaths.push(element.slice(0,element.index('|')).strip)
 
       end
