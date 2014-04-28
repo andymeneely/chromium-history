@@ -17,7 +17,7 @@ class CodeReviewLoader
     @comments_to_save = []
     @messages_to_save = []
     @reviewer_to_save = []
-
+    @developer_to_save = Hash.new
 
     Dir["#{Rails.configuration.datadir}/codereviews/*.json"].each do |file|
       cobj = Oj.load_file(file)
@@ -28,7 +28,8 @@ class CodeReviewLoader
       load_developers(cobj['reviewers'], cobj['messages'], cobj['issue'])
       load_developer_names(cobj['owner_email'], cobj['owner'])
     end #each json file loop
-
+    
+    Developer.import  @developer_to_save.values
     CodeReview.import @codereviews_to_save
     PatchSet.import @patchsets_to_save
     PatchSetFile.import @patchset_files_to_save
@@ -113,17 +114,23 @@ class CodeReviewLoader
 
 
 
-  #param cc = list of emails CCed on the code review
-  #      reviewers = list of emails sent to the reviewers
+
+  #param reviewers = list of emails sent to the reviewers
   #      messages = list of messages on the code review
   def load_developers(reviewers, messages, issueNumber)
-		distinct_developers = Set.new
+		distinct_reviewers = Set.new
     reviewers.each do |email|
 			email, valid = Developer.sanitize_validate_email email
 			next if not valid 
-			next if distinct_developers.add?(email).nil?
+			next if distinct_reviewers.add?(email).nil?
 			
-      dev = Developer.search_or_add(email)	
+      if not @developer_to_save.include?(email)
+        dev = Developer.search_or_add(email)
+        @developer_to_save[email] = dev
+      else
+        dev = @developer_to_save[email]
+      end
+      
       reviewerTable = Reviewer.new  #creates a new Reviewer table object
       reviewerTable["email"] = dev.email #adds the developer getting reviewed
       reviewerTable["issue"] = issueNumber #and the issue to which they were reviewed
@@ -146,7 +153,16 @@ class CodeReviewLoader
   #param email = email of a developer
   #      name = name of the same developer
   def load_developer_names(email, name)
-    Developer.search_or_add(email, name);
+    email, valid = Developer.sanitize_validate_email email
+    
+    if not valid
+      return
+    end
+    
+    if not @developer_to_save.include?(email)
+      @developer_to_save[email] = Developer.search_or_add(email)
+    end
+
   end #load developer names method
 
 

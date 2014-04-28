@@ -1,5 +1,7 @@
 #!/bin/bash
 apt-get update -y
+apt-get install vim -y
+
 apt-get --purge remove ruby-rvm -y
 rm -f /usr/share/ruby-rvm /etc/rvmrc /etc/profile.d/rvm.sh
 
@@ -17,6 +19,10 @@ apt-get install nodejs -y
 cd /home/vagrant/chromium-history
 gem install --no-rdoc --no-ri rails 
 gem install --no-rdoc --no-ri bundler
+
+update-locale LANG=en_US.UTF-8
+update-locale LC_ALL=en_US.UTF-8
+. /etc/default/locale
 
 apt-get install postgresql postgresql-contrib -y
 sudo -u postgres createuser --superuser vagrant

@@ -8,9 +8,6 @@ class Developer < ActiveRecord::Base
   has_many :reviewers, primary_key: 'email', foreign_key: 'email'
   has_many :sheriffs, primary_key: 'email', foreign_key: 'email'
 
-
-  belongs_to :cc
-
   def self.on_optimize
     ActiveRecord::Base.connection.add_index :developers, :email, unique: true
     ActiveRecord::Base.connection.add_index :developers, :name
@@ -19,21 +16,15 @@ class Developer < ActiveRecord::Base
 	
 	def self.sanitize_validate_email email 
 		begin
-			if (email.index('+') != nil) 
-				email = email.slice(0, email.index('+')) + email.slice(email.index('@'), (email.length()-1))
-			end
+			email.gsub!(/\+\w+(?=@)/, '')
+			email.gsub!(')', '')
 			email.downcase!
 
 			# Performs basic email validation on creation
 			# will throw exception for invalid email 
 			m = Mail::Address.new(email)
 			
-			if m.domain.nil? or m.address != email
-				raise Exception, "Invalid email address: #{email}"
-			end
-			
-			t = m.__send__(:tree)
-			if t.domain.dot_atom_text.elements.size < 2
+			if m.domain.nil?
 				raise Exception, "Invalid email address: #{email}"
 			end
 			
@@ -88,7 +79,6 @@ class Developer < ActiveRecord::Base
       developer = Developer.new
       developer["email"] = email
       developer["name"] = name
-      developer.save
       return developer
     else 
       dobj = Developer.find_by_email(email)
