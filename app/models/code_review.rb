@@ -50,33 +50,25 @@ class CodeReview < ActiveRecord::Base
   	return totalNonparticipating
   end
 
+  #returns the familiarity of all the reviews added up
   def total_familiarity
-    #FIXME self.reviewers.last isn't the right query for this. 
-    #yeah I know I was trying to see if anything would work so I just wanted to grab some random guy
-    puts familiarity(self.reviewers.last, self.reviewers.last)
+    total = 0 # initially the number is zero total
+    participants = self.participants
+    for participant in participants
+      total += participant.reviews_with_owner
+    end
+    return total
   end
 
   def average_familiarity
-    return "not done"
+    total = 0 # initially the number is zero total
+    participants = self.participants
+    for participant in participants
+      total += participant.reviews_with_owner
+    end
+    average = total / participants.count
+    return average
   end
-
-
-  # Given two developers on this code review, return the number of prior code reviews they have both participated in together. 
-  def familiarity(developer1, developer2)
-    familiar = 0
-    #FIXME This needs to be querying CodeReview joined with Participants. 
-    beforeReviews = CodeReview.where("created < ?", self.created)  #get all the reviews that happened before the date of this review
-    for review in beforeReviews
-      for reviewer in review.reviewers
-        # puts reviewer.email 
-      end
-      if (review.reviewers.include?(developer1.email)) # && review.reviewers.include?(developer2))
-        familiar += 1
-        #puts familiar
-      end #if 
-    end #loop
-    return familiar
-  end#familiarity
 
   #
   # Security Experienced Participants
