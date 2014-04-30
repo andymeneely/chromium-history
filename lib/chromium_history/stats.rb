@@ -208,6 +208,15 @@ class Stats
     puts a.to_s(120)
     puts "\n"
 
+    puts "@@@ Number of Experienced Developers per Code Review Histogram @@@"
+    a = Aggregate.new(0, 10, 1)
+    CodeReview.all.find_each do |c|
+      cl = c.security_experienced_parts.size
+      a << cl 
+    end
+    puts a.to_s(120)
+    puts "\n"
+
   end#histograms
 
 
