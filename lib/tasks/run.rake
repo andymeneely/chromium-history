@@ -30,7 +30,6 @@ task :parse => :environment do
   end
 end
 
-task :run => [:environment, "run:env", "db:reset", "run:load"] do
   puts "Run task completed. Current time is #{Time.now}"
 end
 
@@ -108,6 +107,7 @@ namespace :run do
   task :prod_check => :env do
     if 'production'.eql?(Rails.env) && !ENV['RAILS_BLAST_PRODUCTION'].eql?('YesPlease')
       $stderr.puts "WOAH! Hold on there. Are you trying to blow away our production database. Better use the proper environment variable (see our source)"
+      raise "Reset with production flag not set"
     end
   end
 
