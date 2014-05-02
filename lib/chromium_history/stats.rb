@@ -68,7 +68,12 @@ class Stats
   end
 
   def collaborator_familiarity
-
+    total = 0
+    CodeReview.find_each do |c|
+      puts "Total Familiarity: #{c.total_familiarity}"
+      puts "Average Familiarity: #{c.average_familiarity}"
+    end
+    return total
   end
 
   def histograms
@@ -212,6 +217,15 @@ class Stats
     a = Aggregate.new(0, 10, 1)
     CodeReview.all.find_each do |c|
       cl = c.security_experienced_parts.size
+      a << cl 
+    end
+    puts a.to_s(120)
+    puts "\n"
+
+    puts "@@@ Total Participator Familiarity per Code Review Histogram @@@"
+    a = Aggregate.new(0, 10, 1)
+    CodeReview.all.find_each do |c|
+      cl = c.total_familiarity
       a << cl 
     end
     puts a.to_s(120)
