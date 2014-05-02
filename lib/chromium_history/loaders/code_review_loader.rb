@@ -56,23 +56,12 @@ class CodeReviewLoader
     list = CodeReview.where(:id => start..start+@@BULK_IMPORT_BLOCK_SIZE)
     
     list.each do |cobj|
-      # file = raw.path
-      # cobj = load_json(file)
-      # c = transfer(CodeReview.new, cobj, @@CODE_REVIEW_PROPS)
-      # bulk_save CodeReview,c, @codereviews_to_save
-      # load_patchsets(file, c.issue, cobj['patchsets'])
-      # load_messages(file, c.issue, cobj['messages'])
       revList = Reviewer.where(:issue => cobj.issue)
       load_developers(revList, nil, cobj.issue)
       load_developer_names(cobj.owner_email, nil)
     end #each json file loop
 
     Developer.import @developer_to_save.values
-    # CodeReview.import @codereviews_to_save
-    # PatchSet.import @patchsets_to_save
-    # PatchSetFile.import @patchset_files_to_save
-    # Comment.import @comments_to_save
-    # Message.import @messages_to_save
     Reviewer.import @reviewer_to_save
 
   end #load method

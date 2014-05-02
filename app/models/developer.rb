@@ -79,6 +79,7 @@ class Developer < ActiveRecord::Base
       developer = Developer.new
       developer["email"] = email
       developer["name"] = name
+      # developer.save
       return developer
     else 
       dobj = Developer.find_by_email(email)
