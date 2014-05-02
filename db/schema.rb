@@ -16,13 +16,13 @@ ActiveRecord::Schema.define(version: 20140426183252) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "code_reviews", force: true do |t|
+  create_table "code_reviews", id: false, force: true do |t|
     t.text     "description"
     t.string   "subject"
     t.datetime "created"
     t.datetime "modified"
     t.integer  "issue",       limit: 8
-    t.string   "commit_hash"
+    # t.string   "commit_hash"
     t.string   "owner_email"
   end
 
@@ -31,14 +31,17 @@ ActiveRecord::Schema.define(version: 20140426183252) do
     t.integer "code_review_id"
   end
 
-  create_table "comments", force: true do |t|
+  create_table "raw_files", id: false, force: true do |t|
+    t.string "path"
+  end
+  
+  create_table "comments", id: false, force: true do |t|
     t.string   "author_email"
     t.text     "text"
     t.boolean  "draft"
     t.integer  "lineno"
     t.datetime "date"
     t.boolean  "left"
-    t.integer  "patch_set_file_id",           limit: 8
     t.string   "composite_patch_set_file_id", limit: 1000
   end
 
@@ -47,7 +50,7 @@ ActiveRecord::Schema.define(version: 20140426183252) do
     t.string "filepath"
   end
 
-  create_table "commits", force: true do |t|
+  create_table "commits", id: false, force: true do |t|
     t.string   "commit_hash"
     t.string   "parent_commit_hash"
     t.string   "author_email"
@@ -59,12 +62,12 @@ ActiveRecord::Schema.define(version: 20140426183252) do
     t.integer  "commit_files_id"
   end
 
-  create_table "contributors", force: true do |t|
+  create_table "contributors", id: false, force: true do |t|
     t.string  "email"
     t.integer "issue", limit: 8
   end
 
-  create_table "cvenums", force: true do |t|
+  create_table "cvenums", id: false, force: true do |t|
     t.string "cve"
   end
 
@@ -73,13 +76,13 @@ ActiveRecord::Schema.define(version: 20140426183252) do
     t.string "email"
   end
 
-  create_table "filepaths", force: true do |t|
+  create_table "filepaths", id: false, force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "filepath",   limit: 500
   end
 
-  create_table "messages", force: true do |t|
+  create_table "messages", id: false, force: true do |t|
     t.string   "sender"
     t.text     "text"
     t.boolean  "approval"
@@ -88,25 +91,24 @@ ActiveRecord::Schema.define(version: 20140426183252) do
     t.integer  "code_review_id", limit: 8
   end
 
-  create_table "participants", force: true do |t|
+  create_table "participants", id: false, force: true do |t|
     t.string  "email"
     t.integer "issue",              limit: 8
     t.integer "reviews_with_owner"
   end
 
-  create_table "patch_set_files", force: true do |t|
+  create_table "patch_set_files", id: false, force: true do |t|
     t.string  "filepath"
     t.string  "status"
     t.integer "num_chunks"
     t.integer "num_added"
     t.integer "num_removed"
     t.boolean "is_binary"
-    t.integer "patch_set_id",                limit: 8
     t.string  "composite_patch_set_id"
     t.string  "composite_patch_set_file_id", limit: 1000
   end
 
-  create_table "patch_sets", force: true do |t|
+  create_table "patch_sets", id: false, force: true do |t|
     t.datetime "created"
     t.integer  "num_comments"
     t.text     "message"
@@ -117,7 +119,7 @@ ActiveRecord::Schema.define(version: 20140426183252) do
     t.string   "composite_patch_set_id"
   end
 
-  create_table "reviewers", force: true do |t|
+  create_table "reviewers", id: false, force: true do |t|
     t.integer "issue", limit: 8
     t.string  "email"
   end

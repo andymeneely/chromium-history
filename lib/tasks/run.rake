@@ -3,6 +3,7 @@ require_relative '../chromium_history/loaders/code_review_loader.rb'
 require_relative '../chromium_history/loaders/cve_loader.rb'
 require_relative '../chromium_history/verify/verify_runner.rb'
 require_relative '../chromium_history/loaders/git_log_loader.rb'
+require_relative '../chromium_history/scripts/code_review_parser.rb'
 require_relative '../chromium_history/consolidators/filepath_consolidator.rb'
 require_relative '../chromium_history/consolidators/developer_consolidator.rb'
 require_relative '../chromium_history/stats.rb'
@@ -11,7 +12,25 @@ require_relative '../chromium_history/stats.rb'
 #Dir[File.expand_path('../chromium_history/loaders/*.rb', File.dirname(__FILE__))].each {|file| require file}
 
 
-task :run => [:environment, "run:env", "run:prod_check", "db:reset", "run:load", "run:optimize", "run:consolidate","run:verify", "run:analyze"] do
+task :loadem => :environment do
+  Benchmark.bm(25) do |x|
+    x.report("zed") {
+      #(1..4).each do |i|
+        task('run:loady').execute(1)
+      #end
+    }
+  end
+end
+
+task :parse => :environment do
+  Benchmark.bm(25) do |x|
+    x.report("zed") {
+      CodeReviewParser.new.parse
+    }
+  end
+end
+
+task :run => [:environment, "run:env", "db:reset", "run:load"] do
   puts "Run task completed. Current time is #{Time.now}"
 end
 
@@ -31,11 +50,16 @@ namespace :run do
   task :load => :environment do
     Benchmark.bm(25) do |x|
       x.report("Loading code reviews: ") {CodeReviewLoader.new.load}
-      x.report("Loading CVE reviews: ") {CveLoader.new.load_cve}
-      x.report("Loading git log commits: ") {GitLogLoader.new.load}
+      #x.report("Loading CVE reviews: ") {CveLoader.new.load_cve}
+      #x.report("Loading git log commits: ") {GitLogLoader.new.load}
     end
   end
 
+  desc "woot"
+  task :loady, [:batch] do |t, args|
+      CodeReviewLoader.new.load_batch(args)
+  end
+  
   desc "Alias for run:clean then run:load"
   task :clean_load => ["run:clean", "run:load"]
 
@@ -84,7 +108,6 @@ namespace :run do
   task :prod_check => :env do
     if 'production'.eql?(Rails.env) && !ENV['RAILS_BLAST_PRODUCTION'].eql?('YesPlease')
       $stderr.puts "WOAH! Hold on there. Are you trying to blow away our production database. Better use the proper environment variable (see our source)"
-      raise "Reset with production flag not set"
     end
   end
 

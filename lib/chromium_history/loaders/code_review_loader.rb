@@ -2,6 +2,7 @@ require 'oj'
 require_relative 'data_transfer'
 require_relative 'git_log_loader'
 require 'set'
+require 'csv'
 
 class CodeReviewLoader
   # Mix in the DataTransfer module
@@ -10,6 +11,7 @@ class CodeReviewLoader
   @@BULK_IMPORT_BLOCK_SIZE = 10000
 
   @@CODE_REVIEW_PROPS = [:description, :subject, :created, :modified, :issue, :owner_email]
+  
   def load
     @codereviews_to_save = []
     @patchsets_to_save = []
@@ -36,13 +38,49 @@ class CodeReviewLoader
     Comment.import @comments_to_save
     Message.import @messages_to_save
     Reviewer.import @reviewer_to_save
+  end
+  
+  def load_json(file)
+     Oj.load_file(file, {:symbol_keys => false, :mode => :strict})
+  end
+  
+  def load_batch(batch)
+    @codereviews_to_save = []
+    @patchsets_to_save = []
+    @patchset_files_to_save = []
+    @comments_to_save = []
+    @messages_to_save = []
+    @developer_to_save = Hash.new
+    @reviewer_to_save = []
+    start = batch.to_i * @@BULK_IMPORT_BLOCK_SIZE
+    list = CodeReview.where(:id => start..start+@@BULK_IMPORT_BLOCK_SIZE)
+    
+    list.each do |cobj|
+      # file = raw.path
+      # cobj = load_json(file)
+      # c = transfer(CodeReview.new, cobj, @@CODE_REVIEW_PROPS)
+      # bulk_save CodeReview,c, @codereviews_to_save
+      # load_patchsets(file, c.issue, cobj['patchsets'])
+      # load_messages(file, c.issue, cobj['messages'])
+      revList = Reviewer.where(:issue => cobj.issue)
+      load_developers(revList, nil, cobj.issue)
+      load_developer_names(cobj.owner_email, nil)
+    end #each json file loop
+
+    Developer.import @developer_to_save.values
+    # CodeReview.import @codereviews_to_save
+    # PatchSet.import @patchsets_to_save
+    # PatchSetFile.import @patchset_files_to_save
+    # Comment.import @comments_to_save
+    # Message.import @messages_to_save
+    Reviewer.import @reviewer_to_save
 
   end #load method
 
 
 
 
-  private  
+  #private  
 
 
 
@@ -54,13 +92,13 @@ class CodeReviewLoader
     pids.each do |pid|
       patchset_file = "#{file.gsub(/\.json$/,'')}/#{pid}.json"
       if File.exists? patchset_file
-        pobj = Oj.load_file(patchset_file)
+        pobj = load_json(patchset_file)
         p = transfer(PatchSet.new, pobj, @@PATCH_SET_PROPS)
         p.composite_patch_set_id = "#{code_review_id}-#{p.patchset}"
         p.code_review_id = code_review_id
         bulk_save PatchSet,p, @patchsets_to_save
         #this new method will load in the owner name and email to the developers table from this patch set
-        load_developer_names(pobj['owner_email'], pobj['owner'])
+        # load_developer_names(pobj['owner_email'], pobj['owner'])
         load_patch_set_files(p.composite_patch_set_id, pobj['files'])
       else
         $stderr.puts "Patchset file should exist but doesn't: #{patchset_file}"
@@ -119,8 +157,8 @@ class CodeReviewLoader
   #      messages = list of messages on the code review
   def load_developers(reviewers, messages, issueNumber)
 		distinct_reviewers = Set.new
-    reviewers.each do |email|
-			email, valid = Developer.sanitize_validate_email email
+    reviewers.each do |rev|
+			email, valid = Developer.sanitize_validate_email rev.email
 			next if not valid 
 			next if distinct_reviewers.add?(email).nil?
 			
@@ -131,10 +169,8 @@ class CodeReviewLoader
         dev = @developer_to_save[email]
       end
       
-      reviewerTable = Reviewer.new  #creates a new Reviewer table object
-      reviewerTable["email"] = dev.email #adds the developer getting reviewed
-      reviewerTable["issue"] = issueNumber #and the issue to which they were reviewed
-      bulk_save Reviewer,reviewerTable, @reviewer_to_save
+      rev.dev_id = dev.id
+      bulk_save Reviewer,rev, @reviewer_to_save
     end #reviewers loop
 		
     #possibly this message part should go in the load_messages method????
@@ -160,7 +196,8 @@ class CodeReviewLoader
     end
     
     if not @developer_to_save.include?(email)
-      @developer_to_save[email] = Developer.search_or_add(email)
+      @developer_to_save[email] = 
+      Developer.search_or_add(email)
     end
 
   end #load developer names method
