@@ -101,43 +101,24 @@ class Developer < ActiveRecord::Base
   # @param- date Time object or string. Str format: "DD-MM-YYYY HH:MM:SS"
   # @return - number of inspected vulnerabilities
   def num_vulnerable_inspects(date=Time.now)
-
     #if date is a string then convert to Time object
     if date.class == String then date = Time.new(date) end
 
-    #get the participant who is this developer
-    participant = self.participants
+    query = "SELECT COUNT(c.issue) FROM 
+            developers d JOIN 
+            participants p ON 
+            (d.email = p.email) JOIN 
+            code_reviews c ON 
+            (p.issue = c.issue) JOIN 
+            code_reviews_cvenums e ON 
+            e.code_review_id = c.id WHERE
+            c.created < date $1;"
 
-    #Are we a participant
-    if participant.size > 0
-
-      vul_count = 0
-      participant.each do |p| 
-
-        #Do we have a code_review for this participant
-        if code_review=p.code_review   
-
-          #Is the code review before this date
-          if code_review.created < date
-
-            if code_review.is_inspecting_vulnerability? then vul_count+=1 end
-
-          end#date check
-
-        end#code_review check   
-
-      end#loop
-
-      #return the number of vulnerable inspections
-      return vul_count
-
-    else#participant check
-
-      #Not a participant so no vulnerable inspections
-      return 0
-
-    end#participant nil check
-
-  end#num_inspected_vulnerables
+    self.connection.prepare('date', query)
+    result = self.connection.exec_prepared('date', date)
+    conn.close
+    
+    result 
+  end
 
 end#class
