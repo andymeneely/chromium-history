@@ -112,13 +112,9 @@ class Developer < ActiveRecord::Base
             (p.issue = c.issue) JOIN 
             code_reviews_cvenums e ON 
             e.code_review_id = c.id WHERE
-            c.created < date $1;"
+            c.created < date '#{date.to_s}'"
 
-    self.connection.prepare('date', query)
-    result = self.connection.exec_prepared('date', date)
-    conn.close
-    
-    result 
+    self.connection.execute(query);
   end
 
 end#class
