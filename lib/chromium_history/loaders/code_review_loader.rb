@@ -8,6 +8,22 @@ class CodeReviewLoader
 
   @@BULK_IMPORT_BLOCK_SIZE = 10000
   
+  def copy_parsed_tables 
+    ActiveRecord::Base.connection.execute "COPY cvenums FROM '#{Rails.configuration.datadir}/cvenums.csv' DELIMITER ',' CSV"
+    ActiveRecord::Base.connection.execute "COPY code_reviews FROM '#{Rails.configuration.datadir}/code_reviews.csv' DELIMITER ',' CSV;"
+    ActiveRecord::Base.connection.execute "ALTER TABLE code_reviews ADD COLUMN id SERIAL; ALTER TABLE code_reviews ADD PRIMARY KEY (id);"
+    ActiveRecord::Base.connection.execute "COPY reviewers FROM '/home/vagrant/data/reviewers.csv' DELIMITER ',' CSV;"
+    ActiveRecord::Base.connection.execute "ALTER TABLE reviewers ADD COLUMN dev_id integer; CREATE INDEX zed ON reviewers USING hash (issue);"
+    
+    ActiveRecord::Base.connection.execute "COPY patch_sets FROM '#{Rails.configuration.datadir}/patch_sets.csv' DELIMITER ',' CSV;"
+    
+    ActiveRecord::Base.connection.execute "COPY messages FROM '#{Rails.configuration.datadir}/messages.csv' DELIMITER ',' CSV;"
+    
+    ActiveRecord::Base.connection.execute "COPY patch_set_files FROM '#{Rails.configuration.datadir}/patch_set_files.csv' DELIMITER ',' CSV;"
+    
+    ActiveRecord::Base.connection.execute "COPY comments FROM '#{Rails.configuration.datadir}/comments.csv' DELIMITER ',' CSV;"
+  end
+
   def load_batch(batch)
     @developer_to_save = Hash.new
     @reviewer_to_save = []
@@ -25,9 +41,6 @@ class CodeReviewLoader
     Reviewer.import @reviewer_to_save
 
   end #load method
-
-
-
 
   #private  
 

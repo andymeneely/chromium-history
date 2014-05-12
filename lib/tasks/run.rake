@@ -11,29 +11,24 @@ require_relative '../chromium_history/stats.rb'
 #Uncomment to require all loader files
 #Dir[File.expand_path('../chromium_history/loaders/*.rb', File.dirname(__FILE__))].each {|file| require file}
 
-
-task :loadem => :environment do
-  Benchmark.bm(25) do |x|
-    x.report("zed") {
-      #(1..4).each do |i|
-        task('run:loady').execute(1)
-      #end
-    }
-  end
-end
-
-task :parse => :environment do
-  Benchmark.bm(25) do |x|
-    x.report("zed") {
-      CodeReviewParser.new.parse
-    }
-  end
-end
-
+task :run => [:environment, "run:env", "run:prod_check", "db:reset", "run:parse", "run:batch" "run:load", "run:optimize", "run:consolidate","run:verify", "run:analyze"] do
   puts "Run task completed. Current time is #{Time.now}"
 end
 
 namespace :run do
+
+  desc "Batch load code reviews"
+  task :batch => :environment do
+    Benchmark.bm(25) do |x|
+      x.report("Loading code reviews into db") {
+        CodeReview.new.copy_parsed_tables
+        (0..15).each do |i|
+          task('run:load_batch').execute(i)
+        end
+      }
+    end
+  end
+  
   desc "Delete data from all tables."
   task :clean => [:environment] do
     # Iterate over our models
@@ -48,14 +43,22 @@ namespace :run do
   desc "Load data into tables"
   task :load => :environment do
     Benchmark.bm(25) do |x|
-      x.report("Loading code reviews: ") {CodeReviewLoader.new.load}
-      #x.report("Loading CVE reviews: ") {CveLoader.new.load_cve}
-      #x.report("Loading git log commits: ") {GitLogLoader.new.load}
+      x.report("Loading CVE reviews: ") {CveLoader.new.load_cve}
+      x.report("Loading git log commits: ") {GitLogLoader.new.load}
     end
   end
 
-  desc "woot"
-  task :loady, [:batch] do |t, args|
+  dec "Parse data into CSV"
+  task :parse => :environment do
+    Benchmark.bm(25) do |x|
+      x.report("Parsing raw code reviews into CSV") {
+        CodeReviewParser.new.parse
+      }
+    end
+  end
+
+  desc "Load 10,000 code reviews"
+  task :load_batch, [:batch] do |t, args|
       CodeReviewLoader.new.load_batch(args)
   end
   
