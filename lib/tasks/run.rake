@@ -11,7 +11,7 @@ require_relative '../chromium_history/stats.rb'
 #Uncomment to require all loader files
 #Dir[File.expand_path('../chromium_history/loaders/*.rb', File.dirname(__FILE__))].each {|file| require file}
 
-task :run => [:environment, "run:env", "run:prod_check", "db:reset", "run:parse", "run:batch" "run:load", "run:optimize", "run:consolidate","run:verify", "run:analyze"] do
+task :run => [:environment, "run:env", "run:prod_check", "db:reset", "run:parse", "run:batch", "run:load", "run:optimize", "run:consolidate","run:verify", "run:analyze"] do
   puts "Run task completed. Current time is #{Time.now}"
 end
 
@@ -48,7 +48,7 @@ namespace :run do
     end
   end
 
-  dec "Parse data into CSV"
+  desc "Parse data into CSV"
   task :parse => :environment do
     Benchmark.bm(25) do |x|
       x.report("Parsing raw code reviews into CSV") {
