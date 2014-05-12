@@ -31,8 +31,8 @@ class CveLoader
 		end
 		table.fsync
 		link.fsync
-		ActiveRecord::Base.connection.execute("COPY cvenums FROM '/home/vagrant/data/cvenums.csv' DELIMITER ',' CSV")
-		ActiveRecord::Base.connection.execute("COPY code_reviews_cvenums FROM '/home/vagrant/data/code_reviews_cvenums.csv' DELIMITER ',' CSV")
+		ActiveRecord::Base.connection.execute("COPY cvenums FROM '#{Rails.configuration.datadir}/cvenums.csv' DELIMITER ',' CSV")
+		ActiveRecord::Base.connection.execute("COPY code_reviews_cvenums FROM '#{Rails.configuration.datadir}/code_reviews_cvenums.csv' DELIMITER ',' CSV")
 		ActiveRecord::Base.connection.execute("WITH issues AS ((SELECT code_review_id from code_reviews_cvenums) EXCEPT (SELECT issue FROM 
 											   code_reviews)) DELETE FROM code_reviews_cvenums WHERE code_review_id IN (SELECT code_review_id 
 											   FROM issues);")
