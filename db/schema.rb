@@ -11,30 +11,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140426183252) do
+ActiveRecord::Schema.define(version: 20140512131450) do
 
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-
-  create_table "code_reviews", id: false, force: true do |t|
+  create_table "code_reviews", force: true do |t|
     t.text     "description"
     t.string   "subject"
     t.datetime "created"
     t.datetime "modified"
     t.integer  "issue",       limit: 8
-    # t.string   "commit_hash"
     t.string   "owner_email"
   end
 
   create_table "code_reviews_cvenums", id: false, force: true do |t|
-    t.integer "cvenum_id"
+    t.string  "cvenum_id"
     t.integer "code_review_id"
   end
 
-  create_table "raw_files", id: false, force: true do |t|
-    t.string "path"
-  end
-  
   create_table "comments", id: false, force: true do |t|
     t.string   "author_email"
     t.text     "text"
@@ -119,10 +111,17 @@ ActiveRecord::Schema.define(version: 20140426183252) do
     t.string   "composite_patch_set_id"
   end
 
-  create_table "reviewers", id: false, force: true do |t|
-    t.integer "issue", limit: 8
-    t.string  "email"
+  create_table "raw_files", id: false, force: true do |t|
+    t.string "path"
   end
+
+  create_table "reviewers", id: false, force: true do |t|
+    t.integer "issue",  limit: 8
+    t.string  "email"
+    t.integer "dev_id"
+  end
+
+  add_index "reviewers", ["issue"], name: "zed", using: :hash
 
   create_table "sheriffs", force: true do |t|
     t.string   "email"

@@ -7,7 +7,7 @@ require "google_drive"
 
 class CveLoader
 	RESULTS_FILE = "/cves/cves.csv"
-	@@CVES_PROPS = [:cve]
+
 	def load_cve
 
 		if Rails.env == 'development' 
@@ -16,31 +16,26 @@ class CveLoader
 			resultFile = build_result_set()
 		end
 
+		table = CSV.open "#{Rails.configuration.datadir}/cvenums.csv", 'w+'
+		link = CSV.open "#{Rails.configuration.datadir}/code_reviews_cvenums.csv", 'w+'
 		CSV.foreach(resultFile, :headers => true) do | row |
 			cve = row[0]
 			issues = row[1].scan(/\d+/)
 			if issues.empty?
 				next
 			end
-			cveModel = transfer(Cvenum.new, row[0], @@CVES_PROPS)
-			cveModel.save  #should this check to see if the cve model is already there?
-			link(cve, issues)
-
-		end
-	end
-
-	def link(cve, issues)
-		cveRecord = Cvenum.find_by_cve(cve)
-		issues.each do |issue|
-			codeReview = CodeReview.find_by_issue(issue)
-			if codeReview.nil?
-        # Suppressing this because we'll assume it was a backport.
-        # Commenting it out because we might want it later.
-				# $stderr.puts "Issue #{issue} related to #{cve} not found in Code Review Table"
-				next
+			table << [cve]
+			issues.each do |issue| 
+				link << [cve, issue]
 			end
-			codeReview.cvenums << cveRecord 
 		end
+		table.fsync
+		link.fsync
+		ActiveRecord::Base.connection.execute("COPY cvenums FROM '/home/vagrant/data/cvenums.csv' DELIMITER ',' CSV")
+		ActiveRecord::Base.connection.execute("COPY code_reviews_cvenums FROM '/home/vagrant/data/code_reviews_cvenums.csv' DELIMITER ',' CSV")
+		ActiveRecord::Base.connection.execute("WITH issues AS ((SELECT code_review_id from code_reviews_cvenums) EXCEPT (SELECT issue FROM 
+											   code_reviews)) DELETE FROM code_reviews_cvenums WHERE code_review_id IN (SELECT code_review_id 
+											   FROM issues);")
 	end
 
 	# Download result set from Google Docs
@@ -109,14 +104,5 @@ class CveLoader
 			issues.collect{ |issue| cveList[cve].add(issue)}
 		end
 		cveList
-	end
-
-	# Given a model, a cve number, and a list of symbol properties, transfer the same attributes
-	def transfer(model, cve, properties)
-	    properties.each do |p|
-	        model[p] = cve
-	    end
-	    model.save
-	    model
 	end
 end

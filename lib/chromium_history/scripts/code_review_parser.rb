@@ -4,14 +4,14 @@ require 'csv'
 class CodeReviewParser
 
   def parse
-    @crs = CSV.open("/home/vagrant/chromium-history/code_reviews.csv", 'w+')
-    @revs = CSV.open("/home/vagrant/chromium-history/reviewers.csv", 'w+')
-    @ps = CSV.open("/home/vagrant/chromium-history/patch_sets.csv", 'w+')
-    @msgs = CSV.open("/home/vagrant/chromium-history/messages.csv", 'w+')
-    @psf = CSV.open("/home/vagrant/chromium-history/patch_set_files.csv", 'w+')
-    @coms = CSV.open("/home/vagrant/chromium-history/comments.csv", 'w+')
+    @crs = CSV.open("#{Rails.configuration.datadir}/code_reviews.csv", 'w+')
+    @revs = CSV.open("#{Rails.configuration.datadir}/reviewers.csv", 'w+')
+    @ps = CSV.open("#{Rails.configuration.datadir}/patch_sets.csv", 'w+')
+    @msgs = CSV.open("#{Rails.configuration.datadir}/messages.csv", 'w+')
+    @psf = CSV.open("#{Rails.configuration.datadir}/patch_set_files.csv", 'w+')
+    @coms = CSV.open("#{Rails.configuration.datadir}/comments.csv", 'w+')
     
-    Dir["#{Rails.configuration.datadir}/codereviews/*.json"].each do |file|
+    Dir["#{Rails.configuration.datadir}/realdata/codereviews/*.json"].each do |file|
       cobj = load_json file
       @crs << [cobj['description'], cobj['subject'], cobj['created'], cobj['modified'], cobj['issue'], cobj['owner_email']]
       cobj['reviewers'].each do |email|

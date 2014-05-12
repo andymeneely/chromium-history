@@ -80,13 +80,13 @@ class Developer < ActiveRecord::Base
       developer["email"] = email
       developer["name"] = name
       # developer.save
-      return developer
+      return developer, false
     else 
       dobj = Developer.find_by_email(email)
       if (Developer.find_by_name(name) == nil) 
-        dobj["name"] = name #if there is already an owner there and they dont match, that a problem
+        dobj["name"] = name 
       end #checking if the name exists
-      return dobj
+      return dobj, true
     end #checking if the email exists
   	# returns the developer object either way
   end
