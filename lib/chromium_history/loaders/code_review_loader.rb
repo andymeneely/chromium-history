@@ -5,8 +5,6 @@ require 'set'
 require 'csv'
 
 class CodeReviewLoader
-
-  @@BULK_IMPORT_BLOCK_SIZE = 10000
   
   def copy_parsed_tables 
     ActiveRecord::Base.connection.execute("COPY cvenums FROM '#{Rails.configuration.datadir}/cvenums.csv' DELIMITER ',' CSV")
