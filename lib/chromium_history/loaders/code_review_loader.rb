@@ -39,7 +39,7 @@ class CodeReviewLoader
 
   def load_many developers, query, update_table, dev_id_column, email_column
     raws = ActiveRecord::Base.connection.execute(query)
-    msgs = []
+    values = []
     raws.each do |raw|
       email, valid = Developer.sanitize_validate_email raw['email']
       next unless valid 
@@ -51,11 +51,11 @@ class CodeReviewLoader
       else 
         dev_id = developers[email]
       end
-      msgs << "(#{dev_id}, '#{raw['email']}')"
+      values << "(#{dev_id}, '#{raw['email']}')"
     end
     update = "UPDATE #{update_table} AS m SET
               #{dev_id_column} = c.id
-              FROM (values #{msgs.join(', ')}) AS c (id, address) 
+              FROM (values #{values.join(', ')}) AS c (id, address) 
               WHERE #{email_column} = c.address;"
     ActiveRecord::Base.connection.execute(update)
   end
