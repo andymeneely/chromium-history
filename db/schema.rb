@@ -13,7 +13,7 @@
 
 ActiveRecord::Schema.define(version: 20140512131450) do
 
-  create_table "code_reviews", force: true do |t|
+  create_table "code_reviews", id: false, force: true do |t|
     t.text     "description"
     t.string   "subject"
     t.datetime "created"
@@ -118,10 +118,7 @@ ActiveRecord::Schema.define(version: 20140512131450) do
   create_table "reviewers", id: false, force: true do |t|
     t.integer "issue",  limit: 8
     t.string  "email"
-    t.integer "dev_id"
   end
-
-  add_index "reviewers", ["issue"], name: "zed", using: :hash
 
   create_table "sheriffs", force: true do |t|
     t.string   "email"

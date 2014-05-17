@@ -9,107 +9,54 @@ class CodeReviewLoader
   @@BULK_IMPORT_BLOCK_SIZE = 10000
   
   def copy_parsed_tables 
-    ActiveRecord::Base.connection.execute "COPY cvenums FROM '#{Rails.configuration.datadir}/cvenums.csv' DELIMITER ',' CSV"
-    ActiveRecord::Base.connection.execute "COPY code_reviews FROM '#{Rails.configuration.datadir}/code_reviews.csv' DELIMITER ',' CSV;"
-    ActiveRecord::Base.connection.execute "ALTER TABLE code_reviews ADD COLUMN id SERIAL; ALTER TABLE code_reviews ADD PRIMARY KEY (id);"
-    ActiveRecord::Base.connection.execute "COPY reviewers FROM '/home/vagrant/data/reviewers.csv' DELIMITER ',' CSV;"
-    ActiveRecord::Base.connection.execute "ALTER TABLE reviewers ADD COLUMN dev_id integer; CREATE INDEX zed ON reviewers USING hash (issue);"
+    ActiveRecord::Base.connection.execute("COPY cvenums FROM '#{Rails.configuration.datadir}/cvenums.csv' DELIMITER ',' CSV")
+
+    ActiveRecord::Base.connection.execute("COPY code_reviews FROM '#{Rails.configuration.datadir}/code_reviews.csv' DELIMITER ',' CSV")
+    ActiveRecord::Base.connection.execute("ALTER TABLE code_reviews ADD COLUMN owner_id integer")
+
+    ActiveRecord::Base.connection.execute("COPY reviewers FROM '#{Rails.configuration.datadir}/reviewers.csv' DELIMITER ',' CSV")
+    ActiveRecord::Base.connection.execute("ALTER TABLE reviewers ADD COLUMN dev_id integer")
+    ActiveRecord::Base.connection.execute("CREATE INDEX zed ON reviewers USING hash (issue)")
+
+    ActiveRecord::Base.connection.execute("COPY patch_sets FROM '#{Rails.configuration.datadir}/patch_sets.csv' DELIMITER ',' CSV")
     
-    ActiveRecord::Base.connection.execute "COPY patch_sets FROM '#{Rails.configuration.datadir}/patch_sets.csv' DELIMITER ',' CSV;"
+    ActiveRecord::Base.connection.execute("COPY messages FROM '#{Rails.configuration.datadir}/messages.csv' DELIMITER ',' CSV")
+    ActiveRecord::Base.connection.execute("ALTER TABLE messages ADD COLUMN sender_id integer")
     
-    ActiveRecord::Base.connection.execute "COPY messages FROM '#{Rails.configuration.datadir}/messages.csv' DELIMITER ',' CSV;"
+    ActiveRecord::Base.connection.execute("COPY patch_set_files FROM '#{Rails.configuration.datadir}/patch_set_files.csv' DELIMITER ',' CSV")
     
-    ActiveRecord::Base.connection.execute "COPY patch_set_files FROM '#{Rails.configuration.datadir}/patch_set_files.csv' DELIMITER ',' CSV;"
-    
-    ActiveRecord::Base.connection.execute "COPY comments FROM '#{Rails.configuration.datadir}/comments.csv' DELIMITER ',' CSV;"
+    ActiveRecord::Base.connection.execute("COPY comments FROM '#{Rails.configuration.datadir}/comments.csv' DELIMITER ',' CSV")
+    ActiveRecord::Base.connection.execute("ALTER TABLE comments ADD COLUMN author_id integer")
   end
 
-  def load_batch(batch)
-    @developer_to_save = Hash.new
-    @reviewer_to_save = []
-    
-    start = batch.to_i * @@BULK_IMPORT_BLOCK_SIZE
-    list = CodeReview.where(:id => start..(start+@@BULK_IMPORT_BLOCK_SIZE))
-    
-    list.each do |cobj|
-      revList = Reviewer.where(:issue => cobj.issue)
-      load_developers(revList, nil, cobj.issue)
-      load_developer_names(cobj.owner_email, nil)
-    end #each json file loop
-
-    Developer.import @developer_to_save.values
-    Reviewer.import @reviewer_to_save
-
-  end #load method
-
-  #private  
-
-  #param reviewers = list of emails sent to the reviewers
-  #      messages = list of messages on the code review
-  def load_developers(reviewers, messages, issueNumber)
-		distinct_reviewers = Set.new
-    reviewers.each do |rev|
-			email, valid = Developer.sanitize_validate_email rev.email
-			next if not valid 
-			next if distinct_reviewers.add?(email).nil?
-			
-      if not @developer_to_save.include?(email)
-        dev, found = Developer.search_or_add(email)
-        if not found
-          @developer_to_save[email] = dev
-        end
-      else
-        dev = @developer_to_save[email]
-      end
-      
-      rev.dev_id = dev.id
-      bulk_save Reviewer,rev, @reviewer_to_save
-    end #reviewers loop
-		
-    #possibly this message part should go in the load_messages method????
-    # For some reason this code was slowing down the build - disabling for now to see how it goes tonight. -Andy
-    #messages.each do |message|
-    #  message["recipients"].each do |email|  
-    #   Developer.search_or_add(email)
-    #  end #emails in the messages loop
-    #  Developer.search_or_add(message["sender"])  # putting the sender in
-    #end #messages loop
-  end #load developers method
-
-
-
-
-  #param email = email of a developer
-  #      name = name of the same developer
-  def load_developer_names(email, name)
-    email, valid = Developer.sanitize_validate_email email
-    
-    if not valid
-      return
-    end
-    
-    if not @developer_to_save.include?(email)
-      dev, found = 
-      Developer.search_or_add(email)
-      if not found
-        @developer_to_save[email] 
-      end
-    end
-
-  end #load developer names method
-
-
-
-  # Queue a model to be saved.
-  # @param model_class = 
-  # @param model - the model to be saved
-  # @param to_save - the @model_to_save (e.g. @codereviews_to_save)
-  def bulk_save(model_class, model, to_save)
-    to_save << model
-    if to_save.size >= @@BULK_IMPORT_BLOCK_SIZE
-      model_class.import to_save
-      to_save.clear
-    end
+  def load_developers
+    developers = {}
+    load_many developers, "SELECT DISTINCT owner_email AS email FROM code_reviews", 'reviewers', 'dev_id', 'email'
+    load_many developers, "SELECT DISTINCT email from reviewers", 'code_reviews', 'owner_id', 'owner_email'
+    load_many developers, "SELECT DISTINCT sender AS email from messages", 'messages', 'sender_id', 'sender'
+    load_many developers, "SELECT DISTINCT author_email AS email from comments", 'comments', 'author_id', 'author_email'
   end
 
+  def load_many developers, query, update_table, dev_id_column, email_column
+    raws = ActiveRecord::Base.connection.execute(query)
+    msgs = []
+    raws.each do |raw|
+      email, valid = Developer.sanitize_validate_email raw['email']
+      next unless valid 
+      unless developers.include?(email)
+        developer = Developer.new
+        developer.email = email
+        developer.save
+        developers[email] = dev_id = developer.id
+      else 
+        dev_id = developers[email]
+      end
+      msgs << "(#{dev_id}, '#{raw['email']}')"
+    end
+    update = "UPDATE #{update_table} AS m SET
+              #{dev_id_column} = c.id
+              FROM (values #{msgs.join(', ')}) AS c (id, address) 
+              WHERE #{email_column} = c.address;"
+    ActiveRecord::Base.connection.execute(update)
+  end
 end

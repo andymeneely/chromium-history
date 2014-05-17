@@ -8,26 +8,15 @@ require_relative '../chromium_history/consolidators/filepath_consolidator.rb'
 require_relative '../chromium_history/consolidators/developer_consolidator.rb'
 require_relative '../chromium_history/stats.rb'
 
+
 #Uncomment to require all loader files
 #Dir[File.expand_path('../chromium_history/loaders/*.rb', File.dirname(__FILE__))].each {|file| require file}
 
-task :run => [:environment, "run:env", "run:prod_check", "db:reset", "run:parse", "run:batch", "run:load", "run:optimize", "run:consolidate","run:verify", "run:analyze"] do
+task :run => [:environment, "run:env", "run:prod_check", "db:reset", "run:parse", "run:load", "run:optimize", "run:consolidate","run:verify", "run:analyze"] do
   puts "Run task completed. Current time is #{Time.now}"
 end
 
 namespace :run do
-
-  desc "Batch load code reviews"
-  task :batch => :environment do
-    Benchmark.bm(25) do |x|
-      x.report("Loading code reviews into db") {
-        CodeReview.new.copy_parsed_tables
-        (0..15).each do |i|
-          task('run:load_batch').execute(i)
-        end
-      }
-    end
-  end
   
   desc "Delete data from all tables."
   task :clean => [:environment] do
@@ -43,6 +32,8 @@ namespace :run do
   desc "Load data into tables"
   task :load => :environment do
     Benchmark.bm(25) do |x|
+      x.report("Loading Code Reviews: ") {CodeReviewLoader.new.copy_parsed_tables}
+      x.report("Loading Developers: ") {CodeReviewLoader.new.load_developers}
       x.report("Loading CVE reviews: ") {CveLoader.new.load_cve}
       x.report("Loading git log commits: ") {GitLogLoader.new.load}
     end
@@ -55,11 +46,6 @@ namespace :run do
         CodeReviewParser.new.parse
       }
     end
-  end
-
-  desc "Load 10,000 code reviews"
-  task :load_batch, [:batch] do |t, args|
-      CodeReviewLoader.new.load_batch(args)
   end
   
   desc "Alias for run:clean then run:load"

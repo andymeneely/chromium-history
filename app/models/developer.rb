@@ -14,12 +14,13 @@ class Developer < ActiveRecord::Base
   end
 	
 	
-	def self.sanitize_validate_email email 
+	def self.sanitize_validate_email dirty_email 
 		begin
-			email.gsub!(/\+\w+(?=@)/, '')
-			email.gsub!(')', '')
+			email = dirty_email.gsub(/\+\w+(?=@)/, '')
 			email.downcase!
-
+			matched_email = /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/.match email
+			raise Exception, "Invalid email address: #{email}" unless matched_email
+			email = matched_email[0]
 			# Performs basic email validation on creation
 			# will throw exception for invalid email 
 			m = Mail::Address.new(email)
@@ -79,7 +80,7 @@ class Developer < ActiveRecord::Base
       developer = Developer.new
       developer["email"] = email
       developer["name"] = name
-      # developer.save
+      developer.save
       return developer, false
     else 
       dobj = Developer.find_by_email(email)
