@@ -11,7 +11,7 @@ class CodeReviewParser
     @psf = CSV.open("#{Rails.configuration.datadir}/tmp/patch_set_files.csv", 'w+')
     @coms = CSV.open("#{Rails.configuration.datadir}/tmp/comments.csv", 'w+')
     
-    Dir["#{Rails.configuration.datadir}/realdata/codereviews/*.json"].each do |file|
+    Dir["#{Rails.configuration.datadir}/codereviews/*.json"].each do |file|
       cobj = load_json file
       @crs << [cobj['description'], cobj['subject'], cobj['created'], cobj['modified'], cobj['issue'], cobj['owner_email']]
       cobj['reviewers'].each do |email|
