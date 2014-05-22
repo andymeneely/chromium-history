@@ -4,7 +4,6 @@ class PatchSetFile < ActiveRecord::Base
   
   def self.on_optimize
     ActiveRecord::Base.connection.add_index :patch_set_files, :filepath
-    ActiveRecord::Base.connection.add_index :patch_set_files, :patch_set_id
     ActiveRecord::Base.connection.add_index :patch_set_files, :composite_patch_set_id
     ActiveRecord::Base.connection.add_index :patch_set_files, :composite_patch_set_file_id, unique: true
   end

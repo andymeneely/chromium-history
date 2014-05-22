@@ -4,12 +4,12 @@ require 'csv'
 class CodeReviewParser
 
   def parse
-    @crs = CSV.open("#{Rails.configuration.datadir}/code_reviews.csv", 'w+')
-    @revs = CSV.open("#{Rails.configuration.datadir}/reviewers.csv", 'w+')
-    @ps = CSV.open("#{Rails.configuration.datadir}/patch_sets.csv", 'w+')
-    @msgs = CSV.open("#{Rails.configuration.datadir}/messages.csv", 'w+')
-    @psf = CSV.open("#{Rails.configuration.datadir}/patch_set_files.csv", 'w+')
-    @coms = CSV.open("#{Rails.configuration.datadir}/comments.csv", 'w+')
+    @crs = CSV.open("#{Rails.configuration.datadir}/tmp/code_reviews.csv", 'w+')
+    @revs = CSV.open("#{Rails.configuration.datadir}/tmp/reviewers.csv", 'w+')
+    @ps = CSV.open("#{Rails.configuration.datadir}/tmp/patch_sets.csv", 'w+')
+    @msgs = CSV.open("#{Rails.configuration.datadir}/tmp/messages.csv", 'w+')
+    @psf = CSV.open("#{Rails.configuration.datadir}/tmp/patch_set_files.csv", 'w+')
+    @coms = CSV.open("#{Rails.configuration.datadir}/tmp/comments.csv", 'w+')
     
     Dir["#{Rails.configuration.datadir}/realdata/codereviews/*.json"].each do |file|
       cobj = load_json file

@@ -7,23 +7,24 @@ require 'csv'
 class CodeReviewLoader
   
   def copy_parsed_tables 
-    ActiveRecord::Base.connection.execute("COPY cvenums FROM '#{Rails.configuration.datadir}/cvenums.csv' DELIMITER ',' CSV")
+    #ActiveRecord::Base.connection.execute("COPY cvenums FROM '#{Rails.configuration.datadir}/cvenums.csv' DELIMITER ',' CSV")
 
-    ActiveRecord::Base.connection.execute("COPY code_reviews FROM '#{Rails.configuration.datadir}/code_reviews.csv' DELIMITER ',' CSV")
+    datadir = File.expand_path(Rails.configuration.datadir + "/tmp")
+    ActiveRecord::Base.connection.execute("COPY code_reviews FROM '#{datadir}/code_reviews.csv' DELIMITER ',' CSV")
     ActiveRecord::Base.connection.execute("ALTER TABLE code_reviews ADD COLUMN owner_id integer")
 
-    ActiveRecord::Base.connection.execute("COPY reviewers FROM '#{Rails.configuration.datadir}/reviewers.csv' DELIMITER ',' CSV")
+    ActiveRecord::Base.connection.execute("COPY reviewers FROM '#{datadir}/reviewers.csv' DELIMITER ',' CSV")
     ActiveRecord::Base.connection.execute("ALTER TABLE reviewers ADD COLUMN dev_id integer")
     ActiveRecord::Base.connection.execute("CREATE INDEX zed ON reviewers USING hash (issue)")
 
-    ActiveRecord::Base.connection.execute("COPY patch_sets FROM '#{Rails.configuration.datadir}/patch_sets.csv' DELIMITER ',' CSV")
+    ActiveRecord::Base.connection.execute("COPY patch_sets FROM '#{datadir}/patch_sets.csv' DELIMITER ',' CSV")
     
-    ActiveRecord::Base.connection.execute("COPY messages FROM '#{Rails.configuration.datadir}/messages.csv' DELIMITER ',' CSV")
+    ActiveRecord::Base.connection.execute("COPY messages FROM '#{datadir}/messages.csv' DELIMITER ',' CSV")
     ActiveRecord::Base.connection.execute("ALTER TABLE messages ADD COLUMN sender_id integer")
     
-    ActiveRecord::Base.connection.execute("COPY patch_set_files FROM '#{Rails.configuration.datadir}/patch_set_files.csv' DELIMITER ',' CSV")
+    ActiveRecord::Base.connection.execute("COPY patch_set_files FROM '#{datadir}/patch_set_files.csv' DELIMITER ',' CSV")
     
-    ActiveRecord::Base.connection.execute("COPY comments FROM '#{Rails.configuration.datadir}/comments.csv' DELIMITER ',' CSV")
+    ActiveRecord::Base.connection.execute("COPY comments FROM '#{datadir}/comments.csv' DELIMITER ',' CSV")
     ActiveRecord::Base.connection.execute("ALTER TABLE comments ADD COLUMN author_id integer")
   end
 
@@ -55,6 +56,7 @@ class CodeReviewLoader
               #{dev_id_column} = c.id
               FROM (values #{values.join(', ')}) AS c (id, address) 
               WHERE #{email_column} = c.address;"
+    puts update
     ActiveRecord::Base.connection.execute(update)
   end
 end
