@@ -1,5 +1,5 @@
-# Our custom Rakefile tasks for loading the data
-require_relative '../chromium_history/loaders/code_review_loader.rb'
+  # Our custom Rakefile tasks for loading the data
+  require_relative '../chromium_history/loaders/code_review_loader.rb'
 require_relative '../chromium_history/loaders/cve_loader.rb'
 require_relative '../chromium_history/verify/verify_runner.rb'
 require_relative '../chromium_history/loaders/git_log_loader.rb'
@@ -90,7 +90,10 @@ namespace :run do
 
   desc "Show some stats on the data set"
   task :stats => :env do
+    stats_start = Time.now
     Stats.new.run_all
+    time_taken = Time.now - stats_start
+    puts "Rake run:stats took #{time_taken.round(1)}s, which is #{(time_taken/60).round(2)} minutes."
   end
 
 end
