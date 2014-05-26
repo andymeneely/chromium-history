@@ -6,7 +6,7 @@ export PATH="$PATH:/home/axmvse/.gems/bin"
 export RUBYOPT=rubygems
 
 
-HISTORY_DIR=/home/axmvse/chromium/production-history
+HISTORY_DIR=/home/axmvse/chromium/build-repo
 LOGS_DIR=/home/axmvse/logs
 DATE=$(date +"%Y_%m_%d_%H_%M_%s")
 ERR="/home/axmvse/logs/err_$DATE.log"
