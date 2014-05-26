@@ -70,8 +70,9 @@ class Stats
   def collaborator_familiarity
     total = 0
     CodeReview.find_each do |c|
-      puts "Total Familiarity: #{c.total_familiarity}"
-      puts "Average Familiarity: #{c.average_familiarity}"
+      #FIXME Don't output, put in a histogram
+      #puts "Total Familiarity: #{c.total_familiarity}"
+      #puts "Average Familiarity: #{c.average_familiarity}"
     end
     return total
   end
