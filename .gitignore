@@ -24,9 +24,6 @@
 *.gem
 *.rbc
 
-#But always have a tmp/ directory
-!/tmp/.gitkeep
-
 .DS_Store
 
 /lib/assets/nvdcve*
