@@ -187,14 +187,15 @@ class Stats
     puts a.to_s(120)
     puts "\n"
 
-    puts "@@@ Number of Vulnerabilities per Participant Inspection Histogram @@@"
-    a = Aggregate.new(0, 10, 1)
-    Developer.all.find_each do |c|
-      nd = c.num_vulnerable_inspects
-      a << nd
-    end
-    puts a.to_s(120)
-    puts "\n"
+    # FIXME Slow query
+    #puts "@@@ Number of Vulnerabilities per Participant Inspection Histogram @@@"
+    #a = Aggregate.new(0, 10, 1)
+    #Developer.all.find_each do |c|
+    #  nd = c.num_vulnerable_inspects
+    #  a << nd
+    #end
+    #puts a.to_s(120)
+    #puts "\n"
 
   puts "@@@ Number of Vulnerability Participants per Filepath Inspection Histogram @@@"
     a = Aggregate.new(0, 10, 1)
