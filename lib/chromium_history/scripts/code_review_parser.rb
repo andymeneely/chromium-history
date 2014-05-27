@@ -27,6 +27,12 @@ class CodeReviewParser
       end
       parse_messages(file, cobj['issue'], cobj['messages'])  
     end
+    @crs.fsync
+    @revs.fsync
+    @ps.fsync
+    @msgs.fsync
+    @psf.fsync
+    @coms.fsync
   end
   
   def ordered_array(keyOrder, source)
@@ -45,7 +51,7 @@ class CodeReviewParser
   def parse_patchsets(patchset_file, code_review_id)
     pobj = load_json(patchset_file)
     pobj['composite_patch_set_id'] = "#{code_review_id}-#{pobj['patchset']}"
-    pobj['codereview_id'] = code_review_id
+    pobj['code_review_id'] = code_review_id
     @ps << ordered_array(@@PATCH_SET_PROPS, pobj)
     parse_patch_set_files(pobj['composite_patch_set_id'], pobj['files'])
   end
