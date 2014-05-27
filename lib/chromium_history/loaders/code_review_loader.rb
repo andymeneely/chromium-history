@@ -4,8 +4,6 @@ require 'csv'
 class CodeReviewLoader
   
   def copy_parsed_tables 
-    #ActiveRecord::Base.connection.execute("COPY cvenums FROM '#{Rails.configuration.datadir}/cvenums.csv' DELIMITER ',' CSV")
-
     datadir = File.expand_path(Rails.configuration.datadir + "/tmp")
     ActiveRecord::Base.connection.execute("COPY code_reviews FROM '#{datadir}/code_reviews.csv' DELIMITER ',' CSV")
     ActiveRecord::Base.connection.execute("ALTER TABLE code_reviews ADD COLUMN owner_id integer")
@@ -15,6 +13,7 @@ class CodeReviewLoader
     ActiveRecord::Base.connection.execute("ALTER TABLE reviewers ADD COLUMN dev_id integer")
 
     ActiveRecord::Base.connection.execute("COPY patch_sets FROM '#{datadir}/patch_sets.csv' DELIMITER ',' CSV")
+    ActiveRecord::Base.connection.execute("ALTER TABLE patch_sets ADD COLUMN owner_id integer")
     
     ActiveRecord::Base.connection.execute("COPY messages FROM '#{datadir}/messages.csv' DELIMITER ',' CSV")
     ActiveRecord::Base.connection.execute("ALTER TABLE messages ADD COLUMN sender_id integer")
@@ -31,6 +30,7 @@ class CodeReviewLoader
     load_many developers, "SELECT DISTINCT email from reviewers", 'code_reviews', 'owner_id', 'owner_email'
     load_many developers, "SELECT DISTINCT sender AS email from messages", 'messages', 'sender_id', 'sender'
     load_many developers, "SELECT DISTINCT author_email AS email from comments", 'comments', 'author_id', 'author_email'
+    load_many developers, "SELECT DISTINCT owner_email AS email from patch_sets", 'patch_sets', 'owner_id', 'owner_email'
   end
 
   def load_many developers, query, update_table, dev_id_column, email_column

@@ -46,7 +46,7 @@ class CodeReviewParser
     pobj = load_json(patchset_file)
     pobj['composite_patch_set_id'] = "#{code_review_id}-#{pobj['patchset']}"
     pobj['codereview_id'] = code_review_id
-    @ps << ordered_array(@@PATCH_SET_PROPS, patchset_file)
+    @ps << ordered_array(@@PATCH_SET_PROPS, pobj)
     parse_patch_set_files(pobj['composite_patch_set_id'], pobj['files'])
   end
   
