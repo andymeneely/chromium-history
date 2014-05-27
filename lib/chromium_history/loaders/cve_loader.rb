@@ -14,8 +14,8 @@ class CveLoader
 			resultFile = build_result_set()
 		end
 		uniqueCve = Set.new
-		table = CSV.open "#{Rails.configuration.datadir}/cvenums.csv", 'w+'
-		link = CSV.open "#{Rails.configuration.datadir}/code_reviews_cvenums.csv", 'w+'
+		table = CSV.open "#{Rails.configuration.datadir}/tmp/cvenums.csv", 'w+'
+		link = CSV.open "#{Rails.configuration.datadir}/tmp/code_reviews_cvenums.csv", 'w+'
 		CSV.foreach(resultFile, :headers => true) do | row |
 			if uniqueCve.add? row[0]
 				cve = row[0]
@@ -32,8 +32,8 @@ class CveLoader
 		table.fsync
 		link.fsync
 		datadir = File.expand_path(Rails.configuration.datadir)
-		ActiveRecord::Base.connection.execute("COPY cvenums FROM '#{datadir}/cvenums.csv' DELIMITER ',' CSV")
-		ActiveRecord::Base.connection.execute("COPY code_reviews_cvenums FROM '#{datadir}/code_reviews_cvenums.csv' DELIMITER ',' CSV")
+		ActiveRecord::Base.connection.execute("COPY cvenums FROM '#{datadir}/tmp/cvenums.csv' DELIMITER ',' CSV")
+		ActiveRecord::Base.connection.execute("COPY code_reviews_cvenums FROM '#{datadir}/tmp/code_reviews_cvenums.csv' DELIMITER ',' CSV")
 		ActiveRecord::Base.connection.execute("WITH issues AS ((SELECT code_review_id from code_reviews_cvenums) EXCEPT (SELECT issue FROM 
 											   code_reviews)) DELETE FROM code_reviews_cvenums WHERE code_review_id IN (SELECT code_review_id 
 											   FROM issues);")
