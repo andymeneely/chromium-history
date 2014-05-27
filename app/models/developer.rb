@@ -3,14 +3,14 @@ require 'mail'
 class Developer < ActiveRecord::Base
 
 
-  has_many :participants, primary_key: 'email', foreign_key: 'email'
-  has_many :contributors, primary_key: 'email', foreign_key: 'email'
-  has_many :reviewers, primary_key: 'email', foreign_key: 'email'
-  has_many :sheriffs, primary_key: 'email', foreign_key: 'email'
+  has_many :participants, primary_key: 'id', foreign_key: 'dev_id'
+  has_many :contributors, primary_key: 'id', foreign_key: 'dev_id'
+  has_many :reviewers, primary_key: 'id', foreign_key: 'dev_id'
+  has_many :sheriffs, primary_key: 'id', foreign_key: 'dev_id'
 
   def self.on_optimize
     ActiveRecord::Base.connection.add_index :developers, :email, unique: true
-    ActiveRecord::Base.connection.add_index :developers, :name
+    # ActiveRecord::Base.connection.add_index :developers, :name
   end
 	
 	

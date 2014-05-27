@@ -16,6 +16,14 @@ module DataTransfer
   	end
   	model
   end
+
+  def ordered_array(keyOrder, source)
+    result = Array.new
+    keyOrder.each do |key|
+      result << source[key.to_s]
+    end
+    result
+  end
   
 end
   

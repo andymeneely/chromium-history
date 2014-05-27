@@ -54,8 +54,8 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.integer  "commit_files_id"
   end
 
-  create_table "contributors", id: false, force: true do |t|
-    t.string  "email"
+  create_table "contributors", force: true do |t|
+    t.integer  "dev_id"
     t.integer "issue", limit: 8
   end
 
@@ -83,8 +83,8 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.integer  "code_review_id", limit: 8
   end
 
-  create_table "participants", id: false, force: true do |t|
-    t.string  "email"
+  create_table "participants", force: true do |t|
+    t.integer  "dev_id"
     t.integer "issue",              limit: 8
     t.integer "reviews_with_owner"
   end
@@ -111,17 +111,13 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.string   "composite_patch_set_id"
   end
 
-  create_table "raw_files", id: false, force: true do |t|
-    t.string "path"
-  end
-
   create_table "reviewers", id: false, force: true do |t|
     t.integer "issue",  limit: 8
     t.string  "email"
   end
 
   create_table "sheriffs", force: true do |t|
-    t.string   "email"
+    t.integer  "dev_id"
     t.datetime "start"
     t.datetime "end"
     t.string   "title"

@@ -33,8 +33,11 @@ namespace :run do
   task :load => :environment do
     Benchmark.bm(25) do |x|
       x.report("Loading Code Reviews: ") {CodeReviewLoader.new.copy_parsed_tables}
-      #x.report("Loading Developers: ") {CodeReviewLoader.new.load_developers}
-      #x.report("Loading CVE reviews: ") {CveLoader.new.load_cve}
+      x.report("Loading Developers: ") {
+        CodeReviewLoader.new.load_developers
+        CodeReviewLoader.new.add_primary_keys
+      }
+      x.report("Loading CVEs: ") {CveLoader.new.load_cve}
       x.report("Loading git log commits: ") {GitLogLoader.new.load}
     end
   end
@@ -70,7 +73,7 @@ namespace :run do
   task :consolidate => [:environment] do
     Benchmark.bm(25) do |x|
       x.report("Consolidating filepaths: ") {FilepathConsolidator.new.consolidate}
-      #x.report("Consolidating participants: ") {DeveloperConsolidator.new.consolidate}
+      x.report("Consolidating participants: ") {DeveloperConsolidator.new.consolidate}
     end
   end
 

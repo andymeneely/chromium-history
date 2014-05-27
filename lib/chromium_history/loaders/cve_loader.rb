@@ -15,18 +15,20 @@ class CveLoader
 		else
 			resultFile = build_result_set()
 		end
-
+		uniqueCve = Set.new
 		table = CSV.open "#{Rails.configuration.datadir}/cvenums.csv", 'w+'
 		link = CSV.open "#{Rails.configuration.datadir}/code_reviews_cvenums.csv", 'w+'
 		CSV.foreach(resultFile, :headers => true) do | row |
-			cve = row[0]
-			issues = row[1].scan(/\d+/)
-			if issues.empty?
-				next
-			end
-			table << [cve]
-			issues.each do |issue| 
-				link << [cve, issue]
+			if uniqueCve.add? row[0]
+				cve = row[0]
+				issues = row[1].scan(/\d+/)
+				if issues.empty?
+					next
+				end
+				table << [cve]
+				issues.each do |issue| 
+					link << [cve, issue]
+				end
 			end
 		end
 		table.fsync

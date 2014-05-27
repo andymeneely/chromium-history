@@ -1,6 +1,3 @@
-require 'oj'
-require_relative 'data_transfer'
-require_relative 'git_log_loader'
 require 'set'
 require 'csv'
 
@@ -12,10 +9,10 @@ class CodeReviewLoader
     datadir = File.expand_path(Rails.configuration.datadir + "/tmp")
     ActiveRecord::Base.connection.execute("COPY code_reviews FROM '#{datadir}/code_reviews.csv' DELIMITER ',' CSV")
     ActiveRecord::Base.connection.execute("ALTER TABLE code_reviews ADD COLUMN owner_id integer")
+    ActiveRecord::Base.connection.execute("ALTER TABLE code_reviews ADD COLUMN commit_hash varchar")
 
     ActiveRecord::Base.connection.execute("COPY reviewers FROM '#{datadir}/reviewers.csv' DELIMITER ',' CSV")
     ActiveRecord::Base.connection.execute("ALTER TABLE reviewers ADD COLUMN dev_id integer")
-    ActiveRecord::Base.connection.execute("CREATE INDEX zed ON reviewers USING hash (issue)")
 
     ActiveRecord::Base.connection.execute("COPY patch_sets FROM '#{datadir}/patch_sets.csv' DELIMITER ',' CSV")
     
@@ -56,7 +53,15 @@ class CodeReviewLoader
               #{dev_id_column} = c.id
               FROM (values #{values.join(', ')}) AS c (id, address) 
               WHERE #{email_column} = c.address;"
-    puts update
     ActiveRecord::Base.connection.execute(update)
+  end
+
+  def add_primary_keys
+    ActiveRecord::Base.connection.execute "ALTER TABLE messages ADD COLUMN id SERIAL; ALTER TABLE messages ADD PRIMARY KEY (id);"
+    ActiveRecord::Base.connection.execute "ALTER TABLE comments ADD COLUMN id SERIAL; ALTER TABLE comments ADD PRIMARY KEY (id);"
+    ActiveRecord::Base.connection.execute "ALTER TABLE patch_sets ADD COLUMN id SERIAL; ALTER TABLE patch_sets ADD PRIMARY KEY (id);"
+    ActiveRecord::Base.connection.execute "ALTER TABLE patch_set_files ADD COLUMN id SERIAL; ALTER TABLE patch_set_files ADD PRIMARY KEY (id);"
+    ActiveRecord::Base.connection.execute "ALTER TABLE reviewers ADD COLUMN id SERIAL; ALTER TABLE reviewers ADD PRIMARY KEY (id);"
+    ActiveRecord::Base.connection.execute("CREATE INDEX ON code_reviews USING hash (issue)")
   end
 end

@@ -19,21 +19,21 @@ class GitLogLoader
 
   include DataTransfer
 
-  @@GIT_LOG_PROPERTIES = [:commit_hash, :parent_commit_hash, :author_email,
-                          :message, :bug, :svn_revision, :created_at]
-
-  @@GIT_LOG_FILE_PROPERTIES = [:commit_id, :filepath]
-
-  @@BULK_IMPORT_BLOCK_SIZE=500 # The number of records we collect before we push to the db
+  @@GIT_LOG_FILE_PROPERTIES = [:commit_hash, :filepath]
+  @@GIT_LOG_PROPERTIES = [:commit_hash, :parent_commit_hash, :author_email, :bug, :svn_revision, :created_at, :message]
 
   def load
-    @commits_to_save = []
-    @commit_filepaths_to_save = []
+    @reviews_to_update = []
+    @con = ActiveRecord::Base.connection.raw_connection
+    @con.prepare('commitInsert', "INSERT INTO commits (#{@@GIT_LOG_PROPERTIES.map{|key| key.to_s}.join(', ')}) VALUES ($1, $2, $3, $4, $5, $6, $7)")
+    @con.prepare('fileInsert', "INSERT INTO commit_filepaths (#{@@GIT_LOG_FILE_PROPERTIES.map{|key| key.to_s}.join(', ')}) VALUES ($1, $2)")
     get_commits(File.open("#{Rails.configuration.datadir}/chromium-gitlog.txt", "r"))
 
-    Commit.import @commits_to_save #Import Whatever is left over
-    CommitFilepath.import @commit_filepaths_to_save
-
+    update = "UPDATE code_reviews SET
+              commit_hash = m.hash
+              FROM (values #{@reviews_to_update.join(', ')}) AS m (id, hash) 
+              WHERE issue = m.id;"
+    ActiveRecord::Base.connection.execute(update)
   end
 
   #
@@ -51,7 +51,7 @@ class GitLogLoader
     isStarted = false
 
     file.each_line do |line|
-      if line.strip.match(/^:::$/) or line.strip.match(/^;;;:::$/)
+      if line.strip =~ (/^:::$/) or line.strip =~ (/^;;;:::$/)
         #begin processing, encountered
         #first commit (:::) avoid adding 
         #any garbage before first commit
@@ -103,10 +103,10 @@ class GitLogLoader
     #index 5 should be the start
     #of the message
     for i in (5..arr.size-1)
-      if not arr.fetch(i).match(/^git-svn-id:/) and
-        not arr.fetch(i).match(/^Review URL:/) and
-        not arr.fetch(i).match(/^BUG/) and
-        not arr.fetch(i).match(/^R=/)
+      if not arr.fetch(i) =~ (/^git-svn-id:/) and
+        not arr.fetch(i) =~ (/^Review URL:/) and
+        not arr.fetch(i) =~ (/^BUG/) and
+        not arr.fetch(i) =~ (/^R=/)
 
         #concat the message into 1
         #string
@@ -133,20 +133,15 @@ class GitLogLoader
         hash[:svn_revision] = element.strip.sub("git-svn-id:", "")
 
       elsif not (element =~ /^Review URL:/).nil?
-        issue = element[/(\d)+/].to_i # Greedy grab the first integer
-        c = CodeReview.find_by(issue: issue)
-        if !c.nil? #If the code review doesn't exist then it was not in Chromium
-          c.commit_hash = arr[0].strip
-          c.save
-        end
+        @reviews_to_update << "(#{element[/(\d)+/].to_i}, '#{arr[0].strip}')"
 
-      elsif not (element =~ /^BUG=/).nil?
+      elsif not (element =~ /^BUG=/)
         hash[:bug] = element.strip.sub("BUG=", "")
 
-      elsif not (element =~ /^;;;/).nil?
+      elsif not (element =~ /^;;;/)
         in_files = true
 
-      elsif (in_files and not (element =~ /([\s-]*\|[\s-]*\d+ \+*\-*)/).nil?)
+      elsif (in_files and not (element =~ /([\s-]*\|[\s-]*\d+ \+*\-*)/))
         filepaths.push(element.slice(0,element.index('|')).strip)
 
       end
@@ -209,12 +204,7 @@ class GitLogLoader
   # @param- Hash
   #
   def add_commit_to_db(hash)
-    commit = parse_transfer(Commit.new, hash, @@GIT_LOG_PROPERTIES)
-    @commits_to_save << commit #add commit to commits to be imported array
-    if @commits_to_save.size > @@BULK_IMPORT_BLOCK_SIZE
-      Commit.import @commits_to_save 
-      @commits_to_save = []
-    end
+    @con.exec_prepared('commitInsert', hash.values_at(*@@GIT_LOG_PROPERTIES))
 
     #create the filepaths assoc w/ commit
     create_commit_filepath(hash["filepaths"], hash[:commit_hash])
@@ -229,14 +219,9 @@ class GitLogLoader
   # @param- Array of file paths
   #
   def create_commit_filepath(filepaths, commit_hash)
+
     filepaths.each do |str_path|
-
-      @commit_filepaths_to_save << CommitFilepath.new(commit_hash: commit_hash, filepath: str_path)
-      if @commit_filepaths_to_save.size > @@BULK_IMPORT_BLOCK_SIZE
-        CommitFilepath.import @commit_filepaths_to_save
-        @commit_filepaths_to_save = []
-      end
-
+      @con.exec_prepared('fileInsert', hash.values_at(*@@GIT_LOG_FILE_PROPERTIES))
     end#loop
   end
 

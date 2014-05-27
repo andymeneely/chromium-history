@@ -8,14 +8,12 @@ class DeveloperConsolidator
 
   def consolidate_participants
     query=<<-eos
-      INSERT INTO participants (email, issue) 
-      SELECT email, issue FROM(
-        SELECT owner_email as email, code_review_id as issue FROM patch_sets
+      INSERT INTO participants (dev_id, issue) 
+      SELECT dev_id, issue FROM(
+        SELECT owner_id as dev_id, code_review_id as issue FROM patch_sets
         UNION
-        SELECT sender as email, code_review_id as issue FROM messages
-
+        SELECT sender_id as dev_id, code_review_id as issue FROM messages
       ) all_participants
-      WHERE email!='commit-bot@chromium.org'
     eos
 
     ActiveRecord::Base.connection.execute query
@@ -29,7 +27,7 @@ class DeveloperConsolidator
 
         #find all the code reviews where the owner is owner and one of the reviewers is participant
         #and only include reviews that were done before this one
-        reviews = CodeReview.joins(:participants).where("owner_email = ? AND created < ? AND email = ? ", c.owner_email, c.created, participant.email)
+        reviews = CodeReview.joins(:participants).where("owner_id = ? AND created < ? AND dev_id = ? ", c.owner_id, c.created, participant.dev_id)
         participant.update(reviews_with_owner: reviews.count)
       }
     end
@@ -39,8 +37,8 @@ class DeveloperConsolidator
   def consolidate_contributors
      #Copy participants table
     query=<<-eos
-      INSERT INTO contributors (email, issue) 
-      SELECT email, issue FROM participants
+      INSERT INTO contributors (dev_id, issue) 
+      SELECT dev_id, issue FROM participants
     eos
 
     ActiveRecord::Base.connection.execute query
@@ -50,7 +48,7 @@ class DeveloperConsolidator
       group.each { |contributor| 
         issueNumber = contributor.issue
         #take the issue number and look up in messages or comments
-        mess = Message.where("code_review_id = ? AND sender = ?", issueNumber, contributor.email)  # and sender is the contributor
+        mess = Message.where("code_review_id = ? AND sender_id = ?", issueNumber, contributor.dev_id)  # and sender is the contributor
         
         c = false  #default assumption is they did not contribute
         for m in mess  #we need to check all of the messages they sent to see if any of them were useful
@@ -63,7 +61,7 @@ class DeveloperConsolidator
 
         #delete this row of the table once we get all done checking
         if !c
-          Contributor.delete_all(["issue = ? AND email = ?", issueNumber, contributor.email])
+          Contributor.delete_all(["issue = ? AND dev_id = ?", issueNumber, contributor.dev_id])
         end
 
       }

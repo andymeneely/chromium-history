@@ -9,8 +9,10 @@ class CodeReview < ActiveRecord::Base
   
   has_and_belongs_to_many :cvenums
   
+  self.primary_key = :issue
+  
   def self.on_optimize
-    ActiveRecord::Base.connection.add_index :code_reviews, :issue, unique: true
+    # ActiveRecord::Base.connection.add_index :code_reviews, :issue, unique: true
   end
 
   def is_inspecting_vulnerability?
