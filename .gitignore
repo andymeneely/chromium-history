@@ -4,11 +4,12 @@
 # or operating system, you probably want to add a global ignore instead:
 #   git config --global core.excludesfile '~/.gitignore_global'
 
-/node_modules/*
 # Ignore bundler config.
 /.bundle
 
+# Ignore the big data set in our root
 /realdata/*
+
 # Ignore vagrant machine
 /.vagrant/*
 
@@ -26,11 +27,14 @@
 *.gem
 *.rbc
 
+# Ignore mac stuff
 .DS_Store
 
+# Ignore old data we removed anyway
 /lib/assets/nvdcve*
 /data/development/cves/chromium*.csv
-# Coverage
+
+# Ignore coverage generation
 coverage
 
 # Generated documentation
@@ -48,12 +52,9 @@ config/credentials.yml
 # Ignoring platform-specific Gemfile.lock
 # Yes, this is not supposed to be how it works. But https://github.com/bundler/bundler-features/issues/4 references a long history of complaints and they are fixing this to make Gemfile.lock be more cross-platform. If we don't ignore it, we'll be checking in this file over and over again if we want to work on Windows, Mac, and Linux.
 Gemfile.lock
-code_reviews.csv
-comments.csv
-list.csv
-messages.csv
-patch_set_files.csv
-patch_sets.csv
-reviewers.csv
 
+#Ignore temporary csvs
+/data/development/tmp/*.csv
+
+#Ignore nodejs temporary stuff
 /node_modules/*
