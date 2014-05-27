@@ -7,9 +7,7 @@ require "google_drive"
 
 class CveLoader
 	RESULTS_FILE = "/cves/cves.csv"
-
 	def load_cve
-
 		if Rails.env == 'development' 
 			resultFile = "#{Rails.configuration.datadir}#{RESULTS_FILE}"
 		else
@@ -33,8 +31,9 @@ class CveLoader
 		end
 		table.fsync
 		link.fsync
-		ActiveRecord::Base.connection.execute("COPY cvenums FROM '#{Rails.configuration.datadir}/cvenums.csv' DELIMITER ',' CSV")
-		ActiveRecord::Base.connection.execute("COPY code_reviews_cvenums FROM '#{Rails.configuration.datadir}/code_reviews_cvenums.csv' DELIMITER ',' CSV")
+		datadir = File.expand_path(Rails.configuration.datadir)
+		ActiveRecord::Base.connection.execute("COPY cvenums FROM '#{datadir}/cvenums.csv' DELIMITER ',' CSV")
+		ActiveRecord::Base.connection.execute("COPY code_reviews_cvenums FROM '#{datadir}/code_reviews_cvenums.csv' DELIMITER ',' CSV")
 		ActiveRecord::Base.connection.execute("WITH issues AS ((SELECT code_review_id from code_reviews_cvenums) EXCEPT (SELECT issue FROM 
 											   code_reviews)) DELETE FROM code_reviews_cvenums WHERE code_review_id IN (SELECT code_review_id 
 											   FROM issues);")
@@ -42,7 +41,7 @@ class CveLoader
 
 	# Download result set from Google Docs
 	def get_google_spreadsheet
-		downloadFile = "#{Rails.configuration.datadir}/cves/cves.csv"
+		downloadFile = "#{Rails.configuration.datadir}#{RESULTS_FILE}"
 		if File.exists?(downloadFile)
 			File.delete(downloadFile)
 		end
