@@ -28,7 +28,7 @@ class CodeReviewMetricsVerify < VerifyBase
   end
 
   def verify_10854242_num_nonparticipating_reviewers
-    assert_equal 3, CodeReview.find_by(issue: 10854242).num_nonparticipating_reviewers
+    assert_equal 2, CodeReview.find_by(issue: 10854242).nonparticipating_reviewers.count
   end
 
 end

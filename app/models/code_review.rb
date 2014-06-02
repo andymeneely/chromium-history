@@ -41,15 +41,10 @@ class CodeReview < ActiveRecord::Base
     CodeReview.overlooked_patchsets.where(issue: issue).any?
   end
 
-  def num_nonparticipating_reviewers
-  	totalNonparticipating = 0;
-  	reviewers = self.reviewers
-  	for reviewer in reviewers 
-  		if self.participants.where(["dev_id=? and issue=?", reviewer.dev_id, reviewer.issue]).exists?
-  			totalNonparticipating += 1
-  		end
-  	end
-  	return totalNonparticipating
+  # Metric: 
+  #  The developers who did not participate in the code inspection
+  def nonparticipating_reviewers
+    reviewers.where('dev_id NOT IN (SELECT dev_id FROM participants WHERE issue=?)', issue)
   end
 
   #returns the familiarity of all the reviews added up
@@ -80,30 +75,31 @@ class CodeReview < ActiveRecord::Base
   # came before this one
   #
   # @return - Array of Participants 
+  #FIXME This is broken. Dev is returning nil
   def security_experienced_parts
 
-    experienced_participants = Array.new
-    start_date = self.created
+#    experienced_participants = Array.new
+#    start_date = self.created
 
     #get all participants for this code review
-    participants = self.participants
+#    participants = self.participants
 
-    participants.each do |p|
+#    participants.each do |p|
 
       #get the developer 
-      dev = p.developer
+#      dev = p.developer
 
       #they inspected a code review with a CVE before this code review
-      if dev.num_vulnerable_inspects(start_date) > 0 
+#      if dev.num_vulnerable_inspects(start_date) > 0 
 
         #add participant to array
-        experienced_participants.push(p)
+#       experienced_participants.push(p)
 
-      end#if
+#     end#if
 
-    end#loop
+#    end#loop
 
-    return experienced_participants
+#    return experienced_participants
 
   end#num_security_experienced_parts
 

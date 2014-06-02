@@ -121,7 +121,7 @@ class Stats
     puts "@@@ Number Non-participating Reviewers per CodeReview Histogram @@@"
     a = Aggregate.new(0,50,1)
     CodeReview.find_each do |c|
-      np = c.num_nonparticipating_reviewers
+      np = c.nonparticipating_reviewers.count
       a << np
     end
     puts a.to_s
@@ -131,7 +131,7 @@ class Stats
     a = Aggregate.new(0,100,1)
     Filepath.reviewers\
       .group('filepaths.filepath')\
-      .count('distinct(reviewers.email)')\
+      .count('distinct(reviewers.dev_id)')\
       .each do |filepath,count|
       a << count
     end
@@ -142,7 +142,7 @@ class Stats
     a = Aggregate.new(0,100,1)
     Filepath.participants\
       .group('filepaths.filepath')\
-      .count('distinct(participants.email)')\
+      .count('distinct(participants.dev_id)')\
       .each do |filepath,count|
       a << count
     end
@@ -153,7 +153,7 @@ class Stats
     a = Aggregate.new(0,100,1)
     Filepath.contributors\
       .group('filepaths.filepath')\
-      .count('distinct(contributors.email)')\
+      .count('distinct(contributors.dev_id)')\
       .each do |filepath,count|
       a << count
     end
@@ -195,14 +195,15 @@ class Stats
     puts a.to_s(120)
     puts "\n"
 
-  puts "@@@ Number of Vulnerability Participants per Filepath Inspection Histogram @@@"
-    a = Aggregate.new(0, 10, 1)
-    Filepath.all.find_each do |c|
-      vf = c.num_vulnerable_devs
-      a << vf
-    end
-    puts a.to_s(120)
-    puts "\n"
+    #FIXME This is broken too
+    #puts "@@@ Number of Vulnerability Participants per Filepath Inspection Histogram @@@"
+    #a = Aggregate.new(0, 10, 1)
+    #Filepath.all.find_each do |c|
+    #  vf = c.num_vulnerable_devs
+    #  a << vf
+    #end
+    #puts a.to_s(120)
+    #puts "\n"
 
     puts "@@@ Code Reviews that fall below or over 200 Lines of Code per Hour (0=false, 1=true) @@@"
     a = Aggregate.new(0, 2, 1)
@@ -213,14 +214,15 @@ class Stats
     puts a.to_s(120)
     puts "\n"
 
-    puts "@@@ Number of Experienced Developers per Code Review Histogram @@@"
-    a = Aggregate.new(0, 10, 1)
-    CodeReview.all.find_each do |c|
-      cl = c.security_experienced_parts.size
-      a << cl 
-    end
-    puts a.to_s(120)
-    puts "\n"
+    #FIXME Broken
+    #puts "@@@ Number of Experienced Developers per Code Review Histogram @@@"
+    #a = Aggregate.new(0, 10, 1)
+    #CodeReview.all.find_each do |c|
+    #  cl = c.security_experienced_parts.size
+    #  a << cl 
+    #end
+    #puts a.to_s(120)
+    #puts "\n"
 
     puts "@@@ Total Participator Familiarity per Code Review Histogram @@@"
     a = Aggregate.new(0, 10, 1)

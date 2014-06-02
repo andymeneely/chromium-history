@@ -102,20 +102,24 @@ class Developer < ActiveRecord::Base
   # @param- date Time object or string. Str format: "DD-MM-YYYY HH:MM:SS"
   # @return - number of inspected vulnerabilities
   def num_vulnerable_inspects(date=Time.now)
+
+
     #if date is a string then convert to Time object
     if date.class == String then date = Time.new(date) end
 
-    query = "SELECT COUNT(c.issue) FROM 
-            developers d JOIN 
-            participants p ON 
-            (d.email = p.email) JOIN 
-            code_reviews c ON 
-            (p.issue = c.issue) JOIN 
-            code_reviews_cvenums e ON 
-            e.code_review_id = c.id WHERE
-            c.created < date '#{date.to_s}'"
+    #FIXME This is broken. Just returns a result set and not a number
+    #query = "SELECT COUNT(c.issue) FROM 
+    #        developers d JOIN 
+    #        participants p ON 
+    #        (d.id = p.dev_id) JOIN 
+    #        code_reviews c ON 
+    #        (p.issue = c.issue) JOIN 
+    #        code_reviews_cvenums e ON 
+    #        e.code_review_id = c.issue WHERE
+    #        c.created < date '#{date.to_s}'"
 
-    self.connection.execute(query);
+    #self.connection.execute(query);
+    return 0
   end
 
 end#class
