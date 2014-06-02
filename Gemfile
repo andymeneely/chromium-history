@@ -11,9 +11,16 @@ gem 'rails', '4.0.0'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.0'
 
-# Oj for our JSON files
+# Oj for parsing our JSON files
 gem 'oj'
+
+# Hirb pretty prints in rails console
+# Usage:
+# $ rails console
+# >> Hirb.enable
 gem 'hirb'
+
+# Red/Green in the console
 gem 'colorize'
 gem 'win32console', :platforms => [:mswin, :mingw]
 
