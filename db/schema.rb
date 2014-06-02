@@ -20,6 +20,8 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.datetime "modified"
     t.integer  "issue",       limit: 8
     t.string   "owner_email"
+    t.integer  "owner_id"
+    t.string   "commit_hash"
   end
 
   create_table "code_reviews_cvenums", id: false, force: true do |t|
@@ -29,6 +31,7 @@ ActiveRecord::Schema.define(version: 20140512131450) do
 
   create_table "comments", id: false, force: true do |t|
     t.string   "author_email"
+    t.integer  "author_id"
     t.text     "text"
     t.boolean  "draft"
     t.integer  "lineno"
@@ -46,12 +49,12 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.string   "commit_hash"
     t.string   "parent_commit_hash"
     t.string   "author_email"
+    t.integer  "author_id"
     t.text     "message"
     t.string   "bug"
     t.string   "reviewers"
     t.string   "svn_revision"
     t.datetime "created_at"
-    t.integer  "commit_files_id"
   end
 
   create_table "contributors", force: true do |t|
@@ -64,7 +67,6 @@ ActiveRecord::Schema.define(version: 20140512131450) do
   end
 
   create_table "developers", force: true do |t|
-    t.string "name"
     t.string "email"
   end
 
@@ -76,6 +78,7 @@ ActiveRecord::Schema.define(version: 20140512131450) do
 
   create_table "messages", id: false, force: true do |t|
     t.string   "sender"
+    t.integer  "sender_id"
     t.text     "text"
     t.boolean  "approval"
     t.boolean  "disapproval"
@@ -84,7 +87,7 @@ ActiveRecord::Schema.define(version: 20140512131450) do
   end
 
   create_table "participants", force: true do |t|
-    t.integer  "dev_id"
+    t.integer "dev_id"
     t.integer "issue",              limit: 8
     t.integer "reviews_with_owner"
   end
@@ -106,6 +109,7 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.text     "message"
     t.datetime "modified"
     t.string   "owner_email"
+    t.integer  "owner_id"
     t.integer  "code_review_id",         limit: 8
     t.integer  "patchset",               limit: 8
     t.string   "composite_patch_set_id"
@@ -113,6 +117,7 @@ ActiveRecord::Schema.define(version: 20140512131450) do
 
   create_table "reviewers", id: false, force: true do |t|
     t.integer "issue",  limit: 8
+    t.integer "dev_id"
     t.string  "email"
   end
 
