@@ -4,29 +4,41 @@ require 'csv'
 class CodeReviewParser
 
   def parse
+    open_csvs #initalize our attributes up for writing
+    
+    Dir["#{Rails.configuration.datadir}/codereviews/*.json"].each do |file|
+      cobj = load_json file
+
+      @crs << [cobj['description'],
+               cobj['subject'], 
+               cobj['created'], 
+               cobj['modified'], 
+               cobj['issue'], 
+               cobj['owner_email']]
+
+      cobj['reviewers'].each { |email| @revs << [cobj['issue'], email] }
+
+      cobj['patchsets'].each do |pid|
+        patchset_file = "#{file.gsub(/\.json$/,'')}/#{pid}.json" #e.g. 10854242/1001.json
+        parse_patchsets(patchset_file, cobj['issue'])
+      end
+
+      parse_messages(file, cobj['issue'], cobj['messages'])
+    end
+
+    flush_csvs #get everything out to the files
+  end
+  
+  def open_csvs
     @crs = CSV.open("#{Rails.configuration.datadir}/tmp/code_reviews.csv", 'w+')
     @revs = CSV.open("#{Rails.configuration.datadir}/tmp/reviewers.csv", 'w+')
     @ps = CSV.open("#{Rails.configuration.datadir}/tmp/patch_sets.csv", 'w+')
     @msgs = CSV.open("#{Rails.configuration.datadir}/tmp/messages.csv", 'w+')
     @psf = CSV.open("#{Rails.configuration.datadir}/tmp/patch_set_files.csv", 'w+')
     @coms = CSV.open("#{Rails.configuration.datadir}/tmp/comments.csv", 'w+')
-    
-    Dir["#{Rails.configuration.datadir}/codereviews/*.json"].each do |file|
-      cobj = load_json file
-      @crs << [cobj['description'], cobj['subject'], cobj['created'], cobj['modified'], cobj['issue'], cobj['owner_email']]
-      cobj['reviewers'].each do |email|
-        @revs << [cobj['issue'], email]
-      end
-      cobj['patchsets'].each do |pid|
-        patchset_file = "#{file.gsub(/\.json$/,'')}/#{pid}.json" 
-        if File.exists? patchset_file
-          parse_patchsets(patchset_file, cobj['issue'])
-        else
-          $stderr.puts "Patchset file should exist but doesn't: #{patchset_file}"
-        end
-      end
-      parse_messages(file, cobj['issue'], cobj['messages'])  
-    end
+  end
+
+  def flush_csvs
     @crs.fsync
     @revs.fsync
     @ps.fsync
@@ -34,7 +46,7 @@ class CodeReviewParser
     @psf.fsync
     @coms.fsync
   end
-  
+
   def ordered_array(keyOrder, source)
     result = Array.new
     keyOrder.each do |key|
@@ -49,6 +61,7 @@ class CodeReviewParser
   
   @@PATCH_SET_PROPS = [:created, :num_comments, :message, :modified, :owner_email, :code_review_id, :patchset, :composite_patch_set_id]
   def parse_patchsets(patchset_file, code_review_id)
+    $stderr.puts "Patchset file should exist but doesn't: #{patchset_file}" unless File.exists? patchset_file
     pobj = load_json(patchset_file)
     pobj['composite_patch_set_id'] = "#{code_review_id}-#{pobj['patchset']}"
     pobj['code_review_id'] = code_review_id
