@@ -11,7 +11,7 @@ class ConsolidateVerify < VerifyBase
       "agl@chromium.org",
       "derat@chromium.org",
       "kbr@chromium.org",
-      "keescook@google.com",
+      "keescook@chromium.org",
       "palmer@chromium.org",
       "wez@chromium.org",
     ]
@@ -24,7 +24,7 @@ class ConsolidateVerify < VerifyBase
     exp =[
       "agl@chromium.org",
       "derat@chromium.org",
-      "keescook@google.com",
+      "keescook@chromium.org",
       "palmer@chromium.org",
       "wez@chromium.org",
     ]

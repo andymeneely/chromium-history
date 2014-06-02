@@ -20,7 +20,7 @@ class DeveloperConsolidator
       SELECT dev_id, issue FROM(
         SELECT owner_id as dev_id, code_review_id as issue FROM patch_sets
         UNION
-        SELECT sender_id as dev_id, code_review_id as issue FROM messages
+        SELECT sender_id as dev_id, code_review_id as issue FROM messages WHERE sender<>'commit-bot@chromium.org'
       ) all_participants
     eos
 
