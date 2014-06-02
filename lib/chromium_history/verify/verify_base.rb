@@ -20,16 +20,16 @@ class VerifyBase
     if exp.eql? actual
       pass()
     else
-      fail("Expected: #{exp}, Actual: #{actual},#{fail_message}")
+      fail("Expected: #{exp}, Actual: #{actual},#{fail_message} in #{self.class}")
     end
   end
 
   private
   def verify_count(name, expected, actual)
     if actual > expected
-      fail("More than #{expected} #{name} found. Actual: #{actual}")
+      fail("More than #{expected} #{name} found. Actual: #{actual}. See #{self.class}")
     elsif actual < expected
-      fail("Less than #{expected} #{name} found. Actual: #{actual}")
+      fail("Less than #{expected} #{name} found. Actual: #{actual}. See #{self.class}")
     else
       pass
     end

@@ -129,29 +129,33 @@ class GitLogLoader
     end
 
     arr.each do |element|
-      if not (element =~ /^git-svn-id:/).nil?
+      if fast_match(element, /^git-svn-id:/)
         hash[:svn_revision] = element.strip.sub("git-svn-id:", "")
 
-      elsif not (element =~ /^Review URL:/).nil?
+      elsif fast_match(element, /^Review URL:/)
         @reviews_to_update << "(#{element[/(\d)+/].to_i}, '#{arr[0].strip}')"
 
-      elsif not (element =~ /^BUG=/)
+      elsif fast_match(element, /^BUG=/)
         hash[:bug] = element.strip.sub("BUG=", "")
 
-      elsif not (element =~ /^;;;/)
+      elsif fast_match(element, /^;;;/)
         in_files = true
 
-      elsif (in_files and not (element =~ /([\s-]*\|[\s-]*\d+ \+*\-*)/))
+      elsif in_files and element.include?('|')  # stats output needs to have a pipe
         filepaths.push(element.slice(0,element.index('|')).strip)
 
-      end
+      end#if
 
-    end 
+    end#arr.each
     hash["filepaths"] = filepaths
 
     return arr, hash
 
   end#regex_process_commit
+
+  def fast_match(str, pattern)
+    return not((str =~ pattern).nil?)
+  end
 
   #
   # Process each of the commit
@@ -205,8 +209,6 @@ class GitLogLoader
   #
   def add_commit_to_db(hash)
     @con.exec_prepared('commitInsert', hash.values_at(*@@GIT_LOG_PROPERTIES))
-
-    #create the filepaths assoc w/ commit
     create_commit_filepath(hash["filepaths"], hash[:commit_hash])
   end#add_commit_to_db
 
@@ -219,10 +221,9 @@ class GitLogLoader
   # @param- Array of file paths
   #
   def create_commit_filepath(filepaths, commit_hash)
-
     filepaths.each do |str_path|
-      @con.exec_prepared('fileInsert', hash.values_at(*@@GIT_LOG_FILE_PROPERTIES))
-    end#loop
+      @con.exec_prepared('fileInsert', [commit_hash,str_path])
+    end
   end
 
 end#class

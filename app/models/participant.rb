@@ -1,6 +1,6 @@
 class Participant < ActiveRecord::Base
 	belongs_to :code_review, primary_key: "issue", foreign_key: "issue"
-	belongs_to :developer, foreign_key: "email", primary_key: "email"
+	belongs_to :developer, foreign_key: "dev_id", primary_key: "id"
 
 	has_many :sheriffs, primary_key: 'email', foreign_key: 'email'
 

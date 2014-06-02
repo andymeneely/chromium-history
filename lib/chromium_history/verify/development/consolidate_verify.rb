@@ -15,7 +15,7 @@ class ConsolidateVerify < VerifyBase
       "palmer@chromium.org",
       "wez@chromium.org",
     ]
-    assert_equal exp, Participant.where(issue: 10854242).pluck(:email).sort
+    assert_equal exp, Participant.joins(:developer).where(issue: 10854242).pluck(:email).sort
     #Note: ben@chromium.org is a reviewer, but did NOT participate
     #      sadrul@chromium.org too
   end
@@ -28,7 +28,7 @@ class ConsolidateVerify < VerifyBase
       "palmer@chromium.org",
       "wez@chromium.org",
     ]
-    assert_equal exp, Contributor.where(issue: 10854242).pluck(:email).sort
+    assert_equal exp, Contributor.joins(:developer).where(issue: 10854242).pluck(:email).sort
     #kbr was a participant because he made a comment, but it was just a LGTM so he is not a contributor
   end
 
