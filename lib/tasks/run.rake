@@ -73,7 +73,9 @@ namespace :run do
   task :consolidate => [:environment] do
     Benchmark.bm(25) do |x|
       x.report("Consolidating filepaths: ") {FilepathConsolidator.new.consolidate}
-      x.report("Consolidating participants: ") {DeveloperConsolidator.new.consolidate}
+      x.report("Consolidating participants: ") {DeveloperConsolidator.new.consolidate_participants}
+      x.report("Consolidating contributors: ") {DeveloperConsolidator.new.consolidate_contributors}
+      #x.report("Consolidating participants: ") {DeveloperConsolidator.new.consolidate_reviewers}
     end
   end
 

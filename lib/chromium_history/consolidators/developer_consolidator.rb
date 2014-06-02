@@ -1,11 +1,17 @@
 class DeveloperConsolidator
 
-  # Given all locations of code review particpants that we know of, make one participant table
-  def consolidate
-    consolidate_participants
-    consolidate_contributors
+  def consolidate_reviewers
+    #TODO finish this
+    query=<<-eos
+      CREATE TABLE tmp 
+        AS SELECT DISTINCTdev_id,issue) FROM ;
+
+      DROP TABLE t;
+      ALTER TABLE tmp RENAME TO t;
+    eos
   end
 
+  # Given all locations of code review particpants that we know of, make one participant table
   def consolidate_participants
     query=<<-eos
       INSERT INTO participants (dev_id, issue) 
