@@ -45,7 +45,7 @@ class CodeReview < ActiveRecord::Base
   	totalNonparticipating = 0;
   	reviewers = self.reviewers
   	for reviewer in reviewers 
-  		if self.participants.where(["email=? and issue=?", reviewer.email, reviewer.issue]).exists?
+  		if self.participants.where(["dev_id=? and issue=?", reviewer.dev_id, reviewer.issue]).exists?
   			totalNonparticipating += 1
   		end
   	end
@@ -130,6 +130,7 @@ class CodeReview < ActiveRecord::Base
 
     messages.each do |mess|
 
+      #FIXME Approvals need to have the flag, not the message!!!
       #find 1st message w/ approval message (LGTM)
       if mess.text.match('LGTM') then
         date_approval_mess = mess.date
