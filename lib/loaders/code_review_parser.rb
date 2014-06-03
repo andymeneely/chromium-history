@@ -129,4 +129,5 @@ class CodeReviewParser
       @devs << [dev_id, email]
     end
   end
-end
+
+end#class

@@ -20,6 +20,9 @@ module ChromiumHistory
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
     
+    #Auto load anything in lib
+    #config.autoload_paths += %W(#{config.root}/lib)
+
     # Where we keep all of our data to load into the database
     if Rails.env == "development"
       Rails.configuration.datadir = "data/development"

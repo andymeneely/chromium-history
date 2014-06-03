@@ -1,16 +1,12 @@
-  # Our custom Rakefile tasks for loading the data
-  require_relative '../chromium_history/loaders/code_review_loader.rb'
-require_relative '../chromium_history/loaders/cve_loader.rb'
-require_relative '../chromium_history/verify/verify_runner.rb'
-require_relative '../chromium_history/loaders/git_log_loader.rb'
-require_relative '../chromium_history/loaders/code_review_parser.rb'
-require_relative '../chromium_history/consolidators/filepath_consolidator.rb'
-require_relative '../chromium_history/consolidators/developer_consolidator.rb'
-require_relative '../chromium_history/stats.rb'
-
-
-#Uncomment to require all loader files
-#Dir[File.expand_path('../chromium_history/loaders/*.rb', File.dirname(__FILE__))].each {|file| require file}
+# Our custom Rakefile tasks for loading the data
+require 'loaders/code_review_parser'
+require 'loaders/code_review_loader'
+require 'loaders/cve_loader'
+require 'loaders/git_log_loader'
+require 'consolidators/filepath_consolidator'
+require 'consolidators/developer_consolidator'
+require 'verify/verify_runner'
+require 'stats'
 
 task :run => [:environment, "run:env", "run:prod_check", "db:reset", "run:parse", "run:load", "run:optimize", "run:consolidate","run:verify", "run:analyze"] do
   puts "Run task completed. Current time is #{Time.now}"
@@ -18,17 +14,6 @@ end
 
 namespace :run do
   
-  desc "Delete data from all tables."
-  task :clean => [:environment] do
-    # Iterate over our models
-    Dir[Rails.root.join('app/models/*.rb').to_s].each do |filename|
-      klass = File.basename(filename, '.rb').camelize.constantize
-      next unless klass.ancestors.include?(ActiveRecord::Base)
-      klass.delete_all
-    end
-    puts "Tables cleaned."
-  end
-
   desc "Load data into tables"
   task :load => :environment do
     Benchmark.bm(25) do |x|
