@@ -22,19 +22,25 @@
 /tmp
 /test/tmp
 /test/version_tmp
+
+#Ignore editor swaps
 *.swp
 *.swo
+
+#Ignore downloaded gems, if any
 *.gem
 *.rbc
 
 # Ignore mac stuff
 .DS_Store
 
-# Ignore old data we removed anyway
+# Ignore some old data sets
 /lib/assets/nvdcve*
+
+#Ignore some temp data sets
 /data/development/cves/chromium*.csv
 
-# Ignore coverage generation
+# Ignore coverage data
 coverage
 
 # Generated documentation

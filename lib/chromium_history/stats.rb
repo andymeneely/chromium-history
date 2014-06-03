@@ -69,10 +69,11 @@ class Stats
 
   def collaborator_familiarity
     total = 0
-    CodeReview.find_each do |c|
-      puts "Total Familiarity: #{c.total_familiarity}"
-      puts "Average Familiarity: #{c.average_familiarity}"
-    end
+    #CodeReview.find_each do |c|
+      #FIXME Don't output, put in a histogram
+      #puts "Total Familiarity: #{c.total_familiarity}"
+      #puts "Average Familiarity: #{c.average_familiarity}"
+    #end
     return total
   end
 
@@ -186,14 +187,15 @@ class Stats
     puts a.to_s(120)
     puts "\n"
 
-    puts "@@@ Number of Vulnerabilities per Participant Inspection Histogram @@@"
-    a = Aggregate.new(0, 10, 1)
-    Developer.all.find_each do |c|
-      nd = c.num_vulnerable_inspects
-      a << nd
-    end
-    puts a.to_s(120)
-    puts "\n"
+    # FIXME Slow query
+    #puts "@@@ Number of Vulnerabilities per Participant Inspection Histogram @@@"
+    #a = Aggregate.new(0, 10, 1)
+    #Developer.all.find_each do |c|
+    #  nd = c.num_vulnerable_inspects
+    #  a << nd
+    #end
+    #puts a.to_s(120)
+    #puts "\n"
 
     #FIXME This is broken too
     #puts "@@@ Number of Vulnerability Participants per Filepath Inspection Histogram @@@"
@@ -214,7 +216,7 @@ class Stats
     puts a.to_s(120)
     puts "\n"
 
-    #FIXME Broken
+    #FIXME Broken on dev data
     #puts "@@@ Number of Experienced Developers per Code Review Histogram @@@"
     #a = Aggregate.new(0, 10, 1)
     #CodeReview.all.find_each do |c|
