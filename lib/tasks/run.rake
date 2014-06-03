@@ -8,56 +8,50 @@ require 'consolidators/developer_consolidator'
 require 'verify/verify_runner'
 require 'stats'
 
-task :run => [:environment, "run:env", "run:prod_check", "db:reset", "run:parse", "run:load", "run:optimize", "run:consolidate","run:verify", "run:analyze"] do
+task :run => [:environment, "run:env", "run:prod_check", "db:reset", "run:slurp", "run:verify", "run:analyze"] do
   puts "Run task completed. Current time is #{Time.now}"
 end
 
 namespace :run do
   
-  desc "Load data into tables"
-  task :load => :environment do
-    Benchmark.bm(25) do |x|
-      x.report("Loading Code Reviews: ") {CodeReviewLoader.new.copy_parsed_tables}
-      x.report("Keying Developers: ") { CodeReviewLoader.new.add_primary_keys }
-      x.report("Loading CVEs: ") {CveLoader.new.load_cve}
-      x.report("Loading git log commits: ") {GitLogLoader.new.load}
-    end
+  desc "Show current environment information"
+  task :env => :environment do
+    puts "\tEnv.:     #{Rails.env}"
+    puts "\tData:     #{Rails.configuration.datadir}"
+    puts "\tDatabase: #{Rails.configuration.database_configuration[Rails.env]["database"]}"
+    puts "\tStart: #{Time.now}"
   end
-
-  desc "Parse data into CSV"
-  task :parse => :environment do
-    Benchmark.bm(25) do |x|
-      x.report("Parsing raw code reviews into CSV") {
-        CodeReviewParser.new.parse
-      }
+  
+  desc "Only proceed if we are SURE, or not in production"
+  task :prod_check => :env do
+    if 'production'.eql?(Rails.env) && !ENV['RAILS_BLAST_PRODUCTION'].eql?('YesPlease')
+      $stderr.puts "WOAH! Hold on there. Are you trying to blow away our production database. Better use the proper environment variable (see our source)"
+      raise "Reset with production flag not set"
     end
   end
   
-  desc "Alias for run:clean then run:load"
-  task :clean_load => ["run:clean", "run:load"]
-
-  desc "Optimize the tables once data is loaded"
-  task :optimize => [:environment] do
-    # Iterate over our models
-    # TODO Refactor this out with rake run:clean so we're not repetitive
-    Benchmark.bm(25) do |x|
-      x.report("Optimizing tables:") do
-        Dir[Rails.root.join('app/models/*.rb').to_s].each do |filename|
-          klass = File.basename(filename, '.rb').camelize.constantize
-          next unless klass.ancestors.include?(ActiveRecord::Base)
-          klass.send(:on_optimize)
-        end
+  desc "Parse, load, optimize, and consolidate"
+  task :slurp => [:environment,"db:reset"] do
+    Benchmark.bm(30) do |x|
+      x.report("Parsing JSON Code Reviews") {CodeReviewParser.new.parse}
+      x.report("Loading Code Review CSVs") {CodeReviewLoader.new.copy_parsed_tables}
+      x.report("Optimizing Code Reviews et al.") do
+        [CodeReview,PatchSet,PatchSetFile,Comment,Developer,Message,Reviewer].each {|c| c.on_optimize}
       end
-    end
-  end
-
-  desc "Consolidate data from join tables into one model"
-  task :consolidate => [:environment] do
-    Benchmark.bm(25) do |x|
-      x.report("Consolidating filepaths: ") {FilepathConsolidator.new.consolidate}
-      x.report("Consolidating participants: ") {DeveloperConsolidator.new.consolidate_participants}
-      x.report("Consolidating contributors: ") {DeveloperConsolidator.new.consolidate_contributors}
-      x.report("Consolidating participants: ") {DeveloperConsolidator.new.consolidate_reviewers}
+      x.report("Keying Developers") { CodeReviewLoader.new.add_primary_keys }
+      x.report("Loading CVEs ") {CveLoader.new.load_cve}
+      x.report("Loading git log") {GitLogLoader.new.load}
+      x.report("Optimizing commits et al.") do 
+        [Commit,CommitFilepath,Cvenum]
+      end
+      x.report("Consolidating participants") {DeveloperConsolidator.new.consolidate_participants}
+      x.report("Consolidating contributors") {DeveloperConsolidator.new.consolidate_contributors}
+      x.report("Consolidating filepaths") {FilepathConsolidator.new.consolidate}
+      
+      x.report("Optimizing contributors"){ Contributor.on_optimize}
+      x.report("Optimizing participants"){ Participant.on_optimize}
+      x.report("Optimizing filepath"){ Filepath.on_optimize}
+      x.report("Deleting duplicate reviewers") {DeveloperConsolidator.new.consolidate_reviewers}
     end
   end
 
@@ -69,22 +63,6 @@ namespace :run do
   desc "Analyze the data for metrics & questions"
   task :analyze => :environment do
     # TODO: Delegate this out to a list of classes that will assemble metrics and ask questions
-  end
-
-  desc "Show current environment information"
-  task :env => :environment do
-    puts "\tEnv.:     #{Rails.env}"
-    puts "\tData:     #{Rails.configuration.datadir}"
-    puts "\tDatabase: #{Rails.configuration.database_configuration[Rails.env]["database"]}"
-    puts "\tStart: #{Time.now}"
-  end
-
-  desc "Only proceed if we are SURE, or not in production"
-  task :prod_check => :env do
-    if 'production'.eql?(Rails.env) && !ENV['RAILS_BLAST_PRODUCTION'].eql?('YesPlease')
-      $stderr.puts "WOAH! Hold on there. Are you trying to blow away our production database. Better use the proper environment variable (see our source)"
-      raise "Reset with production flag not set"
-    end
   end
 
   desc "Show some stats on the data set"
