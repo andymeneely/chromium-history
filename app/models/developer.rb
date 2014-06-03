@@ -16,7 +16,7 @@ class Developer < ActiveRecord::Base
 	
 	def self.sanitize_validate_email dirty_email 
 		begin
-			email = dirty_email.gsub(/\+\w+(?=@)/, '')
+			email = dirty_email.gsub(/\+\w+(?=@)/, '') #strips any tags on the email
 			email.downcase!
 			matched_email = /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/.match email
 			raise Exception, "Invalid email address: #{email}" unless matched_email
