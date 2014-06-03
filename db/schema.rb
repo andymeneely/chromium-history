@@ -115,6 +115,16 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.string   "composite_patch_set_id"
   end
 
+  create_table "releases", id: false, force: true do |t|
+    t.string "name"
+    t.datetime "date"
+  end
+  
+  create_table "release_filepaths", id: false, force: true do |t|
+    t.string "release"
+    t.string "filepath"
+  end
+
   create_table "reviewers", id: false, force: true do |t|
     t.integer "issue",  limit: 8
     t.integer "dev_id"

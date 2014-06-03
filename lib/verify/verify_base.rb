@@ -51,4 +51,4 @@ class VerifyBase
     @results_callback.call(result)
   end
   
-end
+end#class

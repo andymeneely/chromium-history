@@ -3,6 +3,7 @@ require 'loaders/code_review_parser'
 require 'loaders/code_review_loader'
 require 'loaders/cve_loader'
 require 'loaders/git_log_loader'
+require 'loaders/release_filepath_loader'
 require 'consolidators/filepath_consolidator'
 require 'consolidators/developer_consolidator'
 require 'verify/verify_runner'
@@ -58,7 +59,11 @@ namespace :run do
       x.report("Loading CVEs ") {CveLoader.new.load_cve}
       x.report("Loading git log") {GitLogLoader.new.load}
       x.report("Optimizing commits et al.") do 
-        [Commit,CommitFilepath,Cvenum]
+        [Commit,CommitFilepath,Cvenum].each {|c| c.on_optimize}
+      end
+      x.report("Loading release tree") {ReleaseFilepathLoader.new.load}
+      x.report("Optimizing releases et al.") do 
+        [Release,ReleaseFilepath].each{|c| c.on_optimize}
       end
       x.report("Consolidating participants") {DeveloperConsolidator.new.consolidate_participants}
       x.report("Consolidating contributors") {DeveloperConsolidator.new.consolidate_contributors}
