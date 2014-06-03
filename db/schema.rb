@@ -123,6 +123,9 @@ ActiveRecord::Schema.define(version: 20140512131450) do
   create_table "release_filepaths", id: false, force: true do |t|
     t.string "release"
     t.string "filepath"
+    t.integer "num_reviewers", null: true
+    t.integer "num_security_exp_reviewers", null: true
+    t.boolean "vulnerable", null: true
   end
 
   create_table "reviewers", id: false, force: true do |t|
