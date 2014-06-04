@@ -15,15 +15,32 @@ require 'stats'
 # CodeReviewLoader.new.copy_parsed_tables: Copies the data from it's respective file (parsed from JSON) to a table.
 	# Copies the data into a table from files in the datadir we're working in. 
         # It does this in CSV mode with a comma as a delimeter.
-# |c| c.on_optimize: Optimizes code reviews for named classes that deal with what's in the codereview JSON
-	#  Optimizes by adding indexes to each column 
+# |c| c.on_optimize: Used on code reviews, commits, releases, contributer, participant, and filepath  models. 
+	# Optimizes respective data for named classes that deal with what's in the datas table
+	# Optimizes by adding indexes to each column 
 # CodeReviewLoader.new.add_primary_keys: creates a serial id column and makes the primary key the id field
-        # Adds aserial id column and makes and a primary key constraint to a table (noting 
+        # Adds a serial id column and make a primary key constraint to a table (noting 
         # that a table can only ever have one primary key). It also creates an index on code_reviews.
 # CveLoader.new.load_cve: Loads csv files of vulnerabilites and adds issues to unique cve
 	# Gets the resultFile from the config datatdir if in the dev env, otherwise builds the results set.
-	# Each row from the file is checked to see if it is unique and added to the table and link if it is. Data from these files 
-	# into a table from the datadir we're working in. Extra issues that are not loaded into our database are delete.
+	# Each row from the file is checked to see if it is unique and added to the table and link if it is.
+	# Data from these files into a table from the datadir we're working in. 
+	# Extra issues that are not loaded into our database are delete.
+# GitLogLoader.new.load: parses git log commit files and extracts the relevant information from them
+	# A prepared INSERT INTO statement is made for the commit and the file(uses placeholders for values $1, $2, etc). 
+	# Commits are opened from a file in the environment we're working in, processed, structured in a hash and saved to the database
+# ReleaseFilepathLoader.new.load: The release and filepath are transfered to a new csv by padding with however many empty colums we have
+	# Files are transfered and padded and then copied from the release filepaths file in the dir we're working in
+# DeveloperConsolidator.new.consolidate_participants: Does what is stated in method
+	# From all locations of code review particpants, makes one participant table. Collectes participates by dev_id from 
+	# patchsets and messages. Iterates over participant model with batch processing, finds all the code reviews where the owner is owner 
+	# and one of the reviewers is participant and only includes reviews that were done before this one.
+# DeveloperConsolidator.new.consolidate_contributors: Does what is stated in the method
+	# Iterates over Contributer model with batch processing. Looks up contributers messages and checks to see if they made
+	# a valid contribution (filtered text length is greater than 50 chars)  
+# FilepathConsolidator.new.consolidate: Given all locations of filepaths that we know of, make one Filepath table
+# DeveloperConsolidator.new.consolidate_reviewers: deletes duplicate reviewers
+	# Delete rows that are duplicates over a set of columns, keeping only the one with the lowest ID. 
 
 task :run => [:environment, "run:env", "run:prod_check", "db:reset", "run:slurp", "run:verify", "run:analyze"] do
   puts "Run task completed. Current time is #{Time.now}"
