@@ -32,11 +32,16 @@ class CveLoader
 		table.fsync
 		link.fsync
 		datadir = File.expand_path(Rails.configuration.datadir)
+		delete_extra_issues=<<-eos
+		  WITH issues AS ((SELECT code_review_id from code_reviews_cvenums) 
+                    EXCEPT (SELECT issue FROM code_reviews)) 
+		      DELETE FROM code_reviews_cvenums 
+			WHERE code_review_id IN (SELECT code_review_id FROM issues);")
+		eos
+
 		ActiveRecord::Base.connection.execute("COPY cvenums FROM '#{datadir}/tmp/cvenums.csv' DELIMITER ',' CSV")
 		ActiveRecord::Base.connection.execute("COPY code_reviews_cvenums FROM '#{datadir}/tmp/code_reviews_cvenums.csv' DELIMITER ',' CSV")
-		ActiveRecord::Base.connection.execute("WITH issues AS ((SELECT code_review_id from code_reviews_cvenums) EXCEPT (SELECT issue FROM 
-											   code_reviews)) DELETE FROM code_reviews_cvenums WHERE code_review_id IN (SELECT code_review_id 
-											   FROM issues);")
+		ActiveRecord::Base.connection.execute delete_extra_issues
 	end
 
 	# Download result set from Google Docs
