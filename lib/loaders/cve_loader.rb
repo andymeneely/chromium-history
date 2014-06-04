@@ -36,7 +36,7 @@ class CveLoader
 		  WITH issues AS ((SELECT code_review_id from code_reviews_cvenums) 
                     EXCEPT (SELECT issue FROM code_reviews)) 
 		      DELETE FROM code_reviews_cvenums 
-			WHERE code_review_id IN (SELECT code_review_id FROM issues);")
+			WHERE code_review_id IN (SELECT code_review_id FROM issues)
 		eos
 
 		ActiveRecord::Base.connection.execute("COPY cvenums FROM '#{datadir}/tmp/cvenums.csv' DELIMITER ',' CSV")
