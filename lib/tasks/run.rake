@@ -25,7 +25,7 @@ require 'stats'
 	# Gets the resultFile from the config datatdir if in the dev env, otherwise builds the results set.
 	# Each row from the file is checked to see if it is unique and added to the table and link if it is.
 	# Data from these files into a table from the datadir we're working in. 
-	# Extra issues that are not loaded into our database are delete.
+	# Extra issues that are not loaded into our database are deleted.
 # GitLogLoader.new.load: parses git log commit files and extracts the relevant information from them
 	# A prepared INSERT INTO statement is made for the commit and the file(uses placeholders for values $1, $2, etc). 
 	# Commits are opened from a file in the environment we're working in, processed, structured in a hash and saved to the database
@@ -96,6 +96,17 @@ namespace :run do
   desc "Run our data verification tests"
   task :verify => :env do
     VerifyRunner.run_all
+  end
+
+  namespace :verify do
+
+    desc "Run our data verification tests with coverage test"
+    task :coverage => :env do
+      require 'simplecov'
+      SimpleCov.start
+      VerifyRunner.run_all
+      #Rake::Task["run:verify"].invoke
+    end
   end
 
   desc "Analyze the data for metrics & questions"
