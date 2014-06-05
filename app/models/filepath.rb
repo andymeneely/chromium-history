@@ -6,20 +6,26 @@ class Filepath < ActiveRecord::Base
     ActiveRecord::Base.connection.add_index :filepaths, :filepath, unique: true
   end
 
-  #If a Filepath has ever been involved in a code review that inspected
-  #a vulnerability, then this should return true.
-  def vulnerable?
-    cves.any?
+  # If a Filepath has ever been involved in a code review that inspected
+  # a vulnerability fix, then this should return true.
+  #
+  # @param after - check for commit filepaths after a given date. Defaults to Jan 1, 1970
+  def vulnerable?(after=DateTime.new(1970,01,01))
+    cves(after).any?
   end
 
-  def cves
-    Filepath.joins(commit_filepaths: [commit: [code_reviews: :cvenums]]).where(filepath: filepath)
+  def cves(after=DateTime.new(1970,01,01))
+    Filepath.joins(commit_filepaths: [commit: [code_reviews: :cvenums]])\
+      .where(filepath: filepath, 'commits.created_at' => after..DateTime.now)
   end
 
   # Delegates to the static method with the where clause
   # Does not get the reviewers, returns Filepath object
   def reviewers
-    Filepath.reviewers.where(filepath: filepath).uniq
+    Filepath.reviewers\
+      .select(:dev_id)\
+      .where(filepath: filepath)\
+      .uniq
   end
   
   # All of the Reviewers for all filepaths joined together

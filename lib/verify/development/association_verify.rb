@@ -12,6 +12,10 @@ class AssociationVerify < VerifyBase
     assert_equal true, Filepath.find_by(filepath: 'ui/base/x/x11_util.cc').vulnerable?
   end
 
+  def verify_filepath_not_vuln_after
+    assert_equal false, Filepath.find_by(filepath: 'ui/base/x/x11_util.cc').vulnerable?(DateTime.new(2014,01,01))
+  end
+
   def verify_filepath_neutral
     assert_equal false, Filepath.find_by(filepath: 'content/renderer/media/webrtc_audio_renderer.cc').vulnerable?
   end

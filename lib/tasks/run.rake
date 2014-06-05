@@ -7,6 +7,8 @@ require 'loaders/release_filepath_loader'
 require 'consolidators/filepath_consolidator'
 require 'consolidators/developer_consolidator'
 require 'verify/verify_runner'
+require 'analysis/release_analysis'
+require 'analysis/participant_analysis'
 require 'stats'
 
 # CodeReviewParser.new.parse: Parses JSON files in the codereviews dircetory for the enviornment we're working in.
@@ -42,7 +44,7 @@ require 'stats'
 # DeveloperConsolidator.new.consolidate_reviewers: deletes duplicate reviewers
 	# Delete rows that are duplicates over a set of columns, keeping only the one with the lowest ID. 
 
-task :run => [:environment, "run:env", "run:prod_check", "db:reset", "run:slurp", "run:verify", "run:analyze"] do
+task :run => [:environment, "run:env", "run:prod_check", "db:reset", "run:slurp", "run:analyze", "run:verify"] do
   puts "Run task completed. Current time is #{Time.now}"
 end
 
@@ -92,6 +94,14 @@ namespace :run do
       x.report("Deleting duplicate reviewers") {DeveloperConsolidator.new.consolidate_reviewers}
     end
   end
+  
+  desc "Analyze the data for metrics & questions"
+  task :analyze => :environment do
+    Benchmark.bm(30) do |x|
+      x.report("Populating reviews_with_owner"){ParticipantAnalysis.new.populate_reviews_with_owner}
+      x.report("Populating release metrics") {ReleaseAnalysis.new.populate}
+    end
+  end
 
   desc "Run our data verification tests"
   task :verify => :env do
@@ -107,11 +117,7 @@ namespace :run do
       VerifyRunner.run_all
       #Rake::Task["run:verify"].invoke
     end
-  end
 
-  desc "Analyze the data for metrics & questions"
-  task :analyze => :environment do
-    # TODO: Delegate this out to a list of classes that will assemble metrics and ask questions
   end
 
   desc "Show some stats on the data set"

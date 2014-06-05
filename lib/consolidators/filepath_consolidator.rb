@@ -9,7 +9,7 @@ class FilepathConsolidator
         UNION
         SELECT filepath FROM patch_set_files
         UNION 
-        SELECT filepath from release_filepaths
+        SELECT thefilepath from release_filepaths
       ) all_filepath
     eos
     ActiveRecord::Base.connection.execute query
