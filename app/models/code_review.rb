@@ -103,51 +103,28 @@ class CodeReview < ActiveRecord::Base
 
   end#num_security_experienced_parts
 
-  #
   # Determine whether or not total 
   # churn for all patchsets exceeds
-  # @param Lines of Code per hour
   #
   # @param - lines of code
   # @return - boolean 
   def loc_per_hour_exceeded?(lines=200)
-
-    #get total churn for all patchsets
-    total_churn = self.total_churn
-
-    #date codereview created
-    created = self.created
-
-    #get all messages for this codereview
-    messages = self.messages.order(date: :asc)
-
-    #date of approval message
     date_approval_mess = nil
-
-    messages.each do |mess|
-
-      #FIXME Approvals need to have the flag, not the message!!!
-      #find 1st message w/ approval message (LGTM)
-      if mess.text.match('LGTM') then
+   
+    #get all messages for this code review and iterate over them
+    #to find 1st message w/ approval message (LGTM)
+    self.messages.order(date: :asc).each do |mess|
+      if mess.approval == true 
         date_approval_mess = mess.date
         break
-      end#if
-
-    end#loop
-
-    #no approval message - RETURN FALSE
+      end
+    end
+    
     if date_approval_mess.nil? then return false end
 
-    total_time = date_approval_mess - created
-
-    #get total hours
-    total_time_hours = (total_time / 60) / 60
-
-    #divide total amount of churn by total hours that passed
-    loc_per_hour = (total_churn / total_time_hours)
-
+    total_time_hours = ((date_approval_mess - self.created) / 60) / 60
+    loc_per_hour = (self.total_churn / total_time_hours)
     if loc_per_hour > lines then return true else return false end
-
-  end#loc_per_hour_exceeded?
+  end
 
 end#class
