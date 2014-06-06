@@ -114,8 +114,7 @@ namespace :run do
     task :coverage => :env do
       require 'simplecov'
       SimpleCov.start
-      VerifyRunner.run_all
-      #Rake::Task["run:verify"].invoke
+      Rake::Task["run:verify"].invoke
     end
 
   end

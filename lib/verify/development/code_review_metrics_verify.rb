@@ -31,4 +31,8 @@ class CodeReviewMetricsVerify < VerifyBase
     assert_equal 2, CodeReview.find_by(issue: 10854242).nonparticipating_reviewers.count
   end
 
+  def verify_5831706594508800_loc_per_hour_exceeded?
+    assert_equal true, CodeReview.find_by(issue: 5831706594508800).loc_per_hour_exceeded? #approver looked at 111 loc in three minutes
+  end
+
 end
