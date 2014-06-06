@@ -2,6 +2,11 @@ require_relative '../verify_base.rb'
 
 class CodeReviewMetricsVerify < VerifyBase
 
+  def verify_is_inspecting_vulnerability?
+    assert_equal true, CodeReview.find_by(issue: 10854242).is_inspecting_vulnerability? # Rietveld id in cves.csv 
+    assert_equal false, CodeReview.find_by(issue: 23444043).is_inspecting_vulnerability? # Rietveld id not in cves.csv
+  end
+
   def verify_10854242_1_1_churn
     psf = CodeReview.find_by(issue: 10854242).patch_sets.find_by(patchset: 1).patch_set_files.find_by(filepath: 'ui/surface/transport_dib_linux.cc')
     assert_equal 5, psf.churn

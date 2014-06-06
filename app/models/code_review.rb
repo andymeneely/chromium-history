@@ -16,7 +16,7 @@ class CodeReview < ActiveRecord::Base
   end
 
   def is_inspecting_vulnerability?
-  	self.cvenums.empty?
+    not self.cvenums.empty? # if empty it's not checking vulnerability, thus return false 
   end
 
   # Adds up the number of add and remove lines from the associated patch set files.
