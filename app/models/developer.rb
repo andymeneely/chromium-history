@@ -18,7 +18,7 @@ class Developer < ActiveRecord::Base
 		begin
 			email = dirty_email.gsub(/\+\w+(?=@)/, '') #strips any tags on the email
 			email.downcase!
-			matched_email = /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/.match email
+			matched_email = /([a-zA-Z0-9%._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/.match email
 			raise Exception, "Invalid email address: #{email}" unless matched_email
 			email = matched_email[0]
 			# Performs basic email validation on creation
@@ -31,7 +31,7 @@ class Developer < ActiveRecord::Base
 			
 			if m.domain == 'gtempaccount.com'
 				match = /^(\w+)\W(\w+.\w+)(?=@gtempaccount.com)/.match m.address
-				m = Mail::Address.new(match[1] + match[2])
+				m = Mail::Address.new(match[1] + '@' + match[2])
 			end
 			
 			if m.domain == 'google.com' 
