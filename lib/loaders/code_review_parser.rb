@@ -106,7 +106,7 @@ class CodeReviewParser
   def parse_comments(composite_patch_set_file_id, comments)
     comments.each do |comment|
       comment['composite_patch_set_file_id'] = composite_patch_set_file_id
-      comment['author_id'] = get_dev_id(:author_email)
+      comment['author_id'] = get_dev_id(comment["author_email"])
       @coms << ordered_array(@@COMMENT_PROPS, comment)
     end #comments loop
   end #load comments method

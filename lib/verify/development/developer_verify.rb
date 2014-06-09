@@ -33,10 +33,6 @@ class DeveloperVerify < VerifyBase
   def verify_sanitize_validate_email_google_to_chromium
     assert_equal(["aa@chromium.org", true], Developer.sanitize_validate_email("aa@google.com"), "Domain isn't being changed from google.com to chromium.org")	
   end
-  
-  def verify_sanitize_validate_email_no_domain
-    assert_equal([nil, false], Developer.sanitize_validate_email("dgozman@"), "Email doesn't have a domain and shouldn't be valid")	
-  end
 
   def verify_sanitize_validate_email_blacklisted
     assert_equal([nil, false], Developer.sanitize_validate_email("me@googlegroups.com"), "Email shouldn't be valid because it is blacklisted")	

@@ -14,49 +14,40 @@ class Developer < ActiveRecord::Base
   end
 	
 	
-	def self.sanitize_validate_email dirty_email 
-		begin
-			email = dirty_email.gsub(/\+\w+(?=@)/, '') #strips any tags on the email
-			email.downcase!
-			matched_email = /([a-zA-Z0-9%._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/.match email
-			raise Exception, "Invalid email address: #{email}" unless matched_email
-			email = matched_email[0]
-			# Performs basic email validation on creation
-			# will throw exception for invalid email 
-			m = Mail::Address.new(email)
+  def self.sanitize_validate_email dirty_email 
+    begin
+      email = dirty_email.gsub(/\+\w+(?=@)/, '') #strips any tags on the email
+      email.downcase!
+      matched_email = /([a-zA-Z0-9%._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/.match email
+      return nil, false unless matched_email 
+      email = matched_email[0]
+      # Performs basic email validation on creation
+      # will throw exception for invalid email 
+      m = Mail::Address.new(email)
 			
-			if m.domain.nil?
-				raise Exception, "Invalid email address: #{email}"
-			end
+      if m.domain == 'gtempaccount.com'
+        match = /^(\w+)\W(\w+.\w+)(?=@gtempaccount.com)/.match m.address
+        m = Mail::Address.new(match[1] + '@' + match[2])
+      end
+		
+      if m.domain == 'google.com' 
+        m = Mail::Address.new("#{m.local}@chromium.org")
+      end
 			
-			if m.domain == 'gtempaccount.com'
-				match = /^(\w+)\W(\w+.\w+)(?=@gtempaccount.com)/.match m.address
-				m = Mail::Address.new(match[1] + '@' + match[2])
-			end
-			
-			if m.domain == 'google.com' 
-				m = Mail::Address.new("#{m.local}@chromium.org")
-			end
-			
-			if self.blacklisted_email_local? m.local or self.blacklisted_email_domain? m.domain
-				raise Exception, "Blacklisted email!"
-			end
-			
-			return m.address, true
-		rescue Exception => e
-			return nil, false
-		end
-	end
+      return nil, false if self.blacklisted_email_local? m.local or self.blacklisted_email_domain? m.domain
+      return m.address, true
+    end
+  end
 	
-	def self.blacklisted_email_local? local
-		blacklist = ['reply', 'chromium-reviews']
-		blacklist.include? local
-	end
+  def self.blacklisted_email_local? local
+    blacklist = ['reply', 'chromium-reviews']
+    blacklist.include? local
+  end
 	
-	def self.blacklisted_email_domain? domain
-		blacklist = ['googlegroups.com']
-		blacklist.include? domain
-	end
+  def self.blacklisted_email_domain? domain
+    blacklist = ['googlegroups.com']
+    blacklist.include? domain
+  end
 	
   # Given an email and name, parses the email and searches to see if the developer
   # is already in the database. If they are, returns the name of the developer.
