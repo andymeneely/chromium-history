@@ -58,17 +58,6 @@ class Developer < ActiveRecord::Base
 		blacklist.include? domain
 	end
 	
-	def self.blacklisted_email? email
-		blacklist = [/\Areply@/, /@googlegroups...\w\z/]
-		blacklist.each do |pattern|
-			if not pattern.match(email).nil?
-				puts email
-				return true 
-			end
-		end
-		false
-	end
-	
   # Given an email and name, parses the email and searches to see if the developer
   # is already in the database. If they are, returns the name of the developer.
   # If not, adds the developer's information to database.
