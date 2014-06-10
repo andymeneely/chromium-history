@@ -10,7 +10,7 @@ class ParticipantAnalysis
       #find all the code reviews where the owner is owner and one of the reviewers is participant
       #and only include reviews that were done before this one
       reviews = CodeReview.joins(:participants)\
-        .where("owner_id = ? AND created < ? AND dev_id = ? ", c.owner_id, c.created, participant.dev_id)
+        .where("owner_id = ? AND created < ? AND dev_id = ? AND dev_id<>owner_id ", c.owner_id, c.created, participant.dev_id)
 
       participant.update(reviews_with_owner: reviews.count)
     end

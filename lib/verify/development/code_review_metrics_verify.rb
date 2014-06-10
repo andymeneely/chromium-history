@@ -40,4 +40,13 @@ class CodeReviewMetricsVerify < VerifyBase
     assert_equal true, CodeReview.find_by(issue: 5831706594508800).loc_per_hour_exceeded? #approver looked at 111 loc in three minutes
   end
 
+  def verify_23444043_total_familiarity
+    # Code Review 23444043 
+    #   * Had two participants: tommi@chromium.org and xians@chromium.org
+    #   * Was on 2013-09-10
+    #   * Owner was tommi@chromium.org, so really one external participant
+    # xians@chromium.org was also on 8818012 where tommi was the owner. 
+    assert_equal 1, CodeReview.find_by(issue: 23444043).total_familiarity
+  end
+
 end

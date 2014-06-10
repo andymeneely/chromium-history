@@ -50,7 +50,6 @@ class CodeReview < ActiveRecord::Base
   #returns the familiarity of all the reviews added up
   def total_familiarity
     total = 0 # initially the number is zero total
-    participants = self.participants
     for participant in participants
       total += participant.reviews_with_owner
     end
