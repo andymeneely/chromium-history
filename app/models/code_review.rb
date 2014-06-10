@@ -47,26 +47,11 @@ class CodeReview < ActiveRecord::Base
     reviewers.where('dev_id NOT IN (SELECT dev_id FROM participants WHERE issue=?)', issue)
   end
 
-  #returns the familiarity of all the reviews added up
+  #returns the number of reviews of all the reviews added up
   def total_familiarity
-    total = 0 # initially the number is zero total
-    for participant in participants
-      total += participant.reviews_with_owner
-    end
-    return total
+    participants.sum(:reviews_with_owner)
   end
-
-  def average_familiarity
-    total = 0 # initially the number is zero total
-    participants = self.participants
-    for participant in participants
-      total += participant.reviews_with_owner
-    end
-    average = total / participants.count
-    return average
-  end
-
-  #
+  
   # Security Experienced Participants
   # Return participants who participated
   # in a code review of a prior security fixing
