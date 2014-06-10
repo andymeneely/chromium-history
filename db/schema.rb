@@ -89,7 +89,8 @@ ActiveRecord::Schema.define(version: 20140512131450) do
   create_table "participants", force: true do |t|
     t.integer "dev_id"
     t.integer "issue",              limit: 8
-    t.integer "reviews_with_owner"
+    t.integer "reviews_with_owner", null: true
+    t.boolean "security_experienced", null: true
   end
 
   create_table "patch_set_files", id: false, force: true do |t|

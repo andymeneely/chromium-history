@@ -52,40 +52,9 @@ class CodeReview < ActiveRecord::Base
     participants.sum(:reviews_with_owner)
   end
   
-  # Security Experienced Participants
-  # Return participants who participated
-  # in a code review of a prior security fixing
-  # code review. Ensure that the prior code reviews
-  # came before this one
-  #
-  # @return - Array of Participants 
-  #FIXME This is broken. Dev is returning nil
-  def security_experienced_parts
-
-#    experienced_participants = Array.new
-#    start_date = self.created
-
-    #get all participants for this code review
-#    participants = self.participants
-
-#    participants.each do |p|
-
-      #get the developer 
-#      dev = p.developer
-
-      #they inspected a code review with a CVE before this code review
-#      if dev.num_vulnerable_inspects(start_date) > 0 
-
-        #add participant to array
-#       experienced_participants.push(p)
-
-#     end#if
-
-#    end#loop
-
-#    return experienced_participants
-
-  end#num_security_experienced_parts
+  def security_experienced_participants
+    participants.where(security_experienced: true)  
+  end
 
   # Determine whether or not total 
   # churn for all patchsets exceeds

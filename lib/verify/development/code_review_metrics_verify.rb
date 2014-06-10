@@ -49,4 +49,11 @@ class CodeReviewMetricsVerify < VerifyBase
     assert_equal 1, CodeReview.find_by(issue: 23444043).total_familiarity
   end
 
+  def verify_52823002_security_experienced
+    cr = CodeReview.find_by(issue: 52823002)
+    emails = cr.security_experienced_participants.joins(:developer)\
+      .order('developers.email').pluck('developers.email')
+    assert_equal ['darin@chromium.org','derat@chromium.org'],emails
+  end
+
 end
