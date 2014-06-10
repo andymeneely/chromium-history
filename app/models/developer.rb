@@ -27,7 +27,11 @@ class Developer < ActiveRecord::Base
 			
       if m.domain == 'gtempaccount.com'
         match = /^(\w+)\W(\w+.\w+)(?=@gtempaccount.com)/.match m.address
-        m = Mail::Address.new(match[1] + '@' + match[2])
+        if match == nil
+	  puts email
+	  return nil, false
+	end
+	m = Mail::Address.new(match[1] + '@' + match[2])
       end
 		
       if m.domain == 'google.com' 
