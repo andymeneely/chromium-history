@@ -125,7 +125,10 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.string "release"
     t.string "thefilepath"
     t.integer "num_reviewers", null: true
-    t.integer "num_security_exp_reviewers", null: true
+    t.decimal "perc_non_part_reviewer", null: true
+    t.decimal "perc_security_experienced_participant", null: true
+    t.decimal "avg_owner_familiarity", null: true
+    t.decimal "avg_owner_familiarity_gap", null: true
     t.boolean "vulnerable", null: true
   end
 
