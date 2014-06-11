@@ -6,7 +6,6 @@ class CodeReviewParser
     open_csvs #initalize our attributes up for writing
 
     Dir["#{Rails.configuration.datadir}/codereviews/*"].each do |chunk|
-      puts chunk
       Dir["#{chunk}/*.json"].each do |file|
         cobj = load_json file
 
