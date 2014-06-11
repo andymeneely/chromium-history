@@ -5,27 +5,30 @@ class CodeReviewParser
   def parse
     open_csvs #initalize our attributes up for writing
 
-    Dir["#{Rails.configuration.datadir}/codereviews/*.json"].each do |file|
-      cobj = load_json file
+    Dir["#{Rails.configuration.datadir}/codereviews/*"].each do |chunk|
+      puts chunk
+      Dir["#{chunk}/*.json"].each do |file|
+        cobj = load_json file
 
-      @crs << [cobj['description'],
-               cobj['subject'], 
-               cobj['created'], 
-               cobj['modified'], 
-               cobj['issue'], 
-               cobj['owner_email'],
-               get_dev_id(cobj['owner_email']),
-               ""] #empty commit hash for now
+        @crs << [cobj['description'],
+                 cobj['subject'], 
+                 cobj['created'], 
+                 cobj['modified'], 
+                 cobj['issue'], 
+                 cobj['owner_email'],
+                 get_dev_id(cobj['owner_email']),
+                 ""] #empty commit hash for now
 
 
-      cobj['reviewers'].each { |email| @revs << [cobj['issue'], get_dev_id(email), email] }
+        cobj['reviewers'].each { |email| @revs << [cobj['issue'], get_dev_id(email), email] }
 
-      cobj['patchsets'].each do |pid|
-        patchset_file = "#{file.gsub(/\.json$/,'')}/#{pid}.json" #e.g. 10854242/1001.json
-        parse_patchsets(patchset_file, cobj['issue'])
+        cobj['patchsets'].each do |pid|
+          patchset_file = "#{file.gsub(/\.json$/,'')}/#{pid}.json" #e.g. 10854242/1001.json
+          parse_patchsets(patchset_file, cobj['issue'])
+        end
+
+        parse_messages(file, cobj['issue'], cobj['messages'])
       end
-
-      parse_messages(file, cobj['issue'], cobj['messages'])
     end
 
     dump_developers
