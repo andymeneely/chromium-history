@@ -28,4 +28,17 @@ class AssociationVerify < VerifyBase
     assert_equal 1, Developer.find_by(email: 'enne@chromium.org').participants.count
   end
 
+  def verify_filepath_participants
+    assert_equal [37,38], Filepath.participants.where(filepath: "DEPS").pluck(:dev_id)
+  end
+
+  def verify_filepath_contributors_empty
+    assert_equal [],  Filepath.contributors.where(filepath: "DEPS").pluck(:dev_id)
+  end
+
+  def verify_filepath_three_contributors
+    contrib_devs = Filepath.contributors.where(filepath: "net/ftp/ftp_util.h").pluck(:dev_id)   
+    assert_equal [],(contrib_devs-[30,31,20]) 
+  end
+
 end#end of class
