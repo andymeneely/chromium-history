@@ -124,11 +124,17 @@ ActiveRecord::Schema.define(version: 20140512131450) do
   create_table "release_filepaths", id: false, force: true do |t|
     t.string "release"
     t.string "thefilepath"
+    t.integer "sloc", null: true
+    t.integer "churn", null: true
     t.integer "num_reviewers", null: true
-    t.decimal "perc_non_part_reviewer", null: true
-    t.decimal "perc_security_experienced_participant", null: true
-    t.decimal "avg_owner_familiarity", null: true
+    t.integer "num_participants", null: true
+    t.decimal "perc_non_part_reviewers", null: true
+    t.decimal "perc_security_experienced_participants", null: true
+    t.decimal "avg_reviews_with_owner", null: true
     t.decimal "avg_owner_familiarity_gap", null: true
+    t.decimal "avg_file_experience", null: true
+    t.decimal "perc_fast_reviews", null: true
+    t.decimal "perc_overlooked_patchsets", null: true
     t.boolean "vulnerable", null: true
   end
 
