@@ -10,7 +10,6 @@ class Stats
     filepath_stats
     developer_stats
     cve_stats
-    collaborator_familiarity
     histograms
   end
 
@@ -65,16 +64,6 @@ class Stats
   def show(stat,desc)
     printf "|%9.2f %s\n", stat, desc if stat.is_a? Float
     printf "|%9d %s\n", stat, desc if stat.is_a? Integer
-  end
-
-  def collaborator_familiarity
-    total = 0
-    #CodeReview.find_each do |c|
-      #FIXME Don't output, put in a histogram
-      #puts "Total Familiarity: #{c.total_familiarity}"
-      #puts "Average Familiarity: #{c.average_familiarity}"
-    #end
-    return total
   end
 
   def histograms
@@ -187,56 +176,22 @@ class Stats
     puts a.to_s(120)
     puts "\n"
 
-    # FIXME Slow query
-    #puts "@@@ Number of Vulnerabilities per Participant Inspection Histogram @@@"
-    #a = Aggregate.new(0, 10, 1)
-    #Developer.all.find_each do |c|
-    #  nd = c.num_vulnerable_inspects
-    #  a << nd
-    #end
-    #puts a.to_s(120)
-    #puts "\n"
-
-    #FIXME This is broken too
-    #puts "@@@ Number of Vulnerability Participants per Filepath Inspection Histogram @@@"
-    #a = Aggregate.new(0, 10, 1)
-    #Filepath.all.find_each do |c|
-    #  vf = c.num_vulnerable_devs
-    #  a << vf
-    #end
-    #puts a.to_s(120)
-    #puts "\n"
-
     puts "@@@ Code Reviews that fall below or over 200 Lines of Code per Hour (0=false, 1=true) @@@"
     a = Aggregate.new(0, 2, 1)
     CodeReview.all.find_each do |c|
-      cl = if c.loc_per_hour_exceeded? then 1 else 0 end
-      a << cl  
+      a << (c.loc_per_hour_exceeded? ? 1 : 0)
     end
     puts a.to_s(120)
     puts "\n"
 
-    #FIXME Broken on dev data
-    #puts "@@@ Number of Experienced Developers per Code Review Histogram @@@"
-    #a = Aggregate.new(0, 10, 1)
-    #CodeReview.all.find_each do |c|
-    #  cl = c.security_experienced_parts.size
-    #  a << cl 
-    #end
-    #puts a.to_s(120)
-    #puts "\n"
-
     puts "@@@ Total Participator Familiarity per Code Review Histogram @@@"
     a = Aggregate.new(0, 10, 1)
     CodeReview.all.find_each do |c|
-      cl = c.total_familiarity
-      a << cl 
+      a << c.total_familiarity
     end
     puts a.to_s(120)
     puts "\n"
 
   end#histograms
-
-
 
 end#class
