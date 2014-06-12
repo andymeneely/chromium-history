@@ -46,9 +46,8 @@ class Filepath < ActiveRecord::Base
     Filepath.joins(commit_filepaths: [commit: [code_reviews: [contributors: :developer]]])
   end
 
-  #Returns participants objects
-  def participants_on_filepath
-    Participant.joins("INNER JOIN code_reviews ON participants.issue=code_reviews.issue INNER JOIN commits ON code_reviews.commit_hash=commits.commit_hash INNER JOIN commit_filepaths ON commit_filepaths.commit_hash=commits.commit_hash INNER JOIN filepaths ON filepaths.filepath=commit_filepaths.filepath WHERE filepaths.filepath='#{self.filepath}'")
+  def participants
+    Filepath.participants.where(filepath: filepath)
   end
 
 end
