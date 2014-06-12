@@ -20,7 +20,6 @@ class ParticipantAnalysis
   def populate_security_experienced
     Participant.find_each do |participant|
       c = participant.code_review
-
       vuln_reviews = participant.developer.participants.joins(code_review: :cvenums)\
         .where('code_reviews.created < ?', c.created)  
 

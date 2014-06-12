@@ -44,7 +44,7 @@ class Developer < ActiveRecord::Base
   end
 	
   def self.blacklisted_email_local? local
-    blacklist = ['reply', 'chromium-reviews']
+    blacklist = ['reply', 'chromium-reviews','commit-bot']
     blacklist.include? local
   end
 	

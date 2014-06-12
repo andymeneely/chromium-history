@@ -33,13 +33,6 @@ require 'stats'
 	# Commits are opened from a file in the environment we're working in, processed, structured in a hash and saved to the database
 # ReleaseFilepathLoader.new.load: The release and filepath are transfered to a new csv by padding with however many empty colums we have
 	# Files are transfered and padded and then copied from the release filepaths file in the dir we're working in
-# DeveloperConsolidator.new.consolidate_participants: Does what is stated in method
-	# From all locations of code review particpants, makes one participant table. Collectes participates by dev_id from 
-	# patchsets and messages. Iterates over participant model with batch processing, finds all the code reviews where the owner is owner 
-	# and one of the reviewers is participant and only includes reviews that were done before this one.
-# DeveloperConsolidator.new.consolidate_contributors: Does what is stated in the method
-	# Iterates over Contributer model with batch processing. Looks up contributers messages and checks to see if they made
-	# a valid contribution (filtered text length is greater than 50 chars)  
 # FilepathConsolidator.new.consolidate: Given all locations of filepaths that we know of, make one Filepath table
 # DeveloperConsolidator.new.consolidate_reviewers: deletes duplicate reviewers
 	# Delete rows that are duplicates over a set of columns, keeping only the one with the lowest ID. 
@@ -84,8 +77,6 @@ namespace :run do
       x.report("Optimizing releases et al.") do 
         [Release,ReleaseFilepath].each{|c| c.on_optimize}
       end
-      x.report("Consolidating participants") {DeveloperConsolidator.new.consolidate_participants}
-      x.report("Consolidating contributors") {DeveloperConsolidator.new.consolidate_contributors}
       x.report("Consolidating filepaths") {FilepathConsolidator.new.consolidate}
       
       x.report("Optimizing contributors"){ Contributor.on_optimize}

@@ -12,6 +12,9 @@ class CodeReviewLoader
     ActiveRecord::Base.connection.execute("COPY patch_set_files FROM '#{datadir}/patch_set_files.csv' DELIMITER ',' CSV")
     ActiveRecord::Base.connection.execute("COPY comments FROM '#{datadir}/comments.csv' DELIMITER ',' CSV")
     ActiveRecord::Base.connection.execute("COPY developers FROM '#{datadir}/developers.csv' DELIMITER ',' CSV")
+    ActiveRecord::Base.connection.execute("COPY participants FROM '#{datadir}/participants.csv' DELIMITER ',' CSV")
+    ActiveRecord::Base.connection.execute("COPY contributors FROM '#{datadir}/contributors.csv' DELIMITER ',' CSV")
+     
   end
 
   def add_primary_keys
@@ -21,6 +24,8 @@ class CodeReviewLoader
     ActiveRecord::Base.connection.execute "ALTER TABLE patch_set_files ADD COLUMN id SERIAL; ALTER TABLE patch_set_files ADD PRIMARY KEY (id);"
     ActiveRecord::Base.connection.execute "ALTER TABLE reviewers ADD COLUMN id SERIAL; ALTER TABLE reviewers ADD PRIMARY KEY (id);"
     ActiveRecord::Base.connection.execute("CREATE INDEX ON code_reviews USING hash (issue)")
+    ActiveRecord::Base.connection.execute "ALTER TABLE participants ADD COLUMN id SERIAL; ALTER TABLE participants ADD PRIMARY KEY (id);"
+    ActiveRecord::Base.connection.execute "ALTER TABLE contributors ADD COLUMN id SERIAL; ALTER TABLE contributors ADD PRIMARY KEY (id);"      
   end
 
 end #class

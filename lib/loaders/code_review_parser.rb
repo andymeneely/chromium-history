@@ -18,8 +18,10 @@ class CodeReviewParser
                  get_dev_id(cobj['owner_email']),
                  ""] #empty commit hash for now
 
-
         cobj['reviewers'].each { |email| @revs << [cobj['issue'], get_dev_id(email), email] }
+      
+        @prtp_set  = Set.new
+        @contrb_set = Set.new
 
         cobj['patchsets'].each do |pid|
           patchset_file = "#{file.gsub(/\.json$/,'')}/#{pid}.json" #e.g. 10854242/1001.json
@@ -27,9 +29,11 @@ class CodeReviewParser
         end
 
         parse_messages(file, cobj['issue'], cobj['messages'])
-      end
-    end
 
+        @prtp_set.each {|p| @prtps << [p,cobj['issue'],nil,nil]}
+        @contrb_set.each {|c| @contrbs << [c,cobj['issue']] }
+      end # do |file|
+    end #do |chunk|
     dump_developers
     flush_csvs #get everything out to the files
   end
@@ -44,6 +48,8 @@ class CodeReviewParser
     @psf = CSV.open("#{Rails.configuration.datadir}/tmp/patch_set_files.csv", 'w+')
     @coms = CSV.open("#{Rails.configuration.datadir}/tmp/comments.csv", 'w+')
     @devs = CSV.open("#{Rails.configuration.datadir}/tmp/developers.csv", 'w+')
+    @prtps = CSV.open("#{Rails.configuration.datadir}/tmp/participants.csv", 'w+')
+    @contrbs = CSV.open("#{Rails.configuration.datadir}/tmp/contributors.csv", 'w+')
   end
 
   def flush_csvs
@@ -54,6 +60,8 @@ class CodeReviewParser
     @psf.fsync
     @coms.fsync
     @devs.fsync
+    @prtps.fsync
+    @contrbs.fsync
   end
 
   def ordered_array(keyOrder, source)
@@ -87,29 +95,33 @@ class CodeReviewParser
     pobj['code_review_id'] = code_review_id
     pobj['owner_id'] = get_dev_id(pobj['owner_email'])
     @ps << ordered_array(@@PATCH_SET_PROPS, pobj)
-    parse_patch_set_files(pobj['composite_patch_set_id'], pobj['files'])
+    parse_patch_set_files(pobj['composite_patch_set_id'], pobj['files'], code_review_id)
   end
 
   @@PATCH_SET_FILE_PROPS = [:filepath, :status, :num_chunks,:num_added, :num_removed, :is_binary, :composite_patch_set_id, :composite_patch_set_file_id]
-  def parse_patch_set_files(composite_patch_set_id, psfiles)
+  def parse_patch_set_files(composite_patch_set_id, psfiles, code_review_id)
     psfiles.each do |psfile|
       psf = psfile[1]
       psf['filepath'] = psfile[0].to_s
       psf['composite_patch_set_id'] = composite_patch_set_id
       psf['composite_patch_set_file_id'] = "#{composite_patch_set_id}-#{psf['filepath']}"
       @psf << ordered_array(@@PATCH_SET_FILE_PROPS, psf)
-      parse_comments(psf['composite_patch_set_file_id'], psfile[1]['messages']) unless psfile[1]['messages'].nil? #Yes, Rietveld conflates "messages" with "comments" here
+      parse_comments(psf['composite_patch_set_file_id'], psfile[1]['messages'],code_review_id) unless psfile[1]['messages'].nil? #Yes, Rietveld conflates "messages" with "comments" here
     end #patch set file loop
   end #load patch set file method
 
   #param patchset = the patchset file that the comments are on
   #      comments = the comments on a particular patch set file 
   @@COMMENT_PROPS = [:author_email,:author_id,:text,:draft,:lineno,:date,:left ,:composite_patch_set_file_id]
-  def parse_comments(composite_patch_set_file_id, comments)
+  def parse_comments(composite_patch_set_file_id, comments,code_review_id)
     comments.each do |comment|
       comment['composite_patch_set_file_id'] = composite_patch_set_file_id
       comment['author_id'] = get_dev_id(comment["author_email"])
       @coms << ordered_array(@@COMMENT_PROPS, comment)
+      @prtp_set << comment['author_id'] unless comment['author_id'] == -1
+     if Contributor.contribution? comment
+        @contrb_set << comment['author_id'] unless comment['author_id'] == -1
+      end
     end #comments loop
   end #load comments method
 
@@ -122,6 +134,10 @@ class CodeReviewParser
       msg['code_review_id'] = code_review_id
       msg['sender_id'] = get_dev_id(msg['sender'])
       @msgs << ordered_array(@@MESSAGE_PROPS, msg)
+      @prtp_set << msg['sender_id'] unless msg['sender_id'] == -1
+      if Contributor.contribution? msg 
+        @contrb_set << msg['sender_id'] unless msg['sender_id'] == -1
+      end
     end #message loop
   end #load messages method
 

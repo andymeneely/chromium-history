@@ -57,7 +57,7 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.datetime "created_at"
   end
 
-  create_table "contributors", force: true do |t|
+  create_table "contributors", id: false, force: true do |t|
     t.integer  "dev_id"
     t.integer "issue", limit: 8
   end
@@ -86,7 +86,7 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.integer  "code_review_id", limit: 8
   end
 
-  create_table "participants", force: true do |t|
+  create_table "participants", id: false, force: true do |t|
     t.integer "dev_id"
     t.integer "issue",              limit: 8
     t.integer "reviews_with_owner", null: true
