@@ -41,4 +41,8 @@ class AssociationVerify < VerifyBase
     assert_equal ['eroman@chromium.org','phajdan.jr@chromium.org','wtc@chromium.org'],contrib_devs
   end
 
+  def verify_participants_on_filepath
+    f = Filepath.where(filepath: "DEPS")
+    assert_equal ['apatrick@chromium.org','nduca@chromium.org'], f.participants.pluck(:email).sort
+  end
 end#end of class
