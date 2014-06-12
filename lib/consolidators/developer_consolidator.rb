@@ -13,53 +13,5 @@ class DeveloperConsolidator
     ActiveRecord::Base.connection.execute delete_duplicates
   end
 
-  # Given all locations of code review particpants that we know of, make one participant table
-  def consolidate_participants
-    query=<<-eos
-      INSERT INTO participants (dev_id, issue) 
-      SELECT dev_id, issue FROM(
-        SELECT owner_id as dev_id, code_review_id as issue FROM patch_sets
-        UNION
-        SELECT sender_id as dev_id, code_review_id as issue FROM messages WHERE sender<>'commit-bot@chromium.org'
-      ) all_participants
-    eos
-
-    ActiveRecord::Base.connection.execute query
-  end
-
-  def consolidate_contributors
-     #Copy participants table
-    query=<<-eos
-      INSERT INTO contributors (dev_id, issue) 
-      SELECT dev_id, issue FROM participants
-    eos
-
-    ActiveRecord::Base.connection.execute query
-
-    # Iterate over the model with batch processing (see ActiveRecord docs) 
-    Contributor.all.find_in_batches(batch_size: 1000) do |group|
-      group.each { |contributor| 
-        issueNumber = contributor.issue
-        #take the issue number and look up in messages or comments
-        mess = Message.where("code_review_id = ? AND sender_id = ?", issueNumber, contributor.dev_id)  # and sender is the contributor
-        
-        c = false  #default assumption is they did not contribute
-        for m in mess  #we need to check all of the messages they sent to see if any of them were useful
-          txt = m.text
-          # this message may not be a contribution but there may be one farther down...
-          if contribution?(txt)  #if this is not a contribution
-            c = true
-          end
-        end
-
-        #delete this row of the table once we get all done checking
-        if !c
-          Contributor.delete_all(["issue = ? AND dev_id = ?", issueNumber, contributor.dev_id])
-        end
-
-      }
-    end
-  end
-
 end
 
