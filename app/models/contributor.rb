@@ -10,14 +10,14 @@ class Contributor < ActiveRecord::Base
 
   def self.contribution?(txt)
     txt_filtered = ''
-    txt.to_s.lines { |line| 
-       txt_filtered << line unless (line[0] == '>' or (line.start_with?("On ") and line.include?(" wrote:")) or (line.starts_with?("https://codereview.chromium.org/")) or (line.starts_with?("http://codereview.chromium.org/")))
-#      txt_filtered << line unless (line[0] == '>'     #remove any line that starts with >
-#      or (line.start_with?("On ") and line.end_with?(" wrote:"))   #remove the lines introducing the copied text
-#      or (line.starts_with?("https://codereview.chromium.org/")))  #remove the links to the in line comments
-    }
-
-    return txt_filtered.length > 50
+    txt.to_s.each_line do |line| 
+       txt_filtered << line unless (line[0] == '>' \
+                                    or (line.start_with?("On ") and line.include?(" wrote:")) \
+                                    or (line.starts_with?("https://codereview.chromium.org/")) \
+                                    or (line.starts_with?("http://codereview.chromium.org/")))
     end
+    return txt_filtered.length > 50
+  end
+
 end
 

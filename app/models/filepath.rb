@@ -38,12 +38,12 @@ class Filepath < ActiveRecord::Base
   # All of the participants joined
   # Returns participants relation
   def self.participants
-    Filepath.joins(commit_filepaths: [commit: [code_reviews: :participants]])
+    Filepath.joins(commit_filepaths: [commit: [code_reviews: [participants: :developer]]])
   end
 
   # All of the contributors joined
   def self.contributors
-    Filepath.joins(commit_filepaths: [commit: [code_reviews: :contributors]])
+    Filepath.joins(commit_filepaths: [commit: [code_reviews: [contributors: :developer]]])
   end
 
   #Returns participants objects

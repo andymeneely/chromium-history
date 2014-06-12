@@ -119,7 +119,7 @@ class CodeReviewParser
       comment['author_id'] = get_dev_id(comment["author_email"])
       @coms << ordered_array(@@COMMENT_PROPS, comment)
       @prtp_set << comment['author_id'] unless comment['author_id'] == -1
-     if Contributor.contribution? comment
+     if Contributor.contribution? comment['text']
         @contrb_set << comment['author_id'] unless comment['author_id'] == -1
       end
     end #comments loop
@@ -135,7 +135,7 @@ class CodeReviewParser
       msg['sender_id'] = get_dev_id(msg['sender'])
       @msgs << ordered_array(@@MESSAGE_PROPS, msg)
       @prtp_set << msg['sender_id'] unless msg['sender_id'] == -1
-      if Contributor.contribution? msg 
+      if Contributor.contribution? msg['text']
         @contrb_set << msg['sender_id'] unless msg['sender_id'] == -1
       end
     end #message loop
