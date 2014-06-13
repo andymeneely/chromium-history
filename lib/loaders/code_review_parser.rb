@@ -4,6 +4,9 @@ class CodeReviewParser
 
   def parse
     open_csvs #initalize our attributes up for writing
+  
+    @fileio_time=0
+    @json_time=0
 
     Dir["#{Rails.configuration.datadir}/codereviews/chunk*"].each do |chunk|
       Dir["#{chunk}/*.json"].each do |file|
@@ -35,6 +38,7 @@ class CodeReviewParser
       end # do |file|
     end #do |chunk|
     dump_developers
+    puts "Oj parsing time was: fileio=#{@fileio_time/1000}s, json parse=#{@json_time/1000}s"
     flush_csvs #get everything out to the files
   end
 
@@ -73,7 +77,17 @@ class CodeReviewParser
   end
 
   def load_json(file)
-    Oj.load_file(file, {:symbol_keys => false, :mode => :compat})
+    fileio_time_start = Time.now
+    txt = ''
+    File.open(file) do |f|
+      txt = f.read
+    end
+    @fileio_time += (Time.now - fileio_time_start)
+    
+    json_time_start = Time.now
+    json = Oj.load(txt, {:symbol_keys => false, :mode => :compat})
+    @json_time += Time.now - json_time_start
+    return json
   end
 
   # Hit our own Developer cache to figure out distinct developers
