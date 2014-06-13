@@ -1,0 +1,4 @@
+require 'csv'
+
+class SlocLoader
+

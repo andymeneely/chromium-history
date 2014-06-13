@@ -1,0 +1,256 @@
+
+language,filename,blank,comment,code,"http://cloc.sourceforge.net v 1.60  T=3.60 s (70.5 files/s, 12838.8 lines/s)"
+C++,./video/omx_video_decode_engine.cc,194,143,1009
+C++,./base/pipeline_impl.cc,191,135,849
+C++,./base/yuv_row_posix.cc,96,13,814
+C/C++ Header,./tools/player_wtl/mainfrm.h,100,27,608
+C++,./audio/linux/alsa_output_unittest.cc,113,84,605
+C++,./audio/linux/alsa_output.cc,133,196,599
+C++,./base/pipeline_impl_unittest.cc,131,84,589
+C++,./tools/mfplayer/mfplayer.cc,90,153,583
+C++,./video/mft_h264_decode_engine.cc,65,59,570
+C++,./audio/win/audio_output_win_unittest.cc,86,102,546
+C++,./base/yuv_row_win.cc,53,13,523
+C++,./ffmpeg/ffmpeg_unittest.cc,100,36,520
+C++,./filters/ffmpeg_demuxer_unittest.cc,122,120,502
+C++,./tools/media_bench/media_bench.cc,66,55,474
+C++,./tools/mfdecoder/main.cc,38,52,470
+C++,./base/composite_filter.cc,82,32,437
+C++,./filters/ffmpeg_demuxer.cc,99,97,433
+C++,./tools/player_x11/gles_video_renderer.cc,63,39,414
+C++,./test/ffmpeg_tests/ffmpeg_tests.cc,58,54,390
+C/C++ Header,./tools/player_wtl/view.h,45,23,386
+C++,./omx/omx_codec_unittest.cc,71,30,385
+C++,./base/composite_filter_unittest.cc,189,152,385
+C++,./filters/video_renderer_base.cc,75,103,372
+C++,./filters/ffmpeg_video_decoder_unittest.cc,72,73,352
+C++,./video/mft_h264_decode_engine_unittest.cc,45,20,345
+C++,./omx/omx_unittest.cc,55,26,344
+C++,./tools/omx_test/omx_test.cc,50,52,319
+C++,./filters/ffmpeg_video_decoder.cc,72,66,313
+C++,./tools/mfdecoder/mfdecoder.cc,25,16,282
+C++,./base/yuv_convert.cc,28,50,268
+C,./tools/qt_faststart/qt_faststart.c,24,39,264
+C++,./audio/audio_output_proxy_unittest.cc,68,24,262
+C++,./video/ffmpeg_video_decode_engine_unittest.cc,52,19,261
+C++,./base/seekable_buffer_unittest.cc,53,37,258
+C++,./tools/mfplayer/mf_playback_main.cc,38,32,254
+C/C++ Header,./tools/player_wtl/props.h,52,21,252
+C++,./video/ffmpeg_video_decode_engine.cc,51,75,250
+C++,./audio/win/waveout_output_win.cc,33,77,240
+C++,./tools/omx_test/file_reader_util.cc,35,33,224
+C++,./tools/player_x11/player_x11.cc,29,34,223
+C++,./audio/audio_output_controller_unittest.cc,71,38,223
+C++,./audio/audio_output_controller.cc,69,44,220
+C++,./base/yuv_row_table.cc,10,5,218
+C++,./filters/ffmpeg_glue_unittest.cc,64,49,217
+C++,./base/yuv_convert_unittest.cc,31,24,216
+C++,./tools/player_x11/gl_video_renderer.cc,39,24,216
+C++,./base/video_frame.cc,22,30,202
+C/C++ Header,./base/mock_filters.h,65,53,198
+C++,./audio/mac/audio_output_mac.cc,26,72,197
+C++,./filters/audio_renderer_base.cc,37,49,192
+C++,./filters/omx_video_decoder.cc,43,12,188
+C++,./audio/audio_util.cc,25,17,186
+C++,./filters/ffmpeg_audio_decoder.cc,31,45,180
+C++,./tools/scaler_bench/scaler_bench.cc,29,6,178
+C++,./filters/video_renderer_base_unittest.cc,51,34,177
+C/C++ Header,./filters/decoder_base.h,55,84,176
+C++,./base/clock_impl_unittest.cc,31,16,170
+C++,./base/seekable_buffer.cc,48,53,169
+C++,./filters/audio_file_reader.cc,44,14,168
+C++,./audio/win/audio_manager_win.cc,37,31,167
+C++,./base/mock_ffmpeg.cc,42,21,166
+C++,./audio/linux/alsa_input.cc,32,15,166
+C/C++ Header,./base/pipeline_impl.h,83,161,166
+C++,./audio/audio_input_unittest.cc,23,24,161
+C++,./tools/player_x11/x11_video_renderer.cc,32,30,161
+C++,./audio/win/wavein_input_win.cc,23,32,161
+C/C++ Header,./video/omx_video_decode_engine.h,48,40,158
+C++,./base/video_frame_unittest.cc,26,20,150
+C++,./filters/ffmpeg_glue.cc,33,15,144
+C++,./filters/audio_renderer_base_unittest.cc,45,42,142
+C++,./omx/omx_configurator.cc,18,12,142
+C++,./filters/audio_renderer_algorithm_ola.cc,29,36,142
+C++,./audio/mac/audio_input_mac.cc,16,25,137
+C++,./tools/player_wtl/movie.cc,32,14,136
+C++,./audio/mac/audio_output_mac_unittest.cc,21,27,133
+C++,./video/ffmpeg_video_allocator.cc,24,26,131
+C/C++ Header,./audio/linux/alsa_output.h,41,84,130
+C++,./tools/wav_ola_test/wav_ola_test.cc,25,21,129
+C/C++ Header,./base/filters.h,68,106,127
+C++,./tools/shader_bench/shader_bench.cc,23,13,127
+C++,./omx/mock_omx.cc,25,9,125
+C++,./audio/audio_util_unittest.cc,13,14,114
+C/C++ Header,./omx/omx_configurator.h,30,11,113
+C++,./filters/decoder_base_unittest.cc,28,21,113
+C++,./tools/shader_bench/window_win.cc,20,6,113
+C++,./tools/shader_bench/gpu_color_painter_exp.cc,14,8,108
+C++,./audio/audio_input_controller.cc,33,25,108
+C++,./filters/bitstream_converter_unittest.cc,36,25,108
+C++,./filters/audio_renderer_algorithm_ola_unittest.cc,27,34,103
+C/C++ Header,./tools/mfplayer/mfplayer.h,33,32,103
+C/C++ Header,./tools/player_wtl/list.h,21,4,102
+C/C++ Header,./filters/ffmpeg_demuxer.h,55,81,98
+C/C++ Header,./base/mock_ffmpeg.h,29,24,96
+C++,./filters/file_data_source.cc,13,4,96
+C++,./audio/mac/audio_manager_mac.cc,24,25,94
+C/C++ Header,./filters/ffmpeg_video_decoder.h,27,24,92
+C++,./audio/linux/audio_manager_linux.cc,28,17,91
+C++,./tools/shader_bench/gpu_color_painter.cc,15,11,91
+C/C++ Header,./base/video_frame.h,41,41,90
+C++,./audio/audio_input_controller_unittest.cc,27,15,89
+C/C++ Header,./audio/audio_output_controller.h,38,83,86
+C/C++ Header,./filters/video_renderer_base.h,38,95,86
+C++,./audio/audio_output_dispatcher.cc,24,8,83
+C++,./base/media_posix.cc,20,15,82
+C++,./base/media_format.cc,27,28,82
+C++,./filters/audio_renderer_algorithm_base.cc,25,9,80
+C/C++ Header,./tools/omx_test/file_reader_util.h,27,13,80
+C/C++ Header,./tools/player_wtl/seek.h,11,8,78
+C++,./audio/linux/alsa_util.cc,19,4,77
+C++,./base/filters.cc,27,3,77
+C++,./base/filter_collection.cc,24,3,76
+C++,./audio/simple_sources_unittest.cc,17,14,75
+C++,./filters/file_data_source_unittest.cc,25,13,75
+C++,./tools/shader_bench/cpu_color_painter.cc,12,7,73
+C++,./audio/audio_output_proxy.cc,16,3,73
+C/C++ Header,./base/composite_filter.h,37,35,72
+C/C++ Header,./tools/player_wtl/resource.h,3,9,71
+C/C++ Header,./base/yuv_row.h,17,30,71
+C++,./filters/audio_renderer_impl.cc,21,15,70
+C/C++ Header,./omx/mock_omx.h,25,6,70
+C++,./audio/linux/alsa_wrapper.cc,23,3,70
+C++,./base/media_win.cc,17,15,69
+C++,./ffmpeg/file_protocol.cc,15,5,69
+C/C++ Header,./video/mft_h264_decode_engine.h,22,13,68
+C++,./tools/player_wtl/player_wtl.cc,19,6,68
+C++,./tools/shader_bench/gpu_painter.cc,13,9,67
+C/C++ Header,./base/callback.h,30,18,66
+C++,./tools/shader_bench/window_linux.cc,20,3,66
+C/C++ Header,./video/video_decode_engine.h,30,74,65
+C/C++ Header,./audio/audio_input_controller.h,23,49,64
+C/C++ Header,./base/pipeline.h,33,88,62
+C++,./audio/simple_sources.cc,16,13,61
+C++,./audio/audio_parameters_unittest.cc,8,4,60
+C++,./base/clock_impl.cc,11,5,60
+C++,./filters/null_audio_renderer.cc,16,16,60
+C++,./base/filter_collection_unittest.cc,25,15,59
+C++,./audio/fake_audio_output_stream.cc,17,6,58
+C++,./base/data_buffer_unittest.cc,12,5,56
+C++,./audio/fake_audio_input_stream.cc,12,8,56
+C/C++ Header,./filters/audio_renderer_base.h,28,60,56
+C++,./base/mock_filters.cc,26,3,53
+C/C++ Header,./audio/win/waveout_output_win.h,25,41,53
+C/C++ Header,./base/media_format.h,18,25,52
+C++,./audio/audio_parameters.cc,7,3,51
+C/C++ Header,./filters/omx_video_decoder.h,17,8,51
+C/C++ Header,./video/ffmpeg_video_allocator.h,23,20,51
+C++,./filters/bitstream_converter.cc,15,11,51
+C/C++ Header,./base/mock_reader.h,17,12,50
+C/C++ Header,./base/yuv_convert.h,10,12,50
+C/C++ Header,./tools/player_x11/gles_video_renderer.h,20,10,50
+C/C++ Header,./tools/player_wtl/movie.h,31,23,48
+C/C++ Header,./audio/win/wavein_input_win.h,25,29,47
+C++,./tools/omx_test/color_space_util.cc,11,3,47
+C/C++ Header,./filters/bitstream_converter.h,19,16,46
+C/C++ Header,./audio/simple_sources.h,17,23,46
+C/C++ Header,./video/ffmpeg_video_decode_engine.h,22,16,46
+C/C++ Header,./filters/audio_renderer_algorithm_base.h,29,44,45
+C/C++ Header,./filters/audio_file_reader.h,18,17,44
+C/C++ Header,./base/filter_collection.h,17,19,44
+C/C++ Header,./tools/omx_test/file_sink.h,16,10,42
+C/C++ Header,./base/seekable_buffer.h,32,95,42
+C/C++ Header,./tools/mfdecoder/mfdecoder.h,16,31,42
+C/C++ Header,./audio/mac/audio_input_mac.h,15,17,41
+C/C++ Header,./audio/audio_io.h,24,86,41
+C/C++ Header,./base/buffers.h,20,35,41
+C/C++ Header,./base/state_matrix.h,17,3,41
+C++,./audio/audio_manager.cc,12,8,41
+C/C++ Header,./filters/ffmpeg_glue.h,24,43,40
+C/C++ Header,./video/mock_objects.h,11,3,40
+C++,./audio/audio_manager_base.cc,11,3,39
+C++,./audio/openbsd/audio_manager_openbsd.cc,13,5,39
+C++,./tools/omx_test/file_sink.cc,11,6,39
+C/C++ Header,./base/mock_task.h,17,48,38
+C/C++ Header,./audio/linux/alsa_input.h,14,16,37
+C++,./audio/fake_audio_input_stream_unittest.cc,9,8,37
+C/C++ Header,./audio/audio_output_dispatcher.h,19,38,36
+C++,./base/state_matrix_unittest.cc,14,3,36
+C/C++ Header,./ffmpeg/ffmpeg_common.h,13,13,36
+C/C++ Header,./audio/linux/alsa_wrapper.h,7,7,36
+C/C++ Header,./audio/mac/audio_output_mac.h,11,23,35
+C/C++ Header,./audio/test_audio_input_controller_factory.h,19,42,35
+C++,./base/data_buffer.cc,13,4,35
+C++,./base/message_loop_factory_impl.cc,13,4,34
+C/C++ Header,./audio/audio_output_proxy.h,13,18,33
+C/C++ Header,./base/mock_filter_host.h,9,8,33
+C/C++ Header,./audio/fake_audio_output_stream.h,11,7,32
+C++,./filters/audio_renderer_algorithm_default.cc,11,8,32
+C/C++ Header,./tools/player_x11/x11_video_renderer.h,17,10,32
+C/C++ Header,./audio/fake_audio_input_stream.h,11,6,32
+C/C++ Header,./audio/linux/audio_manager_linux.h,14,5,31
+C/C++ Header,./filters/audio_renderer_algorithm_ola.h,16,22,31
+C/C++ Header,./filters/file_data_source.h,15,19,30
+C/C++ Header,./tools/player_x11/gl_video_renderer.h,14,9,30
+C/C++ Header,./audio/audio_manager.h,19,57,30
+C/C++ Header,./base/pts_heap.h,13,26,29
+C/C++ Header,./filters/audio_renderer_impl.h,14,17,29
+C/C++ Header,./audio/audio_parameters.h,11,10,29
+C/C++ Header,./filters/null_audio_renderer.h,16,23,29
+C++,./base/pts_heap_unittest.cc,8,3,28
+C/C++ Header,./base/filter_host.h,23,37,28
+C++,./audio/test_audio_input_controller_factory.cc,8,4,28
+C/C++ Header,./audio/audio_manager_base.h,17,6,27
+C/C++ Header,./base/clock_impl.h,16,20,26
+C/C++ Header,./audio/audio_util.h,11,42,26
+C/C++ Header,./tools/shader_bench/window.h,19,16,25
+C/C++ Header,./audio/win/audio_manager_win.h,11,11,25
+C/C++ Header,./filters/ffmpeg_audio_decoder.h,17,11,25
+C/C++ Header,./base/data_buffer.h,15,16,24
+C++,./tools/player_wtl/wtl_renderer.cc,8,4,24
+C/C++ Header,./video/video_decode_context.h,13,48,23
+C/C++ Header,./audio/mac/audio_manager_mac.h,10,11,23
+C/C++ Header,./audio/linux/alsa_util.h,10,3,21
+C/C++ Header,./base/message_loop_factory_impl.h,12,5,21
+C++,./base/callback.cc,9,3,21
+C/C++ Header,./tools/shader_bench/gpu_painter.h,10,12,20
+C/C++ Header,./tools/shader_bench/painter.h,11,9,19
+C/C++ Header,./audio/openbsd/audio_manager_openbsd.h,8,5,19
+C/C++ Header,./tools/player_wtl/wtl_renderer.h,11,6,19
+C++,./tools/shader_bench/painter.cc,5,3,18
+C++,./base/mock_callback.cc,8,3,18
+C/C++ Header,./base/mock_callback.h,11,28,18
+C/C++ Header,./tools/shader_bench/gpu_color_painter.h,8,8,18
+C/C++ Header,./tools/shader_bench/gpu_color_painter_exp.h,8,9,18
+C/C++ Header,./base/clock.h,11,24,18
+C/C++ Header,./tools/shader_bench/cpu_color_painter.h,8,7,17
+C/C++ Header,./base/limits.h,10,12,16
+C/C++ Header,./tools/player_wtl/player_wtl.h,6,6,16
+C/C++ Header,./filters/ffmpeg_interfaces.h,10,7,16
+C++,./audio/audio_buffers_state.cc,4,3,15
+C/C++ Header,./base/message_loop_factory.h,9,10,15
+C++,./base/state_matrix.cc,8,3,15
+C/C++ Header,./filters/audio_renderer_algorithm_default.h,9,8,14
+C/C++ Header,./base/media_switches.h,9,4,13
+C++,./base/mock_task.cc,6,3,13
+C/C++ Header,./audio/audio_buffers_state.h,9,12,12
+C++,./tools/shader_bench/window.cc,5,3,12
+C++,./omx/run_all_unittests.cc,2,4,11
+C++,./video/video_decode_engine.cc,4,3,11
+C++,./base/pts_heap.cc,7,3,11
+C++,./base/djb2.cc,3,3,10
+C++,./base/buffers.cc,7,3,10
+C++,./base/media_switches.cc,7,9,10
+C/C++ Header,./tools/omx_test/color_space_util.h,7,7,10
+C++,./ffmpeg/ffmpeg_util.cc,6,3,9
+C++,./base/djb2_unittest.cc,4,3,8
+C/C++ Header,./base/media.h,8,14,8
+C++,./filters/ffmpeg_interfaces.cc,6,4,8
+C/C++ Header,./ffmpeg/ffmpeg_util.h,7,3,8
+C++,./ffmpeg/ffmpeg_common.cc,6,3,7
+C/C++ Header,./base/djb2.h,8,26,6
+C++,./base/mock_filter_host.cc,5,3,5
+C/C++ Header,./ffmpeg/file_protocol.h,3,6,5
+C++,./base/message_loop_factory.cc,4,3,4
+C++,./base/run_all_unittests.cc,2,3,4

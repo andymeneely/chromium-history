@@ -21,4 +21,9 @@ class ReleaseFilepathLoader
     copy = "COPY release_filepaths FROM '#{datadir}/tmp/release_filepaths_11.0.csv' DELIMITER ',' CSV"
     ActiveRecord::Base.connection.execute(copy)
   end
+
+  def load_sloc
+    datadir = File.expand_path(Rails.configuration.datadir)
+    CSV.open("#{datadir}/sloc.csv")
+    
 end
