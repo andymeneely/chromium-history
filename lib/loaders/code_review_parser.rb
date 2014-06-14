@@ -1,46 +1,50 @@
 require 'csv'
+require 'ruby-prof'
 
 class CodeReviewParser
 
   def parse
     open_csvs #initalize our attributes up for writing
-  
-    @fileio_time=0
-    @json_time=0
 
-    Dir["#{Rails.configuration.datadir}/codereviews/chunk*"].each do |chunk|
-      Dir["#{chunk}/*.json"].each do |file|
-        cobj = load_json file
+    result = RubyProf.profile do 
+      Dir["#{Rails.configuration.datadir}/codereviews/chunk*"].each do |chunk|
+        Dir["#{chunk}/*.json"].each do |file|
+          cobj = load_json file
 
-        @crs << [cobj['description'],
-                 cobj['subject'], 
-                 cobj['created'], 
-                 cobj['modified'], 
-                 cobj['issue'], 
-                 cobj['owner_email'],
-                 get_dev_id(cobj['owner_email']),
-                 ""] #empty commit hash for now
+          @crs << [cobj['description'],
+                   cobj['subject'], 
+                   cobj['created'], 
+                   cobj['modified'], 
+                   cobj['issue'], 
+                   cobj['owner_email'],
+                   get_dev_id(cobj['owner_email']),
+                   ""] #empty commit hash for now
 
-        cobj['reviewers'].each { |email| @revs << [cobj['issue'], get_dev_id(email), email] }
-      
-        @prtp_set  = Set.new
-        @contrb_set = Set.new
+          cobj['reviewers'].each { |email| @revs << [cobj['issue'], get_dev_id(email), email] }
 
-        cobj['patchsets'].each do |pid|
-          patchset_file = "#{file.gsub(/\.json$/,'')}/#{pid}.json" #e.g. 10854242/1001.json
-          parse_patchsets(patchset_file, cobj['issue'])
-        end
+          @prtp_set  = Set.new
+          @contrb_set = Set.new
 
-        parse_messages(file, cobj['issue'], cobj['messages'])
+          cobj['patchsets'].each do |pid|
+            patchset_file = "#{file.gsub(/\.json$/,'')}/#{pid}.json" #e.g. 10854242/1001.json
+            parse_patchsets(patchset_file, cobj['issue'])
+          end
 
-        @prtp_set.each {|p| @prtps << [p,cobj['issue'],nil,nil]}
-        @contrb_set.each {|c| @contrbs << [c,cobj['issue']] }
-      end # do |file|
-    end #do |chunk|
-    dump_developers
-    puts "Oj parsing time was: fileio=#{@fileio_time/1000}s, json parse=#{@json_time/1000}s"
-    flush_csvs #get everything out to the files
-  end
+          parse_messages(file, cobj['issue'], cobj['messages'])
+
+          @prtp_set.each {|p| @prtps << [p,cobj['issue'],nil,nil]}
+          @contrb_set.each {|c| @contrbs << [c,cobj['issue']] }
+        end # do |file|
+      end #do |chunk|
+      dump_developers
+      flush_csvs #get everything out to the files
+
+    end#profile
+    printer = RubyProf::FlatPrinterWithLineNumbers.new(result)
+    printer.print(File.open("/home/axmvse/logs/parser-profile.txt", "w+"), min_percent: 1)
+    printer = RubyProf::GraphPrinter.new(result)
+    printer.print(File.open("/home/axmvse/logs/parser-profile-graph.txt", "w+"), min_percent: 1)
+  end #method
 
   def open_csvs
     @dev_db = Hash.new
@@ -77,16 +81,11 @@ class CodeReviewParser
   end
 
   def load_json(file)
-    fileio_time_start = Time.now
     txt = ''
     File.open(file) do |f|
       txt = f.read
     end
-    @fileio_time += (Time.now - fileio_time_start)
-    
-    json_time_start = Time.now
     json = Oj.load(txt, {:symbol_keys => false, :mode => :compat})
-    @json_time += Time.now - json_time_start
     return json
   end
 
@@ -133,7 +132,7 @@ class CodeReviewParser
       comment['author_id'] = get_dev_id(comment["author_email"])
       @coms << ordered_array(@@COMMENT_PROPS, comment)
       @prtp_set << comment['author_id'] unless comment['author_id'] == -1
-     if Contributor.contribution? comment['text']
+      if Contributor.contribution? comment['text']
         @contrb_set << comment['author_id'] unless comment['author_id'] == -1
       end
     end #comments loop

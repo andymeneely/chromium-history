@@ -1,12 +1,10 @@
 source 'https://rubygems.org'
 
-# Specify your gem's dependencies in chromium_history.gemspec
-# TODO: Should we really specify our dependencies here or in the gemspec?
-# This should no longer be here.
-#gemspec
-
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.0'
+
+# Profiling
+gem 'ruby-prof'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.0'
