@@ -21,7 +21,11 @@ class CodeReviewParser
                    get_dev_id(cobj['owner_email']),
                    ""] #empty commit hash for now
 
-          cobj['reviewers'].each { |email| @revs << [cobj['issue'], get_dev_id(email), email] }
+          cobj['reviewers'].each do |email|
+            unless get_dev_id(cobj['owner_email']) == get_dev_id(email)
+              @revs << [cobj['issue'], get_dev_id(email), email]
+            end
+          end
 
           @prtp_set  = Set.new
           @contrb_set = Set.new
