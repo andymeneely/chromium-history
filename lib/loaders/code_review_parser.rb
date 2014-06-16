@@ -1,12 +1,13 @@
 require 'csv'
-require 'ruby-prof'
+#require 'ruby-prof'
 
 class CodeReviewParser
 
   def parse
     open_csvs #initalize our attributes up for writing
 
-    result = RubyProf.profile do 
+    #Disabled for now - might re-enable over the next few days
+    #result = RubyProf.profile do 
       Dir["#{Rails.configuration.datadir}/codereviews/chunk*"].each do |chunk|
         Dir["#{chunk}/*.json"].each do |file|
           cobj = load_json file
@@ -39,11 +40,12 @@ class CodeReviewParser
       dump_developers
       flush_csvs #get everything out to the files
 
-    end#profile
-    printer = RubyProf::FlatPrinterWithLineNumbers.new(result)
-    printer.print(File.open("/home/axmvse/logs/parser-profile.txt", "w+"), min_percent: 1)
-    printer = RubyProf::GraphPrinter.new(result)
-    printer.print(File.open("/home/axmvse/logs/parser-profile-graph.txt", "w+"), min_percent: 1)
+    #end#profile
+    #printer = RubyProf::FlatPrinterWithLineNumbers.new(result)
+    #printer.print(File.open("/home/axmvse/logs/parser-profile.txt", "w+"), min_percent: 1)
+    #printer = RubyProf::GraphPrinter.new(result)
+    #printer.print(File.open("/home/axmvse/logs/parser-profile-graph.txt", "w+"), min_percent: 1)
+  
   end #method
 
   def open_csvs
