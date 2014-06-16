@@ -9,7 +9,8 @@ class SlocLoader
         next
       end
       match = line[1].match(/([^\.\/].+)/) #removes ./ from pathname
-      out_line = [match[1], line[4]] #filepath, sloc
+      update = "UPDATE release_filepaths SET sloc = #{line[4]} WHERE thefilepath = '#{match[1]}'"
+      ActiveRecord::Base.connection.execute(update)
     end
   end
 end

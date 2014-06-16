@@ -4,6 +4,7 @@ require 'loaders/code_review_loader'
 require 'loaders/cve_loader'
 require 'loaders/git_log_loader'
 require 'loaders/release_filepath_loader'
+require 'loaders/sloc_loader'
 require 'consolidators/filepath_consolidator'
 require 'consolidators/developer_consolidator'
 require 'verify/verify_runner'
@@ -77,6 +78,7 @@ namespace :run do
       x.report("Optimizing releases et al.") do 
         [Release,ReleaseFilepath].each{|c| c.on_optimize}
       end
+      x.report("Loading sloc") {SlocLoader.new.load}
       x.report("Consolidating filepaths") {FilepathConsolidator.new.consolidate}
       
       x.report("Optimizing contributors"){ Contributor.on_optimize}

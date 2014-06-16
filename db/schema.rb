@@ -58,8 +58,8 @@ ActiveRecord::Schema.define(version: 20140512131450) do
   end
 
   create_table "contributors", id: false, force: true do |t|
-    t.integer  "dev_id"
-    t.integer "issue", limit: 8
+    t.integer "dev_id"
+    t.integer "issue",  limit: 8
   end
 
   create_table "cvenums", id: false, force: true do |t|
@@ -88,9 +88,9 @@ ActiveRecord::Schema.define(version: 20140512131450) do
 
   create_table "participants", id: false, force: true do |t|
     t.integer "dev_id"
-    t.integer "issue",              limit: 8
-    t.integer "reviews_with_owner", null: true
-    t.boolean "security_experienced", null: true
+    t.integer "issue",                limit: 8
+    t.integer "reviews_with_owner"
+    t.boolean "security_experienced"
   end
 
   create_table "patch_set_files", id: false, force: true do |t|
@@ -116,26 +116,26 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.string   "composite_patch_set_id"
   end
 
-  create_table "releases", id: false, force: true do |t|
-    t.string "name"
-    t.datetime "date"
-  end
-  
   create_table "release_filepaths", id: false, force: true do |t|
-    t.string "release"
-    t.string "thefilepath"
-    t.integer "sloc", null: true
-    t.integer "churn", null: true
-    t.integer "num_reviewers", null: true
-    t.integer "num_participants", null: true
-    t.decimal "perc_non_part_reviewers", null: true
-    t.decimal "perc_security_experienced_participants", null: true
-    t.decimal "avg_reviews_with_owner", null: true
-    t.decimal "avg_owner_familiarity_gap", null: true
-    t.decimal "avg_file_experience", null: true
-    t.decimal "perc_fast_reviews", null: true
-    t.decimal "perc_overlooked_patchsets", null: true
-    t.boolean "vulnerable", null: true
+    t.string  "release"
+    t.string  "thefilepath"
+    t.integer "sloc"
+    t.integer "churn"
+    t.integer "num_reviewers"
+    t.integer "num_participants"
+    t.decimal "perc_non_part_reviewers"
+    t.decimal "perc_security_experienced_participants"
+    t.decimal "avg_reviews_with_owner"
+    t.decimal "avg_owner_familiarity_gap"
+    t.decimal "avg_file_experience"
+    t.decimal "perc_fast_reviews"
+    t.decimal "perc_overlooked_patchsets"
+    t.boolean "vulnerable"
+  end
+
+  create_table "releases", id: false, force: true do |t|
+    t.string   "name"
+    t.datetime "date"
   end
 
   create_table "reviewers", id: false, force: true do |t|
