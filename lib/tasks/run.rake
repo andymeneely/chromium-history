@@ -10,6 +10,7 @@ require 'consolidators/developer_consolidator'
 require 'verify/verify_runner'
 require 'analysis/release_analysis'
 require 'analysis/participant_analysis'
+require 'analysis/hypothesis_tests'
 require 'stats'
 
 # CodeReviewParser.new.parse: Parses JSON files in the codereviews dircetory for the enviornment we're working in.
@@ -89,7 +90,7 @@ namespace :run do
     end
   end
   
-  desc "Analyze the data for metrics & questions"
+  desc "Analyze the data for metrics"
   task :analyze => :environment do
     Benchmark.bm(30) do |x|
       x.report("Populating reviews_with_owner"){ParticipantAnalysis.new.populate_reviews_with_owner}
@@ -120,6 +121,11 @@ namespace :run do
     Stats.new.run_all
     time_taken = Time.now - stats_start
     puts "Rake run:stats took #{time_taken.round(1)}s, which is #{(time_taken/60).round(2)} minutes."
+  end
+
+  desc "Run final hypothesis tests"
+  task :results => :env do
+    HypothesisTests.new.run
   end
 
 end
