@@ -16,4 +16,7 @@ class ReleaseVerify < VerifyBase
     assert_equal 2, ReleaseFilepath.find_by(thefilepath: 'net/ftp/ftp_util.h').num_reviewers
   end
 
+  def verify_ftp_directory_sloc
+    assert_equal 21, ReleaseFilepath.find_by(thefilepath: 'net/ftp/ftp_directory_listing_parser_windows.h').sloc
+  end
 end

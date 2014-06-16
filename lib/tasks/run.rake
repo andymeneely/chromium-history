@@ -78,8 +78,8 @@ namespace :run do
       x.report("Optimizing releases et al.") do 
         [Release,ReleaseFilepath].each{|c| c.on_optimize}
       end
-      x.report("Loading sloc") {SlocLoader.new.load}
       x.report("Consolidating filepaths") {FilepathConsolidator.new.consolidate}
+      x.report("Loading sloc") {SlocLoader.new.load}
       
       x.report("Optimizing contributors"){ Contributor.on_optimize}
       x.report("Optimizing participants"){ Participant.on_optimize}
