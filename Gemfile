@@ -13,6 +13,9 @@ gem 'sass-rails', '~> 4.0.0'
 # Oj for parsing our JSON files
 gem 'oj'
 
+# R stats in Ruby
+gem 'rinruby'
+
 # Hirb pretty prints in rails console
 # Usage:
 # $ rails console
