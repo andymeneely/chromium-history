@@ -5,6 +5,7 @@ gem 'rails', '4.0.0'
 
 # Profiling
 gem 'ruby-prof'
+gem 'rblineprof'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.0'

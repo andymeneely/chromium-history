@@ -1,13 +1,12 @@
 require 'csv'
-#require 'ruby-prof'
+require 'rblineprof'
 
 class CodeReviewParser
 
   def parse
     open_csvs #initalize our attributes up for writing
 
-    #Disabled for now - might re-enable over the next few days
-    #result = RubyProf.profile do 
+    profile = lineprof(/./) do
       Dir["#{Rails.configuration.datadir}/codereviews/chunk*"].each do |chunk|
         Dir["#{chunk}/*.json"].each do |file|
           cobj = load_json file
@@ -43,14 +42,23 @@ class CodeReviewParser
       end #do |chunk|
       dump_developers
       flush_csvs #get everything out to the files
+    
+    end #rblineprof
 
-    #end#profile
-    #printer = RubyProf::FlatPrinterWithLineNumbers.new(result)
-    #printer.print(File.open("/home/axmvse/logs/parser-profile.txt", "w+"), min_percent: 1)
-    #printer = RubyProf::GraphPrinter.new(result)
-    #printer.print(File.open("/home/axmvse/logs/parser-profile-graph.txt", "w+"), min_percent: 1)
-  
+    print_profile('code_review_parser.rb', profile)
+    print_profile('developer.rb', profile)
+
   end #method
+
+  def print_profile(file, profile)
+    full_file = profile.keys.select{|k| k.end_with? file}[0]
+    puts "==== Profile for #{file} ===="
+    File.readlines(full_file).each_with_index do |line,num|
+      sample = profile[full_file][num+1]
+      printf "% 8.1fms, % 8.1fms |  %s", sample[0]/1000.0,sample[1]/1000.0, line
+    end#readlines
+    puts "======================"
+  end
 
   def open_csvs
     @dev_db = Hash.new
