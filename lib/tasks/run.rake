@@ -85,6 +85,7 @@ namespace :run do
       x.report("Optimizing participants"){ Participant.on_optimize}
       x.report("Optimizing filepath"){ Filepath.on_optimize}
       x.report("Deleting duplicate reviewers") {DeveloperConsolidator.new.consolidate_reviewers}
+      x.report("Running PSQL ANALYZE"){ ActiveRecord::Base.connection.execute "ANALYZE" }
     end
   end
   
