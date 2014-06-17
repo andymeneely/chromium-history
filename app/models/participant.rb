@@ -5,9 +5,10 @@ class Participant < ActiveRecord::Base
 	has_many :sheriffs, primary_key: 'email', foreign_key: 'email'
 
   def self.on_optimize
-    ActiveRecord::Base.connection.add_index :participants, :dev_id
-    ActiveRecord::Base.connection.add_index :participants, :issue
-    ActiveRecord::Base.connection.add_index :participants, [:dev_id, :issue], unique: true
+    connection.add_index :participants, :dev_id
+    connection.add_index :participants, :issue
+    connection.add_index :participants, [:dev_id, :issue], unique: true
+    connection.execute "CLUSTER participants USING index_participants_on_dev_id_and_issue"
   end
 
 end

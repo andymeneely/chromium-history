@@ -13,7 +13,7 @@ class CodeReview < ActiveRecord::Base
   
   def self.on_optimize
     ActiveRecord::Base.connection.add_index :code_reviews, :issue, unique: true
-    ActiveRecord::Base.connection.add_index :code_reviews, :created
+    ActiveRecord::Base.connection.add_index :code_reviews, :created, order: :asc
     ActiveRecord::Base.connection.add_index :code_reviews, :owner_id
     ActiveRecord::Base.connection.add_index :code_reviews, :commit_hash
     # Physically re-arrange code_reviews by date so security_exp_participants is faster

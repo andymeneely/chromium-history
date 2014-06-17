@@ -6,8 +6,10 @@ class Reviewer < ActiveRecord::Base
 	has_many :sheriffs, primary_key: 'dev_id', foreign_key: 'dev_id'
 
   def self.on_optimize
-    ActiveRecord::Base.connection.add_index :reviewers, :issue
-    ActiveRecord::Base.connection.add_index :reviewers, :dev_id
+    connection.add_index :reviewers, :issue
+    connection.add_index :reviewers, :dev_id
+    connection.add_index :reviewers, [:issue, :dev_id]
+    connection.execute "CLUSTER reviewers USING index_reviewers_on_issue_and_dev_id"
   end
 
 end
