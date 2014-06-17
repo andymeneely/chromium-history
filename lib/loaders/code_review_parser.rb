@@ -1,12 +1,12 @@
 require 'csv'
-require 'rblineprof'
+#require 'rblineprof'
 
 class CodeReviewParser
 
   def parse
     open_csvs #initalize our attributes up for writing
 
-    profile = lineprof(/./) do
+    #profile = lineprof(/./) do
       Dir["#{Rails.configuration.datadir}/codereviews/chunk*"].each do |chunk|
         Dir["#{chunk}/*.json"].each do |file|
           cobj = load_json file
@@ -43,10 +43,9 @@ class CodeReviewParser
       dump_developers
       flush_csvs #get everything out to the files
     
-    end #rblineprof
-
-    print_profile('code_review_parser.rb', profile)
-    print_profile('developer.rb', profile)
+    #end #rblineprof
+    #print_profile('code_review_parser.rb', profile)
+    #print_profile('developer.rb', profile)
 
   end #method
 
