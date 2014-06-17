@@ -20,7 +20,7 @@ cd $HISTORY_DIR
 git clean -f
 git pull
 bundle
-rake run run:stats 1>$LOG 2>$ERR
+rake run run:stats run:results 1>$LOG 2>$ERR
 
 if [[ -s $ERR ]]; then
     echo "Errors in the error log - not changing to chromium_real" 1>>$LOG

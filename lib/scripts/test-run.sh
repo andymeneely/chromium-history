@@ -28,7 +28,7 @@ ERR="/home/axmvse/logs/err_test_$DATE.log"
 LOG="/home/axmvse/logs/log_test_$DATE.log"
 
 bundle
-rake run run:stats 1>$LOG 2>$ERR
+rake run run:stats run:results 1>$LOG 2>$ERR
 
 #Email the status report
 #To the most recent committer, and andy
