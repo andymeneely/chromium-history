@@ -1,7 +1,4 @@
-require 'helpers/email_address'
-
 class Developer < ActiveRecord::Base
-
 
   has_many :participants, primary_key: 'id', foreign_key: 'dev_id'
   has_many :contributors, primary_key: 'id', foreign_key: 'dev_id'
@@ -18,26 +15,27 @@ class Developer < ActiveRecord::Base
     begin
       email = dirty_email.gsub(/\+\w+(?=@)/, '') #strips any tags on the email
       email.downcase!
-      matched_email = /[a-zA-Z0-9%._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+/.match email
-      return nil, false unless matched_email 
-      email = matched_email[0]
-      # Performs basic email validation on creation
-      # will throw exception for invalid email 
-      m = EmailAddress.new(email)
+      matched_email = /([a-zA-Z0-9%._-]+)@([a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/.match email #groups local and domain and checks for match
+      return nil, false unless matched_email  #returns [nil,false] if matched_email is invalid (nil)
+      email_address = matched_email[0]
+      email_local = matched_email[1]
+      email_domain = matched_email[2]
 			
-      if m.domain == 'gtempaccount.com'
+      if email_domain == 'gtempaccount.com'
         #     e.g. john-doe%gmail.com@gtempaccount.com
-        match = /^([\w\-]+)%(\w+.\w{3})(?=@gtempaccount.com)/.match m.address
-	      m = EmailAddress.new(match[1] + '@' + match[2])
+        match = /^([\w\-]+)%(\w+.\w{3})(?=@gtempaccount.com)/.match email_address
+	      email_address = (match[1] + '@' + match[2])
+        email_local = match[1]
+        email_domain = match[2]
       end
 		
       bad_domains = ['chromioum.org','chroimum.org','chromium.com','chromoium.org','chromium.rg','chromum.org','chormium.org','chromimum.org','chromium.orf','chromiu.org','chroium.org','chcromium.org','chromuim.org','google.com']
-      if bad_domains.include? m.domain 
-        m = EmailAddress.new("#{m.local}@chromium.org")
+      if bad_domains.include? email_domain 
+        email_address = email_local + "@chromium.org"
       end
 			
-      return nil, false if self.blacklisted_email_local? m.local or self.blacklisted_email_domain? m.domain
-      return m.address, true
+      return nil, false if self.blacklisted_email_local? email_local or self.blacklisted_email_domain? email_domain
+      return email_address, true
     end
   end
 	

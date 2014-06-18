@@ -21,7 +21,7 @@ class CodeReviewParser
                    ""] #empty commit hash for now
 
           cobj['reviewers'].each do |email|
-            unless get_dev_id(cobj['owner_email']) == get_dev_id(email)
+            unless get_dev_id(cobj['owner_email']) == get_dev_id(email) #doesn't add owner as a reviewer
               @revs << [cobj['issue'], get_dev_id(email), email]
             end
           end
