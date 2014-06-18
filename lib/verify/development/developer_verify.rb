@@ -47,6 +47,12 @@ class DeveloperVerify < VerifyBase
 		 "Email should be valid and switched to orginal domain")	
   end
 
+  def verify_sanitize_validate_commit_bit_gtemp
+    assert_equal [nil,false],\
+                 Developer.sanitize_validate_email("commit-bot%chromium.org@gtempaccount.com"),\
+                 "Commit bot should be blacklisted"
+  end
+
   def verify_contribution_txt
     assert_equal false, Contributor.contribution?("0123456789")
     assert_equal true, Contributor.contribution?("a" * 51)

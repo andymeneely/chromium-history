@@ -10,6 +10,7 @@ class HypothesisTests
     puts "=== Hypothesis Test Results ==="
     connect_to_db
     mean_reviewers
+    close_db
   end
 
   def connect_to_db
@@ -31,5 +32,13 @@ class HypothesisTests
       mean_reviewers <- mean(data$num_reviewers)
     EOR
     puts "Mean number of reviewers: #{R.mean_reviewers}"
+  end
+
+  def close_db
+    R.eval <<-EOR
+      dbDisconnect(con)
+      dbUnloadDriver(drv)
+    EOR
+  
   end
 end
