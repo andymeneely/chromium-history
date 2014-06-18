@@ -1,4 +1,4 @@
-require 'mail'
+require 'helpers/email_address'
 
 class Developer < ActiveRecord::Base
 
@@ -18,22 +18,22 @@ class Developer < ActiveRecord::Base
     begin
       email = dirty_email.gsub(/\+\w+(?=@)/, '') #strips any tags on the email
       email.downcase!
-      matched_email = /([a-zA-Z0-9%._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/.match email
+      matched_email = /[a-zA-Z0-9%._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+/.match email
       return nil, false unless matched_email 
       email = matched_email[0]
       # Performs basic email validation on creation
       # will throw exception for invalid email 
-      m = Mail::Address.new(email)
+      m = EmailAddress.new(email)
 			
       if m.domain == 'gtempaccount.com'
         #     e.g. john-doe%gmail.com@gtempaccount.com
         match = /^([\w\-]+)%(\w+.\w{3})(?=@gtempaccount.com)/.match m.address
-	      m = Mail::Address.new(match[1] + '@' + match[2])
+	      m = EmailAddress.new(match[1] + '@' + match[2])
       end
 		
       bad_domains = ['chromioum.org','chroimum.org','chromium.com','chromoium.org','chromium.rg','chromum.org','chormium.org','chromimum.org','chromium.orf','chromiu.org','chroium.org','chcromium.org','chromuim.org','google.com']
       if bad_domains.include? m.domain 
-        m = Mail::Address.new("#{m.local}@chromium.org")
+        m = EmailAddress.new("#{m.local}@chromium.org")
       end
 			
       return nil, false if self.blacklisted_email_local? m.local or self.blacklisted_email_domain? m.domain
