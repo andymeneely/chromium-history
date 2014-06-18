@@ -115,7 +115,6 @@ class CodeReviewParser
 
   @@PATCH_SET_PROPS = [:created, :num_comments, :message, :modified, :owner_email, :owner_id, :code_review_id, :patchset, :composite_patch_set_id]
   def parse_patchsets(patchset_file, code_review_id)
-    $stderr.puts "Patchset file should exist but doesn't: #{patchset_file}" unless File.exists? patchset_file
     pobj = load_json(patchset_file)
     pobj['composite_patch_set_id'] = "#{code_review_id}-#{pobj['patchset']}"
     pobj['code_review_id'] = code_review_id
