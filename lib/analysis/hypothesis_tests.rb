@@ -15,6 +15,7 @@ class HypothesisTests
   def connect_to_db
     conf = Rails.configuration.database_configuration[Rails.env]
     R.eval <<-EOR
+      library(DBI)
       library(RPostgreSQL)
       drv <- dbDriver("PostgreSQL")
       con <- dbConnect(drv, 
