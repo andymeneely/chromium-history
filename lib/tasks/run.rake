@@ -72,7 +72,7 @@ namespace :run do
       x.report("Keying Developers") { CodeReviewLoader.new.add_primary_keys }
       x.report("Loading CVEs ") {CveLoader.new.load_cve}
       x.report("Loading git log") {GitLogLoader.new.load}
-      x.report("Optimizing commits et al.") do 
+      x.report("Optimizing commits, cve et al.") do 
         [Commit,CommitFilepath,Cvenum].each {|c| c.on_optimize}
       end
       x.report("Loading release tree") {ReleaseFilepathLoader.new.load}
@@ -81,7 +81,6 @@ namespace :run do
       end
       x.report("Consolidating filepaths") {FilepathConsolidator.new.consolidate}
       x.report("Loading sloc") {SlocLoader.new.load}
-      
       x.report("Optimizing contributors"){ Contributor.on_optimize}
       x.report("Optimizing participants"){ Participant.on_optimize}
       x.report("Optimizing filepath"){ Filepath.on_optimize}
@@ -113,7 +112,7 @@ namespace :run do
       Rake::Task["run:verify"].invoke
     end
 
-  end
+  end#namspace :verify
 
   desc "Show some stats on the data set"
   task :stats => :env do
