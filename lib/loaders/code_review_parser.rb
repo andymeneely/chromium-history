@@ -20,14 +20,19 @@ class CodeReviewParser
                    get_dev_id(cobj['owner_email']),
                    ""] #empty commit hash for now
 
+          @prtp_set  = Set.new
+          @contrb_set = Set.new
+          @revs_dict = Hash.new
+
           cobj['reviewers'].each do |email|
             unless get_dev_id(cobj['owner_email']) == get_dev_id(email) #doesn't add owner as a reviewer
-              @revs << [cobj['issue'], get_dev_id(email), email]
+              unless get_dev_id(email) == -1 
+                clean_email = Developer.sanitize_validate_email email
+                @revs_dict[get_dev_id(email)] = clean_email[0]
+              end
             end
           end
 
-          @prtp_set  = Set.new
-          @contrb_set = Set.new
 
           cobj['patchsets'].each do |pid|
             patchset_file = "#{file.gsub(/\.json$/,'')}/#{pid}.json" #e.g. 10854242/1001.json
@@ -37,7 +42,9 @@ class CodeReviewParser
           parse_messages(file, cobj['issue'], cobj['messages'])
 
           @prtp_set.each {|p| @prtps << [p,cobj['issue'],nil,nil]}
-          @contrb_set.each {|c| @contrbs << [c,cobj['issue']] }
+          @contrb_set.each {|c| @contrbs << [c,cobj['issue']]}
+          @revs_dict.each {|id, email| @revs << [cobj['issue'],id, email]}
+        
         end # do |file|
       end #do |chunk|
       dump_developers
@@ -124,6 +131,8 @@ class CodeReviewParser
   end
 
   @@PATCH_SET_FILE_PROPS = [:filepath, :status, :num_chunks,:num_added, :num_removed, :is_binary, :composite_patch_set_id, :composite_patch_set_file_id]
+          @prtp_set  = Set.new
+          @contrb_set = Set.new
   def parse_patch_set_files(composite_patch_set_id, psfiles, code_review_id)
     psfiles.each do |psfile|
       psf = psfile[1]

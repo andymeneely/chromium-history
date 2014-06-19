@@ -31,7 +31,8 @@ class Developer < ActiveRecord::Base
 		
       bad_domains = ['chromioum.org','chroimum.org','chromium.com','chromoium.org','chromium.rg','chromum.org','chormium.org','chromimum.org','chromium.orf','chromiu.org','chroium.org','chcromium.org','chromuim.org','google.com']
       if bad_domains.include? email_domain 
-        email_address = email_local + "@chromium.org"
+        email_domain = "@chromium.org"
+        email_address = email_local + email_domain
       end
 			
       return nil, false if self.blacklisted_email_local? email_local or self.blacklisted_email_domain? email_domain
