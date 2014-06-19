@@ -11,13 +11,15 @@ class CodeReviewParser
         Dir["#{chunk}/*.json"].each do |file|
           cobj = load_json file
 
+          cobj_dev_id = get_dev_id(cobj['owner_email'])
+
           @crs << [cobj['description'],
                    cobj['subject'], 
                    cobj['created'], 
                    cobj['modified'], 
                    cobj['issue'], 
                    cobj['owner_email'],
-                   get_dev_id(cobj['owner_email']),
+                   cobj_dev_id,
                    ""] #empty commit hash for now
 
           @prtp_set  = Set.new
@@ -25,10 +27,11 @@ class CodeReviewParser
           @revs_dict = Hash.new
 
           cobj['reviewers'].each do |email|
-            unless get_dev_id(cobj['owner_email']) == get_dev_id(email) #doesn't add owner as a reviewer
-              unless get_dev_id(email) == -1 
+            dev_id = get_dev_id(email)
+            unless cobj_dev_id == dev_id #doesn't add owner as a reviewer
+              unless dev_id == -1 
                 clean_email = Developer.sanitize_validate_email email
-                @revs_dict[get_dev_id(email)] = clean_email[0]
+                @revs_dict[dev_id] = clean_email[0]
               end
             end
           end
