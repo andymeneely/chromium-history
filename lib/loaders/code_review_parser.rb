@@ -134,8 +134,6 @@ class CodeReviewParser
   end
 
   @@PATCH_SET_FILE_PROPS = [:filepath, :status, :num_chunks,:num_added, :num_removed, :is_binary, :composite_patch_set_id, :composite_patch_set_file_id]
-          @prtp_set  = Set.new
-          @contrb_set = Set.new
   def parse_patch_set_files(composite_patch_set_id, psfiles, code_review_id)
     psfiles.each do |psfile|
       psf = psfile[1]
