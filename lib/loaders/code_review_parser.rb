@@ -1,61 +1,46 @@
 require 'csv'
-#require 'rblineprof'
 
 class CodeReviewParser
 
   def parse
     open_csvs #initalize our attributes up for writing
 
-    #profile = lineprof(/./) do
-      Dir["#{Rails.configuration.datadir}/codereviews/chunk*"].each do |chunk|
-        Dir["#{chunk}/*.json"].each do |file|
-          cobj = load_json file
+    Dir["#{Rails.configuration.datadir}/codereviews/chunk*"].each do |chunk|
+      Dir["#{chunk}/*.json"].each do |file|
+        cobj = load_json file
 
-          cobj_dev_id = get_dev_id(cobj['owner_email'])
+        owner_id = get_dev_id(cobj['owner_email'])
 
-          @crs << [cobj['description'],
-                   cobj['subject'], 
-                   cobj['created'], 
-                   cobj['modified'], 
-                   cobj['issue'], 
-                   cobj['owner_email'],
-                   cobj_dev_id,
-                   ""] #empty commit hash for now
+        @crs << [cobj['description'],
+                 cobj['subject'], 
+                 cobj['created'], 
+                 cobj['modified'], 
+                 cobj['issue'], 
+                 cobj['owner_email'],
+                 owner_id,
+                 ""] #empty commit hash for now
 
-          @prtp_set  = Set.new
-          @contrb_set = Set.new
-          @revs_dict = Hash.new
+        @prtp_set  = Set.new
+        @contrb_set = Set.new
+        @revs_dict = Hash.new
 
-          cobj['reviewers'].each do |email|
-            dev_id = get_dev_id(email)
-            unless cobj_dev_id == dev_id #doesn't add owner as a reviewer
-              unless dev_id == -1 
-                clean_email = Developer.sanitize_validate_email email
-                @revs_dict[dev_id] = clean_email[0]
-              end
-            end
-          end
+        parse_reviewers(cobj, owner_id)
 
+        cobj['patchsets'].each do |pid|
+          patchset_file = "#{file.gsub(/\.json$/,'')}/#{pid}.json" #e.g. 10854242/1001.json
+          parse_patchsets(patchset_file, cobj['issue'])
+        end
 
-          cobj['patchsets'].each do |pid|
-            patchset_file = "#{file.gsub(/\.json$/,'')}/#{pid}.json" #e.g. 10854242/1001.json
-            parse_patchsets(patchset_file, cobj['issue'])
-          end
+        parse_messages(file, cobj['issue'], cobj['messages'])
 
-          parse_messages(file, cobj['issue'], cobj['messages'])
+        @prtp_set.each {|p| @prtps << [p,cobj['issue'],nil,nil]}
+        @contrb_set.each {|c| @contrbs << [c,cobj['issue']]}
+        @revs_dict.each {|id, email| @revs << [cobj['issue'],id, email]}
 
-          @prtp_set.each {|p| @prtps << [p,cobj['issue'],nil,nil]}
-          @contrb_set.each {|c| @contrbs << [c,cobj['issue']]}
-          @revs_dict.each {|id, email| @revs << [cobj['issue'],id, email]}
-        
-        end # do |file|
-      end #do |chunk|
-      dump_developers
-      flush_csvs #get everything out to the files
-    
-    #end #rblineprof
-    #print_profile('code_review_parser.rb', profile)
-    #print_profile('developer.rb', profile)
+      end # do |file|
+    end #do |chunk|
+    dump_developers #put our dev cache out to CSV
+    flush_csvs #get everything out to the files
 
   end #method
 
@@ -121,6 +106,19 @@ class CodeReviewParser
     email,valid = Developer.sanitize_validate_email raw_email  
     return -1 unless valid
     @dev_db[email] ||= (@dev_incr+=1) #set to increment if nil
+  end
+
+
+  def parse_reviewers(cobj, owner_id) 
+                      cobj['reviewers'].each do |email|
+    dev_id = get_dev_id(email)
+    unless owner_id == dev_id #doesn't add owner as a reviewer
+      unless dev_id == -1 
+        clean_email, valid = Developer.sanitize_validate_email email
+        @revs_dict[dev_id] = clean_email
+      end
+    end
+  end
   end
 
   @@PATCH_SET_PROPS = [:created, :num_comments, :message, :modified, :owner_email, :owner_id, :code_review_id, :patchset, :composite_patch_set_id]
