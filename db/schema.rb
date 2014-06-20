@@ -127,7 +127,6 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.decimal "perc_security_experienced_participants"
     t.decimal "avg_reviews_with_owner"
     t.decimal "avg_owner_familiarity_gap"
-    t.decimal "avg_file_experience"
     t.decimal "perc_fast_reviews"
     t.decimal "perc_overlooked_patchsets"
     t.boolean "vulnerable"
