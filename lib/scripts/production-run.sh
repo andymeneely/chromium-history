@@ -40,4 +40,4 @@ echo -e "\n\n\n\n\n----------------stdout------------------------\n\n\n\n\n" >> 
 cat $LOG >> /tmp/email.txt
 echo -e "\n\n\n\n\n----------------stderr------------------------\n\n\n\n\n" >> /tmp/email.txt
 cat $ERR >> /tmp/email.txt
-cat /tmp/email.txt | /usr/bin/mail "andy.meneely@gmail.com" -s "Chromium History Build server status report"
+cat /tmp/email.txt | /usr/bin/mail "kd9205@rit.edu, andy.meneely@gmail.com" -s "Chromium History Build server status report"
