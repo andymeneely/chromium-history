@@ -4,8 +4,10 @@ class ReleaseAnalysis
   def populate
     r = Release.find_by(name: '11.0') #hard-coded to Release 11 for now
     r.release_filepaths.find_each do |rf|
-      rf.vulnerable = rf.filepath.vulnerable?(r.date)
+      rf.num_reviews = rf.filepath.code_reviews.size
       rf.num_reviewers = rf.filepath.reviewers.size
+      rf.num_participants = rf.filepath.participants.size
+      rf.vulnerable = rf.filepath.vulnerable?(r.date)
       rf.save 
     end
   end

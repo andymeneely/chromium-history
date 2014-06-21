@@ -16,24 +16,40 @@ class Filepath < ActiveRecord::Base
 
   def cves(after=DateTime.new(1970,01,01))
     Filepath.joins(commit_filepaths: [commit: [code_reviews: :cvenums]])\
-      .where(filepath: filepath, 'commits.created_at' => after..DateTime.now)
+      .where(filepath: filepath, \
+             'commits.created_at' => after..DateTime.new(2050,01,01))
   end
 
   # Delegates to the static method with the where clause
   # Does not get the reviewers, returns Filepath object
-  def reviewers
+  def reviewers(before=DateTime.new(2050,01,01))
     Filepath.reviewers\
       .select(:dev_id)\
-      .where(filepath: filepath)\
+      .where(filepath: filepath, \
+             'code_reviews.created' => DateTime.new(1970,01,01)..before)\
       .uniq
   end
   
+  def participants(before = DateTime.new(2050,01,01))
+    Filepath.participants\
+      .select(:dev_id)\
+      .where(filepath: filepath, \
+            'code_reviews.created' => DateTime.new(1970,01,01)..before)
+      .uniq
+  end
+  
+  def code_reviews(before = DateTime.new(2050,01,01))
+    Filepath.code_reviews\
+      .select(:issue)\
+      .where(filepath: filepath, \
+             'code_reviews.created' => DateTime.new(1970,01,01)..before)
+  end
+
   # All of the Reviewers for all filepaths joined together
   #   Note: this uses multi-level nested associations
   def self.reviewers
     Filepath.joins(commit_filepaths: [commit: [code_reviews: :reviewers]])
   end
-
 
   # All of the participants joined
   # Returns participants relation
@@ -46,8 +62,8 @@ class Filepath < ActiveRecord::Base
     Filepath.joins(commit_filepaths: [commit: [code_reviews: [contributors: :developer]]])
   end
 
-  def participants
-    Filepath.participants.where(filepath: filepath)
+  def self.code_reviews
+    Filepath.joins(commit_filepaths: [commit: :code_reviews])
   end
 
 end

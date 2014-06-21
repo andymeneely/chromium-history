@@ -121,6 +121,7 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.string  "thefilepath"
     t.integer "sloc"
     t.integer "churn"
+    t.integer "num_reviews"
     t.integer "num_reviewers"
     t.integer "num_participants"
     t.decimal "perc_non_part_reviewers"
