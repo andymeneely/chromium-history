@@ -7,8 +7,9 @@ class ReleaseAnalysis
       rf.num_reviews = rf.filepath.code_reviews.size
       rf.num_reviewers = rf.filepath.reviewers.size
       rf.num_participants = rf.filepath.participants.size
+      rf.perc_security_experienced_participants = rf.filepath.perc_security_exp_part(r.date)
       rf.vulnerable = rf.filepath.vulnerable?(r.date)
-      rf.save 
+      rf.save
     end
   end
 

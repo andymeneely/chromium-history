@@ -185,14 +185,13 @@ class Stats
     puts a.to_s(120)
     puts "\n"
 
-    puts "@@@ Total Participator Familiarity per Code Review Histogram @@@"
-    a = Aggregate.new(0, 10, 1)
-    CodeReview.all.find_each do |c|
-      a << c.total_familiarity
+    puts "@@@ ReleaseFilepath perc_sec_exp_dev @@@"
+    a = Aggregate.new(0, 100, 5)
+    ReleaseFilepath.all.find_each do |rf|
+      a << rf.perc_security_experienced_participants * 100.0
     end
     puts a.to_s(120)
     puts "\n"
-
   end#histograms
 
 end#class

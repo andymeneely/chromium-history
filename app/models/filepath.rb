@@ -45,6 +45,22 @@ class Filepath < ActiveRecord::Base
              'code_reviews.created' => DateTime.new(1970,01,01)..before)
   end
 
+  # The percentage of code reviews prior to this date where the code review
+  # had at least one security_experienced partcipant
+  def perc_security_exp_part(before = DateTime.new(2050,01,01))
+    rs = Filepath.participants\
+      .where(filepath: filepath)
+      .select('bool_or(security_experienced)')\
+      .group('code_reviews.issue')
+    num =0; denom = 0
+    rs.each do |had_sec_exp_part|
+      num+=1 if had_sec_exp_part['bool_or']
+      denom+=1
+    end
+    return 0 if denom == 0
+    return num/denom
+  end
+
   # All of the Reviewers for all filepaths joined together
   #   Note: this uses multi-level nested associations
   def self.reviewers
