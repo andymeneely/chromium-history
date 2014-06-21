@@ -6,7 +6,7 @@ export PATH="$PATH:/home/axmvse/.gems/bin"
 export RUBYOPT=rubygems
 
 
-HISTORY_DIR=/home/axmvse/chromium/build-repo
+HISTORY_DIR=/home/axmvse/chromium/build-repo-test
 
 cd $HISTORY_DIR
 git clean -f
@@ -30,6 +30,13 @@ LOG="/home/axmvse/logs/log_test_$DATE.log"
 bundle
 rake run run:stats run:results 1>$LOG 2>$ERR
 
+
+if [[ -s $ERR ]]; then
+    OUTCOME="FAILED"
+else
+    OUTCOME="SUCCESS"
+fi
+
 #Email the status report
 #To the most recent committer, and andy
 RECIPIENTS=$(git log -1 --pretty="%ae,andy.meneely@gmail.com")
@@ -41,4 +48,4 @@ echo -e "\n\n\n\n\n----------------stdout------------------------\n\n\n\n\n" >> 
 cat $LOG >> /tmp/email.txt
 echo -e "\n\n\n\n\n----------------stderr------------------------\n\n\n\n\n" >> /tmp/email.txt
 cat $ERR >> /tmp/email.txt
-cat /tmp/email.txt | /usr/bin/mail $RECIPIENTS -s "[Chromium History Build] Test Build"
+cat /tmp/email.txt | /usr/bin/mail $RECIPIENTS -s "[Chromium History] Test Build: $OUTCOME"
