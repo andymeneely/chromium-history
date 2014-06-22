@@ -6,3 +6,4 @@ C++,./net/ftp/ftp_directory_listing_parser_windows.cc,24,19,96
 C++,./net/ftp/ftp_directory_listing_buffer_unittest.cc,20,3,116
 C++,./webkit/glue/ftp_directory_listing_response_delegate.cc,26,17,116
 C/C++ Header,./cc/resources/texture_mailbox_deleter.h,9,12,25
+C++,./ui/surface/transport_dib_linux.cc,9,12,25
