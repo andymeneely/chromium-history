@@ -12,9 +12,11 @@ class ReleaseFilepathLoader
     #   11,some/file.c ==> 11,some/file.c,,,
     CSV.open("#{datadir}/tmp/release_filepaths_11.0.csv",'w+') do |csv|
       CSV.foreach("#{datadir}/releases/11.0.csv") do |line|
-        out_line = [line[0], line[1]] #release,filepath
-        (ReleaseFilepath.columns.count - 2).times { out_line << nil} #pad with emptys
-        csv << out_line #append the line to the file
+        if ReleaseFilepath.source_code? line[1]
+          out_line = [line[0], line[1]] #release,filepath
+          (ReleaseFilepath.columns.count - 2).times { out_line << nil} #pad with emptys
+          csv << out_line #append the line to the file
+        end
       end
     end
 

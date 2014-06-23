@@ -13,5 +13,8 @@ class ReleaseFilepath < ActiveRecord::Base
     ActiveRecord::Base.connection.add_index :release_filepaths, [:release, :thefilepath], unique: true
   end
 
+  def self.source_code? filepath
+    valid_extns = ['.h','.cc','.js','.cpp','.gyp','.py','.c','.make','.sh','.S''.scons','.sb','Makefile']
+    valid_extns.include? File.extname(filepath)
+  end
 end
-
