@@ -54,7 +54,9 @@ class HypothesisTests
     R.eval <<-EOR
       vulnerable <- data$#{column}[data$vulnerable=="TRUE"]
       neutral <- data$#{column}[data$vulnerable=="FALSE"]
+      op <- options(warn = (-1)) # suppress warnings
       wt <- wilcox.test(vulnerable, neutral)
+      options(op)
     EOR
     puts "--- #{title} ---"
     puts "  Mean of vulnerable: #{R.pull("mean(vulnerable, na.rm=TRUE)")}"
