@@ -28,4 +28,7 @@ class ReleaseVerify < VerifyBase
     assert_equal false, ReleaseFilepath.source_code?('build/internal/release_impl.vsprops')
   end
 
+  def verify_makefile_included
+    assert_equal true, ReleaseFilepath.source_code?('ui/aura/Makefile')
+  end
 end

@@ -15,6 +15,7 @@ class ReleaseFilepath < ActiveRecord::Base
 
   def self.source_code? filepath
     valid_extns = ['.h','.cc','.js','.cpp','.gyp','.py','.c','.make','.sh','.S''.scons','.sb','Makefile']
-    valid_extns.include? File.extname(filepath)
+    valid_extns.each { |extn| if filepath.ends_with?(extn) then return true end }
+    return false
   end
 end
