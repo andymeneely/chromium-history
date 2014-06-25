@@ -2,7 +2,7 @@ class Filepath < ActiveRecord::Base
 
   has_many :commit_filepaths, primary_key: 'filepath', foreign_key: 'filepath'
 
-	def self.on_optimize
+  def self.on_optimize
     ActiveRecord::Base.connection.add_index :filepaths, :filepath, unique: true
   end
 
@@ -29,15 +29,15 @@ class Filepath < ActiveRecord::Base
              'code_reviews.created' => DateTime.new(1970,01,01)..before)\
       .uniq
   end
-  
+
   def participants(before = DateTime.new(2050,01,01))
     Filepath.participants\
       .select(:dev_id)\
       .where(filepath: filepath, \
-            'code_reviews.created' => DateTime.new(1970,01,01)..before)
+             'code_reviews.created' => DateTime.new(1970,01,01)..before)
       .uniq
   end
-  
+
   def code_reviews(before = DateTime.new(2050,01,01))
     Filepath.code_reviews\
       .select(:issue)\
@@ -49,13 +49,14 @@ class Filepath < ActiveRecord::Base
   # had at least one security_experienced partcipant
   def perc_security_exp_part(before = DateTime.new(2050,01,01))
     rs = Filepath.participants\
-      .where(filepath: filepath)
+      .where('filepaths.filepath' => filepath,\
+              'code_reviews.created' => DateTime.new(1970,01,01)..before)\
       .select('bool_or(security_experienced)')\
       .group('code_reviews.issue')
-    num =0; denom = 0
+    num = 0.0; denom = 0.0
     rs.each do |had_sec_exp_part|
-      num+=1 if had_sec_exp_part['bool_or']
-      denom+=1
+      num += 1.0 if had_sec_exp_part['bool_or']
+      denom += 1.0
     end
     return 0 if denom == 0
     return num/denom
