@@ -53,9 +53,13 @@ class HypothesisTests
     begin
     R.eval <<-EOR
       vulnerable <- data$#{column}[data$vulnerable=="TRUE"]
-      vulnerable_per_sloc <- vulnerable/data$sloc[data$vulnerable=="TRUE"]
       neutral <- data$#{column}[data$vulnerable=="FALSE"]
+
+      vulnerable_per_sloc <- vulnerable/data$sloc[data$vulnerable=="TRUE"]
+      vulnerable_per_sloc <- vulnerable_per_sloc[is.finite(vulnerable_per_sloc)] #remove /0
       neutral_per_sloc <- neutral/data$sloc[data$vulnerable=="FALSE"]
+      neutral_per_sloc <- neutral_per_sloc[is.finite(neutral_per_sloc)] #remove /0
+      
       op <- options(warn = (-1)) # suppress warnings
       wt <- wilcox.test(vulnerable, neutral)
       wt_per_sloc <- wilcox.test(vulnerable_per_sloc, neutral_per_sloc)
@@ -67,7 +71,7 @@ class HypothesisTests
     puts "  MWW p-value: #{R.pull("wt$p.value")}"
     puts "  Per SLOC vulnerable mean: #{R.pull("mean(vulnerable_per_sloc, na.rm=TRUE)")}"
     puts "  Per SLOC neutral mean: #{R.pull("mean(neutral_per_sloc, na.rm=TRUE)")}"
-    puts "  Per SLOC MWW p-value: #{R.pull("wt$p.value")}"
+    puts "  Per SLOC MWW p-value: #{R.pull("wt_per_sloc$p.value")}"
     R.eval "rm(vulnerable, vulnerable_per_sloc, neutral,neutral_per_sloc, wt)"
     puts "\n"
     rescue 
