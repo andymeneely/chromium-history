@@ -53,16 +53,22 @@ class HypothesisTests
     begin
     R.eval <<-EOR
       vulnerable <- data$#{column}[data$vulnerable=="TRUE"]
+      vulnerable_per_sloc <- vulnerable/data$sloc[data$vulnerable=="TRUE"]
       neutral <- data$#{column}[data$vulnerable=="FALSE"]
+      neutral_per_sloc <- neutral/data$sloc[data$vulnerable=="FALSE"]
       op <- options(warn = (-1)) # suppress warnings
       wt <- wilcox.test(vulnerable, neutral)
+      wt_per_sloc <- wilcox.test(vulnerable_per_sloc, neutral_per_sloc)
       options(op)
     EOR
     puts "--- #{title} ---"
     puts "  Mean of vulnerable: #{R.pull("mean(vulnerable, na.rm=TRUE)")}"
     puts "  Mean of neutral: #{R.pull("mean(neutral, na.rm=TRUE)")}"
     puts "  MWW p-value: #{R.pull("wt$p.value")}"
-    R.eval "rm(vulnerable, neutral, wt)"
+    puts "  Per SLOC vulnerable mean: #{R.pull("mean(vulnerable_per_sloc, na.rm=TRUE)")}"
+    puts "  Per SLOC neutral mean: #{R.pull("mean(neutral_per_sloc, na.rm=TRUE)")}"
+    puts "  Per SLOC MWW p-value: #{R.pull("wt$p.value")}"
+    R.eval "rm(vulnerable, vulnerable_per_sloc, neutral,neutral_per_sloc, wt)"
     puts "\n"
     rescue 
       puts "ERROR running association test for #{title}, #{column}"
