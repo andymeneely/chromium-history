@@ -12,6 +12,11 @@ class CodeReviewAssociationVerify < VerifyBase
     c = CodeReview.where(:issue => 10854242).take
     assert_equal("palmer@chromium.org", c.owner_email,"Owner email is not right")
   end
+
+  def verify_code_review_non_prtp_revs
+    c = CodeReview.where(:issue => 10854242).take
+    assert_equal(2, c.non_participating_revs)
+  end
   
   def verify_commit_belongs_to_code_review
     assert_equal(5831706594508800, Commit.where(commit_hash: '6eebdee7851c52b1f481fca1cdffcbc51c8ec061').take.code_reviews.take.issue)
