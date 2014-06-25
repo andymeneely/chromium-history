@@ -11,14 +11,6 @@ class CodeReviewParser
 
         owner_id = get_dev_id(cobj['owner_email'])
 
-        @crs << [cobj['description'],
-                 cobj['subject'], 
-                 cobj['created'], 
-                 cobj['modified'], 
-                 cobj['issue'], 
-                 cobj['owner_email'],
-                 owner_id,
-                 ""] #empty commit hash for now
 
         @prtp_set  = Set.new
         @contrb_set = Set.new
@@ -33,9 +25,22 @@ class CodeReviewParser
 
         parse_messages(file, cobj['issue'], cobj['messages'])
 
+        @non_participating_revs = (@revs_dict.keys.to_set) - (@prtp_set)
+        
+        @crs << [cobj['description'],
+                 cobj['subject'], 
+                 cobj['created'], 
+                 cobj['modified'], 
+                 cobj['issue'], 
+                 cobj['owner_email'],
+                 owner_id,
+                 "", #empty commit hash for now
+                 @non_participating_revs.size]
+
         @prtp_set.each {|p| @prtps << [p,cobj['issue'],nil,nil]}
         @contrb_set.each {|c| @contrbs << [c,cobj['issue']]}
         @revs_dict.each {|id, email| @revs << [cobj['issue'],id, email]}
+
 
       end # do |file|
     end #do |chunk|

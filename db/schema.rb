@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.string   "owner_email"
     t.integer  "owner_id"
     t.string   "commit_hash"
+    t.integer  "non_participating_revs"
   end
 
   create_table "code_reviews_cvenums", id: false, force: true do |t|
