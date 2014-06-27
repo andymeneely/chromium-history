@@ -56,4 +56,7 @@ class CodeReviewMetricsVerify < VerifyBase
     assert_equal ['darin@chromium.org','derat@chromium.org'],emails
   end
 
+  def verify_23444043_total_reviews_with_owner
+    assert_equal 1, CodeReview.find_by(issue: 23444043).total_reviews_with_owner
+  end
 end

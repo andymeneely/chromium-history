@@ -35,7 +35,9 @@ class CodeReviewParser
                  cobj['owner_email'],
                  owner_id,
                  "", #empty commit hash for now
-                 @non_participating_revs.size]
+                 @non_participating_revs.size,
+                 nil, # for total_reviews_with_owner
+                 nil,] # for owner_familiarity_gap
 
         @prtp_set.each {|p| @prtps << [p,cobj['issue'],nil,nil]}
         @contrb_set.each {|c| @contrbs << [c,cobj['issue']]}

@@ -11,6 +11,7 @@ require 'verify/verify_runner'
 require 'analysis/release_analysis'
 require 'analysis/participant_analysis'
 require 'analysis/hypothesis_tests'
+require 'analysis/code_review_analysis.rb'
 require 'stats'
 
 # CodeReviewParser.new.parse: Parses JSON files in the codereviews dircetory for the enviornment we're working in.
@@ -94,6 +95,7 @@ namespace :run do
     Benchmark.bm(30) do |x|
       x.report("Populating reviews_with_owner"){ParticipantAnalysis.new.populate_reviews_with_owner}
       x.report("Populating security_experienced"){ParticipantAnalysis.new.populate_security_experienced}
+      x.report("Populating total_reviews_with_owner"){CodeReviewAnalysis.new.populate_total_reviews_with_owner}
       x.report("Populating release metrics") {ReleaseAnalysis.new.populate}
     end
   end
