@@ -7,5 +7,5 @@
 # (but then we have to sort and uniq them to remove duplicate lines)
 #
 # Chop off the top two header rows too (three newlines)
-cloc --by-file --progress-rate=0 --quiet --csv --skip-uniqueness . | tail -n +3 - | sort | uniq > sloc.csv
+cloc --by-file --force-lang="Lisp",sb --force-lang="Python",gyp --force-lang="Python",scons --progress-rate=0 --quiet --csv --skip-uniqueness . | tail -n +3 - | sort | uniq > sloc.csv
 
