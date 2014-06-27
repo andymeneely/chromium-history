@@ -8,9 +8,11 @@ class CodeReviewAnalysis
 
   def populate_owner_familiarity_gap
     CodeReview.find_each do |review|
-      r = review.participants
-      gap = r.maximum(:reviews_with_owner) - r.minimum(:reviews_with_owner) 
-      review.update(owner_familiarity_gap: gap)
+      parts = review.participants
+      unless parts.empty?
+        gap = parts.maximum(:reviews_with_owner) - parts.minimum(:reviews_with_owner) 
+        review.update(owner_familiarity_gap: gap)
+      end
     end
   end
 end
