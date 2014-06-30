@@ -72,8 +72,38 @@ class Filepath < ActiveRecord::Base
   end
 
   # Average number of prior reviews with owner
-  def avg_owner_familiarity_gap(before = DateTeim.new(2050,01,01))
+  def avg_owner_familiarity_gap(before = DateTime.new(2050,01,01))
     code_reviews(before).average(:owner_familiarity_gap)
+  end
+
+  # Percentage of overlooked patchsets
+  def perc_overlooked_patchsets(before = DateTime.new(2050,01,01))
+    denom = code_reviews.size
+    return 0.0 if denom == 0
+
+    num = 1.0
+    CodeReview.joins(commit: [commit_filepaths: :filepath])\
+      .where('filepaths.filepath' => filepath, \
+             'code_reviews.created' => DateTime.new(1970,01,01)..before).each do |cr|
+      num += 1.0 if cr.overlooked_patchset?
+    end
+    
+    return num/denom
+  end
+
+  # Percentage of fast reviews
+  def perc_fast_reviews(before = DateTime.new(2050,01,01))
+    #TODO Refactor code_reviews method to return CodeReview, not Filepath so we don't have to join here ourselves
+    num = 0.0; denom = 0.0
+    rs = CodeReview.joins(commit: [commit_filepaths: :filepath])\
+      .where('filepaths.filepath' => filepath,\
+             'code_reviews.created' => DateTime.new(1970,01,01)..before)
+    rs.each do |cr|
+      num += 1.0 if cr.loc_per_hour_exceeded? 200
+      denom += 1.0
+    end
+    return 0.0 if denom == 0
+    return num/denom
   end
 
   # All of the Reviewers for all filepaths joined together
