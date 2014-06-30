@@ -40,7 +40,6 @@ class Filepath < ActiveRecord::Base
 
   def code_reviews(before = DateTime.new(2050,01,01))
     Filepath.code_reviews\
-      .select(:issue)\
       .where(filepath: filepath, \
              'code_reviews.created' => DateTime.new(1970,01,01)..before)
   end
@@ -60,6 +59,21 @@ class Filepath < ActiveRecord::Base
     end
     return 0 if denom == 0
     return num/denom
+  end
+  
+  # Average number of non-participating reviewers
+  def avg_non_participating_revs(before = DateTime.new(2050,01,01))
+    code_reviews(before).average(:non_participating_revs)
+  end
+
+  # Average number of prior reviews with owner
+  def avg_reviews_with_owner(before = DateTime.new(2050,01,01))
+    code_reviews(before).average(:total_reviews_with_owner)
+  end
+
+  # Average number of prior reviews with owner
+  def avg_owner_familiarity_gap(before = DateTeim.new(2050,01,01))
+    code_reviews(before).average(:owner_familiarity_gap)
   end
 
   # All of the Reviewers for all filepaths joined together

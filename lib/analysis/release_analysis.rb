@@ -8,6 +8,9 @@ class ReleaseAnalysis
       rf.num_reviewers = rf.filepath.reviewers.size
       rf.num_participants = rf.filepath.participants.size
       rf.perc_security_experienced_participants = rf.filepath.perc_security_exp_part(r.date)
+      rf.avg_non_participating_revs = rf.filepath.avg_non_participating_revs(r.date)
+      rf.avg_reviews_with_owner = rf.filepath.avg_reviews_with_owner(r.date)
+      rf.avg_owner_familiarity_gap = rf.filepath.avg_owner_familiarity_gap(r.date)
       rf.vulnerable = rf.filepath.vulnerable?(r.date)
       rf.save
     end

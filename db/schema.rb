@@ -127,7 +127,7 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.integer "num_reviews"
     t.integer "num_reviewers"
     t.integer "num_participants"
-    t.decimal "perc_non_part_reviewers"
+    t.decimal "avg_non_participating_revs"
     t.decimal "perc_security_experienced_participants"
     t.decimal "avg_reviews_with_owner"
     t.decimal "avg_owner_familiarity_gap"
