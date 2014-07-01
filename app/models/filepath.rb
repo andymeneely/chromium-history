@@ -63,7 +63,7 @@ class Filepath < ActiveRecord::Base
 
   def avg_security_exp_part(before = DateTime.new(2050,01,01))
     denom = code_reviews(before).size
-    return 0.0 if denom == 0.0
+    return nil if denom == 0.0
 
     num = Filepath.participants\
       .where('filepaths.filepath' => filepath,\
