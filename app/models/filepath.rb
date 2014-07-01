@@ -60,6 +60,19 @@ class Filepath < ActiveRecord::Base
     return 0 if denom == 0
     return num/denom
   end
+
+  def avg_security_exp_part(before = DateTime.new(2050,01,01))
+    denom = code_reviews(before).size
+    return 0.0 if denom == 0.0
+
+    num = Filepath.participants\
+      .where('filepaths.filepath' => filepath,\
+              'code_reviews.created' => DateTime.new(1970,01,01)..before,\
+              'participants.security_experienced' => true)\
+      .size
+
+    return num/denom #total number of sec_exp parts per code review 
+  end
   
   # Average number of non-participating reviewers
   def avg_non_participating_revs(before = DateTime.new(2050,01,01))
@@ -81,13 +94,31 @@ class Filepath < ActiveRecord::Base
     denom = code_reviews.size
     return 0.0 if denom == 0
 
-    num = 1.0
+    num = 0.0
     CodeReview.joins(commit: [commit_filepaths: :filepath])\
       .where('filepaths.filepath' => filepath, \
              'code_reviews.created' => DateTime.new(1970,01,01)..before).each do |cr|
       num += 1.0 if cr.overlooked_patchset?
     end
     
+    return num/denom
+  end
+
+  # Percentage of reviews with three or more reviewers
+  def perc_three_more_reviewers(before = DateTime.new(2050,01,01))
+    denom = code_reviews.size
+    return 0.0 if denom == 0
+
+    num = 0.0
+
+    CodeReview.joins(:reviewers, commit: [commit_filepaths: :filepath])\
+      .where('filepaths.filepath' => filepath,\
+             'code_reviews.created' => DateTime.new(1970,01,01)..before)\
+      .group('code_reviews.issue')\
+      .select('code_reviews.issue', 'count(reviewers.dev_id) AS revs')\
+      .each do |cr|
+        num += 1.0 if cr['revs'] >= 3
+      end
     return num/denom
   end
 

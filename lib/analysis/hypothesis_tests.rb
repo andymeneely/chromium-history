@@ -42,11 +42,13 @@ class HypothesisTests
     association 'Number of Reviewers', 'num_reviewers'
     association 'Number of Participants', 'num_participants'
     association 'Avg # Non-Participating Reviewers','avg_non_participating_revs'
+    association '% Reviews with 3 or more Reviewers','perc_three_more_reviewers'
     association '% Reviews with a Security-Experienced Participant', 'perc_security_experienced_participants'
+    association 'Avg Security-Experienced Participants', 'avg_security_experienced_participants'
     association 'Average Prior Reviews with Owner', 'avg_reviews_with_owner'
     association 'Average Owner Familiarity Gap', 'avg_owner_familiarity_gap'
-    #association '% Reviews over 200 LOC/hour','perc_fast_reviews'
-    #association '% Reviews with a Potentially-Overlooked Patchset', 'perc_overlooked_patchsets'
+    association '% Reviews over 200 LOC/hour','perc_fast_reviews'
+    association '% Reviews with a Potentially-Overlooked Patchset', 'perc_overlooked_patchsets'
   end
 
   def association(title, column)
