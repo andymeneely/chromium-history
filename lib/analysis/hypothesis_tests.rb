@@ -55,24 +55,46 @@ class HypothesisTests
       vulnerable <- data$#{column}[data$vulnerable=="TRUE"]
       neutral <- data$#{column}[data$vulnerable=="FALSE"]
 
+      # Per SLOC populations
       vulnerable_per_sloc <- vulnerable/data$sloc[data$vulnerable=="TRUE"]
       vulnerable_per_sloc <- vulnerable_per_sloc[is.finite(vulnerable_per_sloc)] #remove /0
       neutral_per_sloc <- neutral/data$sloc[data$vulnerable=="FALSE"]
       neutral_per_sloc <- neutral_per_sloc[is.finite(neutral_per_sloc)] #remove /0
       
+      # MWW tests
       op <- options(warn = (-1)) # suppress warnings
       wt <- wilcox.test(vulnerable, neutral)
       wt_per_sloc <- wilcox.test(vulnerable_per_sloc, neutral_per_sloc)
       options(op)
+
+      # Risk factor analysis with mean discriminators
+      mean_vps <- median(vulnerable_per_sloc, na.rm=TRUE)
+      mean_nps <- median(neutral_per_sloc, na.rm=TRUE)
+      thresh <- (mean_vps + mean_nps) / 2
+      a <- vulnerable_per_sloc
+      b <- neutral_per_sloc
+      risk_factor <- ( ( length(a[a >thresh])/length(b[b >thresh]) ) 
+                                            / 
+                       ( length(a[a<=thresh])/length(b[b<=thresh]) ) )
+      if ( risk_factor < 1.0 )
+        risk_factor <- 1/risk_factor
+      end
+
     EOR
     puts "--- #{title} ---"
     puts "  Mean of vulnerable: #{R.pull("mean(vulnerable, na.rm=TRUE)")}"
     puts "  Mean of neutral: #{R.pull("mean(neutral, na.rm=TRUE)")}"
+    puts "  Median of vulnerable: #{R.pull("median(vulnerable, na.rm=TRUE)")}"
+    puts "  Median of neutral: #{R.pull("median(neutral, na.rm=TRUE)")}"
     puts "  MWW p-value: #{R.pull("wt$p.value")}"
     puts "  Per SLOC vulnerable mean: #{R.pull("mean(vulnerable_per_sloc, na.rm=TRUE)")}"
     puts "  Per SLOC neutral mean: #{R.pull("mean(neutral_per_sloc, na.rm=TRUE)")}"
+    puts "  Per SLOC vulnerable median: #{R.pull("median(vulnerable_per_sloc, na.rm=TRUE)")}"
+    puts "  Per SLOC neutral median: #{R.pull("median(neutral_per_sloc, na.rm=TRUE)")}"
     puts "  Per SLOC MWW p-value: #{R.pull("wt_per_sloc$p.value")}"
-    R.eval "rm(vulnerable, vulnerable_per_sloc, neutral,neutral_per_sloc, wt)"
+    puts "  Per SLOC risk factor threshold: #{R.pull('thresh')}"
+    puts "  Per SLOC risk factor: #{R.pull('risk_factor')}"
+    R.eval "rm(vulnerable, vulnerable_per_sloc, neutral,neutral_per_sloc, wt,wt_per_sloc,a,b)"
     puts "\n"
     rescue 
       puts "ERROR running association test for #{title}, #{column}"
