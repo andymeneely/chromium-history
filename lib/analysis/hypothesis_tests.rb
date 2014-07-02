@@ -36,8 +36,6 @@ class HypothesisTests
 
   def association_tests
     association 'SLOC', 'sloc'
-    #TODO Re-enable these tests once they are loaded
-    #association 'Code Churn', 'churn'
     association 'Number of Reviews', 'num_reviews'
     association 'Number of Reviewers', 'num_reviewers'
     association 'Number of Participants', 'num_participants'
