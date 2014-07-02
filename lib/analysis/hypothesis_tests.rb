@@ -76,7 +76,7 @@ class HypothesisTests
       risk_factor <- ( ( length(a[a >thresh])/length(b[b >thresh]) ) 
                                             / 
                        ( length(a[a<=thresh])/length(b[b<=thresh]) ) )
-      if ( risk_factor < 1.0 )
+      if ( is.finite(risk_factor) && risk_factor < 1.0 )
         risk_factor <- 1/risk_factor
       end
 
