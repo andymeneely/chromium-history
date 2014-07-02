@@ -36,15 +36,25 @@ class CodeReview < ActiveRecord::Base
     result[1].to_i if !result.nil?
   end
 
-  # An overlooked patchset is one that was created AFTER a reviwer approved the code review
+  # An overlooked patchset is one that was created AFTER all approvals came in
   # It's a potential opportunity for un-reviewed code to be introduced.
-  def self.overlooked_patchsets
-    CodeReview.joins(:patch_sets, :messages)\
-              .where('approval=true AND patch_sets.created > messages.date')
-  end
-
   def overlooked_patchset?
-    CodeReview.overlooked_patchsets.where(issue: issue).any?
+    final_lgtm_date = nil
+   
+    #get all messages for this code review and iterate over them
+    #to find the last message w/ approval message (LGTM)
+    messages.order(date: :asc).each do |mess|
+      if mess.approval == true
+        final_lgtm_date = mess.date
+      end
+    end
+    
+    return false if final_lgtm_date.nil?
+
+    patch_sets.order(created: :asc).each do|ps|
+      return true if ps.created > final_lgtm_date #found one!
+    end
+    return false #none found
   end
 
   # Metric: 
@@ -79,7 +89,7 @@ class CodeReview < ActiveRecord::Base
       end
     end
     
-    if date_approval_mess.nil? then return false end
+    return false if date_approval_mess.nil?
 
     total_time_hours = ((date_approval_mess - self.created) / 60) / 60
     loc_per_hour = (self.total_churn / total_time_hours)
