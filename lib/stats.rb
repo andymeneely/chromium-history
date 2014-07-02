@@ -185,10 +185,19 @@ class Stats
     puts a.to_s(120)
     puts "\n"
 
-    puts "@@@ ReleaseFilepath perc_sec_exp_dev @@@"
+    puts "@@@ ReleaseFilepath perc_sec_experienced_participants @@@"
     a = Aggregate.new(0, 100, 5)
     ReleaseFilepath.all.find_each do |rf|
       a << rf.perc_security_experienced_participants * 100.0
+    end
+    puts a.to_s(120)
+    puts "\n"
+
+
+    puts "@@@ ReleaseFilepath perc_overlooked_patchsets @@@"
+    a = Aggregate.new(0, 100, 5)
+    ReleaseFilepath.all.find_each do |rf|
+      a << rf.perc_overlooked_patchsets * 100.0
     end
     puts a.to_s(120)
     puts "\n"
