@@ -5,6 +5,7 @@ require 'loaders/cve_loader'
 require 'loaders/git_log_loader'
 require 'loaders/release_filepath_loader'
 require 'loaders/sloc_loader'
+require 'loaders/sheriff_rotation_loader'
 require 'consolidators/filepath_consolidator'
 require 'consolidators/developer_consolidator'
 require 'verify/verify_runner'
@@ -73,6 +74,7 @@ namespace :run do
       x.report("Keying Developers") { CodeReviewLoader.new.add_primary_keys }
       x.report("Loading CVEs ") {CveLoader.new.load_cve}
       x.report("Loading git log") {GitLogLoader.new.load}
+      x.report("Loading sheriffs") {SheriffRotationLoader.new.parse_and_load}
       x.report("Optimizing commits, cve et al.") do 
         [Commit,CommitFilepath,Cvenum].each {|c| c.on_optimize}
       end

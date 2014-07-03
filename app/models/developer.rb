@@ -3,7 +3,7 @@ class Developer < ActiveRecord::Base
   has_many :participants, primary_key: 'id', foreign_key: 'dev_id'
   has_many :contributors, primary_key: 'id', foreign_key: 'dev_id'
   has_many :reviewers, primary_key: 'id', foreign_key: 'dev_id'
-  has_many :sheriffs, primary_key: 'id', foreign_key: 'dev_id'
+  has_many :sheriff_rotations, primary_key: 'id', foreign_key: 'dev_id'
 
   def self.on_optimize
     ActiveRecord::Base.connection.add_index :developers, :email, unique: true
@@ -51,26 +51,26 @@ class Developer < ActiveRecord::Base
   end
 	
   # Given an email and name, parses the email and searches to see if the developer
-  # is already in the database. If they are, returns the name of the developer.
+  # is already in the database. If they are, returns the email of the developer.
   # If not, adds the developer's information to database.
   # Params:
   # 	email:: the email address of a developer
-  # 	name:: the name of a developer, associated with the email, default is a blank string
-  def self.search_or_add(email, name="")
+  def self.search_or_add(email)
+    email = Developer.sanitize_validate_email(email)
+    if email[0].nil?
+      return nil, false
+    end
+
+    email = email[0]
     if (Developer.find_by_email(email).nil?) 
       developer = Developer.new
       developer["email"] = email
-      developer["name"] = name
       developer.save
-      return developer, false
+      return email, false
     else 
-      dobj = Developer.find_by_email(email)
-      if (Developer.find_by_name(name) == nil) 
-        dobj["name"] = name 
-      end #checking if the name exists
-      return dobj, true
+      return email, true
     end #checking if the email exists
-  	# returns the developer object either way
+  	# returns the developer email either way
   end
 
 end#class

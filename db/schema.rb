@@ -149,10 +149,10 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.string  "email"
   end
 
-  create_table "sheriffs", force: true do |t|
+  create_table "sheriff_rotations", force: true do |t|
     t.integer  "dev_id"
     t.datetime "start"
-    t.datetime "end"
+    t.integer  "duration"
     t.string   "title"
   end
 
