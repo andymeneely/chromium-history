@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.integer  "non_participating_revs"
     t.integer  "total_reviews_with_owner"
     t.integer  "owner_familiarity_gap"
+    t.integer  "total_sheriff_hours"
   end
 
   create_table "code_reviews_cvenums", id: false, force: true do |t|

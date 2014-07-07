@@ -102,6 +102,7 @@ namespace :run do
       x.report("Populating owner_familiarity_gap"){CodeReviewAnalysis.new.populate_owner_familiarity_gap}
       x.report("Populating release metrics") {ReleaseAnalysis.new.populate}
       x.report("Populating sheriff_hours") {ParticipantAnalysis.new.populate_sheriff_hours}
+      x.report("Populating total_sheriff_hours"){CodeReviewAnalysis.new.populate_total_sheriff_hours}
     end
   end
 

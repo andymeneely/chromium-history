@@ -15,4 +15,10 @@ class CodeReviewAnalysis
       end
     end
   end
+
+  def populate_total_sheriff_hours
+    CodeReview.find_each do |review|
+      review.update(total_sheriff_hours: review.participants.sum(:sheriff_hours))
+    end
+  end
 end

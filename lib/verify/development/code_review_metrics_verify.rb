@@ -63,4 +63,8 @@ class CodeReviewMetricsVerify < VerifyBase
   def verify_23444043_owner_familiarity_gap
     assert_equal 1, CodeReview.find_by(issue: 23444043).owner_familiarity_gap
   end
+
+  def verify_23454014_total_sheriff_hours
+    assert_equal 96, CodeReview.find_by(issue: 23454014).total_sheriff_hours
+  end
 end
