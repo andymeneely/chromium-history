@@ -12,6 +12,7 @@ class CodeReviewLoader
     ActiveRecord::Base.connection.execute("COPY patch_set_files FROM '#{datadir}/patch_set_files.csv' DELIMITER ',' CSV")
     ActiveRecord::Base.connection.execute("COPY comments FROM '#{datadir}/comments.csv' DELIMITER ',' CSV")
     ActiveRecord::Base.connection.execute("COPY developers FROM '#{datadir}/developers.csv' DELIMITER ',' CSV")
+    ActiveRecord::Base.connection.execute("SELECT setval('developers_id_seq', (SELECT MAX(id) FROM developers)+1 )")
     ActiveRecord::Base.connection.execute("COPY participants FROM '#{datadir}/participants.csv' DELIMITER ',' CSV")
     ActiveRecord::Base.connection.execute("COPY contributors FROM '#{datadir}/contributors.csv' DELIMITER ',' CSV")
      
