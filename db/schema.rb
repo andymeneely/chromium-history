@@ -94,6 +94,7 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.integer "issue",                limit: 8
     t.integer "reviews_with_owner"
     t.boolean "security_experienced"
+    t.integer "sheriff_hours"
   end
 
   create_table "patch_set_files", id: false, force: true do |t|

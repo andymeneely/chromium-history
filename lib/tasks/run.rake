@@ -75,9 +75,10 @@ namespace :run do
       x.report("Loading CVEs ") {CveLoader.new.load_cve}
       x.report("Loading git log") {GitLogLoader.new.load}
       x.report("Loading sheriffs") {SheriffRotationLoader.new.parse_and_load}
-      x.report("Optimizing commits, cve et al.") do 
+      x.report("Optimizing commits, cve,et al.") do 
         [Commit,CommitFilepath,Cvenum].each {|c| c.on_optimize}
       end
+      x.report("Optimizing sheriffs") { SheriffRotation.on_optimize}
       x.report("Loading release tree") {ReleaseFilepathLoader.new.load}
       x.report("Optimizing releases et al.") do 
         [Release,ReleaseFilepath].each{|c| c.on_optimize}
@@ -100,6 +101,7 @@ namespace :run do
       x.report("Populating total_reviews_with_owner"){CodeReviewAnalysis.new.populate_total_reviews_with_owner}
       x.report("Populating owner_familiarity_gap"){CodeReviewAnalysis.new.populate_owner_familiarity_gap}
       x.report("Populating release metrics") {ReleaseAnalysis.new.populate}
+      x.report("Populating sheriff_hours") {ParticipantAnalysis.new.populate_sheriff_hours}
     end
   end
 

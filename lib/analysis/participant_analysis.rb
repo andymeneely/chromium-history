@@ -25,6 +25,16 @@ class ParticipantAnalysis
 
       participant.update(security_experienced: vuln_reviews.any?)
     end
-    
   end
+
+  # At the given code review, total the number of sheriff hours that the participant has had
+  def populate_sheriff_hours
+    Participant.find_each do |participant|
+      date = participant.code_review.created
+      sheriff_hours = SheriffRotation.where("start < ? AND dev_id = ?", date, participant.dev_id).pluck(:duration)
+
+      participant.update(sheriff_hours: sheriff_hours.inject(0, :+))
+    end
+  end
+
 end#class

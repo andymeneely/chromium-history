@@ -39,7 +39,7 @@ class CodeReviewParser
                  nil, # for total_reviews_with_owner
                  nil,] # for owner_familiarity_gap
 
-        @prtp_set.each {|p| @prtps << [p,cobj['issue'],nil,nil]}
+        @prtp_set.each {|p| @prtps << [p,cobj['issue'],nil,nil,nil]}
         @contrb_set.each {|c| @contrbs << [c,cobj['issue']]}
         @revs_dict.each {|id, email| @revs << [cobj['issue'],id, email]}
 
