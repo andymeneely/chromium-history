@@ -1,0 +1,7 @@
+For most webapps, database schema migrations are painful and need to be handled with care.
+For us, every time we do a rake run, we reset the database schema anyway, so the migrations are
+not necessary.
+
+Just edit schema.rb directly and we'll be fine.
+
+-Andy
