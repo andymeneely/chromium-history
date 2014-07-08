@@ -47,6 +47,7 @@ class HypothesisTests
     association 'Average Owner Familiarity Gap', 'avg_owner_familiarity_gap'
     association '% Reviews over 200 LOC/hour','perc_fast_reviews'
     association '% Reviews with a Potentially-Overlooked Patchset', 'perc_overlooked_patchsets'
+    association 'Average Sheriff Hours','avg_sheriff_hours'
   end
 
   def association(title, column)
