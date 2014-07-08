@@ -16,6 +16,7 @@ class ReleaseAnalysis
       rf.perc_fast_reviews = rf.filepath.perc_fast_reviews(r.date)
       rf.perc_overlooked_patchsets = rf.filepath.perc_overlooked_patchsets(r.date)
       rf.vulnerable = rf.filepath.vulnerable?(r.date)
+      rf.avg_sheriff_hours = rf.filepath.avg_sheriff_hours(r.date)
       rf.save
     end
   end

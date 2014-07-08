@@ -73,7 +73,12 @@ class Filepath < ActiveRecord::Base
 
     return num/denom #total number of sec_exp parts per code review 
   end
-  
+
+  #Average number of sheirff hours per code review
+  def avg_sheriff_hours(before = DateTime.new(2050,01,01))
+    code_reviews(before).average(:total_sheriff_hours)
+  end
+
   # Average number of non-participating reviewers
   def avg_non_participating_revs(before = DateTime.new(2050,01,01))
     code_reviews(before).average(:non_participating_revs)

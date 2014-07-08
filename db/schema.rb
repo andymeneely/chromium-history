@@ -138,6 +138,7 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.decimal "perc_fast_reviews"
     t.decimal "perc_overlooked_patchsets"
     t.boolean "vulnerable"
+    t.decimal "avg_sheriff_hours"
   end
 
   create_table "releases", id: false, force: true do |t|
