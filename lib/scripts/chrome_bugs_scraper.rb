@@ -28,7 +28,7 @@ end
 # @author Danielle Neuberger
 class GoogleCodeBugScraper  
   # Set whether we want verbose debug output or not
-  Typhoeus::Config.verbose = true 
+  Typhoeus::Config.verbose = false 
 
   @@file_location = './bugs/'
   @@baseurl = "http://code.google.com/feeds/issues/p/chromium/issues/full?alt=json&max-results=500&start-index="
