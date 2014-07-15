@@ -13,6 +13,8 @@ require 'analysis/release_analysis'
 require 'analysis/participant_analysis'
 require 'analysis/hypothesis_tests'
 require 'analysis/code_review_analysis.rb'
+require 'analysis/data_visualization'
+require 'analysis/visualization_queries'
 require 'stats'
 
 # CodeReviewParser.new.parse: Parses JSON files in the codereviews dircetory for the enviornment we're working in.
@@ -135,4 +137,11 @@ namespace :run do
     HypothesisTests.new.run
   end
 
+  desc "run r data visualization"
+  task :visualize => :env do
+   VisualizationQueries.new.run_queries
+   puts "Visualization queries finished at #{Time.now}"
+   DataVisualization.new.run
+   puts "Graphs created at #{Time.now}"
+  end
 end
