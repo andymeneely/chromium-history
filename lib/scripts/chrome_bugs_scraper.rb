@@ -61,7 +61,7 @@ class GoogleCodeBugScraper
   # @return Array The data we've grabbed (a reference to our IVAR)
   def get_data(next_link="",delay=@opts[:delay], concurrent_connections=1)
        
-		# hydra = Typhoeus::Hydra.new(max_concurrency: concurrent_connections) # make a new concurrent run area
+		hydra = Typhoeus::Hydra.new(max_concurrency: concurrent_connections) # make a new concurrent run area
 
 	
 		puts "Fetching Data: #{@@baseurl+@cursor.to_s}"
@@ -82,8 +82,24 @@ class GoogleCodeBugScraper
 					Oj.to_file(@@file_location + "#{start_index}-#{@cursor-1}.json", bug_result)
 					puts "#{start_index}- #{@cursor-1}: completed"
 					
+					bug_result["feed"]["entry"].each do |entry|
+						entry_id = entry["issues$id"]["$t"]
+						entry["link"].each do |link|
+							if link["rel"] == "replies"
+								replies_request = Typhoeus::Request.new(link["href"])  # make a new request
+								replies_request.on_complete do |replies_resp|
+									if replies_resp.success?
+										File.open(@@file_location + "replies/#{entry_id}.json", "w") { |f| f.write(replies_resp.body) }
+										puts "Replies for #{entry_id} completed"
+										sleep(delay)
+									end
+								end
+								hydra.queue replies_request
+							end
+						end		
+					end
+					hydra.run
 					sleep(delay)
-					
 				else
 					@cursor = -1
 				end
