@@ -87,7 +87,8 @@ class GoogleCodeBugScraper
 						entry_id = entry["issues$id"]["$t"]
 						entry["link"].each do |link|
 							if link["rel"] == "replies"
-								replies_request = Typhoeus::Request.new(link["href"])  # make a new request
+								replies_request = Typhoeus::Request.new(link["href"]+"?alt=json")  # make a new request
+								puts	link["href"]							
 								replies_request.on_complete do |replies_resp|
 									if replies_resp.success?
 										FileUtils.mkdir(@@file_location + "replies") unless File.directory?(@@file_location + "replies")										
