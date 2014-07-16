@@ -79,6 +79,7 @@ class GoogleCodeBugScraper
 				if items_per_page > 0 #verifies if there is any items left			
 					@cursor = start_index + items_per_page				
 					
+					FileUtils.mkdir(@@file_location) unless File.directory?(@@file_location)										
 					Oj.to_file(@@file_location + "#{start_index}-#{@cursor-1}.json", bug_result)
 					puts "#{start_index}- #{@cursor-1}: completed"
 					
@@ -89,6 +90,7 @@ class GoogleCodeBugScraper
 								replies_request = Typhoeus::Request.new(link["href"])  # make a new request
 								replies_request.on_complete do |replies_resp|
 									if replies_resp.success?
+										FileUtils.mkdir(@@file_location + "replies") unless File.directory?(@@file_location + "replies")										
 										File.open(@@file_location + "replies/#{entry_id}.json", "w") { |f| f.write(replies_resp.body) }
 										puts "Replies for #{entry_id} completed"
 										sleep(delay)
