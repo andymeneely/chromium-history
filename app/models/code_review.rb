@@ -95,5 +95,4 @@ class CodeReview < ActiveRecord::Base
     loc_per_hour = (self.total_churn / total_time_hours)
     if loc_per_hour > lines then return true else return false end
   end
-
 end#class
