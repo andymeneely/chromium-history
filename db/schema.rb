@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.integer  "total_reviews_with_owner"
     t.integer  "owner_familiarity_gap"
     t.integer  "total_sheriff_hours"
+    t.boolean  "cursory"
   end
 
   create_table "code_reviews_cvenums", id: false, force: true do |t|
