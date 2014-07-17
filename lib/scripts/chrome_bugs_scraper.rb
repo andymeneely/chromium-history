@@ -80,7 +80,6 @@ class GoogleCodeBugScraper
 					@cursor = start_index + items_per_page				
 					
 					FileUtils.mkdir(@@file_location) unless File.directory?(@@file_location)										
-					Oj.to_file(@@file_location + "#{start_index}-#{@cursor-1}.json", bug_result)
 					puts "#{start_index}- #{@cursor-1}: completed"
 					
 					bug_result["feed"]["entry"].each do |entry|
@@ -88,11 +87,12 @@ class GoogleCodeBugScraper
 						entry["link"].each do |link|
 							if link["rel"] == "replies"
 								replies_request = Typhoeus::Request.new(link["href"]+"?alt=json")  # make a new request
-								puts	link["href"]							
 								replies_request.on_complete do |replies_resp|
-									if replies_resp.success?
-										FileUtils.mkdir(@@file_location + "replies") unless File.directory?(@@file_location + "replies")										
-										File.open(@@file_location + "replies/#{entry_id}.json", "w") { |f| f.write(replies_resp.body) }
+								if replies_resp.success?
+										entry["replies"] = Oj.load(replies_resp.body)
+										#FileUtils.mkdir(@@file_location + "replies") unless File.directory?(@@file_location + "replies")										
+										#File.open(@@file_location + "replies/#{entry_id}.json", "w") { |f| f.write(replies_resp.body) }
+										
 										puts "Replies for #{entry_id} completed"
 										sleep(delay)
 									end
@@ -102,6 +102,8 @@ class GoogleCodeBugScraper
 						end		
 					end
 					hydra.run
+					
+					Oj.to_file(@@file_location + "#{start_index}-#{@cursor-1}.json", bug_result)
 					sleep(delay)
 				else
 					@cursor = -1
