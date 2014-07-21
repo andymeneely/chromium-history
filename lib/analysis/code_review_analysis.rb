@@ -49,7 +49,7 @@ class CodeReviewAnalysis
           contrib_per_rev += filtered_mess.length
         end
       end
-      if contrib_per_rev < 15 or review.loc_per_hour_exceeded? then cursory_rev = true end
+      if contrib_per_rev < 20 or review.loc_per_hour_exceeded? then cursory_rev = true end
       review.update(cursory: cursory_rev)
     end
   end
