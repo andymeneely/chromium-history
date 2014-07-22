@@ -136,6 +136,8 @@ namespace :run do
   desc "Run final hypothesis tests"
   task :results => :env do
     HypothesisTests.new.run
+    VisualizationQueries.new.run_queries
+    DataVisualization.new.run
   end
 
   desc "run r data visualization"
