@@ -61,57 +61,57 @@ class GoogleCodeBugScraper
   # @return Array The data we've grabbed (a reference to our IVAR)
   def get_data(next_link="",delay=@opts[:delay], concurrent_connections=1)
        
-		hydra = Typhoeus::Hydra.new(max_concurrency: concurrent_connections) # make a new concurrent run area
+    hydra = Typhoeus::Hydra.new(max_concurrency: concurrent_connections) # make a new concurrent run area
 
-	
-		puts "Fetching Data: #{@@baseurl+@cursor.to_s}"
-		issue_request = Typhoeus::Request.new(@@baseurl+@cursor.to_s)  # make a new request
-		
-		issue_request.on_complete do |issue_resp|
-			if issue_resp.success?
-				
-				bug_result = Oj.load(issue_resp.body) # push a Hash of the response onto our issues list
-				
-				start_index = bug_result["feed"]["openSearch$startIndex"]["$t"]
-				items_per_page = bug_result["feed"]["openSearch$itemsPerPage"]["$t"]
-				
-				
-				if items_per_page > 0 #verifies if there is any items left			
-					@cursor = start_index + items_per_page				
-					
-					FileUtils.mkdir(@@file_location) unless File.directory?(@@file_location)										
-					puts "#{start_index}- #{@cursor-1}: completed"
-					
-					bug_result["feed"]["entry"].each do |entry|
-						entry_id = entry["issues$id"]["$t"]
-						entry["link"].each do |link|
-							if link["rel"] == "replies"
-								replies_request = Typhoeus::Request.new(link["href"]+"?alt=json")  # make a new request
-								replies_request.on_complete do |replies_resp|
-								if replies_resp.success?
-										entry["replies"] = Oj.load(replies_resp.body)
-										#FileUtils.mkdir(@@file_location + "replies") unless File.directory?(@@file_location + "replies")										
-										#File.open(@@file_location + "replies/#{entry_id}.json", "w") { |f| f.write(replies_resp.body) }
-										
-										puts "Replies for #{entry_id} completed"
-										sleep(delay)
-									end
-								end
-								hydra.queue replies_request
-							end
-						end		
-					end
-					hydra.run
-					
-					Oj.to_file(@@file_location + "#{start_index}-#{@cursor-1}.json", bug_result)
-					sleep(delay)
-				else
-					@cursor = -1
-				end
-			end
-		end
+  
+    puts "Fetching Data: #{@@baseurl+@cursor.to_s}"
+    issue_request = Typhoeus::Request.new(@@baseurl+@cursor.to_s)  # make a new request
+    
+    issue_request.on_complete do |issue_resp|
+      if issue_resp.success?
+        
+        bug_result = Oj.load(issue_resp.body) # push a Hash of the response onto our issues list
+        
+        start_index = bug_result["feed"]["openSearch$startIndex"]["$t"]
+        items_per_page = bug_result["feed"]["openSearch$itemsPerPage"]["$t"]
+        
+        
+        if items_per_page > 0 #verifies if there is any items left      
+          @cursor = start_index + items_per_page        
+          
+          FileUtils.mkdir(@@file_location) unless File.directory?(@@file_location)                    
+          puts "#{start_index}- #{@cursor-1}: completed"
+          
+          bug_result["feed"]["entry"].each do |entry|
+            entry_id = entry["issues$id"]["$t"]
+            entry["link"].each do |link|
+              if link["rel"] == "replies"
+                replies_request = Typhoeus::Request.new(link["href"]+"?alt=json")  # make a new request
+                replies_request.on_complete do |replies_resp|
+                if replies_resp.success?
+                    entry["replies"] = Oj.load(replies_resp.body)
+                    #FileUtils.mkdir(@@file_location + "replies") unless File.directory?(@@file_location + "replies")                    
+                    #File.open(@@file_location + "replies/#{entry_id}.json", "w") { |f| f.write(replies_resp.body) }
+                    
+                    puts "Replies for #{entry_id} completed"
+                    sleep(delay)
+                  end
+                end
+                hydra.queue replies_request
+              end
+            end    
+          end
+          hydra.run
+          
+          Oj.to_file(@@file_location + "#{start_index}-#{@cursor-1}.json", bug_result)
+          sleep(delay)
+        else
+          @cursor = -1
+        end
+      end
+    end
 
-		issue_request.run
+    issue_request.run
    end
 end
 
