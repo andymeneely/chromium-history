@@ -86,10 +86,10 @@ class GoogleCodeBugScraper
             entry_id = entry["issues$id"]["$t"]
             entry["link"].each do |link|
               if link["rel"] == "replies"
-                replies_request = Typhoeus::Request.new(link["href"]+"?alt=json")  # make a new request
+                replies_request = Typhoeus::Request.new(link["href"]+"?alt=json&max-results=500")  # make a new request
                 replies_request.on_complete do |replies_resp|
                 if replies_resp.success?
-                    entry["replies"] = Oj.load(replies_resp.body)
+                    entry["replies"] = Oj.load(replies_resp.body)["feed"]["entry"]
                     #FileUtils.mkdir(@@file_location + "replies") unless File.directory?(@@file_location + "replies")                    
                     #File.open(@@file_location + "replies/#{entry_id}.json", "w") { |f| f.write(replies_resp.body) }
                     
