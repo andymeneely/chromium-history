@@ -23,6 +23,8 @@ class DataVisualization
     # setwd so that graphs are dumped in the tmp dir
     R.eval <<-EOR
       setwd("#{Rails.configuration.datadir}/tmp/")
+      library(grid)
+      library(lattice)
     EOR
     comments_per_review_hist
     cursory_vs_sec_exp_review_box
