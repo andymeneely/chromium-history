@@ -52,6 +52,7 @@ class GoogleCodeBugScraperCSV
   # @return RietveldScraper Our new object
   def initialize(opts)
     @opts = opts
+    @total = 0
     @cursor = 1
   end
 
@@ -74,16 +75,31 @@ class GoogleCodeBugScraperCSV
         #puts bug_result
         #CSV.to_file(@@file_location + "#{start_index}-#{@cursor-1}.json", bug_result)
         
+        #extract the total number of records.
+        
+        parsedData = CSV.parse(issue_resp.body)
+        
+        if @total == 0 
+          @total =  parsedData[-1][0].scan(/\d+/)[1]
+        end
+        
+        if parsedData.size > 1 #verify that the response contains rows.
 
-        #Writes file to disk
-        file = File.new(@@file_location+@cursor.to_s+".csv", "wb")
-        file.write(issue_resp.body)
-        file.close
+          #Writes file to disk
+          file = File.new(@@file_location+@cursor.to_s+".csv", "wb")
+          file.write(issue_resp.body)
+          file.close
 
-        #increments cursor
-        @cursor += @@increment        
-        sleep(delay)
+          #increments cursor
+          @cursor += @@increment    
+
+          sleep(delay)
+        else
+          #Exit: File fetching just headers
+          @cursor = -1
+        end
       else
+        #Exit: Http resquest faliure.
         @cursor = -1
       end
     end
@@ -96,7 +112,7 @@ end
 # driver code
 s = GoogleCodeBugScraperCSV.new(opts)
 
-while @cursor != -1  do
+while (@cursor != -1)  do
    s.get_data
 end
 
