@@ -29,9 +29,9 @@ class BugParser
   end
 
   def parse_and_update_csv
+    open_csvs
     @labels = CSV.open("#{Rails.configuration.datadir}/labels.csv", 'w+')
     @bug_labels = CSV.open("#{Rails.configuration.datadir}/bug_labels.csv", 'w+')
-    label_id = 1
 
     CSV.foreach("#{Rails.configuration.datadir}/bugs/bug_sample.csv") do |line|
       bug_id = line[0]
@@ -40,9 +40,10 @@ class BugParser
         $stderr.puts "Bug issue #{bug_id} not found"
       else
         update_bug_issue line, bug_issue
-        parse_labels label_id, line
+        parse_labels line
       end
-    end  
+    end
+    dump_labels
     @labels.fsync
     @bug_labels.fsync
     datadir = File.expand_path(Rails.configuration.datadir)
@@ -70,17 +71,18 @@ class BugParser
     bug_issue.save
   end
 
-  def parse_labels(label_id, line)
+  def parse_labels(line)
     bug_id = line[0]
     labels = line[2].delete(' ').split(',')
     labels.each do |label|
-      @labels << [label_id, label]
-      @bug_labels << [label_id, bug_id]
-      label_id += 1
+      @label_db[label] ||= (@label_incr+=1) #set to increment if nil
+      @bug_labels << [@label_db[label], bug_id]
     end
   end
   
   def open_csvs
+    @label_db = Hash.new
+    @label_incr = 0
    # @bug_comments = CSV.open("#{Rails.configuration.datadir}/bug_comments.csv", 'w+')
    # @bug_blocked = CSV.open("#{Rails.configuration.datadir}/bug_blocked.csv", 'w+')
   end
@@ -88,6 +90,12 @@ class BugParser
   def flush_csvs
    # @bug_comments.fsync
    # @bug_blocked.fsync
+  end
+
+  def dump_labels
+    @label_db.each do |label,label_id|
+      @labels << [label_id, label]
+    end
   end
 
   def copy_to_db
