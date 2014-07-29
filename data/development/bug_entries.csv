@@ -1,0 +1,20 @@
+17941,,,,,,,,venkatar...@chromium.org,/u/103485851777014287537/,"
+This is happening only on XP ! Works fine on Vista.
+
+-Install 3.0.195.1 Chrome version
+-Run the updater (195.3_from_195.1_chrome_updater)
+
+The updater fails with registry key ap is set to 'full'
+
+Expected:
+Should update to 195.3 !"
+27675,,,,,,,,fbarch...@chromium.org,/u/110636958463397842213/,"this video crashes chrome 3 and 4 (aww snap)
+http://fbarchard-kir.ad.corp.google.com/mediatests/runthrough.mp4 file.
+it works okay in safari and mplayer.
+it decodes okay in media_bench as well.
+
+the video is 1366 wide which is not a multiple of 16.
+a 1280x720 version of the same video is okay.
+it was encoded with adobe media encoder
+
+the problem is likely a memory overflow."

@@ -1,4 +1,5 @@
 # Our custom Rakefile tasks for loading the data
+require 'loaders/bug_parser.rb'
 require 'loaders/code_review_parser'
 require 'loaders/code_review_loader'
 require 'loaders/cve_loader'
@@ -77,6 +78,8 @@ namespace :run do
       x.report("Loading CVEs ") {CveLoader.new.load_cve}
       x.report("Loading git log") {GitLogLoader.new.load}
       x.report("Loading sheriffs") {SheriffRotationLoader.new.parse_and_load}
+      x.report("Parsing JSON Bugs"){BugParser.new.parse_and_load_json}
+      x.report("Updating Bugs with CSVs"){BugParser.new.parse_and_update_csv}
       x.report("Optimizing commits, cve,et al.") do 
         [Commit,CommitFilepath,Cvenum].each {|c| c.on_optimize}
       end
