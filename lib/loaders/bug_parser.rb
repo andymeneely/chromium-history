@@ -10,7 +10,7 @@ class BugParser
     
     # get all json files and iterate over entries and entry's replies
     # and add the data from the json to attributes
-    Dir["#{Rails.configuration.datadir}/bugs/*.json"].each do |file|
+    Dir["#{Rails.configuration.datadir}/bugs/json/*.json"].each do |file|
       bug_obj = load_json file
       bug_obj["feed"]["entry"].each do |entry|
         
@@ -55,19 +55,23 @@ class BugParser
     @bug_labels = CSV.open("#{Rails.configuration.datadir}/tmp/bug_labels.csv", 'w+')
 
     # get all csv files and load data 
-    Dir["#{Rails.configuration.datadir}/bugs/*.csv"].each do |file|
-      CSV.foreach(file) do |line|
-        bug_id = line[0]
-        bug_issue = Bug.find_by(bug_id: bug_id) # match the json issue num with the csv issue num 
-       
-        if bug_issue.nil?
-          $stderr.puts "Bug issue #{bug_id} not found" 
+    Dir["#{Rails.configuration.datadir}/bugs/csv/*.csv"].each do |file|
+      csv_contents = CSV.read(file) # read file into an array of arrays
+      csv_contents.each do |line|
+        if line.first.first.starts_with?("I", "This")
+          next #skip when first element's data has the ID header or end of file statment
         else
-          update_bug_issue line, bug_issue # update nil fields in the bugs table
-          parse_labels line  
-          parse_blocked line
+          bug_id = line[0]
+          bug_issue = Bug.find_by(bug_id: bug_id) # match the json issue num with the csv issue num 
+       
+          if bug_issue.nil?
+           $stderr.puts "Bug issue #{bug_id} not found" 
+          else
+           update_bug_issue line, bug_issue # update nil fields in the bugs table
+           parse_labels line  
+           parse_blocked line
+          end
         end
-
       end
     end
 
