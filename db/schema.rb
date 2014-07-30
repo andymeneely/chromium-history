@@ -13,6 +13,39 @@
 
 ActiveRecord::Schema.define(version: 20140512131450) do
 
+  create_table "blocks", id: false, force: true do |t|
+    t.integer "blocked_on_id"
+    t.integer "blocking_id"
+  end
+
+  create_table "bug_comments", id: false, force: true do |t|
+    t.integer  "bug_id"
+    t.text     "content"
+    t.string   "author_email"
+    t.string   "author_uri"
+    t.datetime "updated"
+  end
+
+  create_table "bug_labels",id: false, force: true do |t|
+    t.integer "label_id"
+    t.integer "bug_id"
+  end
+
+  create_table "bugs", id:false, force: true do |t|
+    t.integer  "bug_id"
+    t.string   "title"
+    t.integer  "stars"
+    t.string   "status"
+    t.string   "reporter"
+    t.datetime "opened" 
+    t.datetime "closed"
+    t.datetime "modified"
+    t.string   "owner_email"
+    t.string   "owner_uri" 
+    t.text     "content"
+  end
+  
+
   create_table "code_reviews", id: false, force: true do |t|
     t.text     "description"
     t.string   "subject"
@@ -79,6 +112,11 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "filepath",   limit: 500
+  end
+
+  create_table "labels",id:false, force: true do |t|
+    t.integer "label_id"
+    t.string  "label"
   end
 
   create_table "messages", id: false, force: true do |t|
