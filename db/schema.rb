@@ -13,6 +13,11 @@
 
 ActiveRecord::Schema.define(version: 20140512131450) do
 
+  create_table "blocks", id: false, force: true do |t|
+    t.integer "blocked_on_id"
+    t.integer "blocking_id"
+  end
+
   create_table "bugs", id:false, force: true do |t|
     t.integer  "bug_id"
     t.string   "title"

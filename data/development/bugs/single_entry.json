@@ -294,6 +294,327 @@
                 "issues$status": {
                     "$t": "Fixed"
                 }
+            },
+            {
+                "gd$etag": "W/\"A0IMRH47eCl7ImA9WhBQEk0.\"",
+                "id": {
+                    "$t": "http://code.google.com/feeds/issues/p/chromium/issues/full/20248"
+                },
+                "published": {
+                    "$t": "2009-08-25T19:04:53.000Z"
+                },
+                "updated": {
+                    "$t": "2013-03-13T21:19:45.000Z"
+                },
+                "title": {
+                    "$t": "OSX Omnibox context menu differs from Windows."
+                },
+                "content": {
+                    "$t": "The Windows context menu has:\r\n Undo\r\n ----\r\n Cut\r\n Copy\r\n Paste\r\n Paste and search (or Paste and go)\r\n ----\r\n Select all\r\n ----\r\n Edit search engines...\r\n\r\nMac has Cut, Copy, Paste, Font&gt;, Spelling and Grammar&gt;, Substitutions&gt;, Speech&gt;, Writing \r\nDirection&gt;, and a variety of context-sensitive options &quot;Open URL&quot;, &quot;Make Link&quot;, &quot;Search in \r\nSpotlight&quot;, &quot;Search in Google&quot;, and &quot;Look up in Dictionary&quot;.  All of the context-sensitive items \r\nappear at the top, so even if they do belong here on some level, on another level they probably \r\nshouldn't interfere with important items like the editing commands.\r\n",
+                    "type": "html"
+                },
+                "link": [
+                    {
+                        "rel": "replies",
+                        "type": "application/atom+xml",
+                        "href": "http://code.google.com/feeds/issues/p/chromium/issues/20248/comments/full"
+                    },
+                    {
+                        "rel": "alternate",
+                        "type": "text/html",
+                        "href": "http://code.google.com/p/chromium/issues/detail?id=20248"
+                    },
+                    {
+                        "rel": "self",
+                        "type": "application/atom+xml",
+                        "href": "http://code.google.com/feeds/issues/p/chromium/issues/full/20248"
+                    }
+                ],
+                "author": [
+                    {
+                        "name": {
+                            "$t": "shess@chromium.org"
+                        },
+                        "uri": {
+                            "$t": "/u/shess@chromium.org/"
+                        }
+                    }
+                ],
+                "issues$blocking": [
+                    {
+                        "issues$id": {
+                            "$t": 10937
+                        },
+                        "issues$project": {
+                            "$t": "chromium"
+                        }
+                    },
+                    {
+                        "issues$id": {
+                            "$t": 20246
+                        },
+                        "issues$project": {
+                            "$t": "chromium"
+                        }
+                    }
+                ],
+                "issues$cc": [
+                    {
+                        "issues$uri": {
+                            "$t": "/u/shess@chromium.org/"
+                        },
+                        "issues$username": {
+                            "$t": "shess@chromium.org"
+                        }
+                    }
+                ],
+                "issues$closedDate": {
+                    "$t": "2009-09-21T16:51:21.000Z"
+                },
+                "issues$id": {
+                    "$t": 20248
+                },
+                "issues$label": [
+                    {
+                        "$t": "Type-Bug"
+                    },
+                    {
+                        "$t": "Pri-0"
+                    },
+                    {
+                        "$t": "OS-Mac"
+                    },
+                    {
+                        "$t": "Size-Medium"
+                    },
+                    {
+                        "$t": "MacOmnibox"
+                    },
+                    {
+                        "$t": "Area-BrowserUI"
+                    },
+                    {
+                        "$t": "ReleaseBlock-Beta"
+                    },
+                    {
+                        "$t": "M-4"
+                    },
+                    {
+                        "$t": "Restrict-AddIssueComment-EditIssue"
+                    }
+                ],
+                "issues$owner": {
+                    "issues$uri": {
+                        "$t": "/u/rohitrao@chromium.org/"
+                    },
+                    "issues$username": {
+                        "$t": "rohitrao@chromium.org"
+                    }
+                },
+                "issues$stars": {
+                    "$t": 5
+                },
+                "issues$state": {
+                    "$t": "closed"
+                },
+                "issues$status": {
+                    "$t": "Verified"
+                }
+            },
+            {
+                "gd$etag": "W/\"A0ACRX47eCl7ImA9WhBQEk0.\"",
+                "id": {
+                    "$t": "http://code.google.com/feeds/issues/p/chromium/issues/full/15090"
+                },
+                "published": {
+                    "$t": "2009-06-23T20:56:29.000Z"
+                },
+                "updated": {
+                    "$t": "2013-03-13T21:22:44.000Z"
+                },
+                "title": {
+                    "$t": "While ? (command) key held down, letter keys don't generate key events"
+                },
+                "content": {
+                    "$t": "Chrome version : 3.0.190.0 (Official Build 18973)\r\n\r\n<b>What steps will reproduce the problem?</b>\n1. Login to google docs\r\n2. Open any spreadsheet\r\n3. Copy and paste any text using ? + C, ? + V or using menu &gt; edit &gt;copy and paste\r\n\r\nWhat is the expected output?\r\nCopy paste should happen\r\n\r\n What do you see instead?\r\nThe text is not copy pasted\r\n\r\n<b>Please use labels and text to provide additional information.</b>\n",
+                    "type": "html"
+                },
+                "link": [
+                    {
+                        "rel": "replies",
+                        "type": "application/atom+xml",
+                        "href": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full"
+                    },
+                    {
+                        "rel": "alternate",
+                        "type": "text/html",
+                        "href": "http://code.google.com/p/chromium/issues/detail?id=15090"
+                    },
+                    {
+                        "rel": "self",
+                        "type": "application/atom+xml",
+                        "href": "http://code.google.com/feeds/issues/p/chromium/issues/full/15090"
+                    }
+                ],
+                "author": [
+                    {
+                        "name": {
+                            "$t": "jasn...@chromium.org"
+                        },
+                        "uri": {
+                            "$t": "/u/115285129018301397690/"
+                        }
+                    }
+                ],
+                "issues$blockedOn": [
+                    {
+                        "issues$id": {
+                            "$t": 24817
+                        },
+                        "issues$project": {
+                            "$t": "chromium"
+                        }
+                    },
+                    {
+                        "issues$id": {
+                            "$t": 24877
+                        },
+                        "issues$project": {
+                            "$t": "chromium"
+                        }
+                    },
+                    {
+                        "issues$id": {
+                            "$t": 24921
+                        },
+                        "issues$project": {
+                            "$t": "chromium"
+                        }
+                    },
+                    {
+                        "issues$id": {
+                            "$t": 25000
+                        },
+                        "issues$project": {
+                            "$t": "chromium"
+                        }
+                    },
+                    {
+                        "issues$id": {
+                            "$t": 25249
+                        },
+                        "issues$project": {
+                            "$t": "chromium"
+                        }
+                    },
+                    {
+                        "issues$id": {
+                            "$t": 25254
+                        },
+                        "issues$project": {
+                            "$t": "chromium"
+                        }
+                    }
+                ],
+                "issues$cc": [
+                    {
+                        "issues$uri": {
+                            "$t": "/u/109717319352791668856/"
+                        },
+                        "issues$username": {
+                            "$t": "hb...@chromium.org"
+                        }
+                    },
+                    {
+                        "issues$uri": {
+                            "$t": "/u/ben@chromium.org/"
+                        },
+                        "issues$username": {
+                            "$t": "ben@chromium.org"
+                        }
+                    },
+                    {
+                        "issues$uri": {
+                            "$t": "/u/jeremy@chromium.org/"
+                        },
+                        "issues$username": {
+                            "$t": "jeremy@chromium.org"
+                        }
+                    },
+                    {
+                        "issues$uri": {
+                            "$t": "/u/thakis@chromium.org/"
+                        },
+                        "issues$username": {
+                            "$t": "thakis@chromium.org"
+                        }
+                    },
+                    {
+                        "issues$uri": {
+                            "$t": "/u/113409286815222922579/"
+                        },
+                        "issues$username": {
+                            "$t": "su...@chromium.org"
+                        }
+                    },
+                    {
+                        "issues$uri": {
+                            "$t": "/u/jam@chromium.org/"
+                        },
+                        "issues$username": {
+                            "$t": "jam@chromium.org"
+                        }
+                    }
+                ],
+                "issues$closedDate": {
+                    "$t": "2009-10-26T05:08:10.000Z"
+                },
+                "issues$id": {
+                    "$t": 15090
+                },
+                "issues$label": [
+                    {
+                        "$t": "Type-Bug"
+                    },
+                    {
+                        "$t": "OS-Mac"
+                    },
+                    {
+                        "$t": "Area-BrowserUI"
+                    },
+                    {
+                        "$t": "Size-Medium"
+                    },
+                    {
+                        "$t": "ReleaseBlock-Beta"
+                    },
+                    {
+                        "$t": "Pri-1"
+                    },
+                    {
+                        "$t": "M-4"
+                    },
+                    {
+                        "$t": "Restrict-AddIssueComment-EditIssue"
+                    }
+                ],
+                "issues$owner": {
+                    "issues$uri": {
+                        "$t": "/u/thakis@chromium.org/"
+                    },
+                    "issues$username": {
+                        "$t": "thakis@chromium.org"
+                    }
+                },
+                "issues$stars": {
+                    "$t": 21
+                },
+                "issues$state": {
+                    "$t": "closed"
+                },
+                "issues$status": {
+                    "$t": "Verified"
+                }
             }
         ]
     }

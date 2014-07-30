@@ -18,3 +18,36 @@ a 1280x720 version of the same video is okay.
 it was encoded with adobe media encoder
 
 the problem is likely a memory overflow."
+20248,,,,,,,,rohitrao@chromium.org,/u/rohitrao@chromium.org/,"The Windows context menu has:
+ Undo
+ ----
+ Cut
+ Copy
+ Paste
+ Paste and search (or Paste and go)
+ ----
+ Select all
+ ----
+ Edit search engines...
+
+Mac has Cut, Copy, Paste, Font&gt;, Spelling and Grammar&gt;, Substitutions&gt;, Speech&gt;, Writing 
+Direction&gt;, and a variety of context-sensitive options &quot;Open URL&quot;, &quot;Make Link&quot;, &quot;Search in 
+Spotlight&quot;, &quot;Search in Google&quot;, and &quot;Look up in Dictionary&quot;.  All of the context-sensitive items 
+appear at the top, so even if they do belong here on some level, on another level they probably 
+shouldn't interfere with important items like the editing commands.
+"
+15090,,,,,,,,thakis@chromium.org,/u/thakis@chromium.org/,"Chrome version : 3.0.190.0 (Official Build 18973)
+
+<b>What steps will reproduce the problem?</b>
+1. Login to google docs
+2. Open any spreadsheet
+3. Copy and paste any text using ? + C, ? + V or using menu &gt; edit &gt;copy and paste
+
+What is the expected output?
+Copy paste should happen
+
+ What do you see instead?
+The text is not copy pasted
+
+<b>Please use labels and text to provide additional information.</b>
+"

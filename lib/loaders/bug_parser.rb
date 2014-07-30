@@ -41,14 +41,17 @@ class BugParser
       else
         update_bug_issue line, bug_issue
         parse_labels line
+        parse_blocked line
       end
     end
     dump_labels
     @labels.fsync
     @bug_labels.fsync
+    @bug_blocked.fsync
     datadir = File.expand_path(Rails.configuration.datadir)
     ActiveRecord::Base.connection.execute("COPY labels FROM '#{datadir}/labels.csv' DELIMITER ',' CSV")
     ActiveRecord::Base.connection.execute("COPY bug_labels FROM '#{datadir}/bug_labels.csv' DELIMITER ',' CSV")
+    ActiveRecord::Base.connection.execute("COPY blocks FROM '#{datadir}/bug_blocked.csv' DELIMITER ',' CSV")
   end                       
 
   def load_json(file)
@@ -79,17 +82,40 @@ class BugParser
       @bug_labels << [@label_db[label], bug_id]
     end
   end
+
+  def parse_blocked(line)
+    blocked_on = line[4]
+    blocking = line[5]
+    if blocked_on.nil? and blocking.nil?
+    else
+      if not blocked_on.nil? and blocking.nil?
+        blocking = []
+        blocked_on.split(",").zip(blocking).each do |blocked, blocking|
+          @bug_blocked << [blocked, blocking]
+        end
+      elsif not blocking.nil? and blocked_on.nil?
+        blocked_on = []
+        blocking.split(",").zip(blocked_on).each do |blocking, blocked|
+          @bug_blocked << [blocked, blocking]
+        end
+      else
+        blocked_on.split(",").zip(blocking.split(",")).each do |blocked, blocking|
+          @bug_blocked << [blocked, blocking]
+        end
+      end
+    end
+  end
+
   
   def open_csvs
     @label_db = Hash.new
     @label_incr = 0
    # @bug_comments = CSV.open("#{Rails.configuration.datadir}/bug_comments.csv", 'w+')
-   # @bug_blocked = CSV.open("#{Rails.configuration.datadir}/bug_blocked.csv", 'w+')
+   @bug_blocked = CSV.open("#{Rails.configuration.datadir}/bug_blocked.csv", 'w+')
   end
 
   def flush_csvs
    # @bug_comments.fsync
-   # @bug_blocked.fsync
   end
 
   def dump_labels
@@ -100,6 +126,5 @@ class BugParser
 
   def copy_to_db
     #ActiveRecord::Base.connection.execute("COPY bugs FROM '#{datadir}/bug_comments.csv' DELIMITER ',' CSV")
-    #ActiveRecord::Base.connection.execute("COPY bugs FROM '#{datadir}/bug_blokced.csv' DELIMITER ',' CSV")
   end
 end#class
