@@ -19,6 +19,7 @@ where [options] are:
 EOS
 
   opt :delay, "Set the amount of delay (in seconds) between get calls.", default: 0.25, type: Float
+  opt :cursor, "Set start cursor for this run", default: 1, type: Integer
 end
 
 # @author Felivel Camilo
@@ -46,7 +47,7 @@ class GoogleCodeBugScraper
   # @return GoogleCodeBugScraper  Our new object
   def initialize(opts)
     @opts = opts
-    @cursor = 302447 
+    @cursor = @opts[:cursor]
   end
 
   def get_cursor()
