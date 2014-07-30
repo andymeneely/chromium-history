@@ -5,6 +5,7 @@ class BugParser
   def parse_and_load_json
     
     @bug_entries = CSV.open("#{Rails.configuration.datadir}/bug_entries.csv", 'w+')
+    @bug_comments = CSV.open("#{Rails.configuration.datadir}/bug_comments.csv", 'w+')
     
     Dir["#{Rails.configuration.datadir}/bugs/*.json"].each do |file|
       bug_obj = load_json file
@@ -21,11 +22,22 @@ class BugParser
                          entry["issues$owner"]["issues$username"]["$t"],
                          entry["issues$owner"]["issues$uri"]["$t"],
                          entry["content"]["$t"]]
+        
+        entry["replies"].each do |comment|
+          @bug_comments << [entry["issues$id"]["$t"],
+                            comment["content"],
+                            comment["author"]["name"]["$t"],
+                            comment["author"]["uri"]["$t"],
+                            comment["updated"]["$t"]]
+        end
       end
     end
-    @bug_entries.fsync    
+    @bug_entries.fsync
+    @bug_comments.fsync
+
     datadir = File.expand_path(Rails.configuration.datadir)
     ActiveRecord::Base.connection.execute("COPY bugs FROM '#{datadir}/bug_entries.csv' DELIMITER ',' CSV")
+    ActiveRecord::Base.connection.execute("COPY bug_comments FROM '#{datadir}/bug_comments.csv' DELIMITER ',' CSV")
   end
 
   def parse_and_update_csv
@@ -33,7 +45,7 @@ class BugParser
     @labels = CSV.open("#{Rails.configuration.datadir}/labels.csv", 'w+')
     @bug_labels = CSV.open("#{Rails.configuration.datadir}/bug_labels.csv", 'w+')
 
-    CSV.foreach("#{Rails.configuration.datadir}/bugs/bug_sample.csv") do |line|
+    CSV.foreach("#{Rails.configuration.datadir}/bugs/*.csv") do |line|
       bug_id = line[0]
       bug_issue = Bug.find_by(bug_id: bug_id)
       if bug_issue.nil?
@@ -106,25 +118,15 @@ class BugParser
     end
   end
 
-  
   def open_csvs
     @label_db = Hash.new
     @label_incr = 0
-   # @bug_comments = CSV.open("#{Rails.configuration.datadir}/bug_comments.csv", 'w+')
-   @bug_blocked = CSV.open("#{Rails.configuration.datadir}/bug_blocked.csv", 'w+')
-  end
-
-  def flush_csvs
-   # @bug_comments.fsync
+    @bug_blocked = CSV.open("#{Rails.configuration.datadir}/bug_blocked.csv", 'w+')
   end
 
   def dump_labels
     @label_db.each do |label,label_id|
       @labels << [label_id, label]
     end
-  end
-
-  def copy_to_db
-    #ActiveRecord::Base.connection.execute("COPY bugs FROM '#{datadir}/bug_comments.csv' DELIMITER ',' CSV")
   end
 end#class

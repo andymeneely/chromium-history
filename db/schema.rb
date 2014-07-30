@@ -18,6 +18,19 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.integer "blocking_id"
   end
 
+  create_table "bug_comments", id: false, force: true do |t|
+    t.integer  "bug_id"
+    t.text     "content"
+    t.string   "author_email"
+    t.string   "author_id"
+    t.datetime "updated"
+  end
+
+  create_table "bug_labels",id: false, force: true do |t|
+    t.integer "label_id"
+    t.integer "bug_id"
+  end
+
   create_table "bugs", id:false, force: true do |t|
     t.integer  "bug_id"
     t.string   "title"
@@ -32,10 +45,6 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.text     "content"
   end
   
-  create_table "bug_labels",id: false, force: true do |t|
-    t.integer "label_id"
-    t.integer "bug_id"
-  end
 
   create_table "code_reviews", id: false, force: true do |t|
     t.text     "description"
