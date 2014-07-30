@@ -46,7 +46,11 @@ class GoogleCodeBugScraper
   # @return GoogleCodeBugScraper  Our new object
   def initialize(opts)
     @opts = opts
-    @cursor = 1
+    @cursor = 302447 
+  end
+
+  def get_cursor()
+    return @cursor
   end
 
   def get_data(next_link="",delay=@opts[:delay], concurrent_connections=1)
@@ -111,7 +115,7 @@ end
 # driver code
 s = GoogleCodeBugScraper.new(opts)
 
-while @cursor != -1  do
+while s.get_cursor() != -1  do
    s.get_data
 end
 
