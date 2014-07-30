@@ -24,12 +24,20 @@ class Developer < ActiveRecord::Base
       if email_domain == 'gtempaccount.com'
         #     e.g. john-doe%gmail.com@gtempaccount.com
         match = /^([\w\-]+)%(\w+.\w{3})(?=@gtempaccount.com)/.match email_address
-	      email_address = (match[1] + '@' + match[2])
-        email_local = match[1]
-        email_domain = match[2]
+	      
+        if match
+          email_address = (match[1] + '@' + match[2])
+          email_local = match[1]
+          email_domain = match[2]
+        else
+          match = /^([\w\-]*)%([\w\-]*).{3}(?=@gtempaccount.com)/.match email_address
+          email_address = (match[1] + '@' + match[2])
+          email_local = match[1]
+          email_domain = match[2]
+        end
       end
 		
-      bad_domains = ['chromioum.org','chroimum.org','chromium.com','chromoium.org','chromium.rg','chromum.org','chormium.org','chromimum.org','chromium.orf','chromiu.org','chroium.org','chcromium.org','chromuim.org','google.com']
+      bad_domains = ['chromioum.org','chroimum.org','chromium.com','chromoium.org','chromium.rg','chromum.org','chormium.org','chromimum.org','chromium.orf','chromiu.org','chroium.org','chcromium.org','chromuim.org','google.com','g']
       if bad_domains.include? email_domain 
         email_domain = "@chromium.org"
         email_address = email_local + email_domain
