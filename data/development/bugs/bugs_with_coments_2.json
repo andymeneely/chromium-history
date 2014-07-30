@@ -1,0 +1,3168 @@
+{
+    "version": "1.0",
+    "encoding": "UTF-8",
+    "feed": {
+        "xmlns": "http://www.w3.org/2005/Atom",
+        "xmlns$openSearch": "http://a9.com/-/spec/opensearch/1.1/",
+        "xmlns$gd": "http://schemas.google.com/g/2005",
+        "xmlns$issues": "http://schemas.google.com/projecthosting/issues/2009",
+        "id": {
+            "$t": "http://code.google.com/feeds/issues/p/chromium/issues/full"
+        },
+        "updated": {
+            "$t": "2014-07-29T21:27:47.609Z"
+        },
+        "title": {
+            "$t": "Issues - chromium"
+        },
+        "subtitle": {
+            "$t": "Issues - chromium"
+        },
+        "link": [
+            {
+                "rel": "alternate",
+                "type": "text/html",
+                "href": "http://code.google.com/p/chromium/issues/list"
+            },
+            {
+                "rel": "http://schemas.google.com/g/2005#feed",
+                "type": "application/atom+xml",
+                "href": "http://code.google.com/feeds/issues/p/chromium/issues/full"
+            },
+            {
+                "rel": "http://schemas.google.com/g/2005#post",
+                "type": "application/atom+xml",
+                "href": "http://code.google.com/feeds/issues/p/chromium/issues/full"
+            },
+            {
+                "rel": "self",
+                "type": "application/atom+xml",
+                "href": "http://code.google.com/feeds/issues/p/chromium/issues/full?alt=json&start-index=1&max-results=492"
+            },
+            {
+                "rel": "next",
+                "type": "application/atom+xml",
+                "href": "http://code.google.com/feeds/issues/p/chromium/issues/full?alt=json&start-index=493&max-results=492"
+            }
+        ],
+        "generator": {
+            "$t": "ProjectHosting",
+            "version": "1.0",
+            "uri": "http://code.google.com/feeds/issues"
+        },
+        "openSearch$totalResults": {
+            "$t": 307045
+        },
+        "openSearch$startIndex": {
+            "$t": 1
+        },
+        "openSearch$itemsPerPage": {
+            "$t": 492
+        },
+        "entry": [
+            {
+                "gd$etag": "W/\"A0IMRH47eCl7ImA9WhBQEk0.\"",
+                "id": {
+                    "$t": "http://code.google.com/feeds/issues/p/chromium/issues/full/20248"
+                },
+                "published": {
+                    "$t": "2009-08-25T19:04:53.000Z"
+                },
+                "updated": {
+                    "$t": "2013-03-13T21:19:45.000Z"
+                },
+                "title": {
+                    "$t": "OSX Omnibox context menu differs from Windows."
+                },
+                "content": {
+                    "$t": "The Windows context menu has:\r\n Undo\r\n ----\r\n Cut\r\n Copy\r\n Paste\r\n Paste and search (or Paste and go)\r\n ----\r\n Select all\r\n ----\r\n Edit search engines...\r\n\r\nMac has Cut, Copy, Paste, Font&gt;, Spelling and Grammar&gt;, Substitutions&gt;, Speech&gt;, Writing \r\nDirection&gt;, and a variety of context-sensitive options &quot;Open URL&quot;, &quot;Make Link&quot;, &quot;Search in \r\nSpotlight&quot;, &quot;Search in Google&quot;, and &quot;Look up in Dictionary&quot;.  All of the context-sensitive items \r\nappear at the top, so even if they do belong here on some level, on another level they probably \r\nshouldn't interfere with important items like the editing commands.\r\n",
+                    "type": "html"
+                },
+                "link": [
+                    {
+                        "rel": "replies",
+                        "type": "application/atom+xml",
+                        "href": "http://code.google.com/feeds/issues/p/chromium/issues/20248/comments/full"
+                    },
+                    {
+                        "rel": "alternate",
+                        "type": "text/html",
+                        "href": "http://code.google.com/p/chromium/issues/detail?id=20248"
+                    },
+                    {
+                        "rel": "self",
+                        "type": "application/atom+xml",
+                        "href": "http://code.google.com/feeds/issues/p/chromium/issues/full/20248"
+                    }
+                ],
+                "author": [
+                    {
+                        "name": {
+                            "$t": "shess@chromium.org"
+                        },
+                        "uri": {
+                            "$t": "/u/shess@chromium.org/"
+                        }
+                    }
+                ],
+                "issues$blocking": [
+                    {
+                        "issues$id": {
+                            "$t": 10937
+                        },
+                        "issues$project": {
+                            "$t": "chromium"
+                        }
+                    },
+                    {
+                        "issues$id": {
+                            "$t": 20246
+                        },
+                        "issues$project": {
+                            "$t": "chromium"
+                        }
+                    }
+                ],
+                "issues$cc": [
+                    {
+                        "issues$uri": {
+                            "$t": "/u/shess@chromium.org/"
+                        },
+                        "issues$username": {
+                            "$t": "shess@chromium.org"
+                        }
+                    }
+                ],
+                "issues$closedDate": {
+                    "$t": "2009-09-21T16:51:21.000Z"
+                },
+                "issues$id": {
+                    "$t": 20248
+                },
+                "issues$label": [
+                    {
+                        "$t": "Type-Bug"
+                    },
+                    {
+                        "$t": "Pri-0"
+                    },
+                    {
+                        "$t": "OS-Mac"
+                    },
+                    {
+                        "$t": "Size-Medium"
+                    },
+                    {
+                        "$t": "MacOmnibox"
+                    },
+                    {
+                        "$t": "Area-BrowserUI"
+                    },
+                    {
+                        "$t": "ReleaseBlock-Beta"
+                    },
+                    {
+                        "$t": "M-4"
+                    },
+                    {
+                        "$t": "Restrict-AddIssueComment-EditIssue"
+                    }
+                ],
+                "issues$owner": {
+                    "issues$uri": {
+                        "$t": "/u/rohitrao@chromium.org/"
+                    },
+                    "issues$username": {
+                        "$t": "rohitrao@chromium.org"
+                    }
+                },
+                "issues$stars": {
+                    "$t": 5
+                },
+                "issues$state": {
+                    "$t": "closed"
+                },
+                "issues$status": {
+                    "$t": "Verified"
+                },
+                "replies": [
+                    {
+                        "gd$etag": "W/\"DEYGSH47eCl7ImA9WxNSGE4.\"",
+                        "id": {
+                            "$t": "http://code.google.com/feeds/issues/p/chromium/issues/20248/comments/full/1"
+                        },
+                        "published": {
+                            "$t": "2009-09-01T20:15:29.000Z"
+                        },
+                        "updated": {
+                            "$t": "2009-09-01T20:15:29.000Z"
+                        },
+                        "title": {
+                            "$t": "Comment 1 by pinkerton@chromium.org"
+                        },
+                        "content": {
+                            "$t": "",
+                            "type": "html"
+                        },
+                        "link": [
+                            {
+                                "rel": "alternate",
+                                "type": "text/html",
+                                "href": "http://code.google.com/p/chromium/issues/detail?id=20248#c1"
+                            },
+                            {
+                                "rel": "self",
+                                "type": "application/atom+xml",
+                                "href": "http://code.google.com/feeds/issues/p/chromium/issues/20248/comments/full/1"
+                            }
+                        ],
+                        "author": [
+                            {
+                                "name": {
+                                    "$t": "pinkerton@chromium.org"
+                                },
+                                "uri": {
+                                    "$t": "/u/pinkerton@chromium.org/"
+                                }
+                            }
+                        ],
+                        "issues$updates": {
+                            "issues$label": [
+                                {
+                                    "$t": "Area-BrowserUI"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "gd$etag": "W/\"DEMMQn47eCl7ImA9WxNSGE4.\"",
+                        "id": {
+                            "$t": "http://code.google.com/feeds/issues/p/chromium/issues/20248/comments/full/2"
+                        },
+                        "published": {
+                            "$t": "2009-09-01T20:21:23.000Z"
+                        },
+                        "updated": {
+                            "$t": "2009-09-01T20:21:23.000Z"
+                        },
+                        "title": {
+                            "$t": "Comment 2 by pinkerton@chromium.org"
+                        },
+                        "content": {
+                            "$t": "",
+                            "type": "html"
+                        },
+                        "link": [
+                            {
+                                "rel": "alternate",
+                                "type": "text/html",
+                                "href": "http://code.google.com/p/chromium/issues/detail?id=20248#c2"
+                            },
+                            {
+                                "rel": "self",
+                                "type": "application/atom+xml",
+                                "href": "http://code.google.com/feeds/issues/p/chromium/issues/20248/comments/full/2"
+                            }
+                        ],
+                        "author": [
+                            {
+                                "name": {
+                                    "$t": "pinkerton@chromium.org"
+                                },
+                                "uri": {
+                                    "$t": "/u/pinkerton@chromium.org/"
+                                }
+                            }
+                        ],
+                        "issues$updates": {
+                            "issues$label": [
+                                {
+                                    "$t": "-Area-Misc"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "gd$etag": "W/\"AkIGRH47eCl7ImA9WxNSGE4.\"",
+                        "id": {
+                            "$t": "http://code.google.com/feeds/issues/p/chromium/issues/20248/comments/full/3"
+                        },
+                        "published": {
+                            "$t": "2009-09-01T20:55:25.000Z"
+                        },
+                        "updated": {
+                            "$t": "2009-09-01T20:55:25.000Z"
+                        },
+                        "title": {
+                            "$t": "Comment 3 by pinkerton@chromium.org"
+                        },
+                        "content": {
+                            "$t": "",
+                            "type": "html"
+                        },
+                        "link": [
+                            {
+                                "rel": "alternate",
+                                "type": "text/html",
+                                "href": "http://code.google.com/p/chromium/issues/detail?id=20248#c3"
+                            },
+                            {
+                                "rel": "self",
+                                "type": "application/atom+xml",
+                                "href": "http://code.google.com/feeds/issues/p/chromium/issues/20248/comments/full/3"
+                            }
+                        ],
+                        "author": [
+                            {
+                                "name": {
+                                    "$t": "pinkerton@chromium.org"
+                                },
+                                "uri": {
+                                    "$t": "/u/pinkerton@chromium.org/"
+                                }
+                            }
+                        ],
+                        "issues$updates": {
+                            "issues$status": {
+                                "$t": "Assigned"
+                            }
+                        }
+                    },
+                    {
+                        "gd$etag": "W/\"AkINQH47eCl7ImA9WxNSGUw.\"",
+                        "id": {
+                            "$t": "http://code.google.com/feeds/issues/p/chromium/issues/20248/comments/full/4"
+                        },
+                        "published": {
+                            "$t": "2009-09-02T19:09:51.000Z"
+                        },
+                        "updated": {
+                            "$t": "2009-09-02T19:09:51.000Z"
+                        },
+                        "title": {
+                            "$t": "Comment 4 by j...@chromium.org"
+                        },
+                        "content": {
+                            "$t": "This blocks Mac Beta.",
+                            "type": "html"
+                        },
+                        "link": [
+                            {
+                                "rel": "alternate",
+                                "type": "text/html",
+                                "href": "http://code.google.com/p/chromium/issues/detail?id=20248#c4"
+                            },
+                            {
+                                "rel": "self",
+                                "type": "application/atom+xml",
+                                "href": "http://code.google.com/feeds/issues/p/chromium/issues/20248/comments/full/4"
+                            }
+                        ],
+                        "author": [
+                            {
+                                "name": {
+                                    "$t": "j...@chromium.org"
+                                },
+                                "uri": {
+                                    "$t": "/u/100709908569725893910/"
+                                }
+                            }
+                        ],
+                        "issues$updates": {
+                            "issues$label": [
+                                {
+                                    "$t": "ReleaseBlock-Beta"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "gd$etag": "W/\"CkYFR347eCl7ImA9WxNSGU8.\"",
+                        "id": {
+                            "$t": "http://code.google.com/feeds/issues/p/chromium/issues/20248/comments/full/5"
+                        },
+                        "published": {
+                            "$t": "2009-09-02T19:35:16.000Z"
+                        },
+                        "updated": {
+                            "$t": "2009-09-02T19:35:16.000Z"
+                        },
+                        "title": {
+                            "$t": "Comment 5 by j...@chromium.org"
+                        },
+                        "content": {
+                            "$t": "We are deprecating the MacBeta milestone in favor of ReleaseBlock-Beta and \r\na milestone.",
+                            "type": "html"
+                        },
+                        "link": [
+                            {
+                                "rel": "alternate",
+                                "type": "text/html",
+                                "href": "http://code.google.com/p/chromium/issues/detail?id=20248#c5"
+                            },
+                            {
+                                "rel": "self",
+                                "type": "application/atom+xml",
+                                "href": "http://code.google.com/feeds/issues/p/chromium/issues/20248/comments/full/5"
+                            }
+                        ],
+                        "author": [
+                            {
+                                "name": {
+                                    "$t": "j...@chromium.org"
+                                },
+                                "uri": {
+                                    "$t": "/u/100709908569725893910/"
+                                }
+                            }
+                        ],
+                        "issues$updates": {
+                            "issues$label": [
+                                {
+                                    "$t": "-mstone-macbeta"
+                                },
+                                {
+                                    "$t": "Mstone-4"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "gd$etag": "W/\"CU4ER347eCl7ImA9WxNQEkU.\"",
+                        "id": {
+                            "$t": "http://code.google.com/feeds/issues/p/chromium/issues/20248/comments/full/6"
+                        },
+                        "published": {
+                            "$t": "2009-09-18T14:25:06.000Z"
+                        },
+                        "updated": {
+                            "$t": "2009-09-18T14:25:06.000Z"
+                        },
+                        "title": {
+                            "$t": "Comment 6 by pinkerton@chromium.org"
+                        },
+                        "content": {
+                            "$t": "blocks a P1, so is a P0",
+                            "type": "html"
+                        },
+                        "link": [
+                            {
+                                "rel": "alternate",
+                                "type": "text/html",
+                                "href": "http://code.google.com/p/chromium/issues/detail?id=20248#c6"
+                            },
+                            {
+                                "rel": "self",
+                                "type": "application/atom+xml",
+                                "href": "http://code.google.com/feeds/issues/p/chromium/issues/20248/comments/full/6"
+                            }
+                        ],
+                        "author": [
+                            {
+                                "name": {
+                                    "$t": "pinkerton@chromium.org"
+                                },
+                                "uri": {
+                                    "$t": "/u/pinkerton@chromium.org/"
+                                }
+                            }
+                        ],
+                        "issues$updates": {
+                            "issues$label": [
+                                {
+                                    "$t": "-Pri-2"
+                                },
+                                {
+                                    "$t": "Pri-0"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "gd$etag": "W/\"D0MHRn47eCl7ImA9WxNQEkU.\"",
+                        "id": {
+                            "$t": "http://code.google.com/feeds/issues/p/chromium/issues/20248/comments/full/7"
+                        },
+                        "published": {
+                            "$t": "2009-09-18T14:50:37.000Z"
+                        },
+                        "updated": {
+                            "$t": "2009-09-18T14:50:37.000Z"
+                        },
+                        "title": {
+                            "$t": "Comment 7 by rohitrao@chromium.org"
+                        },
+                        "content": {
+                            "$t": "Going through review now.\r\n\r\nhttp://codereview.chromium.org/192008/show",
+                            "type": "html"
+                        },
+                        "link": [
+                            {
+                                "rel": "alternate",
+                                "type": "text/html",
+                                "href": "http://code.google.com/p/chromium/issues/detail?id=20248#c7"
+                            },
+                            {
+                                "rel": "self",
+                                "type": "application/atom+xml",
+                                "href": "http://code.google.com/feeds/issues/p/chromium/issues/20248/comments/full/7"
+                            }
+                        ],
+                        "author": [
+                            {
+                                "name": {
+                                    "$t": "rohitrao@chromium.org"
+                                },
+                                "uri": {
+                                    "$t": "/u/rohitrao@chromium.org/"
+                                }
+                            }
+                        ],
+                        "issues$updates": {
+                            "issues$ccUpdate": [
+                                {
+                                    "$t": "-rohit...@chromium.org"
+                                },
+                                {
+                                    "$t": "sh...@chromium.org"
+                                }
+                            ],
+                            "issues$ownerUpdate": {
+                                "$t": "rohit...@chromium.org"
+                            },
+                            "issues$status": {
+                                "$t": "Started"
+                            }
+                        }
+                    },
+                    {
+                        "gd$etag": "W/\"DU8ARn47eCl7ImA9WxNQE00.\"",
+                        "id": {
+                            "$t": "http://code.google.com/feeds/issues/p/chromium/issues/20248/comments/full/8"
+                        },
+                        "published": {
+                            "$t": "2009-09-18T21:04:07.000Z"
+                        },
+                        "updated": {
+                            "$t": "2009-09-18T21:04:07.000Z"
+                        },
+                        "title": {
+                            "$t": "Comment 8 by rohitrao@chromium.org"
+                        },
+                        "content": {
+                            "$t": "Changed to include only Cut/Copy/Paste/Paste and Go.  Sometimes includes \"Open URL,\" if a url is currently \r\nselected, but I don't know how to remove that short of not using any Cocoa context menu functions at all.\r\n\r\nWe're still missing Undo, Select All, and the Edit search engines items.  Leaving this bug open until I add those in.",
+                            "type": "html"
+                        },
+                        "link": [
+                            {
+                                "rel": "alternate",
+                                "type": "text/html",
+                                "href": "http://code.google.com/p/chromium/issues/detail?id=20248#c8"
+                            },
+                            {
+                                "rel": "self",
+                                "type": "application/atom+xml",
+                                "href": "http://code.google.com/feeds/issues/p/chromium/issues/20248/comments/full/8"
+                            }
+                        ],
+                        "author": [
+                            {
+                                "name": {
+                                    "$t": "rohitrao@chromium.org"
+                                },
+                                "uri": {
+                                    "$t": "/u/rohitrao@chromium.org/"
+                                }
+                            }
+                        ],
+                        "issues$updates": {}
+                    },
+                    {
+                        "gd$etag": "W/\"C08MQH47eCl7ImA9WxNQFUg.\"",
+                        "id": {
+                            "$t": "http://code.google.com/feeds/issues/p/chromium/issues/20248/comments/full/9"
+                        },
+                        "published": {
+                            "$t": "2009-09-21T16:51:21.000Z"
+                        },
+                        "updated": {
+                            "$t": "2009-09-21T16:51:21.000Z"
+                        },
+                        "title": {
+                            "$t": "Comment 9 by rohitrao@chromium.org"
+                        },
+                        "content": {
+                            "$t": "Per discussion with pinkerton, closing this bug.  There is an existing bug to implement undo for the omnibox.  I \r\nwill file a new bug for the edit search engines item.  I've never seen \"Select all\" in a mac context menu, but that \r\nshould be easy enough to add if we want it.",
+                            "type": "html"
+                        },
+                        "link": [
+                            {
+                                "rel": "alternate",
+                                "type": "text/html",
+                                "href": "http://code.google.com/p/chromium/issues/detail?id=20248#c9"
+                            },
+                            {
+                                "rel": "self",
+                                "type": "application/atom+xml",
+                                "href": "http://code.google.com/feeds/issues/p/chromium/issues/20248/comments/full/9"
+                            }
+                        ],
+                        "author": [
+                            {
+                                "name": {
+                                    "$t": "rohitrao@chromium.org"
+                                },
+                                "uri": {
+                                    "$t": "/u/rohitrao@chromium.org/"
+                                }
+                            }
+                        ],
+                        "issues$updates": {
+                            "issues$status": {
+                                "$t": "Fixed"
+                            }
+                        }
+                    },
+                    {
+                        "gd$etag": "W/\"C0UDRX47eCl7ImA9WxNQFUs.\"",
+                        "id": {
+                            "$t": "http://code.google.com/feeds/issues/p/chromium/issues/20248/comments/full/10"
+                        },
+                        "published": {
+                            "$t": "2009-09-21T19:27:54.000Z"
+                        },
+                        "updated": {
+                            "$t": "2009-09-21T19:27:54.000Z"
+                        },
+                        "title": {
+                            "$t": "Comment 10 by ism...@chromium.org"
+                        },
+                        "content": {
+                            "$t": "212.0 (Developer Build 26685)\r\n\r\nCut, Copy, Paste, Paste and Search are added \r\n\r\nAdd \"Undo\"  -> Already had a bug to Implement\r\n\"Edit Search Engines\", Select All -> Comment #9 ~ rohitrao wants to raise a new bug for it.\r\n\r\nFixing above 3 options makes uniform with Windows.\r\n\r\nClosing this by verifying.\r\n",
+                            "type": "html"
+                        },
+                        "link": [
+                            {
+                                "rel": "alternate",
+                                "type": "text/html",
+                                "href": "http://code.google.com/p/chromium/issues/detail?id=20248#c10"
+                            },
+                            {
+                                "rel": "self",
+                                "type": "application/atom+xml",
+                                "href": "http://code.google.com/feeds/issues/p/chromium/issues/20248/comments/full/10"
+                            }
+                        ],
+                        "author": [
+                            {
+                                "name": {
+                                    "$t": "ism...@chromium.org"
+                                },
+                                "uri": {
+                                    "$t": "/u/102375106838618105665/"
+                                }
+                            }
+                        ],
+                        "issues$updates": {
+                            "issues$status": {
+                                "$t": "Verified"
+                            }
+                        }
+                    },
+                    {
+                        "gd$etag": "W/\"DEUNRX47eCl7ImA9WhNTEE0.\"",
+                        "id": {
+                            "$t": "http://code.google.com/feeds/issues/p/chromium/issues/20248/comments/full/11"
+                        },
+                        "published": {
+                            "$t": "2012-10-12T01:44:54.000Z"
+                        },
+                        "updated": {
+                            "$t": "2012-10-12T01:44:54.000Z"
+                        },
+                        "title": {
+                            "$t": "Comment 11 by bugdro...@chromium.org"
+                        },
+                        "content": {
+                            "$t": "This issue has been closed for some time. No one will pay attention to new comments.\nIf you are seeing this bug or have new data, please click New Issue to start a new bug.",
+                            "type": "html"
+                        },
+                        "link": [
+                            {
+                                "rel": "alternate",
+                                "type": "text/html",
+                                "href": "http://code.google.com/p/chromium/issues/detail?id=20248#c11"
+                            },
+                            {
+                                "rel": "self",
+                                "type": "application/atom+xml",
+                                "href": "http://code.google.com/feeds/issues/p/chromium/issues/20248/comments/full/11"
+                            }
+                        ],
+                        "author": [
+                            {
+                                "name": {
+                                    "$t": "bugdro...@chromium.org"
+                                },
+                                "uri": {
+                                    "$t": "/u/101788990881243245974/"
+                                }
+                            }
+                        ],
+                        "issues$updates": {
+                            "issues$label": [
+                                {
+                                    "$t": "Restrict-AddIssueComment-Commit"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "gd$etag": "W/\"DkQNQ347eCl7ImA9WhBRGUk.\"",
+                        "id": {
+                            "$t": "http://code.google.com/feeds/issues/p/chromium/issues/20248/comments/full/12"
+                        },
+                        "published": {
+                            "$t": "2013-03-10T19:39:52.000Z"
+                        },
+                        "updated": {
+                            "$t": "2013-03-10T19:39:52.000Z"
+                        },
+                        "title": {
+                            "$t": "Comment 12 by bugdro...@chromium.org"
+                        },
+                        "content": {
+                            "$t": "",
+                            "type": "html"
+                        },
+                        "link": [
+                            {
+                                "rel": "alternate",
+                                "type": "text/html",
+                                "href": "http://code.google.com/p/chromium/issues/detail?id=20248#c12"
+                            },
+                            {
+                                "rel": "self",
+                                "type": "application/atom+xml",
+                                "href": "http://code.google.com/feeds/issues/p/chromium/issues/20248/comments/full/12"
+                            }
+                        ],
+                        "author": [
+                            {
+                                "name": {
+                                    "$t": "bugdro...@chromium.org"
+                                },
+                                "uri": {
+                                    "$t": "/u/101788990881243245974/"
+                                }
+                            }
+                        ],
+                        "issues$updates": {
+                            "issues$label": [
+                                {
+                                    "$t": "-Mstone-4"
+                                },
+                                {
+                                    "$t": "M-4"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "gd$etag": "W/\"A0IMRH47eCl7ImA9WhBQEk0.\"",
+                        "id": {
+                            "$t": "http://code.google.com/feeds/issues/p/chromium/issues/20248/comments/full/13"
+                        },
+                        "published": {
+                            "$t": "2013-03-13T21:19:45.000Z"
+                        },
+                        "updated": {
+                            "$t": "2013-03-13T21:19:45.000Z"
+                        },
+                        "title": {
+                            "$t": "Comment 13 by bugdro...@chromium.org"
+                        },
+                        "content": {
+                            "$t": "",
+                            "type": "html"
+                        },
+                        "link": [
+                            {
+                                "rel": "alternate",
+                                "type": "text/html",
+                                "href": "http://code.google.com/p/chromium/issues/detail?id=20248#c13"
+                            },
+                            {
+                                "rel": "self",
+                                "type": "application/atom+xml",
+                                "href": "http://code.google.com/feeds/issues/p/chromium/issues/20248/comments/full/13"
+                            }
+                        ],
+                        "author": [
+                            {
+                                "name": {
+                                    "$t": "bugdro...@chromium.org"
+                                },
+                                "uri": {
+                                    "$t": "/u/101788990881243245974/"
+                                }
+                            }
+                        ],
+                        "issues$updates": {
+                            "issues$label": [
+                                {
+                                    "$t": "-Restrict-AddIssueComment-Commit"
+                                },
+                                {
+                                    "$t": "Restrict-AddIssueComment-EditIssue"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "gd$etag": "W/\"A0ACRX47eCl7ImA9WhBQEk0.\"",
+                        "id": {
+                            "$t": "http://code.google.com/feeds/issues/p/chromium/issues/full/15090"
+                        },
+                        "published": {
+                            "$t": "2009-06-23T20:56:29.000Z"
+                        },
+                        "updated": {
+                            "$t": "2013-03-13T21:22:44.000Z"
+                        },
+                        "title": {
+                            "$t": "While ? (command) key held down, letter keys don't generate key events"
+                        },
+                        "content": {
+                            "$t": "Chrome version : 3.0.190.0 (Official Build 18973)\r\n\r\n<b>What steps will reproduce the problem?</b>\n1. Login to google docs\r\n2. Open any spreadsheet\r\n3. Copy and paste any text using ? + C, ? + V or using menu &gt; edit &gt;copy and paste\r\n\r\nWhat is the expected output?\r\nCopy paste should happen\r\n\r\n What do you see instead?\r\nThe text is not copy pasted\r\n\r\n<b>Please use labels and text to provide additional information.</b>\n",
+                            "type": "html"
+                        },
+                        "link": [
+                            {
+                                "rel": "replies",
+                                "type": "application/atom+xml",
+                                "href": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full"
+                            },
+                            {
+                                "rel": "alternate",
+                                "type": "text/html",
+                                "href": "http://code.google.com/p/chromium/issues/detail?id=15090"
+                            },
+                            {
+                                "rel": "self",
+                                "type": "application/atom+xml",
+                                "href": "http://code.google.com/feeds/issues/p/chromium/issues/full/15090"
+                            }
+                        ],
+                        "author": [
+                            {
+                                "name": {
+                                    "$t": "jasn...@chromium.org"
+                                },
+                                "uri": {
+                                    "$t": "/u/115285129018301397690/"
+                                }
+                            }
+                        ],
+                        "issues$blockedOn": [
+                            {
+                                "issues$id": {
+                                    "$t": 24817
+                                },
+                                "issues$project": {
+                                    "$t": "chromium"
+                                }
+                            },
+                            {
+                                "issues$id": {
+                                    "$t": 24877
+                                },
+                                "issues$project": {
+                                    "$t": "chromium"
+                                }
+                            },
+                            {
+                                "issues$id": {
+                                    "$t": 24921
+                                },
+                                "issues$project": {
+                                    "$t": "chromium"
+                                }
+                            },
+                            {
+                                "issues$id": {
+                                    "$t": 25000
+                                },
+                                "issues$project": {
+                                    "$t": "chromium"
+                                }
+                            },
+                            {
+                                "issues$id": {
+                                    "$t": 25249
+                                },
+                                "issues$project": {
+                                    "$t": "chromium"
+                                }
+                            },
+                            {
+                                "issues$id": {
+                                    "$t": 25254
+                                },
+                                "issues$project": {
+                                    "$t": "chromium"
+                                }
+                            }
+                        ],
+                        "issues$cc": [
+                            {
+                                "issues$uri": {
+                                    "$t": "/u/109717319352791668856/"
+                                },
+                                "issues$username": {
+                                    "$t": "hb...@chromium.org"
+                                }
+                            },
+                            {
+                                "issues$uri": {
+                                    "$t": "/u/ben@chromium.org/"
+                                },
+                                "issues$username": {
+                                    "$t": "ben@chromium.org"
+                                }
+                            },
+                            {
+                                "issues$uri": {
+                                    "$t": "/u/jeremy@chromium.org/"
+                                },
+                                "issues$username": {
+                                    "$t": "jeremy@chromium.org"
+                                }
+                            },
+                            {
+                                "issues$uri": {
+                                    "$t": "/u/thakis@chromium.org/"
+                                },
+                                "issues$username": {
+                                    "$t": "thakis@chromium.org"
+                                }
+                            },
+                            {
+                                "issues$uri": {
+                                    "$t": "/u/113409286815222922579/"
+                                },
+                                "issues$username": {
+                                    "$t": "su...@chromium.org"
+                                }
+                            },
+                            {
+                                "issues$uri": {
+                                    "$t": "/u/jam@chromium.org/"
+                                },
+                                "issues$username": {
+                                    "$t": "jam@chromium.org"
+                                }
+                            }
+                        ],
+                        "issues$closedDate": {
+                            "$t": "2009-10-26T05:08:10.000Z"
+                        },
+                        "issues$id": {
+                            "$t": 15090
+                        },
+                        "issues$label": [
+                            {
+                                "$t": "Type-Bug"
+                            },
+                            {
+                                "$t": "OS-Mac"
+                            },
+                            {
+                                "$t": "Area-BrowserUI"
+                            },
+                            {
+                                "$t": "Size-Medium"
+                            },
+                            {
+                                "$t": "ReleaseBlock-Beta"
+                            },
+                            {
+                                "$t": "Pri-1"
+                            },
+                            {
+                                "$t": "M-4"
+                            },
+                            {
+                                "$t": "Restrict-AddIssueComment-EditIssue"
+                            }
+                        ],
+                        "issues$owner": {
+                            "issues$uri": {
+                                "$t": "/u/thakis@chromium.org/"
+                            },
+                            "issues$username": {
+                                "$t": "thakis@chromium.org"
+                            }
+                        },
+                        "issues$stars": {
+                            "$t": 21
+                        },
+                        "issues$state": {
+                            "$t": "closed"
+                        },
+                        "issues$status": {
+                            "$t": "Verified"
+                        },
+                        "replies": [
+                            {
+                                "gd$etag": "W/\"CE8HR347eCl7ImA9WxJUFk0.\"",
+                                "id": {
+                                    "$t": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/1"
+                                },
+                                "published": {
+                                    "$t": "2009-07-14T20:20:36.000Z"
+                                },
+                                "updated": {
+                                    "$t": "2009-07-14T20:20:36.000Z"
+                                },
+                                "title": {
+                                    "$t": "Comment 1 by mikesm...@chromium.org"
+                                },
+                                "content": {
+                                    "$t": "",
+                                    "type": "html"
+                                },
+                                "link": [
+                                    {
+                                        "rel": "alternate",
+                                        "type": "text/html",
+                                        "href": "http://code.google.com/p/chromium/issues/detail?id=15090#c1"
+                                    },
+                                    {
+                                        "rel": "self",
+                                        "type": "application/atom+xml",
+                                        "href": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/1"
+                                    }
+                                ],
+                                "author": [
+                                    {
+                                        "name": {
+                                            "$t": "mikesm...@chromium.org"
+                                        },
+                                        "uri": {
+                                            "$t": "/u/108432633182109739316/"
+                                        }
+                                    }
+                                ],
+                                "issues$updates": {
+                                    "issues$label": [
+                                        {
+                                            "$t": "Mstone-MacBeta"
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "gd$etag": "W/\"D0UDQn47eCl7ImA9WxJbEk0.\"",
+                                "id": {
+                                    "$t": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/2"
+                                },
+                                "published": {
+                                    "$t": "2009-07-21T19:41:13.000Z"
+                                },
+                                "updated": {
+                                    "$t": "2009-07-21T19:41:13.000Z"
+                                },
+                                "title": {
+                                    "$t": "Comment 2 by alhartm...@gmail.com"
+                                },
+                                "content": {
+                                    "$t": "Same problem, copy/paste is limited to the Google document, so it is separate from the \r\ndesktop copy/paste--the clipboard isn't shared.  That is a non-starter for me, does not \r\nmeet requirements.  ",
+                                    "type": "html"
+                                },
+                                "link": [
+                                    {
+                                        "rel": "alternate",
+                                        "type": "text/html",
+                                        "href": "http://code.google.com/p/chromium/issues/detail?id=15090#c2"
+                                    },
+                                    {
+                                        "rel": "self",
+                                        "type": "application/atom+xml",
+                                        "href": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/2"
+                                    }
+                                ],
+                                "author": [
+                                    {
+                                        "name": {
+                                            "$t": "alhartm...@gmail.com"
+                                        },
+                                        "uri": {
+                                            "$t": "/u/109631826571764667549/"
+                                        }
+                                    }
+                                ],
+                                "issues$updates": {}
+                            },
+                            {
+                                "gd$etag": "W/\"Dk8HRH47eCl7ImA9WxJbGU0.\"",
+                                "id": {
+                                    "$t": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/4"
+                                },
+                                "published": {
+                                    "$t": "2009-07-29T22:00:35.000Z"
+                                },
+                                "updated": {
+                                    "$t": "2009-07-29T22:00:35.000Z"
+                                },
+                                "title": {
+                                    "$t": "Comment 4 by mikesm...@chromium.org"
+                                },
+                                "content": {
+                                    "$t": "",
+                                    "type": "html"
+                                },
+                                "link": [
+                                    {
+                                        "rel": "alternate",
+                                        "type": "text/html",
+                                        "href": "http://code.google.com/p/chromium/issues/detail?id=15090#c4"
+                                    },
+                                    {
+                                        "rel": "self",
+                                        "type": "application/atom+xml",
+                                        "href": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/4"
+                                    }
+                                ],
+                                "author": [
+                                    {
+                                        "name": {
+                                            "$t": "mikesm...@chromium.org"
+                                        },
+                                        "uri": {
+                                            "$t": "/u/108432633182109739316/"
+                                        }
+                                    }
+                                ],
+                                "issues$updates": {
+                                    "issues$ownerUpdate": {
+                                        "$t": "a...@chromium.org"
+                                    },
+                                    "issues$status": {
+                                        "$t": "Assigned"
+                                    }
+                                }
+                            },
+                            {
+                                "gd$etag": "W/\"C0EDRH47eCl7ImA9WxNTEUw.\"",
+                                "id": {
+                                    "$t": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/5"
+                                },
+                                "published": {
+                                    "$t": "2009-08-12T21:14:35.000Z"
+                                },
+                                "updated": {
+                                    "$t": "2009-08-12T21:14:35.000Z"
+                                },
+                                "title": {
+                                    "$t": "Comment 5 by avi@chromium.org"
+                                },
+                                "content": {
+                                    "$t": "mjgoldsmith—\r\n\r\nThis is an issue with the Mac version of Chromium. If you're having issues with a\r\nnon-Mac version, please file a bug.",
+                                    "type": "html"
+                                },
+                                "link": [
+                                    {
+                                        "rel": "alternate",
+                                        "type": "text/html",
+                                        "href": "http://code.google.com/p/chromium/issues/detail?id=15090#c5"
+                                    },
+                                    {
+                                        "rel": "self",
+                                        "type": "application/atom+xml",
+                                        "href": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/5"
+                                    }
+                                ],
+                                "author": [
+                                    {
+                                        "name": {
+                                            "$t": "avi@chromium.org"
+                                        },
+                                        "uri": {
+                                            "$t": "/u/avi@chromium.org/"
+                                        }
+                                    }
+                                ],
+                                "issues$updates": {}
+                            },
+                            {
+                                "gd$etag": "W/\"C0AFSX47eCl7ImA9WxNTEUw.\"",
+                                "id": {
+                                    "$t": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/6"
+                                },
+                                "published": {
+                                    "$t": "2009-08-12T21:15:18.000Z"
+                                },
+                                "updated": {
+                                    "$t": "2009-08-12T21:15:18.000Z"
+                                },
+                                "title": {
+                                    "$t": "Comment 6 by avi@chromium.org"
+                                },
+                                "content": {
+                                    "$t": "alhartmann—\r\n\r\nThe copy/paste that you get with a right click is not addressed in this bug. That is\r\na design issue with Google Docs.",
+                                    "type": "html"
+                                },
+                                "link": [
+                                    {
+                                        "rel": "alternate",
+                                        "type": "text/html",
+                                        "href": "http://code.google.com/p/chromium/issues/detail?id=15090#c6"
+                                    },
+                                    {
+                                        "rel": "self",
+                                        "type": "application/atom+xml",
+                                        "href": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/6"
+                                    }
+                                ],
+                                "author": [
+                                    {
+                                        "name": {
+                                            "$t": "avi@chromium.org"
+                                        },
+                                        "uri": {
+                                            "$t": "/u/avi@chromium.org/"
+                                        }
+                                    }
+                                ],
+                                "issues$updates": {}
+                            },
+                            {
+                                "gd$etag": "W/\"C08BQX47eCl7ImA9WxNTEUw.\"",
+                                "id": {
+                                    "$t": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/7"
+                                },
+                                "published": {
+                                    "$t": "2009-08-12T21:17:30.000Z"
+                                },
+                                "updated": {
+                                    "$t": "2009-08-12T21:17:30.000Z"
+                                },
+                                "title": {
+                                    "$t": "Comment 7 by avi@chromium.org"
+                                },
+                                "content": {
+                                    "$t": "OK, this seems to be a pasting issue. The content is copied properly using tabs and\r\nreturns, and we can copy from Chromium and paste in Safari just fine. However,\r\npasting tab-delimited content is failing.",
+                                    "type": "html"
+                                },
+                                "link": [
+                                    {
+                                        "rel": "alternate",
+                                        "type": "text/html",
+                                        "href": "http://code.google.com/p/chromium/issues/detail?id=15090#c7"
+                                    },
+                                    {
+                                        "rel": "self",
+                                        "type": "application/atom+xml",
+                                        "href": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/7"
+                                    }
+                                ],
+                                "author": [
+                                    {
+                                        "name": {
+                                            "$t": "avi@chromium.org"
+                                        },
+                                        "uri": {
+                                            "$t": "/u/avi@chromium.org/"
+                                        }
+                                    }
+                                ],
+                                "issues$updates": {}
+                            },
+                            {
+                                "gd$etag": "W/\"CkANRX47eCl7ImA9WxNTEUo.\"",
+                                "id": {
+                                    "$t": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/9"
+                                },
+                                "published": {
+                                    "$t": "2009-08-13T13:39:54.000Z"
+                                },
+                                "updated": {
+                                    "$t": "2009-08-13T13:39:54.000Z"
+                                },
+                                "title": {
+                                    "$t": "Comment 9 by avi@chromium.org"
+                                },
+                                "content": {
+                                    "$t": "",
+                                    "type": "html"
+                                },
+                                "link": [
+                                    {
+                                        "rel": "alternate",
+                                        "type": "text/html",
+                                        "href": "http://code.google.com/p/chromium/issues/detail?id=15090#c9"
+                                    },
+                                    {
+                                        "rel": "self",
+                                        "type": "application/atom+xml",
+                                        "href": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/9"
+                                    }
+                                ],
+                                "author": [
+                                    {
+                                        "name": {
+                                            "$t": "avi@chromium.org"
+                                        },
+                                        "uri": {
+                                            "$t": "/u/avi@chromium.org/"
+                                        }
+                                    }
+                                ],
+                                "issues$updates": {
+                                    "issues$status": {
+                                        "$t": "Started"
+                                    }
+                                }
+                            },
+                            {
+                                "gd$etag": "W/\"A0EHRn47eCl7ImA9WxNTEUo.\"",
+                                "id": {
+                                    "$t": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/10"
+                                },
+                                "published": {
+                                    "$t": "2009-08-13T16:07:17.000Z"
+                                },
+                                "updated": {
+                                    "$t": "2009-08-13T16:07:17.000Z"
+                                },
+                                "title": {
+                                    "$t": "Comment 10 by avi@chromium.org"
+                                },
+                                "content": {
+                                    "$t": "Repro:\r\n0. Go to http://unixpapa.com/js/testkey.html\r\n1. Hold down the command key\r\n>> See keydown event\r\n2. Press the V key\r\n>> Should see keydown/keypress, but don't see anything\r\n3. Release the command key\r\n>> See keyup event\r\n\r\nBTW, pasting into Google Spreadsheets from the menu is broken due to a bug on their\r\nside; it doesn't work in any Mac browser.",
+                                    "type": "html"
+                                },
+                                "link": [
+                                    {
+                                        "rel": "alternate",
+                                        "type": "text/html",
+                                        "href": "http://code.google.com/p/chromium/issues/detail?id=15090#c10"
+                                    },
+                                    {
+                                        "rel": "self",
+                                        "type": "application/atom+xml",
+                                        "href": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/10"
+                                    }
+                                ],
+                                "author": [
+                                    {
+                                        "name": {
+                                            "$t": "avi@chromium.org"
+                                        },
+                                        "uri": {
+                                            "$t": "/u/avi@chromium.org/"
+                                        }
+                                    }
+                                ],
+                                "issues$updates": {
+                                    "issues$ccUpdate": [
+                                        {
+                                            "$t": "hb...@chromium.org"
+                                        }
+                                    ],
+                                    "issues$summary": {
+                                        "$t": "While ? key held down, letter keys don't generate key events"
+                                    }
+                                }
+                            },
+                            {
+                                "gd$etag": "W/\"DEIBQ347eCl7ImA9WxNTEks.\"",
+                                "id": {
+                                    "$t": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/11"
+                                },
+                                "published": {
+                                    "$t": "2009-08-14T16:15:52.000Z"
+                                },
+                                "updated": {
+                                    "$t": "2009-08-14T16:15:52.000Z"
+                                },
+                                "title": {
+                                    "$t": "Comment 11 by avi@chromium.org"
+                                },
+                                "content": {
+                                    "$t": "Here's what's going on:\r\n\r\nCommand keys are handled differently than any other type of keystroke. While\r\nexperienced Carbon hands would expect that command keys would propagate like any\r\nother key event, and that when it hit the application event handler would be turned\r\ninto a menu event, that's not the case at all.\r\n\r\nCommand keys are handled by sending them down the performKeyEquivalent: call on the\r\nview. If no one handles it then it is processed by the menu.\r\n\r\nWebKit handles it in WebHTMLView.mm, where they send the event to WebCore, and only\r\npass it through if it wasn't handled. We can't quite do that since we have IPC to do.\r\n\r\nThe plan is, then, in RWHV to always return YES to performKeyEquivalent: (to indicate\r\nwe're handling the event) and then to pass it to WebCore. When TCV gets the message\r\nto handle an unhandled event from WebCore, it will set a flag around a call to\r\nprocess the event:\r\n\r\nprocessingKeyEquivalent_ = YES;\r\n[NSApp sendEvent:event]\r\nprocessingKeyEquivalent_ = NO;\r\n\r\nand then have a performKeyEquivalent: override in TCV that just returns NO if\r\nprocessingKeyEquivalent is YES, so that we don't infinitely loop.\r\n\r\nIn implementing this idea, I found that WebCore actually eats ?-C if it sees it. It's\r\nnever had the chance to in Chromium before, so we were triggering the menu which\r\nfires off an editor action. But if we actually route command key events into WebCore,\r\ndeep down it eats the ?-C and does a paste, which is very surprising. From the WebKit\r\ncode, it would seem that it wouldn't do that, but it is. I'm still digging up what's\r\ngoing on.",
+                                    "type": "html"
+                                },
+                                "link": [
+                                    {
+                                        "rel": "alternate",
+                                        "type": "text/html",
+                                        "href": "http://code.google.com/p/chromium/issues/detail?id=15090#c11"
+                                    },
+                                    {
+                                        "rel": "self",
+                                        "type": "application/atom+xml",
+                                        "href": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/11"
+                                    }
+                                ],
+                                "author": [
+                                    {
+                                        "name": {
+                                            "$t": "avi@chromium.org"
+                                        },
+                                        "uri": {
+                                            "$t": "/u/avi@chromium.org/"
+                                        }
+                                    }
+                                ],
+                                "issues$updates": {}
+                            },
+                            {
+                                "gd$etag": "W/\"DUMMRn47eCl7ImA9WxNTEks.\"",
+                                "id": {
+                                    "$t": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/12"
+                                },
+                                "published": {
+                                    "$t": "2009-08-14T16:31:27.000Z"
+                                },
+                                "updated": {
+                                    "$t": "2009-08-14T16:31:27.000Z"
+                                },
+                                "title": {
+                                    "$t": "Comment 12 by avi@chromium.org"
+                                },
+                                "content": {
+                                    "$t": "In event processing, the event gets shipped off to the editor's handleKeyboardEvent,\r\nwhich figures out that it's a paste and pastes. That's the code path that the Windows\r\nversion takes, but we don't want to take it. We want to ignore it, re-propagate it up\r\nthe event tree, and let the menu handle it.\r\n\r\nIn WebKit, handleKeyboardEvent calls into the same type of code. I'm not yet sure why\r\nit's not doing this too.",
+                                    "type": "html"
+                                },
+                                "link": [
+                                    {
+                                        "rel": "alternate",
+                                        "type": "text/html",
+                                        "href": "http://code.google.com/p/chromium/issues/detail?id=15090#c12"
+                                    },
+                                    {
+                                        "rel": "self",
+                                        "type": "application/atom+xml",
+                                        "href": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/12"
+                                    }
+                                ],
+                                "author": [
+                                    {
+                                        "name": {
+                                            "$t": "avi@chromium.org"
+                                        },
+                                        "uri": {
+                                            "$t": "/u/avi@chromium.org/"
+                                        }
+                                    }
+                                ],
+                                "issues$updates": {}
+                            },
+                            {
+                                "gd$etag": "W/\"DkMMQX47eCl7ImA9WxNTEkU.\"",
+                                "id": {
+                                    "$t": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/13"
+                                },
+                                "published": {
+                                    "$t": "2009-08-14T21:14:40.000Z"
+                                },
+                                "updated": {
+                                    "$t": "2009-08-14T21:14:40.000Z"
+                                },
+                                "title": {
+                                    "$t": "Comment 13 by avi@chromium.org"
+                                },
+                                "content": {
+                                    "$t": "It's not entirely clear why WebKit's editor code isn't executing a command; it seems\r\nlike it's doing a lookup and not finding anything.\r\n\r\nThe real killer here is that feeding the event back into the system with sendEvent:\r\ndoesn't actually fire off the shortcutted menu item. Whee.",
+                                    "type": "html"
+                                },
+                                "link": [
+                                    {
+                                        "rel": "alternate",
+                                        "type": "text/html",
+                                        "href": "http://code.google.com/p/chromium/issues/detail?id=15090#c13"
+                                    },
+                                    {
+                                        "rel": "self",
+                                        "type": "application/atom+xml",
+                                        "href": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/13"
+                                    }
+                                ],
+                                "author": [
+                                    {
+                                        "name": {
+                                            "$t": "avi@chromium.org"
+                                        },
+                                        "uri": {
+                                            "$t": "/u/avi@chromium.org/"
+                                        }
+                                    }
+                                ],
+                                "issues$updates": {
+                                    "issues$summary": {
+                                        "$t": "While ? (command) key held down, letter keys don't generate key events"
+                                    }
+                                }
+                            },
+                            {
+                                "gd$etag": "W/\"DkUEQn47eCl7ImA9WxNTFUk.\"",
+                                "id": {
+                                    "$t": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/14"
+                                },
+                                "published": {
+                                    "$t": "2009-08-17T21:23:23.000Z"
+                                },
+                                "updated": {
+                                    "$t": "2009-08-17T21:23:23.000Z"
+                                },
+                                "title": {
+                                    "$t": "Comment 14 by ben@chromium.org"
+                                },
+                                "content": {
+                                    "$t": "Issue 19533 has been merged into this issue.",
+                                    "type": "html"
+                                },
+                                "link": [
+                                    {
+                                        "rel": "alternate",
+                                        "type": "text/html",
+                                        "href": "http://code.google.com/p/chromium/issues/detail?id=15090#c14"
+                                    },
+                                    {
+                                        "rel": "self",
+                                        "type": "application/atom+xml",
+                                        "href": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/14"
+                                    }
+                                ],
+                                "author": [
+                                    {
+                                        "name": {
+                                            "$t": "ben@chromium.org"
+                                        },
+                                        "uri": {
+                                            "$t": "/u/ben@chromium.org/"
+                                        }
+                                    }
+                                ],
+                                "issues$updates": {
+                                    "issues$ccUpdate": [
+                                        {
+                                            "$t": "b...@chromium.org"
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "gd$etag": "W/\"DEAHRn47eCl7ImA9WxNTFUk.\"",
+                                "id": {
+                                    "$t": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/15"
+                                },
+                                "published": {
+                                    "$t": "2009-08-17T22:05:37.000Z"
+                                },
+                                "updated": {
+                                    "$t": "2009-08-17T22:05:37.000Z"
+                                },
+                                "title": {
+                                    "$t": "Comment 15 by jeremy@chromium.org"
+                                },
+                                "content": {
+                                    "$t": "",
+                                    "type": "html"
+                                },
+                                "link": [
+                                    {
+                                        "rel": "alternate",
+                                        "type": "text/html",
+                                        "href": "http://code.google.com/p/chromium/issues/detail?id=15090#c15"
+                                    },
+                                    {
+                                        "rel": "self",
+                                        "type": "application/atom+xml",
+                                        "href": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/15"
+                                    }
+                                ],
+                                "author": [
+                                    {
+                                        "name": {
+                                            "$t": "jeremy@chromium.org"
+                                        },
+                                        "uri": {
+                                            "$t": "/u/jeremy@chromium.org/"
+                                        }
+                                    }
+                                ],
+                                "issues$updates": {
+                                    "issues$ccUpdate": [
+                                        {
+                                            "$t": "jer...@chromium.org"
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "gd$etag": "W/\"D0MMSX47eCl7ImA9WxNSGE4.\"",
+                                "id": {
+                                    "$t": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/16"
+                                },
+                                "published": {
+                                    "$t": "2009-09-01T20:04:48.000Z"
+                                },
+                                "updated": {
+                                    "$t": "2009-09-01T20:04:48.000Z"
+                                },
+                                "title": {
+                                    "$t": "Comment 16 by pinkerton@chromium.org"
+                                },
+                                "content": {
+                                    "$t": "",
+                                    "type": "html"
+                                },
+                                "link": [
+                                    {
+                                        "rel": "alternate",
+                                        "type": "text/html",
+                                        "href": "http://code.google.com/p/chromium/issues/detail?id=15090#c16"
+                                    },
+                                    {
+                                        "rel": "self",
+                                        "type": "application/atom+xml",
+                                        "href": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/16"
+                                    }
+                                ],
+                                "author": [
+                                    {
+                                        "name": {
+                                            "$t": "pinkerton@chromium.org"
+                                        },
+                                        "uri": {
+                                            "$t": "/u/pinkerton@chromium.org/"
+                                        }
+                                    }
+                                ],
+                                "issues$updates": {
+                                    "issues$ccUpdate": [
+                                        {
+                                            "$t": "tha...@chromium.org"
+                                        }
+                                    ],
+                                    "issues$label": [
+                                        {
+                                            "$t": "-Area-Misc"
+                                        },
+                                        {
+                                            "$t": "Area-WebKit"
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "gd$etag": "W/\"AkIBQn47eCl7ImA9WxNSGUw.\"",
+                                "id": {
+                                    "$t": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/17"
+                                },
+                                "published": {
+                                    "$t": "2009-09-02T19:09:13.000Z"
+                                },
+                                "updated": {
+                                    "$t": "2009-09-02T19:09:13.000Z"
+                                },
+                                "title": {
+                                    "$t": "Comment 17 by j...@chromium.org"
+                                },
+                                "content": {
+                                    "$t": "This is a release blocker for Mac Beta.",
+                                    "type": "html"
+                                },
+                                "link": [
+                                    {
+                                        "rel": "alternate",
+                                        "type": "text/html",
+                                        "href": "http://code.google.com/p/chromium/issues/detail?id=15090#c17"
+                                    },
+                                    {
+                                        "rel": "self",
+                                        "type": "application/atom+xml",
+                                        "href": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/17"
+                                    }
+                                ],
+                                "author": [
+                                    {
+                                        "name": {
+                                            "$t": "j...@chromium.org"
+                                        },
+                                        "uri": {
+                                            "$t": "/u/100709908569725893910/"
+                                        }
+                                    }
+                                ],
+                                "issues$updates": {
+                                    "issues$label": [
+                                        {
+                                            "$t": "ReleaseBlock-Beta"
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "gd$etag": "W/\"CkcMQH47eCl7ImA9WxNSGU8.\"",
+                                "id": {
+                                    "$t": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/18"
+                                },
+                                "published": {
+                                    "$t": "2009-09-02T19:34:41.000Z"
+                                },
+                                "updated": {
+                                    "$t": "2009-09-02T19:34:41.000Z"
+                                },
+                                "title": {
+                                    "$t": "Comment 18 by j...@chromium.org"
+                                },
+                                "content": {
+                                    "$t": "We are deprecating the MacBeta milestone in favor of ReleaseBlock-Beta and \r\na milestone.",
+                                    "type": "html"
+                                },
+                                "link": [
+                                    {
+                                        "rel": "alternate",
+                                        "type": "text/html",
+                                        "href": "http://code.google.com/p/chromium/issues/detail?id=15090#c18"
+                                    },
+                                    {
+                                        "rel": "self",
+                                        "type": "application/atom+xml",
+                                        "href": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/18"
+                                    }
+                                ],
+                                "author": [
+                                    {
+                                        "name": {
+                                            "$t": "j...@chromium.org"
+                                        },
+                                        "uri": {
+                                            "$t": "/u/100709908569725893910/"
+                                        }
+                                    }
+                                ],
+                                "issues$updates": {
+                                    "issues$label": [
+                                        {
+                                            "$t": "Mstone-4"
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "gd$etag": "W/\"A0MFRH47eCl7ImA9WxNRFko.\"",
+                                "id": {
+                                    "$t": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/19"
+                                },
+                                "published": {
+                                    "$t": "2009-09-11T14:30:15.000Z"
+                                },
+                                "updated": {
+                                    "$t": "2009-09-11T14:30:15.000Z"
+                                },
+                                "title": {
+                                    "$t": "Comment 19 by avi@chromium.org"
+                                },
+                                "content": {
+                                    "$t": "Even better, arrow keys are handled by performKeyEquivalent: too. Whee. :(",
+                                    "type": "html"
+                                },
+                                "link": [
+                                    {
+                                        "rel": "alternate",
+                                        "type": "text/html",
+                                        "href": "http://code.google.com/p/chromium/issues/detail?id=15090#c19"
+                                    },
+                                    {
+                                        "rel": "self",
+                                        "type": "application/atom+xml",
+                                        "href": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/19"
+                                    }
+                                ],
+                                "author": [
+                                    {
+                                        "name": {
+                                            "$t": "avi@chromium.org"
+                                        },
+                                        "uri": {
+                                            "$t": "/u/avi@chromium.org/"
+                                        }
+                                    }
+                                ],
+                                "issues$updates": {}
+                            },
+                            {
+                                "gd$etag": "W/\"DUEFQ347eCl7ImA9WxNQEE8.\"",
+                                "id": {
+                                    "$t": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/20"
+                                },
+                                "published": {
+                                    "$t": "2009-09-15T15:13:32.000Z"
+                                },
+                                "updated": {
+                                    "$t": "2009-09-15T15:13:32.000Z"
+                                },
+                                "title": {
+                                    "$t": "Comment 20 by pinkerton@chromium.org"
+                                },
+                                "content": {
+                                    "$t": "",
+                                    "type": "html"
+                                },
+                                "link": [
+                                    {
+                                        "rel": "alternate",
+                                        "type": "text/html",
+                                        "href": "http://code.google.com/p/chromium/issues/detail?id=15090#c20"
+                                    },
+                                    {
+                                        "rel": "self",
+                                        "type": "application/atom+xml",
+                                        "href": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/20"
+                                    }
+                                ],
+                                "author": [
+                                    {
+                                        "name": {
+                                            "$t": "pinkerton@chromium.org"
+                                        },
+                                        "uri": {
+                                            "$t": "/u/pinkerton@chromium.org/"
+                                        }
+                                    }
+                                ],
+                                "issues$updates": {
+                                    "issues$label": [
+                                        {
+                                            "$t": "-Pri-2"
+                                        },
+                                        {
+                                            "$t": "Pri-1"
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "gd$etag": "W/\"CEECRH47eCl7ImA9WxNXEU0.\"",
+                                "id": {
+                                    "$t": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/21"
+                                },
+                                "published": {
+                                    "$t": "2009-09-28T01:51:05.000Z"
+                                },
+                                "updated": {
+                                    "$t": "2009-09-28T01:51:05.000Z"
+                                },
+                                "title": {
+                                    "$t": "Comment 21 by thakis@chromium.org"
+                                },
+                                "content": {
+                                    "$t": "Issue 23198 has been merged into this issue.",
+                                    "type": "html"
+                                },
+                                "link": [
+                                    {
+                                        "rel": "alternate",
+                                        "type": "text/html",
+                                        "href": "http://code.google.com/p/chromium/issues/detail?id=15090#c21"
+                                    },
+                                    {
+                                        "rel": "self",
+                                        "type": "application/atom+xml",
+                                        "href": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/21"
+                                    }
+                                ],
+                                "author": [
+                                    {
+                                        "name": {
+                                            "$t": "thakis@chromium.org"
+                                        },
+                                        "uri": {
+                                            "$t": "/u/thakis@chromium.org/"
+                                        }
+                                    }
+                                ],
+                                "issues$updates": {}
+                            },
+                            {
+                                "gd$etag": "W/\"Dk8FRn47eCl7ImA9WxNXEU8.\"",
+                                "id": {
+                                    "$t": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/22"
+                                },
+                                "published": {
+                                    "$t": "2009-09-28T08:00:17.000Z"
+                                },
+                                "updated": {
+                                    "$t": "2009-09-28T08:00:17.000Z"
+                                },
+                                "title": {
+                                    "$t": "Comment 22 by su...@chromium.org"
+                                },
+                                "content": {
+                                    "$t": "",
+                                    "type": "html"
+                                },
+                                "link": [
+                                    {
+                                        "rel": "alternate",
+                                        "type": "text/html",
+                                        "href": "http://code.google.com/p/chromium/issues/detail?id=15090#c22"
+                                    },
+                                    {
+                                        "rel": "self",
+                                        "type": "application/atom+xml",
+                                        "href": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/22"
+                                    }
+                                ],
+                                "author": [
+                                    {
+                                        "name": {
+                                            "$t": "su...@chromium.org"
+                                        },
+                                        "uri": {
+                                            "$t": "/u/113409286815222922579/"
+                                        }
+                                    }
+                                ],
+                                "issues$updates": {
+                                    "issues$ccUpdate": [
+                                        {
+                                            "$t": "su...@chromium.org"
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "gd$etag": "W/\"Dk8MR347eCl7ImA9WxNXEkk.\"",
+                                "id": {
+                                    "$t": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/23"
+                                },
+                                "published": {
+                                    "$t": "2009-09-29T17:21:26.000Z"
+                                },
+                                "updated": {
+                                    "$t": "2009-09-29T17:21:26.000Z"
+                                },
+                                "title": {
+                                    "$t": "Comment 23 by james...@gmail.com"
+                                },
+                                "content": {
+                                    "$t": "Any progress on this issue?\r\nI'm just wondering if it's necessary to override NSApplication's sendEvent: method to\r\nsend all key events to RWHV, then in TCV, feeds all unhanded key events back to the\r\noriginal sendEvent: implementation for cmd- key bindings handling?",
+                                    "type": "html"
+                                },
+                                "link": [
+                                    {
+                                        "rel": "alternate",
+                                        "type": "text/html",
+                                        "href": "http://code.google.com/p/chromium/issues/detail?id=15090#c23"
+                                    },
+                                    {
+                                        "rel": "self",
+                                        "type": "application/atom+xml",
+                                        "href": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/23"
+                                    }
+                                ],
+                                "author": [
+                                    {
+                                        "name": {
+                                            "$t": "james...@gmail.com"
+                                        },
+                                        "uri": {
+                                            "$t": "/u/100634114221233196804/"
+                                        }
+                                    }
+                                ],
+                                "issues$updates": {}
+                            },
+                            {
+                                "gd$etag": "W/\"D0UFQn47eCl7ImA9WxNXEkk.\"",
+                                "id": {
+                                    "$t": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/24"
+                                },
+                                "published": {
+                                    "$t": "2009-09-29T17:26:53.000Z"
+                                },
+                                "updated": {
+                                    "$t": "2009-09-29T17:26:53.000Z"
+                                },
+                                "title": {
+                                    "$t": "Comment 24 by jeremy@chromium.org"
+                                },
+                                "content": {
+                                    "$t": "+jam",
+                                    "type": "html"
+                                },
+                                "link": [
+                                    {
+                                        "rel": "alternate",
+                                        "type": "text/html",
+                                        "href": "http://code.google.com/p/chromium/issues/detail?id=15090#c24"
+                                    },
+                                    {
+                                        "rel": "self",
+                                        "type": "application/atom+xml",
+                                        "href": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/24"
+                                    }
+                                ],
+                                "author": [
+                                    {
+                                        "name": {
+                                            "$t": "jeremy@chromium.org"
+                                        },
+                                        "uri": {
+                                            "$t": "/u/jeremy@chromium.org/"
+                                        }
+                                    }
+                                ],
+                                "issues$updates": {
+                                    "issues$ccUpdate": [
+                                        {
+                                            "$t": "j...@chromium.org"
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "gd$etag": "W/\"D0QGQ347eCl7ImA9WxNXEkk.\"",
+                                "id": {
+                                    "$t": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/25"
+                                },
+                                "published": {
+                                    "$t": "2009-09-29T17:28:42.000Z"
+                                },
+                                "updated": {
+                                    "$t": "2009-09-29T17:28:42.000Z"
+                                },
+                                "title": {
+                                    "$t": "Comment 25 by thakis@chromium.org"
+                                },
+                                "content": {
+                                    "$t": "James: Please read avi's comments, there's some fighting with Cocoa going on here. He sent me his work-in-progress \r\npatch, which iirc looks exactly like what you described.\r\n\r\nAnyway, I'll look into this once I've made cmd-left/right work for history.",
+                                    "type": "html"
+                                },
+                                "link": [
+                                    {
+                                        "rel": "alternate",
+                                        "type": "text/html",
+                                        "href": "http://code.google.com/p/chromium/issues/detail?id=15090#c25"
+                                    },
+                                    {
+                                        "rel": "self",
+                                        "type": "application/atom+xml",
+                                        "href": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/25"
+                                    }
+                                ],
+                                "author": [
+                                    {
+                                        "name": {
+                                            "$t": "thakis@chromium.org"
+                                        },
+                                        "uri": {
+                                            "$t": "/u/thakis@chromium.org/"
+                                        }
+                                    }
+                                ],
+                                "issues$updates": {
+                                    "issues$ownerUpdate": {
+                                        "$t": "tha...@chromium.org"
+                                    },
+                                    "issues$status": {
+                                        "$t": "Assigned"
+                                    }
+                                }
+                            },
+                            {
+                                "gd$etag": "W/\"DEUDSX47eCl7ImA9WxNXEkk.\"",
+                                "id": {
+                                    "$t": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/26"
+                                },
+                                "published": {
+                                    "$t": "2009-09-29T17:44:38.000Z"
+                                },
+                                "updated": {
+                                    "$t": "2009-09-29T17:44:38.000Z"
+                                },
+                                "title": {
+                                    "$t": "Comment 26 by su...@chromium.org"
+                                },
+                                "content": {
+                                    "$t": "Thanks for your feedback. I'm not familiar with Cocoa programming, actually I'm learning it these days. Feel free \r\nto ignore my comment if it makes no sense :-)\r\n\r\nDoes avi's WIP patch work? Can you send it to me?",
+                                    "type": "html"
+                                },
+                                "link": [
+                                    {
+                                        "rel": "alternate",
+                                        "type": "text/html",
+                                        "href": "http://code.google.com/p/chromium/issues/detail?id=15090#c26"
+                                    },
+                                    {
+                                        "rel": "self",
+                                        "type": "application/atom+xml",
+                                        "href": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/26"
+                                    }
+                                ],
+                                "author": [
+                                    {
+                                        "name": {
+                                            "$t": "su...@chromium.org"
+                                        },
+                                        "uri": {
+                                            "$t": "/u/113409286815222922579/"
+                                        }
+                                    }
+                                ],
+                                "issues$updates": {}
+                            },
+                            {
+                                "gd$etag": "W/\"C0ACRX47eCl7ImA9WxNXEko.\"",
+                                "id": {
+                                    "$t": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/27"
+                                },
+                                "published": {
+                                    "$t": "2009-09-30T00:49:24.000Z"
+                                },
+                                "updated": {
+                                    "$t": "2009-09-30T00:49:24.000Z"
+                                },
+                                "title": {
+                                    "$t": "Comment 27 by thakis@chromium.org"
+                                },
+                                "content": {
+                                    "$t": "suzhe: I've uploaded avi's patch to http://codereview.chromium.org/242069 . I can't \r\nsee the \"The real killer here is that feeding the event back into the system with \r\nsendEvent: doesn't actually fire off the shortcutted menu item.\" problem Avi describes, \r\ncmd-t seems to work if it's not captured but it _is_ captured correctly at \r\nhttp://www.quirksmode.org/js/keys.html . The patch (intentionally) DCHECK()s when \r\narrow keys are pressed, but it's a good start.\r\n",
+                                    "type": "html"
+                                },
+                                "link": [
+                                    {
+                                        "rel": "alternate",
+                                        "type": "text/html",
+                                        "href": "http://code.google.com/p/chromium/issues/detail?id=15090#c27"
+                                    },
+                                    {
+                                        "rel": "self",
+                                        "type": "application/atom+xml",
+                                        "href": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/27"
+                                    }
+                                ],
+                                "author": [
+                                    {
+                                        "name": {
+                                            "$t": "thakis@chromium.org"
+                                        },
+                                        "uri": {
+                                            "$t": "/u/thakis@chromium.org/"
+                                        }
+                                    }
+                                ],
+                                "issues$updates": {}
+                            },
+                            {
+                                "gd$etag": "W/\"C0YMRn47eCl7ImA9WxNXE00.\"",
+                                "id": {
+                                    "$t": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/28"
+                                },
+                                "published": {
+                                    "$t": "2009-09-30T08:59:47.000Z"
+                                },
+                                "updated": {
+                                    "$t": "2009-09-30T08:59:47.000Z"
+                                },
+                                "title": {
+                                    "$t": "Comment 28 by su...@chromium.org"
+                                },
+                                "content": {
+                                    "$t": "Thanks. I just read it and so good that it looks rather simple. However, this approach \r\nis different than what I proposed: to override NSApplication's sendEvent: method and \r\ndispatch key events to RWHV directly, then feed unhandled key events back into NSApp's \r\noriginal sendEvent: method in TCV. This approach can avoid feeding a key event into \r\nNSApp's sendEvent: twice, which looks weird.\r\n\r\nDisclaimer: I'm not sure if my proposal is feasible, which is just an idea in my mind. \r\nHope it help.",
+                                    "type": "html"
+                                },
+                                "link": [
+                                    {
+                                        "rel": "alternate",
+                                        "type": "text/html",
+                                        "href": "http://code.google.com/p/chromium/issues/detail?id=15090#c28"
+                                    },
+                                    {
+                                        "rel": "self",
+                                        "type": "application/atom+xml",
+                                        "href": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/28"
+                                    }
+                                ],
+                                "author": [
+                                    {
+                                        "name": {
+                                            "$t": "su...@chromium.org"
+                                        },
+                                        "uri": {
+                                            "$t": "/u/113409286815222922579/"
+                                        }
+                                    }
+                                ],
+                                "issues$updates": {}
+                            },
+                            {
+                                "gd$etag": "W/\"C0UDRX47eCl7ImA9WxNXFE8.\"",
+                                "id": {
+                                    "$t": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/29"
+                                },
+                                "published": {
+                                    "$t": "2009-10-01T18:21:14.000Z"
+                                },
+                                "updated": {
+                                    "$t": "2009-10-01T18:21:14.000Z"
+                                },
+                                "title": {
+                                    "$t": "Comment 29 by viettrun...@chromium.org"
+                                },
+                                "content": {
+                                    "$t": "Useful reading for anyone following this thread:\r\n\r\n<http://developer.apple.com/mac/library/documentation/Cocoa/Conceptual/EventOverview/EventArchitecture/EventArchitecture.html#//apple_ref/doc/uid/10000060i-CH3-SW10>\r\n\r\n(in particular Figure 1-5). If I understand (and recall) correctly, key equivalents\r\nare dispatched before |-sendEvent:|, and no standard Cocoa application ever sees\r\nnormal key events for Cmd-letter_key combinations. We can fake key-down and key-press\r\nevents when Cmd is held down, but not do key-up. (This is the case for all Mac\r\nbrowsers I've tested.)",
+                                    "type": "html"
+                                },
+                                "link": [
+                                    {
+                                        "rel": "alternate",
+                                        "type": "text/html",
+                                        "href": "http://code.google.com/p/chromium/issues/detail?id=15090#c29"
+                                    },
+                                    {
+                                        "rel": "self",
+                                        "type": "application/atom+xml",
+                                        "href": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/29"
+                                    }
+                                ],
+                                "author": [
+                                    {
+                                        "name": {
+                                            "$t": "viettrun...@chromium.org"
+                                        },
+                                        "uri": {
+                                            "$t": "/u/109323953740150198505/"
+                                        }
+                                    }
+                                ],
+                                "issues$updates": {}
+                            },
+                            {
+                                "gd$etag": "W/\"Ck8CQ347eCl7ImA9WxNXFEk.\"",
+                                "id": {
+                                    "$t": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/30"
+                                },
+                                "published": {
+                                    "$t": "2009-10-01T23:47:42.000Z"
+                                },
+                                "updated": {
+                                    "$t": "2009-10-01T23:47:42.000Z"
+                                },
+                                "title": {
+                                    "$t": "Comment 30 by su...@chromium.org"
+                                },
+                                "content": {
+                                    "$t": "Another good material:\r\nhttp://developer.apple.com/mac/library/documentation/Cocoa/Conceptual/TextEditing/Concepts/OverviewEditi\r\nng.html#//apple_ref/doc/uid/20000929-BBCFEBHA\r\n\r\nSee Figure 1.",
+                                    "type": "html"
+                                },
+                                "link": [
+                                    {
+                                        "rel": "alternate",
+                                        "type": "text/html",
+                                        "href": "http://code.google.com/p/chromium/issues/detail?id=15090#c30"
+                                    },
+                                    {
+                                        "rel": "self",
+                                        "type": "application/atom+xml",
+                                        "href": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/30"
+                                    }
+                                ],
+                                "author": [
+                                    {
+                                        "name": {
+                                            "$t": "su...@chromium.org"
+                                        },
+                                        "uri": {
+                                            "$t": "/u/113409286815222922579/"
+                                        }
+                                    }
+                                ],
+                                "issues$updates": {}
+                            },
+                            {
+                                "gd$etag": "W/\"DE4HQ347eCl7ImA9WxNXFEk.\"",
+                                "id": {
+                                    "$t": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/31"
+                                },
+                                "published": {
+                                    "$t": "2009-10-02T01:28:52.000Z"
+                                },
+                                "updated": {
+                                    "$t": "2009-10-02T01:28:52.000Z"
+                                },
+                                "title": {
+                                    "$t": "Comment 31 by jam@chromium.org"
+                                },
+                                "content": {
+                                    "$t": "Note: whoever implements this will also want to implement \r\nBrowserWindowCocoa::GetCommandId which returns a command id given a native keyboard \r\nevent.  This enables a subset of keyboard shortcuts to bypass the renderer, see issue \r\n5496 and r27814 for more information.",
+                                    "type": "html"
+                                },
+                                "link": [
+                                    {
+                                        "rel": "alternate",
+                                        "type": "text/html",
+                                        "href": "http://code.google.com/p/chromium/issues/detail?id=15090#c31"
+                                    },
+                                    {
+                                        "rel": "self",
+                                        "type": "application/atom+xml",
+                                        "href": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/31"
+                                    }
+                                ],
+                                "author": [
+                                    {
+                                        "name": {
+                                            "$t": "jam@chromium.org"
+                                        },
+                                        "uri": {
+                                            "$t": "/u/jam@chromium.org/"
+                                        }
+                                    }
+                                ],
+                                "issues$updates": {}
+                            },
+                            {
+                                "gd$etag": "W/\"DUYMQn47eCl7ImA9WxNXFEs.\"",
+                                "id": {
+                                    "$t": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/32"
+                                },
+                                "published": {
+                                    "$t": "2009-10-02T07:06:23.000Z"
+                                },
+                                "updated": {
+                                    "$t": "2009-10-02T07:06:23.000Z"
+                                },
+                                "title": {
+                                    "$t": "Comment 32 by thakis@chromium.org"
+                                },
+                                "content": {
+                                    "$t": "",
+                                    "type": "html"
+                                },
+                                "link": [
+                                    {
+                                        "rel": "alternate",
+                                        "type": "text/html",
+                                        "href": "http://code.google.com/p/chromium/issues/detail?id=15090#c32"
+                                    },
+                                    {
+                                        "rel": "self",
+                                        "type": "application/atom+xml",
+                                        "href": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/32"
+                                    }
+                                ],
+                                "author": [
+                                    {
+                                        "name": {
+                                            "$t": "thakis@chromium.org"
+                                        },
+                                        "uri": {
+                                            "$t": "/u/thakis@chromium.org/"
+                                        }
+                                    }
+                                ],
+                                "issues$updates": {
+                                    "issues$status": {
+                                        "$t": "Started"
+                                    }
+                                }
+                            },
+                            {
+                                "gd$etag": "W/\"D0cNSH47eCl7ImA9WxNWE08.\"",
+                                "id": {
+                                    "$t": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/33"
+                                },
+                                "published": {
+                                    "$t": "2009-10-12T05:24:59.000Z"
+                                },
+                                "updated": {
+                                    "$t": "2009-10-12T05:24:59.000Z"
+                                },
+                                "title": {
+                                    "$t": "Comment 33 by thakis@chromium.org"
+                                },
+                                "content": {
+                                    "$t": "http://codereview.chromium.org/242069 kinda works modulo the change requested \r\nby jam. It's based on avi's approach. It doesn't send keyups for cmd+key, like other \r\nos x browsers. It suppresses the default action only if keydown() is suppressed but \r\nnot if keypress() is suppressed – this matches chrome on windows and linux and IE8, \r\nbut doesn't match safari and firefox. Matching chrome on win/linux sounds like the \r\nright thing.\r\n\r\nI'd like to write a version based on james's suggestion. I think it would make it \r\npossible to send keyups for cmd+key (although we probably shouldn't do that \r\nanyway, for web compat), and it might be a bit cleaner.",
+                                    "type": "html"
+                                },
+                                "link": [
+                                    {
+                                        "rel": "alternate",
+                                        "type": "text/html",
+                                        "href": "http://code.google.com/p/chromium/issues/detail?id=15090#c33"
+                                    },
+                                    {
+                                        "rel": "self",
+                                        "type": "application/atom+xml",
+                                        "href": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/33"
+                                    }
+                                ],
+                                "author": [
+                                    {
+                                        "name": {
+                                            "$t": "thakis@chromium.org"
+                                        },
+                                        "uri": {
+                                            "$t": "/u/thakis@chromium.org/"
+                                        }
+                                    }
+                                ],
+                                "issues$updates": {}
+                            },
+                            {
+                                "gd$etag": "W/\"CE8CQH47eCl7ImA9WxNWE0s.\"",
+                                "id": {
+                                    "$t": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/34"
+                                },
+                                "published": {
+                                    "$t": "2009-10-12T15:54:21.000Z"
+                                },
+                                "updated": {
+                                    "$t": "2009-10-12T15:54:21.000Z"
+                                },
+                                "title": {
+                                    "$t": "Comment 34 by thakis@chromium.org"
+                                },
+                                "content": {
+                                    "$t": "http://codereview.chromium.org/271054 is the sendEvent-based patch. It's a bit \r\nsimpler, but both Safari ( \r\nhttp://trac.webkit.org/browser/trunk/WebKit/mac/WebView/WebHTMLView.mm ) \r\nand Firefox ( http://mxr.mozilla.org/mozilla-\r\ncentral/source/widget/src/cocoa/nsChildView.mm#5436 ) use the \r\nperformKeyEquivalent-based approach. Since WebKit needs to work when embedded \r\ninto arbitrary os x apps, it's unlikely that they'll ever use the sendEvent-based \r\napproach, and hence they will probably never send keyup()s to the renderer for cmd-\r\nkeypresses (one of the major advantages of the approach).\r\n\r\nNot sure which patch is better. Opinions?",
+                                    "type": "html"
+                                },
+                                "link": [
+                                    {
+                                        "rel": "alternate",
+                                        "type": "text/html",
+                                        "href": "http://code.google.com/p/chromium/issues/detail?id=15090#c34"
+                                    },
+                                    {
+                                        "rel": "self",
+                                        "type": "application/atom+xml",
+                                        "href": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/34"
+                                    }
+                                ],
+                                "author": [
+                                    {
+                                        "name": {
+                                            "$t": "thakis@chromium.org"
+                                        },
+                                        "uri": {
+                                            "$t": "/u/thakis@chromium.org/"
+                                        }
+                                    }
+                                ],
+                                "issues$updates": {}
+                            },
+                            {
+                                "gd$etag": "W/\"DkENRn47eCl7ImA9WxNWE0s.\"",
+                                "id": {
+                                    "$t": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/35"
+                                },
+                                "published": {
+                                    "$t": "2009-10-12T16:24:57.000Z"
+                                },
+                                "updated": {
+                                    "$t": "2009-10-12T16:24:57.000Z"
+                                },
+                                "title": {
+                                    "$t": "Comment 35 by thakis@chromium.org"
+                                },
+                                "content": {
+                                    "$t": "The sendEvent-based one is cleaner, simpler, and more versatile (but in ways we don't \r\nneed). The pKE-based one is closer to safari's and firefox's code, less intrusive, and less \r\nsurprising (someone new to the project wouldn't know that keyboard handling for \r\nrwhvcocoa is special-cased in the app).\r\n\r\nChatted with Avi, and we both like the pKE-based version better, so I checked that in. \r\nBoth patches are pretty small, so we can switch to the other version in the future, \r\nshould we have to.",
+                                    "type": "html"
+                                },
+                                "link": [
+                                    {
+                                        "rel": "alternate",
+                                        "type": "text/html",
+                                        "href": "http://code.google.com/p/chromium/issues/detail?id=15090#c35"
+                                    },
+                                    {
+                                        "rel": "self",
+                                        "type": "application/atom+xml",
+                                        "href": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/35"
+                                    }
+                                ],
+                                "author": [
+                                    {
+                                        "name": {
+                                            "$t": "thakis@chromium.org"
+                                        },
+                                        "uri": {
+                                            "$t": "/u/thakis@chromium.org/"
+                                        }
+                                    }
+                                ],
+                                "issues$updates": {
+                                    "issues$label": [
+                                        {
+                                            "$t": "-Area-WebKit"
+                                        },
+                                        {
+                                            "$t": "Area-BrowserUI"
+                                        }
+                                    ],
+                                    "issues$status": {
+                                        "$t": "Fixed"
+                                    }
+                                }
+                            },
+                            {
+                                "gd$etag": "W/\"CEUNSH47eCl7ImA9WxNWE0Q.\"",
+                                "id": {
+                                    "$t": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/36"
+                                },
+                                "published": {
+                                    "$t": "2009-10-13T00:04:59.000Z"
+                                },
+                                "updated": {
+                                    "$t": "2009-10-13T00:04:59.000Z"
+                                },
+                                "title": {
+                                    "$t": "Comment 36 by su...@chromium.org"
+                                },
+                                "content": {
+                                    "$t": "I'm ok with it. Thanks a lot.",
+                                    "type": "html"
+                                },
+                                "link": [
+                                    {
+                                        "rel": "alternate",
+                                        "type": "text/html",
+                                        "href": "http://code.google.com/p/chromium/issues/detail?id=15090#c36"
+                                    },
+                                    {
+                                        "rel": "self",
+                                        "type": "application/atom+xml",
+                                        "href": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/36"
+                                    }
+                                ],
+                                "author": [
+                                    {
+                                        "name": {
+                                            "$t": "su...@chromium.org"
+                                        },
+                                        "uri": {
+                                            "$t": "/u/113409286815222922579/"
+                                        }
+                                    }
+                                ],
+                                "issues$updates": {}
+                            },
+                            {
+                                "gd$etag": "W/\"DUUDR347eCl7ImA9WxNWFEw.\"",
+                                "id": {
+                                    "$t": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/37"
+                                },
+                                "published": {
+                                    "$t": "2009-10-13T07:01:16.000Z"
+                                },
+                                "updated": {
+                                    "$t": "2009-10-13T07:01:16.000Z"
+                                },
+                                "title": {
+                                    "$t": "Comment 37 by thakis@chromium.org"
+                                },
+                                "content": {
+                                    "$t": "Dang, I forgot to implement that method in BrowserWindowCocoa that jam mentioned \r\nabove – not fixed.",
+                                    "type": "html"
+                                },
+                                "link": [
+                                    {
+                                        "rel": "alternate",
+                                        "type": "text/html",
+                                        "href": "http://code.google.com/p/chromium/issues/detail?id=15090#c37"
+                                    },
+                                    {
+                                        "rel": "self",
+                                        "type": "application/atom+xml",
+                                        "href": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/37"
+                                    }
+                                ],
+                                "author": [
+                                    {
+                                        "name": {
+                                            "$t": "thakis@chromium.org"
+                                        },
+                                        "uri": {
+                                            "$t": "/u/thakis@chromium.org/"
+                                        }
+                                    }
+                                ],
+                                "issues$updates": {
+                                    "issues$status": {
+                                        "$t": "Started"
+                                    }
+                                }
+                            },
+                            {
+                                "gd$etag": "W/\"CU4FQX47eCl7ImA9WxNWFE8.\"",
+                                "id": {
+                                    "$t": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/38"
+                                },
+                                "published": {
+                                    "$t": "2009-10-13T08:51:50.000Z"
+                                },
+                                "updated": {
+                                    "$t": "2009-10-13T08:51:50.000Z"
+                                },
+                                "title": {
+                                    "$t": "Comment 38 by thakis@chromium.org"
+                                },
+                                "content": {
+                                    "$t": "CL for the missing part: http://codereview.chromium.org/273032",
+                                    "type": "html"
+                                },
+                                "link": [
+                                    {
+                                        "rel": "alternate",
+                                        "type": "text/html",
+                                        "href": "http://code.google.com/p/chromium/issues/detail?id=15090#c38"
+                                    },
+                                    {
+                                        "rel": "self",
+                                        "type": "application/atom+xml",
+                                        "href": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/38"
+                                    }
+                                ],
+                                "author": [
+                                    {
+                                        "name": {
+                                            "$t": "thakis@chromium.org"
+                                        },
+                                        "uri": {
+                                            "$t": "/u/thakis@chromium.org/"
+                                        }
+                                    }
+                                ],
+                                "issues$updates": {}
+                            },
+                            {
+                                "gd$etag": "W/\"A04EQH47eCl7ImA9WxNWGU8.\"",
+                                "id": {
+                                    "$t": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/39"
+                                },
+                                "published": {
+                                    "$t": "2009-10-19T05:25:01.000Z"
+                                },
+                                "updated": {
+                                    "$t": "2009-10-19T05:25:01.000Z"
+                                },
+                                "title": {
+                                    "$t": "Comment 39 by thakis@chromium.org"
+                                },
+                                "content": {
+                                    "$t": "",
+                                    "type": "html"
+                                },
+                                "link": [
+                                    {
+                                        "rel": "alternate",
+                                        "type": "text/html",
+                                        "href": "http://code.google.com/p/chromium/issues/detail?id=15090#c39"
+                                    },
+                                    {
+                                        "rel": "self",
+                                        "type": "application/atom+xml",
+                                        "href": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/39"
+                                    }
+                                ],
+                                "author": [
+                                    {
+                                        "name": {
+                                            "$t": "thakis@chromium.org"
+                                        },
+                                        "uri": {
+                                            "$t": "/u/thakis@chromium.org/"
+                                        }
+                                    }
+                                ],
+                                "issues$updates": {
+                                    "issues$blockedOnUpdate": [
+                                        {
+                                            "$t": "24817"
+                                        },
+                                        {
+                                            "$t": "24877"
+                                        },
+                                        {
+                                            "$t": "24921"
+                                        },
+                                        {
+                                            "$t": "25000"
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "gd$etag": "W/\"AkEDSH47eCl7ImA9WxNWGUU.\"",
+                                "id": {
+                                    "$t": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/40"
+                                },
+                                "published": {
+                                    "$t": "2009-10-19T21:44:39.000Z"
+                                },
+                                "updated": {
+                                    "$t": "2009-10-19T21:44:39.000Z"
+                                },
+                                "title": {
+                                    "$t": "Comment 40 by thakis@chromium.org"
+                                },
+                                "content": {
+                                    "$t": "",
+                                    "type": "html"
+                                },
+                                "link": [
+                                    {
+                                        "rel": "alternate",
+                                        "type": "text/html",
+                                        "href": "http://code.google.com/p/chromium/issues/detail?id=15090#c40"
+                                    },
+                                    {
+                                        "rel": "self",
+                                        "type": "application/atom+xml",
+                                        "href": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/40"
+                                    }
+                                ],
+                                "author": [
+                                    {
+                                        "name": {
+                                            "$t": "thakis@chromium.org"
+                                        },
+                                        "uri": {
+                                            "$t": "/u/thakis@chromium.org/"
+                                        }
+                                    }
+                                ],
+                                "issues$updates": {
+                                    "issues$blockedOnUpdate": [
+                                        {
+                                            "$t": "25249"
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "gd$etag": "W/\"A0EGRn47eCl7ImA9WxNWGUU.\"",
+                                "id": {
+                                    "$t": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/41"
+                                },
+                                "published": {
+                                    "$t": "2009-10-19T22:00:27.000Z"
+                                },
+                                "updated": {
+                                    "$t": "2009-10-19T22:00:27.000Z"
+                                },
+                                "title": {
+                                    "$t": "Comment 41 by thakis@chromium.org"
+                                },
+                                "content": {
+                                    "$t": "",
+                                    "type": "html"
+                                },
+                                "link": [
+                                    {
+                                        "rel": "alternate",
+                                        "type": "text/html",
+                                        "href": "http://code.google.com/p/chromium/issues/detail?id=15090#c41"
+                                    },
+                                    {
+                                        "rel": "self",
+                                        "type": "application/atom+xml",
+                                        "href": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/41"
+                                    }
+                                ],
+                                "author": [
+                                    {
+                                        "name": {
+                                            "$t": "thakis@chromium.org"
+                                        },
+                                        "uri": {
+                                            "$t": "/u/thakis@chromium.org/"
+                                        }
+                                    }
+                                ],
+                                "issues$updates": {
+                                    "issues$blockedOnUpdate": [
+                                        {
+                                            "$t": "25254"
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "gd$etag": "W/\"CUENQX47eCl7ImA9WxNVFU4.\"",
+                                "id": {
+                                    "$t": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/42"
+                                },
+                                "published": {
+                                    "$t": "2009-10-26T05:08:10.000Z"
+                                },
+                                "updated": {
+                                    "$t": "2009-10-26T05:08:10.000Z"
+                                },
+                                "title": {
+                                    "$t": "Comment 42 by thakis@chromium.org"
+                                },
+                                "content": {
+                                    "$t": "For the records: We went with the sendEvent-based approach after all, because with the \r\npKE-approach the key view loop processing swallowed ctrl-tab (see issue 24921).\r\n\r\nThis bug is fixed with http://src.chromium.org/viewvc/chrome?\r\nview=rev&revision=30032 . One of the bugs this is blocked on (issue 25254) has a CL \r\nout and is nearly fixed, and the other blocking issue isn't really related to this bug, so \r\nI'm marking this as fixed.",
+                                    "type": "html"
+                                },
+                                "link": [
+                                    {
+                                        "rel": "alternate",
+                                        "type": "text/html",
+                                        "href": "http://code.google.com/p/chromium/issues/detail?id=15090#c42"
+                                    },
+                                    {
+                                        "rel": "self",
+                                        "type": "application/atom+xml",
+                                        "href": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/42"
+                                    }
+                                ],
+                                "author": [
+                                    {
+                                        "name": {
+                                            "$t": "thakis@chromium.org"
+                                        },
+                                        "uri": {
+                                            "$t": "/u/thakis@chromium.org/"
+                                        }
+                                    }
+                                ],
+                                "issues$updates": {
+                                    "issues$status": {
+                                        "$t": "Fixed"
+                                    }
+                                }
+                            },
+                            {
+                                "gd$etag": "W/\"C0EGRH47eCl7ImA9WxNVFUo.\"",
+                                "id": {
+                                    "$t": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/43"
+                                },
+                                "published": {
+                                    "$t": "2009-10-26T15:40:25.000Z"
+                                },
+                                "updated": {
+                                    "$t": "2009-10-26T15:40:25.000Z"
+                                },
+                                "title": {
+                                    "$t": "Comment 43 by bugdroid1@gmail.com"
+                                },
+                                "content": {
+                                    "$t": "The following revision refers to this bug:\r\n    http://src.chromium.org/viewvc/chrome?view=rev&revision=30032 \r\n\r\n------------------------------------------------------------------------\r\nr30032 | thakis@chromium.org | 2009-10-25 21:40:12 -0700 (Sun, 25 Oct 2009) | 12 lines\nChanged paths:\n   M http://src.chromium.org/viewvc/chrome/trunk/src/chrome/browser/blocked_popup_container_interactive_uitest.cc?r1=30032&r2=30031\r\n   M http://src.chromium.org/viewvc/chrome/trunk/src/chrome/browser/cocoa/browser_window_cocoa.mm?r1=30032&r2=30031\r\n\nDo not send some keyboard shortcuts to the renderers\n\nWalking the whole menu on every keypress seems ridiculous. Linux does this too :-/ (Caching is made hard because the user can change key equivalents in system preferences at every point in time, and we're not notified of that. And people only hit max 5 keys/second, so it's not all that ridiculous).\n\nThere's a UI test for this, but the interactive UI tests are not enabled on OS X, so it's not executed.\n\nMenu walking code based on code from CocoatechCore.\n\nBUG=5496,15090,24877\nTEST=Go to http://unixpapa.com/js/testkey.html , check \"keydown\", focus the textbox, and make sure that cmd-t still opens tabs, cmd-shift-[ still switches tabs, cmd-w still closes tabs. however, cmd-L should not focus url bar and cmd-1 should not go to the first tab.\n\nReview URL: http://codereview.chromium.org/273032\n------------------------------------------------------------------------\r\n",
+                                    "type": "html"
+                                },
+                                "link": [
+                                    {
+                                        "rel": "alternate",
+                                        "type": "text/html",
+                                        "href": "http://code.google.com/p/chromium/issues/detail?id=15090#c43"
+                                    },
+                                    {
+                                        "rel": "self",
+                                        "type": "application/atom+xml",
+                                        "href": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/43"
+                                    }
+                                ],
+                                "author": [
+                                    {
+                                        "name": {
+                                            "$t": "bugdroid1@gmail.com"
+                                        },
+                                        "uri": {
+                                            "$t": "/u/bugdroid1@gmail.com/"
+                                        }
+                                    }
+                                ],
+                                "issues$updates": {}
+                            },
+                            {
+                                "gd$etag": "W/\"CkcCRn47eCl7ImA9WxNVFUQ.\"",
+                                "id": {
+                                    "$t": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/44"
+                                },
+                                "published": {
+                                    "$t": "2009-10-26T20:47:47.000Z"
+                                },
+                                "updated": {
+                                    "$t": "2009-10-26T20:47:47.000Z"
+                                },
+                                "title": {
+                                    "$t": "Comment 44 by rohi...@chromium.org"
+                                },
+                                "content": {
+                                    "$t": "4.0.225.0 (Official Build 30036)",
+                                    "type": "html"
+                                },
+                                "link": [
+                                    {
+                                        "rel": "alternate",
+                                        "type": "text/html",
+                                        "href": "http://code.google.com/p/chromium/issues/detail?id=15090#c44"
+                                    },
+                                    {
+                                        "rel": "self",
+                                        "type": "application/atom+xml",
+                                        "href": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/44"
+                                    }
+                                ],
+                                "author": [
+                                    {
+                                        "name": {
+                                            "$t": "rohi...@chromium.org"
+                                        },
+                                        "uri": {
+                                            "$t": "/u/110720167459478556881/"
+                                        }
+                                    }
+                                ],
+                                "issues$updates": {
+                                    "issues$status": {
+                                        "$t": "Verified"
+                                    }
+                                }
+                            },
+                            {
+                                "gd$etag": "W/\"CU4ASH47eCl7ImA9WxBTEUk.\"",
+                                "id": {
+                                    "$t": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/45"
+                                },
+                                "published": {
+                                    "$t": "2009-12-06T23:59:09.000Z"
+                                },
+                                "updated": {
+                                    "$t": "2009-12-06T23:59:09.000Z"
+                                },
+                                "title": {
+                                    "$t": "Comment 45 by thakis@chromium.org"
+                                },
+                                "content": {
+                                    "$t": "Issue 15846 has been merged into this issue.",
+                                    "type": "html"
+                                },
+                                "link": [
+                                    {
+                                        "rel": "alternate",
+                                        "type": "text/html",
+                                        "href": "http://code.google.com/p/chromium/issues/detail?id=15090#c45"
+                                    },
+                                    {
+                                        "rel": "self",
+                                        "type": "application/atom+xml",
+                                        "href": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/45"
+                                    }
+                                ],
+                                "author": [
+                                    {
+                                        "name": {
+                                            "$t": "thakis@chromium.org"
+                                        },
+                                        "uri": {
+                                            "$t": "/u/thakis@chromium.org/"
+                                        }
+                                    }
+                                ],
+                                "issues$updates": {}
+                            },
+                            {
+                                "gd$etag": "W/\"C08GRH47eCl7ImA9WhNTEEs.\"",
+                                "id": {
+                                    "$t": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/46"
+                                },
+                                "published": {
+                                    "$t": "2012-10-12T17:10:25.000Z"
+                                },
+                                "updated": {
+                                    "$t": "2012-10-12T17:10:25.000Z"
+                                },
+                                "title": {
+                                    "$t": "Comment 46 by bugdro...@chromium.org"
+                                },
+                                "content": {
+                                    "$t": "This issue has been closed for some time. No one will pay attention to new comments.\nIf you are seeing this bug or have new data, please click New Issue to start a new bug.",
+                                    "type": "html"
+                                },
+                                "link": [
+                                    {
+                                        "rel": "alternate",
+                                        "type": "text/html",
+                                        "href": "http://code.google.com/p/chromium/issues/detail?id=15090#c46"
+                                    },
+                                    {
+                                        "rel": "self",
+                                        "type": "application/atom+xml",
+                                        "href": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/46"
+                                    }
+                                ],
+                                "author": [
+                                    {
+                                        "name": {
+                                            "$t": "bugdro...@chromium.org"
+                                        },
+                                        "uri": {
+                                            "$t": "/u/101788990881243245974/"
+                                        }
+                                    }
+                                ],
+                                "issues$updates": {
+                                    "issues$blockedOnUpdate": [
+                                        {
+                                            "$t": "-chromium:24817"
+                                        },
+                                        {
+                                            "$t": "-chromium:24877"
+                                        },
+                                        {
+                                            "$t": "-chromium:24921"
+                                        },
+                                        {
+                                            "$t": "-chromium:25000"
+                                        },
+                                        {
+                                            "$t": "-chromium:25249"
+                                        },
+                                        {
+                                            "$t": "-chromium:25254"
+                                        },
+                                        {
+                                            "$t": "chromium:24817"
+                                        },
+                                        {
+                                            "$t": "chromium:24877"
+                                        },
+                                        {
+                                            "$t": "chromium:24921"
+                                        },
+                                        {
+                                            "$t": "chromium:25000"
+                                        },
+                                        {
+                                            "$t": "chromium:25249"
+                                        },
+                                        {
+                                            "$t": "chromium:25254"
+                                        }
+                                    ],
+                                    "issues$label": [
+                                        {
+                                            "$t": "Restrict-AddIssueComment-Commit"
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "gd$etag": "W/\"DkIASX47eCl7ImA9WhBRGUk.\"",
+                                "id": {
+                                    "$t": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/47"
+                                },
+                                "published": {
+                                    "$t": "2013-03-10T19:42:28.000Z"
+                                },
+                                "updated": {
+                                    "$t": "2013-03-10T19:42:28.000Z"
+                                },
+                                "title": {
+                                    "$t": "Comment 47 by bugdro...@chromium.org"
+                                },
+                                "content": {
+                                    "$t": "",
+                                    "type": "html"
+                                },
+                                "link": [
+                                    {
+                                        "rel": "alternate",
+                                        "type": "text/html",
+                                        "href": "http://code.google.com/p/chromium/issues/detail?id=15090#c47"
+                                    },
+                                    {
+                                        "rel": "self",
+                                        "type": "application/atom+xml",
+                                        "href": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/47"
+                                    }
+                                ],
+                                "author": [
+                                    {
+                                        "name": {
+                                            "$t": "bugdro...@chromium.org"
+                                        },
+                                        "uri": {
+                                            "$t": "/u/101788990881243245974/"
+                                        }
+                                    }
+                                ],
+                                "issues$updates": {
+                                    "issues$label": [
+                                        {
+                                            "$t": "-Mstone-4"
+                                        },
+                                        {
+                                            "$t": "M-4"
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "gd$etag": "W/\"A0ACRX47eCl7ImA9WhBQEk0.\"",
+                                "id": {
+                                    "$t": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/48"
+                                },
+                                "published": {
+                                    "$t": "2013-03-13T21:22:44.000Z"
+                                },
+                                "updated": {
+                                    "$t": "2013-03-13T21:22:44.000Z"
+                                },
+                                "title": {
+                                    "$t": "Comment 48 by bugdro...@chromium.org"
+                                },
+                                "content": {
+                                    "$t": "",
+                                    "type": "html"
+                                },
+                                "link": [
+                                    {
+                                        "rel": "alternate",
+                                        "type": "text/html",
+                                        "href": "http://code.google.com/p/chromium/issues/detail?id=15090#c48"
+                                    },
+                                    {
+                                        "rel": "self",
+                                        "type": "application/atom+xml",
+                                        "href": "http://code.google.com/feeds/issues/p/chromium/issues/15090/comments/full/48"
+                                    }
+                                ],
+                                "author": [
+                                    {
+                                        "name": {
+                                            "$t": "bugdro...@chromium.org"
+                                        },
+                                        "uri": {
+                                            "$t": "/u/101788990881243245974/"
+                                        }
+                                    }
+                                ],
+                                "issues$updates": {
+                                    "issues$label": [
+                                        {
+                                            "$t": "-Restrict-AddIssueComment-Commit"
+                                        },
+                                        {
+                                            "$t": "Restrict-AddIssueComment-EditIssue"
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

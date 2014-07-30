@@ -22,7 +22,7 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.integer  "bug_id"
     t.text     "content"
     t.string   "author_email"
-    t.string   "author_id"
+    t.string   "author_uri"
     t.datetime "updated"
   end
 
@@ -41,7 +41,7 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.datetime "closed"
     t.datetime "modified"
     t.string   "owner_email"
-    t.string   "owner_id" 
+    t.string   "owner_uri" 
     t.text     "content"
   end
   

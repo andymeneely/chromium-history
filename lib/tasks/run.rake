@@ -78,8 +78,14 @@ namespace :run do
       x.report("Loading CVEs ") {CveLoader.new.load_cve}
       x.report("Loading git log") {GitLogLoader.new.load}
       x.report("Loading sheriffs") {SheriffRotationLoader.new.parse_and_load}
-      x.report("Parsing JSON Bugs"){BugParser.new.parse_and_load_json}
-      x.report("Updating Bugs with CSVs"){BugParser.new.parse_and_update_csv}
+      x.report("Parsing data from JSON Bugs"){BugParser.new.parse_and_load_json}
+      x.report("Optimizing bug entries,comments") do
+        [Bug,BugComment].each {|c| c.on_optimize}
+      end
+      x.report("Parsing data from Bug CSVs"){BugParser.new.parse_and_load_csv}
+      x.report("Optimizing block,labels,et al.") do
+        [Block,Label,BugLabel].each {|c| c.on_optimize}
+      end
       x.report("Optimizing commits, cve,et al.") do 
         [Commit,CommitFilepath,Cvenum].each {|c| c.on_optimize}
       end
