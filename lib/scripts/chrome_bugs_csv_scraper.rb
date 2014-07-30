@@ -71,20 +71,14 @@ class GoogleCodeBugScraperCSV
           @total =  parsedData[-1][0].scan(/\d+/)[1]
         end
         
-        if parsedData.size > 1 #verify that the response contains rows.
-
-          #Writes file to disk
+        if parsedData.size > 3 #verify that the response contains rows.
           file = File.new(@@file_location+@cursor.to_s+".csv", "wb")
           file.write(issue_resp.body)
           file.close
-
-          #increments cursor
           @cursor += @@increment    
-
           sleep(delay)
         else
-          #Exit: File fetching just headers
-          @cursor = -1
+          @cursor = -1 #Exit: File fetching just headers
         end
       else
         #Exit: Http resquest faliure.
