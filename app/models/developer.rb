@@ -9,8 +9,8 @@ class Developer < ActiveRecord::Base
     ActiveRecord::Base.connection.add_index :developers, :email, unique: true
     # ActiveRecord::Base.connection.add_index :developers, :name
   end
-	
-	
+
+
   def self.sanitize_validate_email dirty_email 
     begin
       email = dirty_email.gsub(/\+\w+(?=@)/, '') #strips any tags on the email
@@ -20,44 +20,37 @@ class Developer < ActiveRecord::Base
       email_address = matched_email[0]
       email_local = matched_email[1]
       email_domain = matched_email[2]
-			
+
       if email_domain == 'gtempaccount.com'
         #     e.g. john-doe%gmail.com@gtempaccount.com
         match = /^([\w\-]+)%(\w+.\w{3})(?=@gtempaccount.com)/.match email_address
-	      
-        if match
-          email_address = (match[1] + '@' + match[2])
-          email_local = match[1]
-          email_domain = match[2]
-        else
-          match = /^([\w\-]*)%([\w\-]*).{3}(?=@gtempaccount.com)/.match email_address
-          email_address = (match[1] + '@' + match[2])
-          email_local = match[1]
-          email_domain = match[2]
-        end
+
+        email_address = (match[1] + '@' + match[2])
+        email_local = match[1]
+        email_domain = match[2]
       end
-		
+
       bad_domains = ['chromioum.org','chroimum.org','chromium.com','chromoium.org','chromium.rg','chromum.org','chormium.org','chromimum.org','chromium.orf','chromiu.org','chroium.org','chcromium.org','chromuim.org','google.com','g']
       if bad_domains.include? email_domain 
         email_domain = "@chromium.org"
         email_address = email_local + email_domain
       end
-			
+
       return nil, false if self.blacklisted_email_local? email_local or self.blacklisted_email_domain? email_domain
       return email_address, true
     end
   end
-	
+
   def self.blacklisted_email_local? local
     blacklist = ['reply', 'chromium-reviews','commit-bot']
     blacklist.include? local
   end
-	
+
   def self.blacklisted_email_domain? domain
     blacklist = ['googlegroups.com']
     blacklist.include? domain
   end
-	
+
   # Given an email and name, parses the email and searches to see if the developer
   # is already in the database. If they are, returns the email of the developer.
   # If not, adds the developer's information to database.
@@ -78,7 +71,7 @@ class Developer < ActiveRecord::Base
     else 
       return email, true
     end #checking if the email exists
-  	# returns the developer email either way
+    # returns the developer email either way
   end
 
 end#class
