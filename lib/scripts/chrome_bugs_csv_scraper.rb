@@ -42,19 +42,19 @@ class GoogleCodeBugScraperCSV
   def initialize(opts)
     @opts = opts
     @total = 0
-    @cursor = 1 
+    @cursor = 301501 
+  end
+
+  def get_cursor()
+    return @cursor
   end
 
   def get_data(next_link="",delay=@opts[:delay], concurrent_connections=1)
-  
-    
-    
+     
     # Creates folder to store files.
     FileUtils.mkdir_p(@@file_location) unless File.directory?(@@file_location)
-    
-    
-    
-    puts "Fetching Data: #{@@baseurl+@cursor.to_s}"
+      
+    puts "Fetching Data: #{"Cursor: "+@cursor.to_s}"
     issue_request = Typhoeus::Request.new(@@baseurl+@cursor.to_s)  
     # make a new request
     
@@ -67,7 +67,6 @@ class GoogleCodeBugScraperCSV
         if @total == 0 
           #reads the last line of the response file, 
           #and extracts the total number of records.
-          
           @total =  parsedData[-1][0].scan(/\d+/)[1]
         end
         
@@ -79,6 +78,7 @@ class GoogleCodeBugScraperCSV
           sleep(delay)
         else
           @cursor = -1 #Exit: File fetching just headers
+          sleep(delay)
         end
       else
         #Exit: Http resquest faliure.
@@ -94,8 +94,8 @@ end
 # driver code
 s = GoogleCodeBugScraperCSV.new(opts)
 
-while (@cursor != -1)  do
-   s.get_data
+while (s.get_cursor() != -1)  do
+  s.get_data
 end
 
 puts "Done."
