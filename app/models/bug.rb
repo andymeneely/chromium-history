@@ -1,6 +1,7 @@
 class Bug < ActiveRecord::Base
   has_many :bug_labels, primary_key: 'bug_id', foreign_key: 'bug_id'
-  
+  has_many :labels, through: :bug_labels
+
   self.primary_key = :bug_id
 
   def self.on_optimize
