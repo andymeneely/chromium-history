@@ -38,8 +38,8 @@ class BugVerify < VerifyBase
      assert_equal "/u/rohitrao@chromium.org/", Bug.find_by(bug_id: 20248).owner_uri
    end
 
-#   def verify_bug_20248_content
-#     assert_equal "shess@chromium.org", Bug.find_by(bug_id: 20248).reporter
-#   end
+   def verify_bug_20248_content
+     assert_equal true, Bug.find_by(bug_id: 20248).content.start_with?('The Windows context menu has:')
+   end
 
 end
