@@ -30,20 +30,10 @@ end
 
 bug_emails = ['sa...@chormium.org',
               'p...@chromium.org',
-              'dar..@google.org',       
-              'b..@chromium.org',         
-              'm...@google.com',
-              'simon%g...@gtempaccount.com',
-              'ndu...@chromium.org',       
-              'apa...@chromium.org',    
-              'to...@chromium.org',       
-              'xi...@chromium.org',       
-              'e...@chromium.org',        
-              'sk...@chromium.org',     
-              'oj...@chromium.org',        
-              'to...@chromium.org',   
-              'se...@chromium.org',
-              'aa@google.com'
+              'dar...@google.com',       
+              'mathew@google.com',
+              'linus%chromium.org@gtempaccount.com',
+              'simon%g...@gtempaccount.com'
 ]
 
 
