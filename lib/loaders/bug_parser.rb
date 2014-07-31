@@ -114,26 +114,21 @@ class BugParser
   end
 
   def parse_blocked(line)
+    bug_id = line[0]
     blocked_on = line[4]
     blocking = line[5]
-    if blocked_on.nil? and blocking.nil? #both blocked_on and blocking are empty
-    else
-      if not blocked_on.nil? and blocking.nil? # if only blocking is empty
-        blocking = []
-        blocked_on.split(",").zip(blocking).each do |blocked, blocking|
-          @bug_blocked << [blocked, blocking]
-        end
-      elsif not blocking.nil? and blocked_on.nil? # if only blocked is empty
-        blocked_on = []
-        blocking.split(",").zip(blocked_on).each do |blocking, blocked|
-          @bug_blocked << [blocked, blocking]
-        end
-      else # if blocked and blocking both have data
-        blocked_on.split(",").zip(blocking.split(",")).each do |blocked, blocking|
-          @bug_blocked << [blocked, blocking]
-        end
+
+    if not blocked_on.nil?
+      blocked_on.split(",").each do |blocker|
+          @bug_blocked << [blocker,bug_id]
       end
-    end
+    end    
+    
+    if not blocking.nil?
+      blocking.split(",").each do |blocking|
+          @bug_blocked << [bug_id,blocking]
+      end
+    end    
   end
 
   def dump_labels
