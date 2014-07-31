@@ -56,11 +56,8 @@ class BugParser
 
     # get all csv files and load data 
     Dir["#{Rails.configuration.datadir}/bugs/csv/*.csv"].each do |file|
-      csv_contents = CSV.read(file) # read file into an array of arrays
-      csv_contents.each do |line|
-        if line.first.first.starts_with?("I", "This")
-          next #skip when first element's data has the ID header or end of file statment
-        else
+      CSV.foreach(file,{:headers=>:first_row}) do |line|
+        unless line[0].starts_with?("This")
           bug_id = line[0]
           bug_issue = Bug.find_by(bug_id: bug_id) # match the json issue num with the csv issue num 
        
