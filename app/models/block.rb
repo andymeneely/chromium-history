@@ -1,7 +1,7 @@
 class Block < ActiveRecord::Base
   
-  belongs_to :bug, primary_key: 'bug_id', foreign_key: 'bug_id' 
-#  belongs_to :blocking_bug, primary_key: 'blocking_id', foreign_key: 'bug_id'
+  belongs_to :blocked_by, primary_key: 'bug_id', foreign_key: 'bug_id',:class_name => "Bug" 
+  belongs_to :blocking, primary_key: 'bug_id', foreign_key: 'blocking_id',:class_name => "Bug" 
   
   def self.on_optimize
     ActiveRecord::Base.connection.add_index :blocks, :bug_id 

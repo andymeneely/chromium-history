@@ -3,7 +3,11 @@ class Bug < ActiveRecord::Base
   has_many :labels, through: :bug_labels
   
   has_many :blocks, primary_key: 'bug_id', foreign_key: 'bug_id'
-  has_many :blocking, primary_key: 'bug_id', foreign_key: 'blocking_id', :class_name => "Block"
+  has_many :blocking, :through => :blocks
+
+  
+  has_many :blocked, primary_key: 'bug_id', foreign_key: 'blocking_id',:class_name => "Block"
+  has_many :blocked_by, :through => :blocked
   
   has_many :bug_comments, foreign_key: "bug_id", primary_key: "bug_id"
 
@@ -23,4 +27,3 @@ class Bug < ActiveRecord::Base
     ActiveRecord::Base.connection.add_index :bugs, :content
   end
 end
-     
