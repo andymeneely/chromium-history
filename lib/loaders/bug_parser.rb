@@ -117,12 +117,6 @@ class BugParser
     bug_id = line[0]
     blocked_on = line[4]
     blocking = line[5]
-
-    if not blocked_on.nil?
-      blocked_on.split(",").each do |blocker|
-          @bug_blocked << [blocker,bug_id]
-      end
-    end    
     
     if not blocking.nil?
       blocking.split(",").each do |blocking|
