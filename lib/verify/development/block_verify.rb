@@ -17,4 +17,12 @@ class BlockVerify < VerifyBase
     assert_equal "Invalid", Bug.joins(:blocks).where("blocks.blocking_id" => 20248).pluck("bugs.status").first
   end
 
+  def verify_blocks_join_verify_through  
+    assert_equal "Verified", Bug.find(17941).blocking.last.status
+  end
+
+  def verify_blocks_join_verify_through_count  
+    assert_equal 2, Bug.find(20248).blocking.count
+  end
+
 end                                                                      
