@@ -17,4 +17,8 @@ class BugLabelVerify < VerifyBase
   def verify_os_all_bug_ids
     assert_equal [17941,27675],Bug.joins(:labels).where("labels.label" => 'OS-All').pluck(:bug_id)
   end
+  
+  def verify_ReleaseBlock_Beta_count
+    assert_equal 3,Label.find("ReleaseBlock-Beta").bugs.count
+  end
 end
