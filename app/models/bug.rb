@@ -1,9 +1,9 @@
 class Bug < ActiveRecord::Base
   has_many :bug_labels, primary_key: 'bug_id', foreign_key:'bug_id'
   has_many :labels, through: :bug_labels
-
   has_many :blocks, primary_key: 'bug_id', foreign_key: 'blocked_on_id', :class_name => "Block"
   has_many :blocking, primary_key: 'bug_id', foreign_key: 'blocking_id', :class_name => "Block"
+  has_many :bug_comments, foreign_key: "bug_id", primary_key: "bug_id"
 
   self.primary_key = :bug_id
 

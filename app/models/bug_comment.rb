@@ -1,4 +1,5 @@
 class BugComment < ActiveRecord::Base
+  belongs_to  :bug
   
   def self.on_optimize
     ActiveRecord::Base.connection.add_index :bug_comments, :bug_id

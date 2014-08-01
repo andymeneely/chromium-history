@@ -15,7 +15,11 @@ class BugCommentVerify < VerifyBase
     assert_equal '/u/kuchhal@chromium.org/', BugComment.where(author_email: 'kuchhal@chromium.org').pluck(:author_uri).first
   end
 
-  def very_bug_17941_comment_content
+  def verify_bug_17941_comment_content
     assert_equal 'Installed from filer only !' , BugComment.where(author_uri: '/u/103485851777014287537/').pluck(:content).first
+  end
+
+  def verify_bug_bug_comment_association
+    assert_equal 17941, Bug.joins(:bug_comments).where("bug_comments.updated" => '2009-07-29 00:09:41 UTC').pluck(:bug_id).first
   end
 end
