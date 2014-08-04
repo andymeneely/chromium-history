@@ -14,6 +14,14 @@ class BugParser
       bug_obj = load_json file
       bug_obj["feed"]["entry"].each do |entry|
         
+        unless entry["issues$owner"].nil?
+          owner_name = entry["issues$owner"]["issues$username"]["$t"]
+          owner_uri = entry["issues$owner"]["issues$uri"]["$t"]
+        else 
+          owner_name = nil
+          ownder_url = nil
+        end
+
         @bug_entries << [entry["issues$id"]["$t"],
                          nil, #title
                          nil, #stars
@@ -22,8 +30,8 @@ class BugParser
                          nil, #opened
                          nil, #closed
                          nil, #modified
-                         entry["issues$owner"]["issues$username"]["$t"],
-                         entry["issues$owner"]["issues$uri"]["$t"],
+                         owner_name,
+                         owner_uri,
                          entry["content"]["$t"]]
         
         entry["replies"].each do |comment|

@@ -166,14 +166,6 @@
                         "$t": "Cr-Internals-Installer"
                     }
                 ],
-                "issues$owner": {
-                    "issues$uri": {
-                        "$t": "/u/103485851777014287537/"
-                    },
-                    "issues$username": {
-                        "$t": "venkatar...@chromium.org"
-                    }
-                },
                 "issues$stars": {
                     "$t": 5
                 },
