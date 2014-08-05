@@ -22,6 +22,8 @@ class BugParser
           ownder_url = nil
         end
 
+        content = entry["updated"].nil? ? '' : entry["updated"]["$t"]
+
         @bug_entries << [entry["issues$id"]["$t"],
                          nil, #title
                          nil, #stars
@@ -32,7 +34,7 @@ class BugParser
                          nil, #modified
                          owner_name,
                          owner_uri,
-                         entry["content"]["$t"]]
+                         content]
         
         entry["replies"].each do |comment|
           @bug_comments << [entry["issues$id"]["$t"],
