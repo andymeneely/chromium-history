@@ -24,6 +24,5 @@ class Bug < ActiveRecord::Base
     ActiveRecord::Base.connection.add_index :bugs, :modified
     ActiveRecord::Base.connection.add_index :bugs, :owner_email
     ActiveRecord::Base.connection.add_index :bugs, :owner_uri
-    ActiveRecord::Base.connection.add_index :bugs, :content
   end
 end
