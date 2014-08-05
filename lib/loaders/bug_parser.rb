@@ -36,9 +36,7 @@ class BugParser
                          owner_uri,
                          content]
         
-        if entry["replies"].nil?
-          puts entry["issues$id"]["$t"]
-        else
+        unless entry["replies"].nil?
           entry["replies"].each do |comment|
             @bug_comments << [entry["issues$id"]["$t"],
                               comment["content"]["$t"],
