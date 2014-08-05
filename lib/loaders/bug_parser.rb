@@ -22,7 +22,7 @@ class BugParser
           ownder_url = nil
         end
 
-        content = entry["updated"].nil? ? '' : entry["updated"]["$t"]
+        content = entry["content"].nil? ? '' : entry["content"]["$t"]
 
         @bug_entries << [entry["issues$id"]["$t"],
                          nil, #title
@@ -36,12 +36,16 @@ class BugParser
                          owner_uri,
                          content]
         
-        entry["replies"].each do |comment|
-          @bug_comments << [entry["issues$id"]["$t"],
-                            comment["content"]["$t"],
-                            comment["author"][0]["name"]["$t"],
-                            comment["author"][0]["uri"]["$t"],
-                            comment["updated"]["$t"]]
+        if entry["replies"].nil?
+          puts entry["issues$id"]["$t"]
+        else
+          entry["replies"].each do |comment|
+            @bug_comments << [entry["issues$id"]["$t"],
+                              comment["content"]["$t"],
+                              comment["author"][0]["name"]["$t"],
+                              comment["author"][0]["uri"]["$t"],
+                              comment["updated"]["$t"]]
+          end
         end
       end
     end
@@ -140,4 +144,5 @@ class BugParser
       @labels << [label_id, label]
     end
   end
+
 end#class
