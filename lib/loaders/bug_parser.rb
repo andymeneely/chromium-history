@@ -70,7 +70,7 @@ class BugParser
     Dir["#{Rails.configuration.datadir}/bugs/csv/*.csv"].each do |file|
       CSV.foreach(file,{:headers=>:first_row}) do |line|
         puts "line[0] is nil at #{file}" if line[0].nil?
-        unless line[0].nil && line[0].starts_with?("This")
+        unless line[0].nil? && line[0].starts_with?("This")
           bug_id = line[0]
           bug_issue = Bug.find_by(bug_id: bug_id) # match the json issue num with the csv issue num 
        
