@@ -33,7 +33,7 @@ ActiveRecord::Schema.define(version: 20140512131450) do
 
   create_table "bugs", id:false, force: true do |t|
     t.integer  "bug_id"
-    t.string   "title"
+    t.string   "title",   limit: 500
     t.integer  "stars"
     t.string   "status"
     t.string   "reporter"
