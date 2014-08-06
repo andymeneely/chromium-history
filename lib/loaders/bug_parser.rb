@@ -127,13 +127,13 @@ class BugParser
   end
 
   def parse_blocked(line)
-    bug_id = line[0]
+    bug_id = line[0].to_i
     blocked_on = line[4]
     blocking = line[5]
     
-    if not blocking.nil?
-      blocking.split(",").each do |blocking|
-          @bug_blocked << [bug_id,blocking]
+    unless blocking.nil? || bug_id == 0
+      blocking.split(",").each do |b|
+          @bug_blocked << [bug_id,b] unless b.to_i == 0
       end
     end    
   end
