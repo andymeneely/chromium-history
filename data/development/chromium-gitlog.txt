@@ -38,7 +38,7 @@ destroyed before the impl thread is joined. And when it is destroyed it
 deletes the textures it was meant to destroy, and drops its ref on the
 context provider.
 
-BUG=283625
+BUG=20248
 R=piman
 
 Review URL: https://chromiumcodereview.appspot.com/23454014
@@ -111,7 +111,7 @@ This turns out to be much better code organisation strategy. We're going
 to have even more parsers.
 
 TEST=Covered by net_unittests.
-BUG=25520
+BUG=none
 
 Review URL: http://codereview.chromium.org/465035
 
@@ -150,7 +150,7 @@ This comment is no longer true.  Also, simplified the early out
 condition and added a test.
 
 R=danakj@chromium.org
-BUG=none
+BUG=27675
 
 Committed: https://src.chromium.org/viewvc/chrome?view=rev&revision=214103
 
@@ -158,14 +158,15 @@ Review URL: https://chromiumcodereview.appspot.com/5831706594508800
 
 git-svn-id: svn://svn.chromium.org/chrome/trunk/src@214819 0039d316-1c4b-4281-b951-d872f2087c98
 ;;;
- cc/layers/image_layer.cc            | 5 ++---
- cc/layers/layer.cc                  | 9 ++++-----
- cc/layers/layer.h                   | 1 +
- cc/layers/layer_unittest.cc         | 8 +++++++-
- cc/layers/nine_patch_layer.cc       | 5 ++---
- cc/resources/image_layer_updater.cc | 9 +++++++++
- cc/resources/image_layer_updater.h  | 3 ++-
- 7 files changed, 27 insertions(+), 13 deletions(-)
+ cc/layers/image_layer.cc               | 5 ++---
+ cc/layers/layer.cc                     | 9 ++++-----
+ cc/layers/layer.h                      | 1 +
+ cc/layers/layer_unittest.cc            | 8 +++++++-
+ cc/layers/nine_patch_layer.cc          | 5 ++---
+ cc/resources/image_layer_updater.cc    | 9 +++++++++
+ cc/resources/image_layer_updater.h     | 3 ++-
+ cc/resources/texture_mailbox_deleter.h | 39 +++++++++++++++++++++++++++++++++++++++
+ 8 files changed, 66 insertions(+), 13 deletions(-)
 :::
 6fb323424f52120c38904802a9679e742a9c687d
 maruel@chromium.org
@@ -227,7 +228,7 @@ Signed-off-by: Daniel Koch
 Author: Nicolas Capens
 ------------------------------------------------------------------------
 
-BUG=84071
+BUG=17941
 
 Review URL: http://codereview.chromium.org/7046054
 

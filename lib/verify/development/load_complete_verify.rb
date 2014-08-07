@@ -75,7 +75,7 @@ class LoadCompleteVerify < VerifyBase
   end
 
   def verify_commit_6eebdee7_has_7_files
-    verify_count("Commit 6eebdee7851c52b1f481fca1cdffcbc51c8ec061",7, Commit.find_by_commit_hash("6eebdee7851c52b1f481fca1cdffcbc51c8ec061").commit_filepaths.count)
+    verify_count("Commit 6eebdee7851c52b1f481fca1cdffcbc51c8ec061",8, Commit.find_by_commit_hash("6eebdee7851c52b1f481fca1cdffcbc51c8ec061").commit_filepaths.count)
   end
   
   def verify_commit_14df51bb_has_1_file

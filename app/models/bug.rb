@@ -11,6 +11,8 @@ class Bug < ActiveRecord::Base
   
   has_many :bug_comments, foreign_key: "bug_id", primary_key: "bug_id"
 
+  has_many :commits, foreign_key: "bug", primary_key: "bug_id"
+  
   self.primary_key = :bug_id
 
   def self.on_optimize
@@ -24,5 +26,12 @@ class Bug < ActiveRecord::Base
     ActiveRecord::Base.connection.add_index :bugs, :modified
     ActiveRecord::Base.connection.add_index :bugs, :owner_email
     ActiveRecord::Base.connection.add_index :bugs, :owner_uri
+  end
+
+  def is_real_bug?
+    real_bug_labels = ['Type-Bug','Type-Bug-Regression']
+    bug_labels = self.labels.pluck(:label)
+
+    return (bug_labels & real_bug_labels).present?
   end
 end

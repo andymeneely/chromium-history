@@ -89,7 +89,7 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.string   "author_email"
     t.integer  "author_id"
     t.text     "message"
-    t.string   "bug"
+    t.integer  "bug"
     t.string   "reviewers"
     t.string   "svn_revision"
     t.datetime "created_at"
@@ -178,6 +178,7 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.decimal "perc_overlooked_patchsets"
     t.decimal "avg_sheriff_hours"
     t.boolean "vulnerable"
+    t.integer "num_bugs"
   end
 
   create_table "releases", id: false, force: true do |t|

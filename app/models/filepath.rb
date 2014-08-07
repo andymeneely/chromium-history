@@ -37,6 +37,16 @@ class Filepath < ActiveRecord::Base
              'code_reviews.created' => DateTime.new(1970,01,01)..before)
       .uniq
   end
+  
+  def bugs(before = DateTime.new(2050,01,01))    
+    real_bugs = ['Type-Bug','Type-Bug-Regression']
+    Filepath.bugs\
+      .select('bugs.bug_id')\
+      .where(filepath: filepath, \
+             :labels => {:label => real_bugs},\
+             'bugs.opened' => DateTime.new(1970,01,01)..before)
+      .uniq
+  end
 
   def code_reviews(before = DateTime.new(2050,01,01))
     Filepath.code_reviews\
@@ -163,5 +173,8 @@ class Filepath < ActiveRecord::Base
     Filepath.joins(commit_filepaths: [commit: :code_reviews])
   end
 
-end
+  def self.bugs
+    Filepath.joins(commit_filepaths: [commit: [bug: :labels]])
+  end
 
+end
