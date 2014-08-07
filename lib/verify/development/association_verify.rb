@@ -8,6 +8,10 @@ class AssociationVerify < VerifyBase
     assert_equal exp, f.reviewers.pluck(:email).sort
   end
 
+  def verify_filepath_bug_count
+    assert_equal 2, Filepath.find_by(filepath: 'cc/resources/texture_mailbox_deleter.h').bugs.count
+  end
+  
   def verify_filepath_vulnerable
     assert_equal true, Filepath.find_by(filepath: 'ui/base/x/x11_util.cc').vulnerable?
   end
