@@ -111,7 +111,7 @@ This turns out to be much better code organisation strategy. We're going
 to have even more parsers.
 
 TEST=Covered by net_unittests.
-BUG=none
+BUG=229611229611
 
 Review URL: http://codereview.chromium.org/465035
 
