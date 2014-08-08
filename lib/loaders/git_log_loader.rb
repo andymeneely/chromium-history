@@ -136,7 +136,7 @@ class GitLogLoader
         @reviews_to_update << "(#{element[/(\d)+/].to_i}, '#{arr[0].strip}')"
 
       elsif fast_match(element, /^BUG=/)
-        hash[:bug] = element.strip.sub("BUG=", "")[0..8].to_i
+        hash[:bug] = element.strip.sub("BUG=", "")[0..5].to_i
 
       elsif fast_match(element, /^;;;/)
         in_files = true
