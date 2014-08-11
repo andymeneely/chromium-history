@@ -44,7 +44,6 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.string   "owner_uri" 
     t.text     "content"
   end
-  
 
   create_table "code_reviews", id: false, force: true do |t|
     t.text     "description"
@@ -95,6 +94,11 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.datetime "created_at"
   end
 
+  create_table "commit_bugs", id: false, force: true do |t|
+    t.integer "commit_hash"
+    t.integer "bug_id"
+  end
+ 
   create_table "contributors", id: false, force: true do |t|
     t.integer "dev_id"
     t.integer "issue",  limit: 8
