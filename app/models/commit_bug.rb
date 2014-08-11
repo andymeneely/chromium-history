@@ -1,4 +1,4 @@
-class CommitBugs < ActiveRecord::Base
+class CommitBug < ActiveRecord::Base
 	belongs_to :commit, foreign_key: 'commit_hash', primary_key: 'commit_hash'
 	belongs_to :bug, foreign_key: 'bug_id', primary_key: 'bug_id'
 

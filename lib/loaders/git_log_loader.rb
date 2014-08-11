@@ -19,6 +19,7 @@ class GitLogLoader
 
   include DataTransfer
 
+  @@GIT_LOG_BUG_PROPERTIES = [:commit_hash, :bug_id]
   @@GIT_LOG_FILE_PROPERTIES = [:commit_hash, :filepath]
   @@GIT_LOG_PROPERTIES = [:commit_hash, :parent_commit_hash, :author_email, :bug, :svn_revision, :created_at, :message]
 
@@ -27,6 +28,7 @@ class GitLogLoader
     @con = ActiveRecord::Base.connection.raw_connection
     @con.prepare('commitInsert', "INSERT INTO commits (#{@@GIT_LOG_PROPERTIES.map{|key| key.to_s}.join(', ')}) VALUES ($1, $2, $3, $4, $5, $6, $7)")
     @con.prepare('fileInsert', "INSERT INTO commit_filepaths (#{@@GIT_LOG_FILE_PROPERTIES.map{|key| key.to_s}.join(', ')}) VALUES ($1, $2)")
+    @con.prepare('bugInsert', "INSERT INTO commit_bugs (#{@@GIT_LOG_BUG_PROPERTIES.map{|key| key.to_s}.join(', ')}) VALUES ($1, $2)")
     get_commits(File.open("#{Rails.configuration.datadir}/chromium-gitlog.txt", "r"))
 
     update = "UPDATE code_reviews SET
@@ -136,7 +138,7 @@ class GitLogLoader
         @reviews_to_update << "(#{element[/(\d)+/].to_i}, '#{arr[0].strip}')"
 
       elsif fast_match(element, /^BUG=/)
-        hash[:bug] = element.strip.sub("BUG=", "")[0..5].to_i
+        hash[:bug] = element.strip.sub("BUG=", "")
 
       elsif fast_match(element, /^;;;/)
         in_files = true
@@ -210,6 +212,7 @@ class GitLogLoader
   def add_commit_to_db(hash)
     @con.exec_prepared('commitInsert', hash.values_at(*@@GIT_LOG_PROPERTIES))
     create_commit_filepath(hash["filepaths"], hash[:commit_hash])
+    create_commit_bug(hash[:bug], hash[:commit_hash]) if hash[:bug]!=nil
   end#add_commit_to_db
 
   #
@@ -226,4 +229,25 @@ class GitLogLoader
     end
   end
 
+  #
+  # Adding the Bug Model
+  # Bugs associated
+  # with the commit
+  #
+  # @param- string bugs
+  def create_commit_bug(bugs, commit_hash)
+    #split the bugs by comma and any space char.
+    bugs = bugs.split(%r{,\s*})
+    
+    bugs.each do |bug|
+      bug.strip!
+      #remove the word chormium if its exists.
+      bug.slice! "chromium:"
+
+      #if the bug is a number with 6 digits or less. 
+      if bug.match(/^(\s*\d{1,6}\s*)$/) != nil
+        @con.exec_prepared('bugInsert', [commit_hash,bug.to_i])
+      end
+    end
+  end
 end#class

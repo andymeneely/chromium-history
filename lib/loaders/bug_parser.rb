@@ -121,6 +121,7 @@ class BugParser
     bug_id = line[0]
     labels = line[2].delete(' ').split(',')
     labels.each do |label|
+      label.downcase!
       @label_db[label] ||= (@label_incr+=1) #set to increment if nil
       @bug_labels << [@label_db[label], bug_id]
     end

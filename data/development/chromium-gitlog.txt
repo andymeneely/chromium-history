@@ -1,4 +1,53 @@
 :::
+8a115131e9dba0461c6e9f2e3b296fa93808c812
+blundell@chromium.org
+blundell@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Wed Nov 13 04:03:01 2013 +0000
+c2ef51b214d4d8666a5911cd447b85c4a16cc063
+Abstract usage of BrowserContext::GetRequestContext in Autofill core code.
+Adds a new AutofillDriver::GetURLRequestContext() method that can be used
+instead of direct calls to BrowserContext::GetRequestContext() in Autofill core
+code. Also eliminates knowledge of BrowserContext from AutofillDownloadManager.
+
+BUG=chromium:303054 ,chromium:303055,chromium-os:39830
+
+Review URL: https://codereview.chromium.org/68073002
+
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@234743 0039d316-1c4b-4281-b951-d872f2087c98
+;;;
+ components/autofill/content/browser/autofill_driver_impl.cc          |  4 ++++
+ components/autofill/content/browser/autofill_driver_impl.h           |  1 +
+ components/autofill/content/browser/autofill_driver_impl_unittest.cc |  9 +++++++++
+ components/autofill/core/browser/autofill_download.cc                | 10 ++++------
+ components/autofill/core/browser/autofill_download.h                 | 13 +++++--------
+ components/autofill/core/browser/autofill_download_unittest.cc       |  6 +++++-
+ components/autofill/core/browser/autofill_driver.h                   |  7 +++++++
+ components/autofill/core/browser/autofill_manager.cc                 |  3 +--
+ components/autofill/core/browser/test_autofill_driver.cc             | 12 +++++++++++-
+ components/autofill/core/browser/test_autofill_driver.h              | 10 ++++++++++
+ 10 files changed, 57 insertions(+), 18 deletions(-)
+
+:::
+2d376985bf55713a5cd4a3c8b953629b0ddbde13
+dgozman@chromium.org
+dgozman@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Tue Nov 12 14:44:40 2013 +0000
+348db37ded412688b65f35f6da2329f9399ac7cb
+DevTools: center emulated device view inside available view space.
+This also removes deprecated |enableDeviceEmulation| implementation.
+
+BUG=317602,315095
+
+Review URL: https://codereview.chromium.org/68713002
+
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@234512 0039d316-1c4b-4281-b951-d872f2087c98
+;;;
+ content/renderer/devtools/devtools_agent.cc | 12 ------------
+ content/renderer/devtools/devtools_agent.h  |  4 ----
+ content/renderer/render_widget.cc           | 13 +++++++++----
+ 3 files changed, 9 insertions(+), 20 deletions(-)
+
+:::
 783770a2bb970dd33a30db21692daf6bfb2915dc
 skyostil@chromium.org
 skyostil@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98

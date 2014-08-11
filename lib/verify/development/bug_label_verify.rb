@@ -15,10 +15,10 @@ class BugLabelVerify < VerifyBase
   end
 
   def verify_os_all_bug_ids
-    assert_equal [17941,27675],Bug.joins(:labels).where("labels.label" => 'OS-All').pluck(:bug_id)
+    assert_equal [17941,27675],Bug.joins(:labels).where("labels.label" => 'os-all').pluck(:bug_id)
   end
   
   def verify_ReleaseBlock_Beta_count
-    assert_equal 3,Label.find("ReleaseBlock-Beta").bugs.count
+    assert_equal 3,Label.find("releaseblock-beta").bugs.count
   end
 end

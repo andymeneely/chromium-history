@@ -39,7 +39,7 @@ class Filepath < ActiveRecord::Base
   end
   
   def bugs(before = DateTime.new(2050,01,01))    
-    real_bugs = ['Type-Bug','Type-Bug-Regression']
+    real_bugs = ['type-bug','type-bug-regression','type-bug-security','debugging','standby-bugs']
     Filepath.bugs\
       .select('bugs.bug_id')\
       .where(filepath: filepath, \
@@ -174,7 +174,7 @@ class Filepath < ActiveRecord::Base
   end
 
   def self.bugs
-    Filepath.joins(commit_filepaths: [commit: [bug: :labels]])
+    Filepath.joins(commit_filepaths: [commit: [commit_bugs: [bug: :labels]]])
   end
 
 end

@@ -88,14 +88,14 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.string   "author_email"
     t.integer  "author_id"
     t.text     "message"
-    t.integer  "bug"
+    t.string   "bug"
     t.string   "reviewers"
     t.string   "svn_revision"
     t.datetime "created_at"
   end
 
   create_table "commit_bugs", id: false, force: true do |t|
-    t.integer "commit_hash"
+    t.string  "commit_hash"
     t.integer "bug_id"
   end
  
