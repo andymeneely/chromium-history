@@ -201,6 +201,13 @@ class Stats
     end
     puts a.to_s(120)
     puts "\n"
+    
+    puts "@@@ ReleaseFilepath num_bugs @@@"
+    a = Aggregate.new(0,100,1)
+    ReleaseFilepath.all.find_each do |rf|
+      a << rf.num_bugs
+    end
+    puts a.to_s(120)
+    puts "\n"
   end#histograms
-
 end#class
