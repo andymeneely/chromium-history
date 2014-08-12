@@ -236,25 +236,26 @@ class GitLogLoader
   #
   # @param- string bugs
   def create_commit_bug(bugs, commit_hash)
-    #split the bugs by comma and any space char.
+    # split the bugs by comma and any space char.
     bugs = bugs.split(%r{,\s*})
     
     bugs.each do |bug|
-      
-      #normalize bug field
+ 
+      # Normalize bug field
       bug.downcase!
       bug.strip!
 
-      #remove the common bad text
+      # Remove the common bad text
       bad_text = ["chromium:","issue","bug=","="]
       bad_text.each do |text|
         bug.slice! text if bug.start_with? text
       end
 
-      #if the bug is a number with 6 digits or if it is a repetition of 4-6 digits
-      if bug.match(/^(\s*\d{1,6}\s*)$/) != nil
+      # If the bug is a number with 6 digits
+      if fast_match(bug,/^(\s*\d{1,6}\s*)$/)
         @con.exec_prepared('bugInsert', [commit_hash,bug.to_i])
-      elsif /([0-9]{4,6})\1/.match(bug) != nil
+      # If it is a repetition of 4-6 digits
+      elsif fast_match(bug,/([0-9]{4,6})\1/)
         bug = /([0-9]{4,6})\1/.match(bug)[1]
         @con.exec_prepared('bugInsert', [commit_hash,bug.to_i])
       end

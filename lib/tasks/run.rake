@@ -87,7 +87,7 @@ namespace :run do
         [Block,Label,BugLabel].each {|c| c.on_optimize}
       end
       x.report("Optimizing commits, cve,et al.") do 
-        [Commit,CommitFilepath,Cvenum].each {|c| c.on_optimize}
+        [Commit,CommitFilepath,CommitBug,Cvenum].each {|c| c.on_optimize}
       end
       x.report("Optimizing sheriffs") { SheriffRotation.on_optimize}
       x.report("Loading release tree") {ReleaseFilepathLoader.new.load}

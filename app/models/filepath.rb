@@ -39,7 +39,7 @@ class Filepath < ActiveRecord::Base
   end
   
   def bugs(before = DateTime.new(2050,01,01))    
-    real_bugs = ['type-bug','type-bug-regression','type-bug-security','debugging','standby-bugs']
+    real_bugs = ['type-bug','type-bug-regression','type-bug-security','type-defect','type-regression']
     Filepath.bugs\
       .select('bugs.bug_id')\
       .where(filepath: filepath, \
