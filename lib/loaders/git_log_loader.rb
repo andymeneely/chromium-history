@@ -1,4 +1,5 @@
 require 'date'
+require 'set'
 require_relative 'data_transfer'
 
 # GitLogLoader class
@@ -238,7 +239,9 @@ class GitLogLoader
   def create_commit_bug(bugs, commit_hash)
     # split the bugs by comma and any space char.
     bugs = bugs.split(%r{,\s*})
-    
+    bugs_set = Set.new
+
+
     bugs.each do |bug|
  
       # Normalize bug field
@@ -253,12 +256,16 @@ class GitLogLoader
 
       # If the bug is a number with 6 digits
       if fast_match(bug,/^(\s*\d{1,6}\s*)$/)
-        @con.exec_prepared('bugInsert', [commit_hash,bug.to_i])
+        bugs_set << bug.to_i
       # If it is a repetition of 4-6 digits
       elsif fast_match(bug,/([0-9]{4,6})\1/)
         bug = /([0-9]{4,6})\1/.match(bug)[1]
-        @con.exec_prepared('bugInsert', [commit_hash,bug.to_i])
+        bugs_set << bug.to_i
       end
+    end
+
+    bugs_set.each do |bug|
+      @con.exec_prepared('bugInsert', [commit_hash,bug])
     end
   end
 end#class

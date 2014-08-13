@@ -9,7 +9,7 @@ Adds a new AutofillDriver::GetURLRequestContext() method that can be used
 instead of direct calls to BrowserContext::GetRequestContext() in Autofill core
 code. Also eliminates knowledge of BrowserContext from AutofillDownloadManager.
 
-BUG=chromium:303054 ,chromium:303055,chromium-os:39830,issue 39830
+BUG=chromium:303054 ,chromium:303055,chromium-os:39830,issue 39830,303054
 
 Review URL: https://codereview.chromium.org/68073002
 
