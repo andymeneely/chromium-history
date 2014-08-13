@@ -182,6 +182,7 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.decimal "perc_overlooked_patchsets"
     t.decimal "avg_sheriff_hours"
     t.boolean "vulnerable"
+    t.integer "num_vulnerabilities"
     t.integer "num_bugs"
   end
 

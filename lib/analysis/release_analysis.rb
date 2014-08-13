@@ -17,6 +17,7 @@ class ReleaseAnalysis
       rf.perc_overlooked_patchsets = rf.filepath.perc_overlooked_patchsets(r.date)
       rf.avg_sheriff_hours = rf.filepath.avg_sheriff_hours(r.date)
       rf.vulnerable = rf.filepath.vulnerable?(r.date)
+      rf.num_vulnerabilities = rf.filepath.cves(r.date).count
       rf.num_bugs = rf.filepath.bugs(r.date).count
       rf.save
     end
