@@ -9,7 +9,7 @@ Adds a new AutofillDriver::GetURLRequestContext() method that can be used
 instead of direct calls to BrowserContext::GetRequestContext() in Autofill core
 code. Also eliminates knowledge of BrowserContext from AutofillDownloadManager.
 
-BUG=chromium:303054 ,chromium:303055,chromium-os:39830,issue 39830,303054
+BUG=chromium:17941
 
 Review URL: https://codereview.chromium.org/68073002
 
@@ -36,7 +36,7 @@ Tue Nov 12 14:44:40 2013 +0000
 DevTools: center emulated device view inside available view space.
 This also removes deprecated |enableDeviceEmulation| implementation.
 
-BUG=317602,315095
+BUG=20248
 
 Review URL: https://codereview.chromium.org/68713002
 
@@ -160,7 +160,7 @@ This turns out to be much better code organisation strategy. We're going
 to have even more parsers.
 
 TEST=Covered by net_unittests.
-BUG=229611229611
+BUG=1794117941
 
 Review URL: http://codereview.chromium.org/465035
 
@@ -292,7 +292,7 @@ palmer@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
 Mon Sep 24 16:26:46 2012 +0000
 0d0a983550d37d8cc1562dfbe2bfbe778cdaed0a
 Make shared memory segments writable only by their rightful owners.
-BUG=143859
+BUG=issue 20248
 TEST=Chrome's UI still works on Linux and Chrome OS
 Review URL: https://chromiumcodereview.appspot.com/10854242
 
@@ -310,7 +310,7 @@ sadrul@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
 Thu Nov 7 07:31:48 2013 +0000
 ee30020b058d950d1cc46791146bde89925a9bfd
 x11: Move XInput2 availability information out of the message pump.
-BUG=302696
+BUG=none
 R=darin@chromium.org, derat@chromium.org
 
 Previously committed in r233414, but reverted in r233416 because it collided with r233347.

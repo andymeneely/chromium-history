@@ -11,7 +11,7 @@ class CommitAssociationVerify < VerifyBase
   end
 
   def verify_bugs_for_1bcf224
-    assert_equal 229611, Commit.joins(:commit_bugs).where(:commit_hash => '1bcf224fd40b497997827af5f04b0628e648700f').pluck(:bug_id)[0]
+    assert_equal 17941, Commit.joins(:commit_bugs).where(:commit_hash => '1bcf224fd40b497997827af5f04b0628e648700f').pluck(:bug_id)[0]
   end
 end
 
