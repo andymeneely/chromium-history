@@ -28,7 +28,7 @@ class GoogleCodeBugScraper
   Typhoeus::Config.verbose = false 
 
   @@file_location = './bugs/json/'
-  @@baseurl = "http://code.google.com/feeds/issues/p/chromium/issues/full?alt=json&max-results=500&start-index="
+  @@baseurl = "http://code.google.com/feeds/issues/p/chromium/issues/full?alt=json&can=all&max-results=500&start-index="
 
 
   attr_accessor :ids, :data, :patches
