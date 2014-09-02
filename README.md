@@ -14,3 +14,5 @@ Setup Instructions
 4. Run: `vagrant up`, which will download a vm image and install all of the dependencies of this project.
 5. Once the installation is complete run: `vagrant ssh`, and this will ssh you into the new box. (If you run into issues here you may not have openssh in your path. Add the git bin tools to your system path to fix this.) 
 6. Donezo
+
+For a full list of vagrant commands go [here](https://docs.vagrantup.com/v2/cli/index.html)
