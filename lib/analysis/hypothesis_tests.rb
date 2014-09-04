@@ -69,14 +69,14 @@ class HypothesisTests
       options(op)
 
       # Risk factor analysis with mean discriminators
-      mean_vps <- median(vulnerable_per_sloc, na.rm=TRUE)
-      mean_nps <- median(neutral_per_sloc, na.rm=TRUE)
-      thresh <- (mean_vps + mean_nps) / 2
+      median_vps <- median(vulnerable_per_sloc, na.rm=TRUE)
+      median_nps <- median(neutral_per_sloc, na.rm=TRUE)
+      thresh <- (median_vps + median_nps) / 2
       a <- vulnerable_per_sloc
       b <- neutral_per_sloc
-      risk_factor <- ( ( length(a[a >thresh])/length(b[b >thresh]) ) 
-                                            / 
-                       ( length(a[a<=thresh])/length(b[b<=thresh]) ) )
+      p_over_thresh <- length(a[a >thresh])/length(b[b >thresh]) 
+      p_under_thresh <- length(a[a<=thresh])/length(b[b<=thresh]) 
+      risk_factor <- p_over_thresh / p_under_thresh 
       if ( is.finite(risk_factor) && risk_factor < 1.0 )
         risk_factor <- 1/risk_factor
       end
@@ -93,8 +93,10 @@ class HypothesisTests
     puts "  Per SLOC vulnerable median: #{R.pull("median(vulnerable_per_sloc, na.rm=TRUE)")}"
     puts "  Per SLOC neutral median: #{R.pull("median(neutral_per_sloc, na.rm=TRUE)")}"
     puts "  Per SLOC MWW p-value: #{R.pull("wt_per_sloc$p.value")}"
-    puts "  Per SLOC risk factor threshold: #{R.pull('thresh')}"
-    puts "  Per SLOC risk factor: #{R.pull('risk_factor')}"
+    puts "  Per SLOC risk factors"
+    puts "    threshold: #{R.pull('thresh')}"
+    puts "    p(over), p(under) : #{R.pull('p_over_thresh')},#{R.pull('p_under_thresh')}"
+    puts "    risk factor: #{R.pull('risk_factor')}"
     R.eval "rm(vulnerable, vulnerable_per_sloc, neutral,neutral_per_sloc, wt,wt_per_sloc,a,b)"
     puts "\n"
     rescue 
