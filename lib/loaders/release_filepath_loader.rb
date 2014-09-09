@@ -10,7 +10,7 @@ class ReleaseFilepathLoader
     # Transfer to a new csv by padding with however empty columns we have. 
     # e.g. if we have 5 total columns, the new csv will look like:
     #   11,some/file.c ==> 11,some/file.c,,,
-    CSV.open("#{datadir}/tmp/release_filepaths_11.0.csv",'w+') do |csv|
+    CSV.open("/tmp/release_filepaths_11.0.csv",'w+') do |csv|
       CSV.foreach("#{datadir}/releases/11.0.csv") do |line|
         if ReleaseFilepath.source_code? line[1]
           out_line = [line[0], line[1]] #release,filepath
@@ -20,7 +20,7 @@ class ReleaseFilepathLoader
       end
     end
 
-    copy = "COPY release_filepaths FROM '#{datadir}/tmp/release_filepaths_11.0.csv' DELIMITER ',' CSV"
+    copy = "COPY release_filepaths FROM '/tmp/release_filepaths_11.0.csv' DELIMITER ',' CSV"
     ActiveRecord::Base.connection.execute(copy)
   end
 end

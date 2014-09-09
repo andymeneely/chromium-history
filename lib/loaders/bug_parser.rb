@@ -5,8 +5,8 @@ class BugParser
   def parse_and_load_json
 
     # initalize our attributes up for writing
-    @bug_entries = CSV.open("#{Rails.configuration.datadir}/tmp/bug_entries.csv", 'w+')
-    @bug_comments = CSV.open("#{Rails.configuration.datadir}/tmp/bug_comments.csv", 'w+')
+    @bug_entries = CSV.open("/tmp/bug_entries.csv", 'w+')
+    @bug_comments = CSV.open("/tmp/bug_comments.csv", 'w+')
     
     # get all json files and iterate over entries and entry's replies
     # and add the data from the json to attributes
@@ -53,8 +53,8 @@ class BugParser
     @bug_comments.fsync
 
     datadir = File.expand_path(Rails.configuration.datadir)
-    ActiveRecord::Base.connection.execute("COPY bugs FROM '#{datadir}/tmp/bug_entries.csv' DELIMITER ',' CSV")
-    ActiveRecord::Base.connection.execute("COPY bug_comments FROM '#{datadir}/tmp/bug_comments.csv' DELIMITER ',' CSV")
+    ActiveRecord::Base.connection.execute("COPY bugs FROM '/tmp/bug_entries.csv' DELIMITER ',' CSV")
+    ActiveRecord::Base.connection.execute("COPY bug_comments FROM '/tmp/bug_comments.csv' DELIMITER ',' CSV")
   end
 
   def parse_and_load_csv
@@ -62,9 +62,9 @@ class BugParser
     # initalize our attributes up for writing
     @label_db = Hash.new
     @label_incr = 0
-    @bug_blocked = CSV.open("#{Rails.configuration.datadir}/tmp/bug_blocked.csv", 'w+')
-    @labels = CSV.open("#{Rails.configuration.datadir}/tmp/labels.csv", 'w+')
-    @bug_labels = CSV.open("#{Rails.configuration.datadir}/tmp/bug_labels.csv", 'w+')
+    @bug_blocked = CSV.open("/tmp/bug_blocked.csv", 'w+')
+    @labels = CSV.open("/tmp/labels.csv", 'w+')
+    @bug_labels = CSV.open("/tmp/bug_labels.csv", 'w+')
 
     # get all csv files and load data 
     Dir["#{Rails.configuration.datadir}/bugs/csv/*.csv"].each do |file|
@@ -91,10 +91,9 @@ class BugParser
     @bug_labels.fsync
     @bug_blocked.fsync
 
-    datadir = File.expand_path(Rails.configuration.datadir)
-    ActiveRecord::Base.connection.execute("COPY labels FROM '#{datadir}/tmp/labels.csv' DELIMITER ',' CSV")
-    ActiveRecord::Base.connection.execute("COPY bug_labels FROM '#{datadir}/tmp/bug_labels.csv' DELIMITER ',' CSV")
-    ActiveRecord::Base.connection.execute("COPY blocks FROM '#{datadir}/tmp/bug_blocked.csv' DELIMITER ',' CSV")
+    ActiveRecord::Base.connection.execute("COPY labels FROM '/tmp/labels.csv' DELIMITER ',' CSV")
+    ActiveRecord::Base.connection.execute("COPY bug_labels FROM '/tmp/bug_labels.csv' DELIMITER ',' CSV")
+    ActiveRecord::Base.connection.execute("COPY blocks FROM '/tmp/bug_blocked.csv' DELIMITER ',' CSV")
   end                       
 
   def load_json(file)

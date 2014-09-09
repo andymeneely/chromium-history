@@ -66,15 +66,15 @@ class CodeReviewParser
   def open_csvs
     @dev_db = Hash.new
     @dev_incr = 0
-    @crs = CSV.open("#{Rails.configuration.datadir}/tmp/code_reviews.csv", 'w+')
-    @revs = CSV.open("#{Rails.configuration.datadir}/tmp/reviewers.csv", 'w+')
-    @ps = CSV.open("#{Rails.configuration.datadir}/tmp/patch_sets.csv", 'w+')
-    @msgs = CSV.open("#{Rails.configuration.datadir}/tmp/messages.csv", 'w+')
-    @psf = CSV.open("#{Rails.configuration.datadir}/tmp/patch_set_files.csv", 'w+')
-    @coms = CSV.open("#{Rails.configuration.datadir}/tmp/comments.csv", 'w+')
-    @devs = CSV.open("#{Rails.configuration.datadir}/tmp/developers.csv", 'w+')
-    @prtps = CSV.open("#{Rails.configuration.datadir}/tmp/participants.csv", 'w+')
-    @contrbs = CSV.open("#{Rails.configuration.datadir}/tmp/contributors.csv", 'w+')
+    @crs = CSV.open("/tmp/code_reviews.csv", 'w+')
+    @revs = CSV.open("/tmp/reviewers.csv", 'w+')
+    @ps = CSV.open("/tmp/patch_sets.csv", 'w+')
+    @msgs = CSV.open("/tmp/messages.csv", 'w+')
+    @psf = CSV.open("/tmp/patch_set_files.csv", 'w+')
+    @coms = CSV.open("/tmp/comments.csv", 'w+')
+    @devs = CSV.open("/tmp/developers.csv", 'w+')
+    @prtps = CSV.open("/tmp/participants.csv", 'w+')
+    @contrbs = CSV.open("/tmp/contributors.csv", 'w+')
   end
 
   def flush_csvs

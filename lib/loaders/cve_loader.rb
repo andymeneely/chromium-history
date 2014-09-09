@@ -29,8 +29,8 @@ class CveLoader
 
   def parse_cves
     uniqueCve = Set.new
-    table = CSV.open "#{Rails.configuration.datadir}/tmp/cvenums.csv", 'w+'
-    link = CSV.open "#{Rails.configuration.datadir}/tmp/code_reviews_cvenums.csv", 'w+'
+    table = CSV.open "/tmp/cvenums.csv", 'w+'
+    link = CSV.open "/tmp/code_reviews_cvenums.csv", 'w+'
     CSV.foreach(RESULTS_FILE, :headers => true) do | row |
       cve = row[0]
       issues = row[1].scan(/\d+/) #Mutliple code review ids split by non-numeric chars
@@ -46,9 +46,8 @@ class CveLoader
   end
 
   def copy_to_db
-    datadir = File.expand_path(Rails.configuration.datadir)
-    ActiveRecord::Base.connection.execute("COPY cvenums FROM '#{datadir}/tmp/cvenums.csv' DELIMITER ',' CSV")
-    ActiveRecord::Base.connection.execute("COPY code_reviews_cvenums FROM '#{datadir}/tmp/code_reviews_cvenums.csv' DELIMITER ',' CSV")
+    ActiveRecord::Base.connection.execute("COPY cvenums FROM '/tmp/cvenums.csv' DELIMITER ',' CSV")
+    ActiveRecord::Base.connection.execute("COPY code_reviews_cvenums FROM '/tmp/code_reviews_cvenums.csv' DELIMITER ',' CSV")
     ActiveRecord::Base.connection.execute <<-EOSQL
       WITH issues AS ((SELECT code_review_id from code_reviews_cvenums) 
                     EXCEPT (SELECT issue FROM code_reviews)) 

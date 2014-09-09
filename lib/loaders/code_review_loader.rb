@@ -4,7 +4,8 @@ require 'csv'
 class CodeReviewLoader
   
   def copy_parsed_tables 
-    datadir = File.expand_path(Rails.configuration.datadir + "/tmp")
+    #datadir = File.expand_path(Rails.configuration.datadir + "/tmp")
+    datadir = File.expand_path("/tmp")
     ActiveRecord::Base.connection.execute("COPY code_reviews FROM '#{datadir}/code_reviews.csv' DELIMITER ',' CSV")
     ActiveRecord::Base.connection.execute("COPY reviewers FROM '#{datadir}/reviewers.csv' DELIMITER ',' CSV")
     ActiveRecord::Base.connection.execute("COPY patch_sets FROM '#{datadir}/patch_sets.csv' DELIMITER ',' CSV")
