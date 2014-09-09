@@ -1,6 +1,8 @@
 #!/bin/bash
 apt-get update -y
 apt-get install vim -y
+apt-get install git -y
+apt-get install r-base -y
 
 apt-get --purge remove ruby-rvm -y
 rm -f /usr/share/ruby-rvm /etc/rvmrc /etc/profile.d/rvm.sh
