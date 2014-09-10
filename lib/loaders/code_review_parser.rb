@@ -3,14 +3,12 @@ require 'csv'
 class CodeReviewParser
 
   def parse
-    open_csvs #initalize our attributes up for writing
+    open_csvs #initalize our attributes for writing
 
-    Dir["#{Rails.configuration.datadir}/codereviews/chunk*"].each do |chunk|
-      Dir["#{chunk}/*.json"].each do |file|
-        cobj = load_json file
-
+    Dir["#{Rails.configuration.datadir}/codereviews/*.json"].each do |file|
+      json = load_json file
+      json.each do |cobj|
         owner_id = get_dev_id(cobj['owner_email'])
-
 
         @prtp_set  = Set.new
         @contrb_set = Set.new
@@ -19,8 +17,7 @@ class CodeReviewParser
         parse_reviewers(cobj, owner_id)
 
         cobj['patchsets'].each do |pid|
-          patchset_file = "#{file.gsub(/\.json$/,'')}/#{pid}.json" #e.g. 10854242/1001.json
-          parse_patchsets(patchset_file, cobj['issue'])
+          parse_patchsets(cobj['patchset_data'][pid.to_s], cobj['issue'])
         end
 
         parse_messages(file, cobj['issue'], cobj['messages'])
@@ -132,8 +129,7 @@ class CodeReviewParser
   end
 
   @@PATCH_SET_PROPS = [:created, :num_comments, :message, :modified, :owner_email, :owner_id, :code_review_id, :patchset, :composite_patch_set_id]
-  def parse_patchsets(patchset_file, code_review_id)
-    pobj = load_json(patchset_file)
+  def parse_patchsets(pobj, code_review_id)
     pobj['composite_patch_set_id'] = "#{code_review_id}-#{pobj['patchset']}"
     pobj['code_review_id'] = code_review_id
     pobj['owner_id'] = get_dev_id(pobj['owner_email'])
