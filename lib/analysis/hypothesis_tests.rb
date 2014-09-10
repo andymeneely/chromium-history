@@ -9,7 +9,13 @@ class HypothesisTests
   def run
     puts "\n=== Hypothesis Test Results ===\n\n"
     connect_to_db
-    association_tests
+    Release.all.each do |release|
+      puts "-"*80
+      puts "----- FOR RELEASE #{release.name} -----"
+      puts "-"*80
+      query_db(release.name)
+      association_tests
+    end
     close_db
   end
 
@@ -23,10 +29,15 @@ class HypothesisTests
                        user="#{conf['username']}", 
                        password="#{conf['password']}", 
                        dbname="#{conf['database']}")
-      data <- dbReadTable(con, "release_filepaths")
     EOR
   end
   
+  def query_db(release)
+    R.eval <<-EOR
+      data <- dbGetQuery(con, "SELECT * FROM release_filepaths WHERE release='#{release}'")
+    EOR
+  end
+
   def close_db
     R.eval <<-EOR
       dbDisconnect(con)

@@ -3,24 +3,25 @@ require 'csv'
 class ReleaseFilepathLoader
 
   def load
-    #Yes, this is hardcoded to release 11.0 until we begin to analyze multiple releases
-    Release.create(name: '11.0', date: DateTime.new(2011,01,28))
-    datadir = File.expand_path(Rails.configuration.datadir)
-
     # Transfer to a new csv by padding with however empty columns we have. 
     # e.g. if we have 5 total columns, the new csv will look like:
     #   11,some/file.c ==> 11,some/file.c,,,
-    CSV.open("/tmp/release_filepaths_11.0.csv",'w+') do |csv|
-      CSV.foreach("#{datadir}/releases/11.0.csv") do |line|
-        if ReleaseFilepath.source_code? line[1]
-          out_line = [line[0], line[1]] #release,filepath
-          (ReleaseFilepath.columns.count - 2).times { out_line << nil} #pad with emptys
-          csv << out_line #append the line to the file
+    CSV.open("/tmp/release_filepaths.csv",'w+') do |csv|
+      Dir["#{Rails.configuration.datadir}/releases/*.csv"].each do |rcsv|
+        name,date = '',''
+        CSV.foreach(rcsv) do |line|
+          name,date = line[0],line[1] #save the last one
+          if ReleaseFilepath.source_code? line[2]
+            out_line = [line[0], line[2]] #release,filepath
+            (ReleaseFilepath.columns.count - 2).times { out_line << nil} #pad with emptys
+            csv << out_line #append the line to the file
+          end
         end
+        Release.create(name: name, date: date)
       end
     end
 
-    copy = "COPY release_filepaths FROM '/tmp/release_filepaths_11.0.csv' DELIMITER ',' CSV"
+    copy = "COPY release_filepaths FROM '/tmp/release_filepaths.csv' DELIMITER ',' CSV"
     ActiveRecord::Base.connection.execute(copy)
   end
 end

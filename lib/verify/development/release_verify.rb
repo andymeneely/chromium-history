@@ -13,7 +13,11 @@ class ReleaseVerify < VerifyBase
   end
 
   def verify_release_11_ftp_util_num_reviewers
-    assert_equal 2, ReleaseFilepath.find_by(thefilepath: 'net/ftp/ftp_util.h').num_reviewers
+    assert_equal 2, ReleaseFilepath.find_by(release: '11.0', thefilepath: 'net/ftp/ftp_util.h').num_reviewers
+  end
+
+  def verify_release_12_ftp_util_num_reviewers
+    assert_equal 2, ReleaseFilepath.find_by(release: '11.0', thefilepath: 'net/ftp/ftp_util.h').num_reviewers
   end
 
   def verify_ftp_directory_sloc

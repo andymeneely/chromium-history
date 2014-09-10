@@ -61,6 +61,8 @@ Gemfile.lock
 
 #Ignore temporary csvs
 /data/development/tmp/*.csv
+/data/development/tmp/*.pdf
+/data/development/tmp/*.png
 
 #Ignore nodejs temporary stuff
 /node_modules/*

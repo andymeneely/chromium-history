@@ -3,7 +3,7 @@ require_relative "../verify_base"
 class ConsolidateVerify < VerifyBase
 
   def verify_filepath_consolidation_count
-    assert_equal(186,Filepath.all.count)
+    assert_equal(187,Filepath.all.count)
   end
 
   def verify_10854242_participants
