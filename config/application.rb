@@ -1,5 +1,6 @@
 require File.expand_path('../boot', __FILE__)
 
+require 'fileutils'
 require 'rails/all'
 
 # Require the gems listed in Gemfile, including any gems
@@ -22,6 +23,12 @@ module ChromiumHistory
     
     #Auto load anything in lib
     #config.autoload_paths += %W(#{config.root}/lib)
+    
+    # The tmp directory should not collide with other people or envs
+    # e.gs. /tmp/bobby/test
+    #       /tmp/bobby/production
+    Rails.configuration.tmpdir = "/tmp/#{ENV['USER']}/#{Rails.env}"
+    FileUtils.mkdir_p Rails.configuration.tmpdir
 
     # Where we keep all of our data to load into the database
     if Rails.env == "development"

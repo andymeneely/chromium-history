@@ -6,7 +6,8 @@ class ReleaseFilepathLoader
     # Transfer to a new csv by padding with however empty columns we have. 
     # e.g. if we have 5 total columns, the new csv will look like:
     #   11,some/file.c ==> 11,some/file.c,,,
-    CSV.open("/tmp/release_filepaths.csv",'w+') do |csv|
+    tmp = Rails.configuration.tmpdir
+    CSV.open("#{tmp}/release_filepaths.csv",'w+') do |csv|
       Dir["#{Rails.configuration.datadir}/releases/*.csv"].each do |rcsv|
         name,date = '',''
         CSV.foreach(rcsv) do |line|
@@ -21,7 +22,7 @@ class ReleaseFilepathLoader
       end
     end
 
-    copy = "COPY release_filepaths FROM '/tmp/release_filepaths.csv' DELIMITER ',' CSV"
+    copy = "COPY release_filepaths FROM '#{tmp}/release_filepaths.csv' DELIMITER ',' CSV"
     ActiveRecord::Base.connection.execute(copy)
   end
 end

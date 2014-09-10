@@ -29,8 +29,9 @@ class CveLoader
 
   def parse_cves
     uniqueCve = Set.new
-    table = CSV.open "/tmp/cvenums.csv", 'w+'
-    link = CSV.open "/tmp/code_reviews_cvenums.csv", 'w+'
+    tmp = Rails.configuration.tmpdir
+    table = CSV.open "#{tmp}/cvenums.csv", 'w+'
+    link = CSV.open "#{tmp}/code_reviews_cvenums.csv", 'w+'
     CSV.foreach(RESULTS_FILE, :headers => true) do | row |
       cve = row[0]
       issues = row[1].scan(/\d+/) #Mutliple code review ids split by non-numeric chars

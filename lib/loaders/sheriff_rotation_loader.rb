@@ -3,9 +3,8 @@ require 'csv'
 class SheriffRotationLoader
 
   def parse_and_load
-    
-    #parse
-    @sheriffs = CSV.open("/tmp/sheriffs.csv", 'w+')
+    tmp = Rails.configuration.tmpdir
+    @sheriffs = CSV.open("#{tmp}/sheriffs.csv", 'w+')
     datadir = File.expand_path(Rails.configuration.datadir)
     
     sheriff_id = 0
@@ -20,6 +19,6 @@ class SheriffRotationLoader
     
     @sheriffs.fsync
     
-    ActiveRecord::Base.connection.execute("COPY sheriff_rotations FROM '/tmp/sheriffs.csv' DELIMITER ',' CSV")
+    ActiveRecord::Base.connection.execute("COPY sheriff_rotations FROM '#{tmp}/sheriffs.csv' DELIMITER ',' CSV")
   end
 end
