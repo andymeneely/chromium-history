@@ -156,17 +156,20 @@ class Stats
     high = dates.last.to_i
     inc = (high-low)/50
     high = low + 50*inc #integer rounding...
-    a = Aggregate.new(low,high,inc)
-    dates.each{|d| a << d.to_i}
-    str = ''
-    a.to_s.each_line do |line|
-      if line[/^\d{9}/]
-        str << DateTime.strptime(line[0..9], '%s').strftime('%F') << " #{line}\n"
-      else
-        str << " "*11 << line << "\n"
+    if low < high
+      a = Aggregate.new(low,high,inc)
+      dates.each{|d| a << d.to_i}
+      str = ''
+      a.to_s.each_line do |line|
+        if line[/^\d{9}/]
+          str << DateTime.strptime(line[0..9], '%s').strftime('%F') << " #{line}\n"
+        else
+          str << " "*11 << line << "\n"
+        end
       end
+      puts str
     end
-    puts str
+
   
     puts "@@@ Max Churn per CodeReview Histogram @@@"
     a = Aggregate.new(0,1000,10)
