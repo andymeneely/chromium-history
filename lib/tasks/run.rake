@@ -54,8 +54,9 @@ namespace :run do
   task :env => :environment do
     puts "\tEnv.:     #{Rails.env}"
     puts "\tData:     #{Rails.configuration.datadir}"
+    puts "\tTemp:     #{Rails.configuration.tmpdir}"
     puts "\tDatabase: #{Rails.configuration.database_configuration[Rails.env]["database"]}"
-    puts "\tStart: #{Time.now}"
+    puts "\tStart:    #{Time.now}"
   end
   
   desc "Only proceed if we are SURE, or not in production"
