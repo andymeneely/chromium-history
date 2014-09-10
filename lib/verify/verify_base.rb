@@ -20,7 +20,14 @@ class VerifyBase
     if exp.eql? actual
       pass()
     else
-      fail("Expected: #{exp}, Actual: #{actual},#{fail_message} in #{self.class}")
+      fail(<<-EOS
+
+    Expected: <#{exp}>
+    Actual:   <#{actual}>
+    Message: #{fail_message} 
+    In #{self.class} 
+EOS
+          )
     end
   end
 
