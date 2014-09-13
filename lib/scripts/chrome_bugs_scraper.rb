@@ -38,6 +38,7 @@ class GoogleCodeBugScraper
   # @return String baseurl
   def self.baseurl
     @@baseurl
+
   end
 
   # Create a new instance
