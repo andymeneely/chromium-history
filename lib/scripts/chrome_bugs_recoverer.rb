@@ -16,6 +16,25 @@ class GoogleCodeBugRecoverer
     @bugs = Array.new
   end
 
+
+  def recover_dangling
+    arg = {many_table: 'bugs', \
+          many_table_key: 'bug_id', \
+          one_table: 'commit_bugs', \
+          one_table_key: 'bug_id'}
+   
+    query = "SELECT #{arg[:one_table]}.#{arg[:one_table_key]} " \
+    + "FROM #{arg[:many_table]} RIGHT OUTER JOIN #{arg[:one_table]} " \
+    + "ON (#{arg[:many_table]}.#{arg[:many_table_key]} = #{arg[:one_table]}.#{arg[:one_table_key]}) " \
+    + "WHERE #{arg[:many_table]}.#{arg[:many_table_key]} IS NULL"
+   
+    
+    st = ActiveRecord::Base.connection.execute query
+    st.each do |row|
+      recover_bug(row["bug_id"])
+    end
+  end
+
   def recover_bug(bug_id)
     #Creates folder to store files.
     FileUtils.mkdir_p(@@file_location) unless File.directory?(@@file_location)
@@ -50,7 +69,5 @@ class GoogleCodeBugRecoverer
 end
 
 r = GoogleCodeBugRecoverer.new()
-r.recover_bug(17941)
-r.recover_bug(20248)
-r.save_bugs()
-puts 'completed'
+r.recover_dangling()
+r.save_bugs
