@@ -43,4 +43,4 @@ echo -e "\n\n\n\n\n----------------stderr------------------------\n\n\n\n\n" >> 
 cat $ERR >> /tmp/prod-email.txt
 echo -e "\n\n\n\n\n----------------stdout------------------------\n\n\n\n\n" >> /tmp/prod-email.txt
 cat $LOG >> /tmp/prod-email.txt
-cat /tmp/prod-email.txt | /usr/bin/mail "kd9205@rit.edu, fdc7162@rit.edu, andy.meneely@gmail.com" -s "[Chromium History] Production Build: $OUTCOME"
+cat /tmp/prod-email.txt | /usr/bin/mail "chromium-history@se.rit.edu, andy.meneely@gmail.com" -s "[Chromium History] Production Build: $OUTCOME"
