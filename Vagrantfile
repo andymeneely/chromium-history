@@ -23,8 +23,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.synced_folder "../chromium-history", "/home/vagrant/chromium-history"
 
   config.vm.provision "shell" do |s|
-    s.path = "setup.sh"
-    s.privileged = true
+    s.path = "setup/provision.sh"
+    s.privileged = false
   end
   
 end
