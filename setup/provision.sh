@@ -12,7 +12,7 @@ sudo apt-get install curl -y
 
 \curl -L https://get.rvm.io | bash -s stable --ruby --autolibs=enable --auto-dotfiles 
 
-source /etc/profile.d/rvm.sh
+source /home/vagrant/.rvm/scripts/rvm
 
 rvm install ruby-1.9.3
 rvm use --default 1.9.3
