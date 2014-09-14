@@ -75,6 +75,7 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.datetime "date"
     t.boolean  "left"
     t.string   "composite_patch_set_file_id", limit: 1000
+    t.integer  "code_review_id",  limit: 8
   end
 
   create_table "commit_filepaths", force: true do |t|

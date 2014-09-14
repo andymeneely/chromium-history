@@ -17,6 +17,7 @@ require 'analysis/code_review_analysis.rb'
 require 'analysis/data_visualization'
 require 'analysis/visualization_queries'
 require 'stats'
+require 'nlp/corpus'
 
 # CodeReviewParser.new.parse: Parses JSON files in the codereviews dircetory for the enviornment we're working in.
     	# Loads the json files into an object(a hash). Then pushes data from the created object
@@ -157,4 +158,22 @@ namespace :run do
    DataVisualization.new.run
    puts "Graphs created at #{Time.now}"
   end
+
+  namespace :nlp do
+    desc "Run NLP analysis"
+    task :word_stats => :env do 
+      Benchmark.bm(40) do |x|
+        corpus = nil
+        tmpFile = Rails.configuration.tmpdir + '/comments.txt'
+        x.report("psql comment dump") {Comment.new.get_all_convo tmpFile, 10000}
+        x.report("Loading file") {corpus = Corpus.new(tmpFile)}
+        x.report("Chunking doc") {corpus.apply :chunk}
+        # x.report("Segmenting doc") {corpus.apply({:segment => :stanford }) } 
+        x.report("Segmenting doc") {corpus.apply :segment}
+        x.report("Tokenizing doc") {corpus.apply :tokenize} 
+        x.report("word count") {corpus.word_count 'test.out'}
+      end
+    end
+  end
+
 end

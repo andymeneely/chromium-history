@@ -60,12 +60,46 @@ gem 'simplecov', '~> 0.7.1' , :require => false, :group => :test
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 1.2'
 
-gem 'nokogiri'
-
 # For downloading our GoogleSheets data
 # As of Jun 18 2014 this is still not release for the google_drive gem, switching temporarily to master to get it working with sheets
 #gem 'google_drive', '>= 0.3.9' 
 gem 'google_drive', git: 'https://github.com/gimite/google-drive-ruby.git'
+
+gem 'nokogiri'
+
+# NLP framework
+gem 'treat'
+
+# Treat installer is currently broken on rails
+# Current advised solution is 'gem install' all the libs manually
+gem 'linguistics'
+gem 'engtagger'
+gem 'open-nlp'
+gem 'stanford-core-nlp'
+gem 'rwordnet'
+gem 'scalpel'
+gem 'fastimage'
+gem 'decisiontree', git: 'git@github.com:igrigorik/decisiontree.git' # Fix \r warning
+gem 'whatlanguage'
+gem 'zip'
+gem 'nickel'
+gem 'tactful_tokenizer'
+gem 'srx-english'
+gem 'punkt-segmenter'
+gem 'chronic'
+gem 'uea-stemmer'
+gem 'rbtagger'
+gem 'ruby-stemmer'
+gem 'activesupport'
+gem 'rb-libsvm'
+gem 'tomz-liblinear-ruby-swig'
+gem 'ruby-fann'
+gem 'fuzzy-string-match'
+gem 'levenshtein-ffi'
+gem 'tf-idf-similarity'
+gem 'kronic'
+gem 'graphr'
+# End of Treat dependencies
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.

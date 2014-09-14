@@ -117,19 +117,20 @@ class CodeReviewParser
 
 
   def parse_reviewers(cobj, owner_id) 
-                      cobj['reviewers'].each do |email|
-    dev_id = get_dev_id(email)
-    unless owner_id == dev_id #doesn't add owner as a reviewer
-      unless dev_id == -1 
-        clean_email, valid = Developer.sanitize_validate_email email
-        @revs_dict[dev_id] = clean_email
+    cobj['reviewers'].each do |email|
+      dev_id = get_dev_id(email)
+      unless owner_id == dev_id #doesn't add owner as a reviewer
+        unless dev_id == -1 
+          clean_email, valid = Developer.sanitize_validate_email email
+          @revs_dict[dev_id] = clean_email
+        end
       end
     end
-  end
   end
 
   @@PATCH_SET_PROPS = [:created, :num_comments, :message, :modified, :owner_email, :owner_id, :code_review_id, :patchset, :composite_patch_set_id]
   def parse_patchsets(pobj, code_review_id)
+    return if pobj.nil? 
     pobj['composite_patch_set_id'] = "#{code_review_id}-#{pobj['patchset']}"
     pobj['code_review_id'] = code_review_id
     pobj['owner_id'] = get_dev_id(pobj['owner_email'])
@@ -151,11 +152,12 @@ class CodeReviewParser
 
   #param patchset = the patchset file that the comments are on
   #      comments = the comments on a particular patch set file 
-  @@COMMENT_PROPS = [:author_email,:author_id,:text,:draft,:lineno,:date,:left ,:composite_patch_set_file_id]
-  def parse_comments(composite_patch_set_file_id, comments,code_review_id)
+  @@COMMENT_PROPS = [:author_email,:author_id,:text,:draft,:lineno,:date,:left ,:composite_patch_set_file_id, :code_review_id]
+  def parse_comments(composite_patch_set_file_id, comments, code_review_id)
     comments.each do |comment|
       comment['composite_patch_set_file_id'] = composite_patch_set_file_id
       comment['author_id'] = get_dev_id(comment["author_email"])
+      comment['code_review_id'] = code_review_id
       @coms << ordered_array(@@COMMENT_PROPS, comment)
       @prtp_set << comment['author_id'] unless comment['author_id'] == -1
       if Contributor.contribution? comment['text']
