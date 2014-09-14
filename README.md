@@ -17,7 +17,7 @@ Setup Instructions
 7. In the database.yml change both the username and password to "vagrant". 
 8. In the credentials.yml provide gmail credentials so that the script can access our vulnerability spreadsheet. (We should update this to use OAuth instead). 
 9. In the terminal that is ssh-ed into the vagrant box `cd chromium-history` and run `bundle install`. This will install all of the gems for the project. 
-10. Now you need to specify the environment: `export RAILS_ENV=development`. Doing this only sets the environment variable for this bash session. To have this set automatically when you ssh in, add the command to your .bashrc file. 
+10. The environment variable RAILS\_ENV will be set to development by default. To change it you need to specify a different environment like: `export RAILS_ENV=test`. Doing this only resets the environment variable for this bash session. To have this set automatically when you ssh in, add the command to your .bashrc file. 
 11. Now run: `rake run`. This command will attempt to build project. If you see an erros about invalid postgresql username or password you may need to delete the other environment entries in your database.yml file. There is a mysterious bug where it will pick up the values for another environment. 
 
 For a full list of vagrant commands go [here](https://docs.vagrantup.com/v2/cli/index.html)
