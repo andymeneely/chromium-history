@@ -1,6 +1,7 @@
 require 'date'
 require 'set'
 require_relative 'data_transfer'
+require 'profiler_util'
 
 # GitLogLoader class
 # parses git log commit files and extracts the
@@ -19,24 +20,28 @@ require_relative 'data_transfer'
 class GitLogLoader
 
   include DataTransfer
+  include ProfilerUtil
 
   @@GIT_LOG_BUG_PROPERTIES = [:commit_hash, :bug_id]
   @@GIT_LOG_FILE_PROPERTIES = [:commit_hash, :filepath]
   @@GIT_LOG_PROPERTIES = [:commit_hash, :parent_commit_hash, :author_email, :bug, :svn_revision, :created_at, :message]
 
   def load
-    @reviews_to_update = []
-    @con = ActiveRecord::Base.connection.raw_connection
-    @con.prepare('commitInsert', "INSERT INTO commits (#{@@GIT_LOG_PROPERTIES.map{|key| key.to_s}.join(', ')}) VALUES ($1, $2, $3, $4, $5, $6, $7)")
-    @con.prepare('fileInsert', "INSERT INTO commit_filepaths (#{@@GIT_LOG_FILE_PROPERTIES.map{|key| key.to_s}.join(', ')}) VALUES ($1, $2)")
-    @con.prepare('bugInsert', "INSERT INTO commit_bugs (#{@@GIT_LOG_BUG_PROPERTIES.map{|key| key.to_s}.join(', ')}) VALUES ($1, $2)")
-    get_commits(File.open("#{Rails.configuration.datadir}/chromium-gitlog.txt", "r"))
+    profile = lineprof(/./) do
+      @reviews_to_update = []
+      @con = ActiveRecord::Base.connection.raw_connection
+      @con.prepare('commitInsert', "INSERT INTO commits (#{@@GIT_LOG_PROPERTIES.map{|key| key.to_s}.join(', ')}) VALUES ($1, $2, $3, $4, $5, $6, $7)")
+      @con.prepare('fileInsert', "INSERT INTO commit_filepaths (#{@@GIT_LOG_FILE_PROPERTIES.map{|key| key.to_s}.join(', ')}) VALUES ($1, $2)")
+      @con.prepare('bugInsert', "INSERT INTO commit_bugs (#{@@GIT_LOG_BUG_PROPERTIES.map{|key| key.to_s}.join(', ')}) VALUES ($1, $2)")
+      get_commits(File.open("#{Rails.configuration.datadir}/chromium-gitlog.txt", "r"))
 
-    update = "UPDATE code_reviews SET
+      update = "UPDATE code_reviews SET
               commit_hash = m.hash
               FROM (values #{@reviews_to_update.join(', ')}) AS m (id, hash) 
               WHERE issue = m.id;"
-    ActiveRecord::Base.connection.execute(update)
+      ActiveRecord::Base.connection.execute(update)
+    end
+    print_profile(__FILE__, profile)
   end
 
   #
@@ -243,7 +248,7 @@ class GitLogLoader
 
 
     bugs.each do |bug|
- 
+
       # Normalize bug field
       bug.downcase!
       bug.strip!
@@ -257,7 +262,7 @@ class GitLogLoader
       # If the bug is a number with 6 digits
       if fast_match(bug,/^(\s*\d{1,6}\s*)$/)
         bugs_set << bug.to_i
-      # If it is a repetition of 4-6 digits
+        # If it is a repetition of 4-6 digits
       elsif fast_match(bug,/([0-9]{4,6})\1/)
         bug = /([0-9]{4,6})\1/.match(bug)[1]
         bugs_set << bug.to_i
