@@ -27,21 +27,18 @@ class GitLogLoader
   @@GIT_LOG_PROPERTIES = [:commit_hash, :parent_commit_hash, :author_email, :bug, :svn_revision, :created_at, :message]
 
   def load
-    profile = lineprof(/./) do
-      @reviews_to_update = []
-      @con = ActiveRecord::Base.connection.raw_connection
-      @con.prepare('commitInsert', "INSERT INTO commits (#{@@GIT_LOG_PROPERTIES.map{|key| key.to_s}.join(', ')}) VALUES ($1, $2, $3, $4, $5, $6, $7)")
-      @con.prepare('fileInsert', "INSERT INTO commit_filepaths (#{@@GIT_LOG_FILE_PROPERTIES.map{|key| key.to_s}.join(', ')}) VALUES ($1, $2)")
-      @con.prepare('bugInsert', "INSERT INTO commit_bugs (#{@@GIT_LOG_BUG_PROPERTIES.map{|key| key.to_s}.join(', ')}) VALUES ($1, $2)")
-      get_commits(File.open("#{Rails.configuration.datadir}/chromium-gitlog.txt", "r"))
+    @reviews_to_update = []
+    @con = ActiveRecord::Base.connection.raw_connection
+    @con.prepare('commitInsert', "INSERT INTO commits (#{@@GIT_LOG_PROPERTIES.map{|key| key.to_s}.join(', ')}) VALUES ($1, $2, $3, $4, $5, $6, $7)")
+    @con.prepare('fileInsert', "INSERT INTO commit_filepaths (#{@@GIT_LOG_FILE_PROPERTIES.map{|key| key.to_s}.join(', ')}) VALUES ($1, $2)")
+    @con.prepare('bugInsert', "INSERT INTO commit_bugs (#{@@GIT_LOG_BUG_PROPERTIES.map{|key| key.to_s}.join(', ')}) VALUES ($1, $2)")
+    get_commits(File.open("#{Rails.configuration.datadir}/chromium-gitlog.txt", "r"))
 
-      update = "UPDATE code_reviews SET
+    update = "UPDATE code_reviews SET
               commit_hash = m.hash
               FROM (values #{@reviews_to_update.join(', ')}) AS m (id, hash) 
               WHERE issue = m.id;"
-      ActiveRecord::Base.connection.execute(update)
-    end
-    print_profile(__FILE__, profile)
+    ActiveRecord::Base.connection.execute(update)
   end
 
   #
