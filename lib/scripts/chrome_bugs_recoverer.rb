@@ -119,9 +119,14 @@ class GoogleCodeBugRecoverer
   def save_csv_bugs()
     CSV.open(@@csv_file_location + "recovered_#{@csv_file_index}.csv", "w") do |csv|
       @csv_bugs.each do |bug|
-        csv << bug
+        begin
+          csv << bug
+        rescue Encoding::UndefinedConversionError
+          puts "Encoding::UndefinedConversionError catched!"
+        end
       end
     end
+
     puts "File recovered_#{@csv_file_index}.csv saved"
     
     @csv_bugs = Array.new
