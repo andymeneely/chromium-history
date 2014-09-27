@@ -215,7 +215,7 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.string   "title"
   end
 
-  create_table "vocab", id: false, force: true do |t|
+  create_table "technical_words", id: false, force: true do |t|
     t.string 'word'
   end
 
