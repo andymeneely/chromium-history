@@ -11,7 +11,21 @@ class Comment < ActiveRecord::Base
       .order('code_review_id')
   end
 
-  def get_all_convo resultFile, limit
-    ActiveRecord::Base.connection.execute("COPY(SELECT string_agg(text, E'\n') FROM Comments GROUP BY code_review_id LIMIT #{limit}) TO '#{resultFile}' WITH (FORMAT text)")
+  def get_all_convo result_file=nil, limit=nil
+    query = "SELECT code_review_id, string_agg(text, E'\n') 
+             FROM Comments 
+             GROUP BY code_review_id 
+             #{if limit then "LIMIT #{limit}" else "" end}"
+    if result_file then query = "COPY(#{query}) TO '#{result_file}' WITH (FORMAT text)" end
+    ActiveRecord::Base.connection.execute(query)
+  end
+
+  def get_developer_comments developer_id=nil, result_file=nil
+    query = "SELECT author_id, string_agg(text, E'\n') 
+             FROM Comments 
+             #{if developer_id then "WHERE author_id = #{developer_id}" else "" end} 
+             GROUP BY author_id"
+    if result_file then query = "COPY(#{query}) TO '#{result_file}' WITH (FORMAT text)" end
+    ActiveRecord::Base.connection.execute(query)
   end
 end

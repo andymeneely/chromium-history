@@ -99,7 +99,12 @@ gem 'levenshtein-ffi'
 gem 'tf-idf-similarity'
 gem 'kronic'
 gem 'graphr'
+gem 'mongo'
+gem 'bson_ext'
+gem 'lda-ruby'
 # End of Treat dependencies
+
+gem 'rubypython'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.

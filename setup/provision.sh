@@ -31,7 +31,17 @@ sudo apt-get install postgresql postgresql-contrib -y
 sudo -u postgres createuser --superuser vagrant
 sudo -u postgres psql -U postgres -d postgres -c "alter user vagrant with password 'vagrant';"
 
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
+echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' | sudo tee /etc/apt/sources.list.d/mongodb.list
+sudo apt-get update -y
+sudo apt-get install -y mongodb-org
+
 wget http://louismullie.com/treat/stanford-core-nlp-full.zip 
 sudo unzip stanford-core-nlp-full.zip -d /opt/stanford-core-nlp
+
+wget http://louismullie.com/treat/punkt/english.yaml
+sudo mkdir /opt/punkt
+sudo chmod 777 /opt/punkt
+mv english.yaml /opt/punkt/
 
 sudo cp /vagrant/setup/chromium_history.sh /etc/profile.d/

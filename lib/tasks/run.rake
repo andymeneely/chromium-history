@@ -18,6 +18,7 @@ require 'analysis/data_visualization'
 require 'analysis/visualization_queries'
 require 'stats'
 require 'nlp/corpus'
+require 'loaders/vocab_loader'
 
 # CodeReviewParser.new.parse: Parses JSON files in the codereviews dircetory for the enviornment we're working in.
     	# Loads the json files into an object(a hash). Then pushes data from the created object
@@ -160,20 +161,41 @@ namespace :run do
   end
 
   namespace :nlp do
+
+    desc "Creating Corpus"
+    task :create_corpus, [:source, :dbname] => [:env] do |t, args|
+      Benchmark.bm(40) do |x|
+        corpus = nil
+        x.report("Loading #{args[:source]}") {corpus = Corpus.new(args[:source], args[:dbname])} #'/home/vagrant/data/brown/'
+        x.report("Chunking collection") {corpus.apply :chunk}
+        x.report("Segmenting collection") {corpus.apply({:segment => :punkt})}
+        x.report("Tokenizing collection") {corpus.apply({:tokenize => :punkt})}
+        x.report("Saving corpus to #{args[:dbname]}") {corpus.export_to_mongo}
+      end
+    end
+
     desc "Run NLP analysis"
     task :word_stats => :env do 
       Benchmark.bm(40) do |x|
-        corpus = nil
-        tmpFile = Rails.configuration.tmpdir + '/comments.txt'
-        x.report("psql comment dump") {Comment.new.get_all_convo tmpFile, 10000}
-        x.report("Loading file") {corpus = Corpus.new(tmpFile)}
-        x.report("Chunking doc") {corpus.apply :chunk}
-        # x.report("Segmenting doc") {corpus.apply({:segment => :stanford }) } 
-        x.report("Segmenting doc") {corpus.apply :segment}
-        x.report("Tokenizing doc") {corpus.apply :tokenize} 
-        x.report("word count") {corpus.word_count 'test.out'}
+        puts 'what'
+      end
+    end
+
+
+    task :technical_feedback => :env do
+      Benchmark.bm(40) do |x|
+        puts 'what'
+      end
+    end
+
+    desc "Building Technical Vocab"
+    task :build_vocab => :env do
+      Benchmark.bm(40) do |x|
+        vocab_loader = VocabLoader.new
+        x.report('Generating technical vocab') {vocab_loader.load}
+        # x.report('Associating vocab words with developers') {vocab_loader.associate_developer_vocab}
+        # x.report('Associating vocab words with developers') {vocab_loader.associate_code_review_vocab}
       end
     end
   end
-
 end

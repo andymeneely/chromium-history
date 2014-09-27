@@ -66,6 +66,11 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.integer "code_review_id"
   end
 
+  create_table "code_reviews_technical_words", id: false, force: true do |t|
+    t.integer "code_review_id"
+    t.integer "technical_word_id"
+  end
+
   create_table "comments", id: false, force: true do |t|
     t.string   "author_email"
     t.integer  "author_id"
@@ -112,6 +117,11 @@ ActiveRecord::Schema.define(version: 20140512131450) do
   create_table "developers", force: true do |t|
     t.string "email"
   end
+
+  create_table "developers_technical_words", id: false, force: true do |t|
+    t.integer "developer_id"
+    t.integer "technical_word_id"
+  end 
 
   create_table "filepaths", id: false, force: true do |t|
     t.datetime "created_at"
@@ -203,6 +213,10 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.datetime "start"
     t.integer  "duration"
     t.string   "title"
+  end
+
+  create_table "vocab", id: false, force: true do |t|
+    t.string 'word'
   end
 
 end
