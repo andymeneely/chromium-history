@@ -11,6 +11,7 @@ class GoogleCodeBugRecoverer
 
   @@json_file_location = './bugs/json/'
   @@csv_file_location = './bugs/csv/'
+  @@log_file_location = './bugs/'
   
   @@json_url = "http://code.google.com/feeds/issues/p/chromium/issues/full?alt=json&can=all&max-results=1&id="
   @@csv_url = "http://code.google.com/p/chromium/issues/csv?colspec=Id+Summary+Blocked+BlockedOn+Blocking+Stars+Status+Reporter+Opened+Closed+Modified&can=1&num=1&q=Id%3D"
@@ -23,6 +24,8 @@ class GoogleCodeBugRecoverer
     @csv_file_index = 1
 
     @file_size = 500
+
+    @errors = Array.new
   end
 
 
@@ -55,12 +58,23 @@ class GoogleCodeBugRecoverer
       if @csv_bugs.size >= @file_size
         save_csv_bugs()
       end
-
     end
     save_json_bugs() #save the last json file
     save_csv_bugs() #save the last csv file
+    
+    save_error_log()
   end
+  
+  def save_error_log()
+    CSV.open(@@log_file_location + "error_log.csv", "w") do |csv| 
+      csv << ["bug_id","file","response_code"]
+      @errors.each do |error|
+        csv << error
+      end
+    end
 
+    puts "Error log saved to #{@@log_file_location}error_log.csv"
+  end
 
   def csv_bug_recoverer(bug_id)
     #Creates folder to store files.
@@ -73,6 +87,8 @@ class GoogleCodeBugRecoverer
         if parsedData.size >= 3 #verify that the response contains rows
           @csv_bugs << parsedData[1]
         end
+      else
+        @errors << [bug_id,'csv',issue_resp.code]
       end
     end
     issue_request.run
@@ -103,6 +119,8 @@ class GoogleCodeBugRecoverer
           end 
         @json_bugs << entry
         end
+      else
+        @errors << [bug_id,'json',issue_resp.code]
       end
     end
     issue_request.run
