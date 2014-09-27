@@ -13,5 +13,4 @@ technical_words = bag.word_difference(technical_words, nltk.corpus.brown.words()
 technical_words = bag.word_difference(technical_words, nltk.corpus.gutenberg.words())
 # technical_words = bag.word_intersection(technical_words, nltk.corpus.reuters.words())
 
-technical_words = bad.purge(wordlist.words, technical_words)
 print(json.dumps(technical_words))
