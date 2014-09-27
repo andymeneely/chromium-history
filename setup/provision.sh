@@ -3,7 +3,6 @@ sudo apt-get update -y
 sudo apt-get install vim -y
 sudo apt-get install git -y
 sudo apt-get install r-base -y
-sudo apt-get install openjdk-7-jdk -y
 
 sudo apt-get --purge remove ruby-rvm -y
 sudo rm -f /usr/share/ruby-rvm /etc/rvmrc /etc/profile.d/rvm.sh
