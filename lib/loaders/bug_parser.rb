@@ -13,12 +13,9 @@ class BugParser
     # and add the data from the json to attributes
     Dir["#{Rails.configuration.datadir}/bugs/json/*.json"].each do |file|
       bug_obj = load_json file
-
-      
-      bug_obj = bug_obj["feed"]["entry"] if bug_obj.include? "feed"
- 
+      bug_obj = bug_obj["feed"]["entry"] if bug_obj.include? "feed" #remove feed  envelope.
       bug_obj.each do |entry|
-        
+   
         unless entry["issues$owner"].nil?
           owner_name = entry["issues$owner"]["issues$username"]["$t"]
           owner_uri = entry["issues$owner"]["issues$uri"]["$t"]
