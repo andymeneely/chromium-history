@@ -9,14 +9,14 @@ end
 
 class VerifyRunner
   def self.run_all
-    puts "\nExecuting Run:Verify.\n\n"
+    puts "\nExecuting Verify.\n\n"
     @@pass = 0
     @@fail = 0
     run_verify "."
     run_verify Rails.env
     num_pass = "#{@@pass} passed."
     num_fail = "#{@@fail} failed."
-    puts "\n\nRun:Verify completed. #{num_pass.green} #{num_fail.red}\n"
+    puts "\n\nVerify completed. #{num_pass.green} #{num_fail.red}\n"
   end
   
   private
