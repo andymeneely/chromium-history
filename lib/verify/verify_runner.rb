@@ -16,19 +16,20 @@ class VerifyRunner
     run_verify Rails.env
     num_pass = "#{@@pass} passed."
     num_fail = "#{@@fail} failed."
-    puts "\nRun:Verify completed. #{num_pass.green} #{num_fail.red}\n"
+    puts "\n\nRun:Verify completed. #{num_pass.green} #{num_fail.red}\n"
   end
   
   private
   def self.print_results(result_data)
     if result_data[:pass]
-      result = "[#{"PASS".green}]"
+      print('.')
       @@pass += 1
     else
-      result = "[#{"FAIL".red}] #{result_data[:fail_message]}"
+      result = "\n[#{"FAIL".red}] #{result_data[:fail_message]}"
+      printf "  %-60s %s\n", result_data[:verify_name], result
       @@fail += 1
     end
-    printf "  %-60s %s\n", result_data[:verify_name], result
+
   end
 
   def self.run_verify(path)
