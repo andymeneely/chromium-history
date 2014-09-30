@@ -16,6 +16,7 @@ require 'analysis/hypothesis_tests'
 require 'analysis/code_review_analysis.rb'
 require 'analysis/data_visualization'
 require 'analysis/visualization_queries'
+require 'analysis/ascii_histograms'
 require 'stats'
 
 # CodeReviewParser.new.parse: Parses JSON files in the codereviews dircetory for the enviornment we're working in.
@@ -156,5 +157,13 @@ namespace :run do
    puts "Visualization queries finished at #{Time.now}"
    DataVisualization.new.run
    puts "Graphs created at #{Time.now}"
+
   end
+
+  desc "Show some histograms"
+  task :hist => :env do
+   ASCIIHistograms.new.run
+   puts "ASCII Histograms created at #{Time.now}"
+  end
+
 end
