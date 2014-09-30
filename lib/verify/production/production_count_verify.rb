@@ -2,7 +2,7 @@ require_relative '../verify_base.rb'
 
 class ProductionCountVerify < VerifyBase
   def verify_count_cves
-    assert_equal 672, Cvenum.count
+    assert_equal 703, Cvenum.count
   end
 
   def verify_count_code_reviews
@@ -10,7 +10,7 @@ class ProductionCountVerify < VerifyBase
   end
 
   def verify_count_commits
-    assert_equal 185970, Commit.count
+    assert_equal 185948, Commit.count
   end
 
   def verify_dangling_bug_commits
