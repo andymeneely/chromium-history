@@ -37,12 +37,6 @@ class ForeignKeyVerify < VerifyBase
                 one_table_key: 'commit_hash'
   end
 
-  def verify_dangling_commit_bugs
-    no_dangling_right many_table: 'bugs', \
-                      many_table_key: 'bug_id', \
-                      one_table: 'commit_bugs',\
-                      one_table_key: 'bug_id'
-  end
 
   private
   def get_results(error_count, table, foreign_column)
@@ -50,18 +44,6 @@ class ForeignKeyVerify < VerifyBase
       pass()
     else
       fail("#{error_count.to_s} inconsistent #{foreign_column} in the #{table} table")
-    end
-  end
-
-  def no_dangling_right(arg={})
-    query = "SELECT COUNT(*) FROM #{arg[:many_table]} RIGHT OUTER JOIN #{arg[:one_table]} " \
-      + "ON (#{arg[:many_table]}.#{arg[:many_table_key]} = #{arg[:one_table]}.#{arg[:one_table_key]}) " \
-      + "WHERE #{arg[:many_table]}.#{arg[:many_table_key]} IS NULL"
-    st = ActiveRecord::Base.connection.execute query
-    if st.getvalue(0,0).to_i == 0
-      pass()
-    else
-      fail("#{arg[:many_table]} should not be dangling. #{st.getvalue(0,0)} dangling")
     end
   end
  
