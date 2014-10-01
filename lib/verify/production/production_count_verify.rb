@@ -15,7 +15,7 @@ class ProductionCountVerify < VerifyBase
 
   def verify_dangling_bug_commits
     query = <<-EOSQL
-      SELECT DISTINCT commit_bugs.bug_id 
+      SELECT COUNT(DISTINCT commit_bugs.bug_id) 
         FROM bugs RIGHT OUTER JOIN commit_bugs 
                ON bugs.bug_id=commit_bugs.bug_id 
         WHERE bugs.bug_id IS NULL
