@@ -8,8 +8,8 @@ class CveAllVerify < VerifyBase
         (SELECT cvenum_id FROM code_reviews_cvenums)
      EOSQL
      rs = ActiveRecord::Base.connection.execute query
+     reviewless_cves = rs.getvalue(0,0).to_i
 
-     reviewless_cves = rs.getvalue(0,0).to_i 
      # Through our own manual investigation, we know that some 
      # vulnerabilities don't trace to code reviews in trunk
      # We'll keep that number here for regression testing
