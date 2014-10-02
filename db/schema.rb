@@ -78,8 +78,12 @@ ActiveRecord::Schema.define(version: 20140512131450) do
   end
 
   create_table "commit_filepaths", force: true do |t|
-    t.string "commit_hash"
-    t.string "filepath"
+    t.string  "commit_hash"
+    t.string  "filepath"
+    t.integer "lines_added"
+    t.integer "lines_deleted_self"
+    t.integer "lines_deleted_other"
+    t.integer "num_authors_affected"
   end
 
   create_table "commits", id: false, force: true do |t|
