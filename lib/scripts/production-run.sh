@@ -49,3 +49,6 @@ cat $ERR >> /tmp/prod-email.txt
 echo -e "\n\n\n\n\n----------------stdout------------------------\n\n\n\n\n" >> /tmp/prod-email.txt
 cat $LOG >> /tmp/prod-email.txt
 cat /tmp/prod-email.txt | /usr/bin/mail "chromium-history@se.rit.edu, andy.meneely@gmail.com" -s "[Chromium History] Production Build: $OUTCOME"
+
+#Post to Slack
+curl -X POST --data-urlencode "payload={\"channel\": \"#build\", \"username\": \"webhookbot\", \"text\": \"Production build: $OUTCOME. See email for details.\", \"icon_emoji\": \":ghost:\" } " https://softarcheology.slack.com/services/hooks/incoming-webhook?token=8dbu9krt70iSbjMUgI6WAJvJ
