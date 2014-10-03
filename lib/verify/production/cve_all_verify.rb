@@ -1,4 +1,4 @@
-require_relative 'verify_base'
+require_relative '../verify_base'
 
 class CveAllVerify < VerifyBase
   def verify_num_cves_have_one_issue
