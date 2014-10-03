@@ -65,7 +65,9 @@ class ParseReleaseFilepathsOwners
   CSV.open(@csvLoc, "a") do |cfile|
   files.each do |filename|
         owners.each do |owner|
+			if (self.source_code? filename)
            cfile << ["11","#{filename}", "#{owner}"]
+		   end
         end
       end
 	  end
@@ -75,11 +77,17 @@ class ParseReleaseFilepathsOwners
   CSV.open(@csvLoc, "a") do |cfile|
   #add each version, filename, owner to csv
 	  (files).each do |filename|
-	    if File.fnmatch(glob, filename)
+	    if File.fnmatch(glob, filename) and (self.source_code? filename)
 	      cfile << ["11","#{filename}", "#{owner}"]
 	    end
 	  end
 	  end
+  end
+  
+  def source_code? filepath
+    valid_extns = ['.h','.cc','.js','.cpp','.gyp','.py','.c','.make','.sh','.S''.scons','.sb','Makefile']
+    valid_extns.each { |extn| if filepath.to_s.end_with?(extn) then return true end }
+    return false
   end
 
   def getOwnerShip(pOwners, currDir)
