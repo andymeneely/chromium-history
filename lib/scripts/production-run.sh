@@ -30,7 +30,7 @@ rake run 1>$LOG 2>$ERR
 if [[ -s $ERR ]]; then
     echo "Errors in the error log - not changing to chromium_real" 1>>$LOG
 else
-    VERIFY_PASS=`grep "^Verify completed.*0 failed" $LOG" `
+    VERIFY_PASS=`grep "^Verify completed.*0 failed" $LOG`
     if [[ -n $VERIFY_PASS ]]; then
     	OUTCOME="SUCCESS!"
     else
