@@ -16,7 +16,10 @@ class ReleaseAnalysis
         rf.perc_fast_reviews = rf.filepath.perc_fast_reviews(r.date)
         rf.perc_overlooked_patchsets = rf.filepath.perc_overlooked_patchsets(r.date)
         rf.avg_sheriff_hours = rf.filepath.avg_sheriff_hours(r.date)
-
+        
+        rf.vulnerable = rf.filepath.vulnerable?
+        rf.num_vulnerabilities = rf.filepath.cves().count
+        
         #pre_ metrics for bugs
         dates = DateTime.new(1970,01,01)..r.date
         rf.num_pre_bugs = rf.filepath.bugs(dates).count
@@ -27,15 +30,15 @@ class ReleaseAnalysis
         rf.num_pre_tests_fails_bugs = rf.filepath.bugs(dates,'cr-tests-fails').count
         rf.num_pre_stability_crash_bugs = rf.filepath.bugs(dates,'stability-crash').count
         rf.num_pre_build_bugs = rf.filepath.bugs(dates,'build').count
+        rf.num_pre_vulnerabilities = rf.filepath.cves(dates).count
+        rf.was_vulnerable = rf.filepath.vulnerable?(dates)
         
         #post_ metrics
         dates = r.date..DateTime.new(2050,01,01)
         rf.num_post_bugs = rf.filepath.bugs(dates).count
-
-        #TODO update this for #189
-        rf.vulnerable = rf.filepath.vulnerable?(r.date)
-        rf.num_vulnerabilities = rf.filepath.cves(r.date).count
-
+        rf.num_post_vulnerabilities = rf.filepath.cves(dates).count
+        rf.becomes_vulnerable = rf.filepath.vulnerable?(dates)
+        
         rf.save
       end
     end
