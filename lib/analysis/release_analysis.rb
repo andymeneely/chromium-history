@@ -16,20 +16,26 @@ class ReleaseAnalysis
         rf.perc_fast_reviews = rf.filepath.perc_fast_reviews(r.date)
         rf.perc_overlooked_patchsets = rf.filepath.perc_overlooked_patchsets(r.date)
         rf.avg_sheriff_hours = rf.filepath.avg_sheriff_hours(r.date)
+
+        #pre_ metrics for bugs
+        dates = DateTime.new(1970,01,01)..r.date
+        rf.num_pre_bugs = rf.filepath.bugs(dates).count
+        rf.num_pre_features = rf.filepath.bugs(dates,'type-feature').count
+        rf.num_pre_compatibility_bugs = rf.filepath.bugs(dates,'type-compat').count
+        rf.num_pre_regression_bugs = rf.filepath.bugs(dates,'type-bug-regression').count
+        rf.num_pre_security_bugs = rf.filepath.bugs(dates,'type-bug-security').count
+        rf.num_pre_tests_fails_bugs = rf.filepath.bugs(dates,'cr-tests-fails').count
+        rf.num_pre_stability_crash_bugs = rf.filepath.bugs(dates,'stability-crash').count
+        rf.num_pre_build_bugs = rf.filepath.bugs(dates,'build').count
+        
+        #post_ metrics
+        dates = r.date..DateTime.new(2050,01,01)
+        rf.num_post_bugs = rf.filepath.bugs(dates).count
+
+        #TODO update this for #189
         rf.vulnerable = rf.filepath.vulnerable?(r.date)
         rf.num_vulnerabilities = rf.filepath.cves(r.date).count
-        rf.num_bugs = rf.filepath.bugs(r.date).count
-        
-        
-        #pre_ metrics
-        rf.num_pre_features = rf.filepath.bugs_by_label(r.date,'type-feature').count
-        rf.num_pre_compatibility_bugs = rf.filepath.bugs_by_label(r.date,'type-compat').count
-        rf.num_pre_regression_bugs = rf.filepath.bugs_by_label(r.date,'type-bug-regression').count
-        rf.num_pre_security_bugs = rf.filepath.bugs_by_label(r.date,'type-bug-regression').count
-        rf.num_pre_tests_fails_bugs = rf.filepath.bugs_by_label(r.date,'cr-tests-fails').count
-        rf.num_pre_stability_crash_bugs = rf.filepath.bugs_by_label(r.date,'stability-crash').count
-        rf.num_pre_build_bugs = rf.filepath.bugs_by_label(r.date,'build').count
-        
+
         rf.save
       end
     end

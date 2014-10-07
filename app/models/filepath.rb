@@ -38,27 +38,14 @@ class Filepath < ActiveRecord::Base
       .uniq
   end
   
-  #searches for bugs labeled with the "real_bugs" labels.
-  def bugs(before = DateTime.new(2050,01,01))    
-    real_bugs = ['type-bug','type-bug-regression','type-bug-security','type-defect','type-regression']
+  #searches for bugs, with optional labels and years back
+  @@BUG_LABELS = %w(type-bug type-bug-regression type-bug-security type-defect type-regression)
+  def bugs(dates=DateTime.new(1970,01,01)..DateTime.new(2050,01,01), labels=@@BUG_LABELS)
     Filepath.bugs\
       .select('bugs.bug_id')\
       .where(filepath: filepath, \
-             :labels => {:label => real_bugs},\
-             'bugs.opened' => DateTime.new(1970,01,01)..before)
-      .uniq
-  end
-  
-  #searches for bugs that are labeled with "label_query" parameter, for the 2 years pre_ metrics.
-  def bugs_by_label(before = DateTime.new(2050,01,01), label_query = 'type-bug')
-    num_years = 2
-    since_date = before - num_years.years
-
-    Filepath.bugs\
-      .select('bugs.bug_id')\
-      .where(filepath: filepath, \
-             :labels => {:label => label_query},\
-             'bugs.opened' => since_date..before)
+             :labels => {:label => labels},\
+             'bugs.opened' => dates)
       .uniq
   end
   

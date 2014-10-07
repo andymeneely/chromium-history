@@ -12,6 +12,17 @@ class AssociationVerify < VerifyBase
     assert_equal 2, Filepath.find_by(filepath: 'cc/resources/texture_mailbox_deleter.h').bugs.count
   end
   
+  def verify_filepath_bug_count_by_date
+    dates = DateTime.new(1970,01,01)..DateTime.new(2009,8,26)
+    assert_equal 1, Filepath.find_by(filepath: 'cc/resources/texture_mailbox_deleter.h').bugs(dates).count
+  end
+  
+  def verify_filepath_bug_by_label
+    dates = DateTime.new(1970,01,01)..DateTime.new(2050,1,1)
+    labels = 'type-bug-security'
+    assert_equal 1, Filepath.find_by(filepath: 'cc/resources/texture_mailbox_deleter.h').bugs(dates,labels).count
+  end
+  
   def verify_filepath_vulnerable
     assert_equal true, Filepath.find_by(filepath: 'ui/base/x/x11_util.cc').vulnerable?
   end
