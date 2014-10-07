@@ -39,10 +39,6 @@ class ParseReleaseFilepathsOwners
     @release = opts[:release]
   end
 
-  def getSrcLoc()
-    return @srcLoc
-  end
-
   def getRelativePath (filename)
 	  relative = Pathname.new(Dir.pwd).relative_path_from Pathname.new(@srcLoc)
 	  filename = relative.to_s + "/" + filename
