@@ -3,11 +3,11 @@ require_relative "../verify_base"
 class BugLabelVerify < VerifyBase
 
   def verify_label_17941_count
-    assert_equal 8, BugLabel.where(bug_id: 17941).count
+    assert_equal 9, BugLabel.where(bug_id: 17941).count
   end
   
   def verify_label_17941_count_2
-    assert_equal 8, Bug.find(17941).labels.count
+    assert_equal 9, Bug.find(17941).labels.count
   end
 
   def verify_label_17941_exists

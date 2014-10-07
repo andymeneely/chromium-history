@@ -190,6 +190,14 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.boolean "vulnerable"
     t.integer "num_vulnerabilities"
     t.integer "num_bugs"
+
+    t.integer "num_pre_features"
+    t.integer "num_pre_compatibility_bugs"
+    t.integer "num_pre_regression_bugs"
+    t.integer "num_pre_security_bugs"
+    t.integer "num_pre_tests_fails_bugs"
+    t.integer "num_pre_stability_crash_bugs"
+    t.integer "num_pre_build_bugs"
   end
 
   create_table "releases", id: false, force: true do |t|
