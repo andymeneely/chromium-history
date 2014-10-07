@@ -110,7 +110,7 @@ class ParseReleaseFilepathsOwners
       rules = File.open("OWNERS").readlines if File.file?("OWNERS")
       index = -1
 
-      rules.each_with_index do |rule, index|
+      rules.each_with_index do |rule, i|
         index = i
         case rule
 
