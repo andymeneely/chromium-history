@@ -22,13 +22,13 @@ class ReleaseAnalysis
         
         
         #pre_ metrics
-        rf.num_pre_features = rf.filepath.bugs(r.date,'type-feature').count
-        rf.num_pre_compatibility_bugs = rf.filepath.bugs(r.date,'type-compat').count
-        rf.num_pre_regression_bugs = rf.filepath.bugs(r.date,'type-bug-regression').count
-        rf.num_pre_security_bugs = rf.filepath.bugs(r.date,'type-bug-regression').count
-        rf.num_pre_tests_fails_bugs = rf.filepath.bugs(r.date,'cr-tests-fails').count
-        rf.num_pre_stability_crash_bugs = rf.filepath.bugs(r.date,'stability-crash').count
-        rf.num_pre_build_bugs = rf.filepath.bugs(r.date,'build').count
+        rf.num_pre_features = rf.filepath.bugs_by_label(r.date,'type-feature').count
+        rf.num_pre_compatibility_bugs = rf.filepath.bugs_by_label(r.date,'type-compat').count
+        rf.num_pre_regression_bugs = rf.filepath.bugs_by_label(r.date,'type-bug-regression').count
+        rf.num_pre_security_bugs = rf.filepath.bugs_by_label(r.date,'type-bug-regression').count
+        rf.num_pre_tests_fails_bugs = rf.filepath.bugs_by_label(r.date,'cr-tests-fails').count
+        rf.num_pre_stability_crash_bugs = rf.filepath.bugs_by_label(r.date,'stability-crash').count
+        rf.num_pre_build_bugs = rf.filepath.bugs_by_label(r.date,'build').count
         
         rf.save
       end
