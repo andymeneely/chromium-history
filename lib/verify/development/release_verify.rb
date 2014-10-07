@@ -21,7 +21,7 @@ class ReleaseVerify < VerifyBase
   end
 
   def verify_ftp_directory_sloc
-    assert_equal 21, ReleaseFilepath.where(thefilepath: 'net/ftp/ftp_directory_listing_parser_windows.h').pluck(:sloc).last
+    assert_equal 21, ReleaseFilepath.where(release: '11.0', thefilepath: 'net/ftp/ftp_directory_listing_parser_windows.h').pluck(:sloc).last
   end
 
   def verify_ftp_directory_sloc_release_11
