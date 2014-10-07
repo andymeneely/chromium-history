@@ -20,8 +20,13 @@ class ReleaseAnalysis
         rf.vulnerable = rf.filepath.vulnerable?
         rf.num_vulnerabilities = rf.filepath.cves().count
         
+
+        #effect reach for bugs and vulnerabilities
+        effect_reach = 2.years
+
         #pre_ metrics for bugs
-        dates = DateTime.new(1970,01,01)..r.date
+        reach_date= r.date - effect_reach
+        dates = reach_date..r.date
         rf.num_pre_bugs = rf.filepath.bugs(dates).count
         rf.num_pre_features = rf.filepath.bugs(dates,'type-feature').count
         rf.num_pre_compatibility_bugs = rf.filepath.bugs(dates,'type-compat').count
@@ -34,7 +39,8 @@ class ReleaseAnalysis
         rf.was_vulnerable = rf.filepath.vulnerable?(dates)
         
         #post_ metrics
-        dates = r.date..DateTime.new(2050,01,01)
+        reach_date = r.date + effect_reach
+        dates = r.date..reach_date
         rf.num_post_bugs = rf.filepath.bugs(dates).count
         rf.num_post_vulnerabilities = rf.filepath.cves(dates).count
         rf.becomes_vulnerable = rf.filepath.vulnerable?(dates)
