@@ -5,7 +5,7 @@ require "trollop"
 
 #Trollop command-line options
 opts = Trollop::options do
-  version "OWNERS Scraper 1.0"
+  version "OWNERS data collection script"
   banner <<-EOS
 
 The OWNERS scraper/parser iterates over OWNERS files within Chromium source code in the location specified in options. Uses OWNERS rules to develop a a CSV of OWNERS and the files they are responsible for.
@@ -13,11 +13,13 @@ The OWNERS scraper/parser iterates over OWNERS files within Chromium source code
 Produces a CSV in directory specified in options. Includes version, filename, owner.
 
 Usage: 
-  ruby parse_release-filepaths-OWNERS.rb [options]
+  ruby #{File.basename(__FILE__)} [options]
+
 where [options] are:
 EOS
-  opt :srcLocation, "The location of the Chromium source code to parse", default:"..", type: String
-  opt :csvOutputLocation, "The location for where to place the CSV results", default:"..", type: String
+  opt :src, "The directory of the Chromium source code to parse", default: ".", type: String
+  opt :csv, "The output csv file for the results", default: "owners.csv", type: String
+  opt :release, "The name of the release to be stored", default: '11.0',type: String 
 end
 
 #
@@ -31,24 +33,19 @@ class ParseReleaseFilepathsOwners
   # @param initial=nil Hash The initial values we have. 
   # @return ParseReleaseFilepathsOwners The new object
   def initialize(opts)
-    @opts = opts
-    @csvLoc = @opts[:csvOutputLocation]
-    @srcLoc = @opts[:srcLocation]
+    File.open(opts[:csv], 'w+').close
+    @csvLoc = File.expand_path(opts[:csv])
+    @srcLoc = File.expand_path(opts[:src])
+    @release = opts[:release]
   end
 
   def getSrcLoc()
     return @srcLoc
   end
 
-  def getOwnerShipHelper(csvLoc=@opts[:csvOutputLocation], srcLoc = @opts[:srcLocation])
-    @csvLoc = csvLoc
-    @srcLoc = srcLoc
-    getOwnerShip(Array.new, srcLoc)
-  end
-  
   def getRelativePath (filename)
-	relative = Pathname.new(Dir.pwd).relative_path_from Pathname.new(@srcLoc)
-	filename = relative.to_s + "/" + filename
+	  relative = Pathname.new(Dir.pwd).relative_path_from Pathname.new(@srcLoc)
+	  filename = relative.to_s + "/" + filename
     return filename
   end
   
@@ -66,7 +63,7 @@ class ParseReleaseFilepathsOwners
   files.each do |filename|
         owners.each do |owner|
 			if (self.source_code? filename)
-           cfile << ["11","#{filename}", "#{owner}"]
+           cfile << [@release,"#{filename}", "#{owner}"]
 		   end
         end
       end
@@ -78,7 +75,7 @@ class ParseReleaseFilepathsOwners
   #add each version, filename, owner to csv
 	  (files).each do |filename|
 	    if File.fnmatch(glob, filename) and (self.source_code? filename)
-	      cfile << ["11","#{filename}", "#{owner}"]
+	      cfile << [@release,"#{filename}", "#{owner}"]
 	    end
 	  end
 	  end
@@ -90,6 +87,14 @@ class ParseReleaseFilepathsOwners
     return false
   end
 
+
+  # Initial call to the recursive function
+  def run_parser
+    getOwnerShip([], @srcLoc)
+  end
+
+
+  # Recursive call on the directories
   def getOwnerShip(pOwners, currDir)
     
 	allFiles = Array.new
@@ -172,7 +177,7 @@ class ParseReleaseFilepathsOwners
 	
 #driver code
 p = ParseReleaseFilepathsOwners.new(opts)
-p.getOwnerShipHelper
+p.run_parser
 
 puts "Done."
 
