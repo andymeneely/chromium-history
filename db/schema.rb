@@ -205,5 +205,11 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.integer  "duration"
     t.string   "title"
   end
+  
+  create_table "release_owners", id: false, force: true do |t|
+    t.string   "release"
+    t.string   "filepath"
+    t.string   "owner_email"
+  end
 
 end
