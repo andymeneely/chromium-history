@@ -78,8 +78,12 @@ ActiveRecord::Schema.define(version: 20140512131450) do
   end
 
   create_table "commit_filepaths", force: true do |t|
-    t.string "commit_hash"
-    t.string "filepath"
+    t.string  "commit_hash"
+    t.string  "filepath"
+    t.integer "lines_added"
+    t.integer "lines_deleted_self"
+    t.integer "lines_deleted_other"
+    t.integer "num_authors_affected"
   end
 
   create_table "commits", id: false, force: true do |t|
@@ -185,7 +189,19 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.decimal "avg_sheriff_hours"
     t.boolean "vulnerable"
     t.integer "num_vulnerabilities"
-    t.integer "num_bugs"
+    t.integer "num_pre_bugs"
+    t.integer "num_pre_features"
+    t.integer "num_pre_compatibility_bugs"
+    t.integer "num_pre_regression_bugs"
+    t.integer "num_pre_security_bugs"
+    t.integer "num_pre_tests_fails_bugs"
+    t.integer "num_pre_stability_crash_bugs"
+    t.integer "num_pre_build_bugs"
+    t.integer "num_post_bugs"
+    t.integer "num_pre_vulnerabilities"
+    t.integer "num_post_vulnerabilities"
+    t.boolean "was_vulnerable"
+    t.boolean "becomes_vulnerable"
   end
 
   create_table "releases", id: false, force: true do |t|

@@ -10,14 +10,14 @@ class Filepath < ActiveRecord::Base
   # a vulnerability fix, then this should return true.
   #
   # @param after - check for commit filepaths after a given date. Defaults to Jan 1, 1970
-  def vulnerable?(after=DateTime.new(1970,01,01))
-    cves(after).any?
+  def vulnerable?(dates=@@OPEN_DATES)
+    cves(dates).any?
   end
 
-  def cves(after=DateTime.new(1970,01,01))
+  def cves(dates=@@OPEN_DATES)
     Filepath.joins(commit_filepaths: [commit: [code_reviews: :cvenums]])\
       .where(filepath: filepath, \
-             'commits.created_at' => after..DateTime.new(2050,01,01))
+             'commits.created_at' => dates)
   end
 
   # Delegates to the static method with the where clause
@@ -38,16 +38,18 @@ class Filepath < ActiveRecord::Base
       .uniq
   end
   
-  def bugs(before = DateTime.new(2050,01,01))    
-    real_bugs = ['type-bug','type-bug-regression','type-bug-security','type-defect','type-regression']
+  #searches for bugs, with optional labels and years back
+  @@OPEN_DATES = dates=DateTime.new(1970,01,01)..DateTime.new(2050,01,01)
+  @@BUG_LABELS = %w(type-bug type-bug-regression type-bug-security type-defect type-regression)
+  def bugs(dates=@@OPEN_DATES, labels=@@BUG_LABELS)
     Filepath.bugs\
       .select('bugs.bug_id')\
       .where(filepath: filepath, \
-             :labels => {:label => real_bugs},\
-             'bugs.opened' => DateTime.new(1970,01,01)..before)
+             :labels => {:label => labels},\
+             'bugs.opened' => dates)
       .uniq
   end
-
+  
   def code_reviews(before = DateTime.new(2050,01,01))
     Filepath.code_reviews\
       .where(filepath: filepath, \

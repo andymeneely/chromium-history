@@ -16,6 +16,7 @@ require 'analysis/hypothesis_tests'
 require 'analysis/code_review_analysis.rb'
 require 'analysis/data_visualization'
 require 'analysis/visualization_queries'
+require 'analysis/ascii_histograms'
 require 'stats'
 
 # CodeReviewParser.new.parse: Parses JSON files in the codereviews dircetory for the enviornment we're working in.
@@ -69,7 +70,7 @@ namespace :run do
   
   desc "Parse, load, optimize, and consolidate"
   task :slurp => [:environment,"db:reset"] do
-    Benchmark.bm(40) do |x|
+    Benchmark.bm(35) do |x|
       x.report("Parsing JSON Code Reviews") {CodeReviewParser.new.parse}
       x.report("Loading Code Review CSVs") {CodeReviewLoader.new.copy_parsed_tables}
       x.report("Optimizing Code Reviews et al.") do
@@ -107,7 +108,7 @@ namespace :run do
   
   desc "Analyze the data for metrics"
   task :analyze => :environment do
-    Benchmark.bm(40) do |x|
+    Benchmark.bm(35) do |x|
       x.report("Populating reviews_with_owner"){ParticipantAnalysis.new.populate_reviews_with_owner}
       x.report("Populating security_experienced"){ParticipantAnalysis.new.populate_security_experienced}
       x.report("Populating total_reviews_with_owner"){CodeReviewAnalysis.new.populate_total_reviews_with_owner}
@@ -156,5 +157,13 @@ namespace :run do
    puts "Visualization queries finished at #{Time.now}"
    DataVisualization.new.run
    puts "Graphs created at #{Time.now}"
+
   end
+
+  desc "Show some histograms"
+  task :hist => :env do
+   ASCIIHistograms.new.run
+   puts "ASCII Histograms created at #{Time.now}"
+  end
+
 end
