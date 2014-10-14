@@ -59,6 +59,17 @@ class HypothesisTests
     association '% Reviews over 200 LOC/hour','perc_fast_reviews'
     association '% Reviews with a Potentially-Overlooked Patchset', 'perc_overlooked_patchsets'
     association 'Average Sheriff Hours','avg_sheriff_hours'
+    
+    association 'Number of Pre Bugs','num_pre_bugs'
+    association 'Number of Pre Features Bugs','num_pre_features'
+    association 'Number of Pre Compatibility Bugs','num_pre_compatibility_bugs'
+    association 'Number of Pre Regretion Bugs','num_pre_regression_bugs'
+    association 'Number of Pre Security Bugs','num_pre_security_bugs'
+    association 'Number of Pre Test Fails Bugs','num_pre_tests_fails_bugs'
+    association 'Number of Pre Stability Crash Bugs','num_pre_stability_crash_bugs'
+    association 'Number of Pre Build Bugs','num_pre_build_bugs'
+    association 'Number of Post Bugs','num_post_bugs'
+    
   end
 
   def association(title, column)
