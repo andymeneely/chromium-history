@@ -7,6 +7,8 @@ require 'loaders/git_log_loader'
 require 'loaders/release_filepath_loader'
 require 'loaders/sloc_loader'
 require 'loaders/sheriff_rotation_loader'
+require 'loaders/owners_loader.rb'
+require 'loaders/owners_parser.rb'
 require 'consolidators/filepath_consolidator'
 require 'consolidators/developer_consolidator'
 require 'verify/verify_runner'
@@ -102,6 +104,8 @@ namespace :run do
       x.report("Optimizing participants"){ Participant.on_optimize}
       x.report("Optimizing filepath"){ Filepath.on_optimize}
       x.report("Deleting duplicate reviewers") {DeveloperConsolidator.new.consolidate_reviewers}
+	  x.report("Parsing OWNERS") {OwnersParser.new.parse}
+	  x.report("Loading OWNERS") {OwnersLoader.new.load}
       x.report("Running PSQL ANALYZE"){ ActiveRecord::Base.connection.execute "ANALYZE" }
     end
   end
