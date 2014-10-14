@@ -61,14 +61,14 @@ class HypothesisTests
     association 'Average Sheriff Hours','avg_sheriff_hours','vulnerable'
     
     association 'Pre Bugs / Future Vulnerability','num_pre_bugs','becomes_vulnerable'
-    association 'Pre Features Bugs / Future Vulnerability','num_pre_features','becomes_vulnerable'
+    association 'Pre Feature Bugs / Future Vulnerability','num_pre_features','becomes_vulnerable'
     association 'Pre Compatibility Bugs / Future Vulnerability','num_pre_compatibility_bugs','becomes_vulnerable'
-    association 'Pre Regretion Bugs / Future Vulnerability','num_pre_regression_bugs','becomes_vulnerable'
+    association 'Pre Regression Bugs / Future Vulnerability','num_pre_regression_bugs','becomes_vulnerable'
     association 'Pre Security Bugs / Future Vulnerability','num_pre_security_bugs','becomes_vulnerable'
     association 'Pre Test Fails Bugs / Future Vulnerability','num_pre_tests_fails_bugs','becomes_vulnerable'
     association 'Pre Stability Crash Bugs / Future Vulnerability','num_pre_stability_crash_bugs','becomes_vulnerable'
     association 'Pre Build Bugs / Future Vulnerability','num_pre_build_bugs','becomes_vulnerable'
-    association 'Previus Vulnerability / Post Bugs','num_post_bugs','was_vulnerable'
+    association 'Previous Vulnerability / Post Bugs','num_post_bugs','was_vulnerable'
   end
 
   def association(title, column, criteria)
