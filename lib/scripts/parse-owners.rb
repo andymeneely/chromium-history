@@ -1,4 +1,4 @@
-require "rubygems"
+#!/usr/bin/ruby
 require	"pathname"
 require "csv"
 require "trollop"
@@ -16,7 +16,7 @@ Usage:
   ruby #{File.basename(__FILE__)} [options]
 
 where [options] are:
-  EOS
+EOS
   opt :src, "The directory of the Chromium source code to parse", default: ".", type: String
   opt :csv, "The output csv file for the results", default: "owners.csv", type: String
   opt :release, "The name of the release to be stored", default: '11.0',type: String 
