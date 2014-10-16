@@ -15,7 +15,7 @@ require 'verify/verify_runner'
 require 'analysis/release_analysis'
 require 'analysis/participant_analysis'
 require 'analysis/hypothesis_tests'
-require 'analysis/code_review_analysis.rb'
+require 'analysis/code_review_analysis'
 require 'analysis/data_visualization'
 require 'analysis/visualization_queries'
 require 'analysis/ascii_histograms'
@@ -104,8 +104,9 @@ namespace :run do
       x.report("Optimizing participants"){ Participant.on_optimize}
       x.report("Optimizing filepath"){ Filepath.on_optimize}
       x.report("Deleting duplicate reviewers") {DeveloperConsolidator.new.consolidate_reviewers}
-	  x.report("Parsing OWNERS") {OwnersParser.new.parse}
-	  x.report("Loading OWNERS") {OwnersLoader.new.load}
+  	  x.report("Parsing OWNERS") {OwnersParser.new.parse}
+	    x.report("Loading OWNERS") {OwnersLoader.new.load}
+      x.report("Optimizing OWNERS") {ReleaseOwner.on_optimize}
       x.report("Running PSQL ANALYZE"){ ActiveRecord::Base.connection.execute "ANALYZE" }
     end
   end
