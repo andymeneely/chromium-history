@@ -6,5 +6,6 @@ def self.optimize
     connection.add_index :commit_bugs, :commit_hash
     connection.add_index :commit_bugs, :bug_id
     connection.add_index :commit_bugs, [:commit_hash, :bug_id], unique: true
+    connection.execute 'CLUSTER commit_bugs USING index_commit_bugs_on_commit_hash'
 	end
 end

@@ -4,6 +4,7 @@ class Filepath < ActiveRecord::Base
 
   def self.optimize
     connection.add_index :filepaths, :filepath, unique: true
+    connection.execute 'CLUSTER filepaths USING index_filepaths_on_filepath'
   end
 
   # If a Filepath has ever been involved in a code review that inspected

@@ -11,5 +11,6 @@ class CommitFilepath < ActiveRecord::Base
     connection.add_index :commit_filepaths, :commit_hash
     connection.add_index :commit_filepaths, :filepath
     connection.add_index :commit_filepaths, [:commit_hash, :filepath], unique: true
+    connection.execute 'CLUSTER commit_filepaths USING index_commit_filepaths_on_filepath'
 	end
 end

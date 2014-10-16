@@ -25,7 +25,7 @@ class Bug < ActiveRecord::Base
     connection.add_index :bugs, :modified
     connection.add_index :bugs, :owner_email
     connection.add_index :bugs, :owner_uri
-    #connection.execute "CLUSTER bugs on index_bugs_on_opened"
+    connection.execute "CLUSTER bugs USING index_bugs_on_opened"
   end
 
   def is_real_bug?

@@ -7,7 +7,6 @@ class Developer < ActiveRecord::Base
 
   def self.optimize
     connection.add_index :developers, :email, unique: true
-    # ActiveRecord::Base.connection.add_index :developers, :name
   end
 
 

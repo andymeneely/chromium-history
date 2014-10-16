@@ -6,6 +6,7 @@ class BugComment < ActiveRecord::Base
     connection.add_index :bug_comments, :author_email
     connection.add_index :bug_comments, :author_uri
     connection.add_index :bug_comments, :updated
+    connection.execute "CLUSTER bug_comments USING index_bug_comments_on_bug_id"
   end
  
 end

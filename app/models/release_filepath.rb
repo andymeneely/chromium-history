@@ -11,6 +11,7 @@ class ReleaseFilepath < ActiveRecord::Base
     connection.add_index :release_filepaths, :thefilepath
     connection.add_index :release_filepaths, :release
     connection.add_index :release_filepaths, [:release, :thefilepath], unique: true
+    connection.execute 'CLUSTER release_filepaths USING index_release_filepaths_on_release'
   end
 
   def self.source_code? filepath
