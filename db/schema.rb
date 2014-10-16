@@ -17,20 +17,7 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.integer "bug_id"
     t.integer "blocking_id"
   end
-
-  create_table "bug_comments", id: false, force: true do |t|
-    t.integer  "bug_id"
-    t.text     "content"
-    t.string   "author_email"
-    t.string   "author_uri"
-    t.datetime "updated"
-  end
-
-  create_table "bug_labels",id: false, force: true do |t|
-    t.integer "label_id"
-    t.integer "bug_id"
-  end
-
+  
   create_table "bugs", id:false, force: true do |t|
     t.integer  "bug_id"
     t.string   "title",   limit: 500
@@ -43,6 +30,19 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.string   "owner_email"
     t.string   "owner_uri" 
     t.text     "content"
+  end
+
+  create_table "bug_comments", id: false, force: true do |t|
+    t.integer  "bug_id"
+    t.text     "content"
+    t.string   "author_email"
+    t.string   "author_uri"
+    t.datetime "updated"
+  end
+
+  create_table "bug_labels",id: false, force: true do |t|
+    t.integer "label_id"
+    t.integer "bug_id"
   end
 
   create_table "code_reviews", id: false, force: true do |t|
@@ -77,15 +77,6 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.string   "composite_patch_set_file_id", limit: 1000
   end
 
-  create_table "commit_filepaths", force: true do |t|
-    t.string  "commit_hash"
-    t.string  "filepath"
-    t.integer "lines_added"
-    t.integer "lines_deleted_self"
-    t.integer "lines_deleted_other"
-    t.integer "num_authors_affected"
-  end
-
   create_table "commits", id: false, force: true do |t|
     t.string   "commit_hash"
     t.string   "parent_commit_hash"
@@ -97,10 +88,19 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.string   "svn_revision"
     t.datetime "created_at"
   end
-
+  
   create_table "commit_bugs", id: false, force: true do |t|
     t.string  "commit_hash"
     t.integer "bug_id"
+  end
+
+  create_table "commit_filepaths", force: true do |t|
+    t.string  "commit_hash"
+    t.string  "filepath"
+    t.integer "lines_added"
+    t.integer "lines_deleted_self"
+    t.integer "lines_deleted_other"
+    t.integer "num_authors_affected"
   end
  
   create_table "contributors", id: false, force: true do |t|
@@ -169,6 +169,11 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.integer  "patchset",               limit: 8
     t.string   "composite_patch_set_id"
   end
+  
+  create_table "releases", id: false, force: true do |t|
+    t.string   "name"
+    t.datetime "date"
+  end
 
   create_table "release_filepaths", id: false, force: true do |t|
     t.string  "release"
@@ -204,9 +209,10 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.boolean "becomes_vulnerable"
   end
 
-  create_table "releases", id: false, force: true do |t|
-    t.string   "name"
-    t.datetime "date"
+  create_table "release_owners", id: false, force: true do |t|
+    t.string   "release"
+    t.string   "filepath"
+    t.string   "owner_email"
   end
 
   create_table "reviewers", id: false, force: true do |t|
@@ -222,10 +228,4 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.string   "title"
   end
   
-  create_table "release_owners", id: false, force: true do |t|
-    t.string   "release"
-    t.string   "filepath"
-    t.string   "owner_email"
-  end
-
 end
