@@ -5,6 +5,8 @@ require "csv"
 # 
 # @author Danielle Neuberger
 class FirstOwnershipScript
+  #class-level variable containing hash of owners information
+  @@hashmap
 
   # Create a new isntance
   # @return FirstOwnershipScript instance - the new object
@@ -26,15 +28,18 @@ class FirstOwnershipScript
     files = `git checkout ` + commitNum
     files.each do |file|
       if file=="OWNERS.txt" #if the file is an owners file
-        parse_owners_file(file, commitNum)
+        get_owners_info(file, commitNum)
       end
     end
   end
 
   # Open up an owners file and add information to the hash
   def get_owners_info(file, commitNum)
-    
+    File.foreach(file)  do |line|
+        #do processing to find emails and check/put in hash
 
+      end
+    end 
   end
 
   # Add information to the CSV file
