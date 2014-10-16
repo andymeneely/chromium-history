@@ -21,7 +21,6 @@ class Stats
     show PatchSet.count, "Patch sets"
     show PatchSetFile.count, "Patch set files"
     show PatchSet.count.to_f / CodeReview.count.to_f, "Patch sets per code review"
-    show Reviewer.joins(:code_review).where("dev_id=owner_id").group('reviewers.issue').count('dev_id').size, "Number of reviews where the owner is also a reviewer"
     show overlooked_stats, "Code Reviews with an overlooked patchset"
     puts "|"
   end
