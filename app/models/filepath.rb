@@ -7,6 +7,10 @@ class Filepath < ActiveRecord::Base
     connection.execute 'CLUSTER filepaths USING index_filepaths_on_filepath'
   end
 
+  def to_s
+    filepath
+  end
+
   # If a Filepath has ever been involved in a code review that inspected
   # a vulnerability fix, then this should return true.
   #
