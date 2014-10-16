@@ -76,7 +76,7 @@ namespace :run do
       x.report("Parsing JSON Code Reviews") {CodeReviewParser.new.parse}
       x.report("Loading Code Review CSVs") {CodeReviewLoader.new.copy_parsed_tables}
       x.report("Optimizing Code Reviews et al.") do
-        [CodeReview,PatchSet,PatchSetFile,Comment,Developer,Message,Reviewer].each {|c| c.on_optimize}
+        [CodeReview,PatchSet,PatchSetFile,Comment,Developer,Message,Reviewer].each {|c| c.optimize}
       end
       x.report("Keying Developers") { CodeReviewLoader.new.add_primary_keys }
       x.report("Loading CVEs ") {CveLoader.new.load_cve}
@@ -84,29 +84,29 @@ namespace :run do
       x.report("Loading sheriffs") {SheriffRotationLoader.new.parse_and_load}
       x.report("Parsing data from JSON Bugs"){BugParser.new.parse_and_load_json}
       x.report("Optimizing bug entries,comments") do
-        [Bug,BugComment].each {|c| c.on_optimize}
+        [Bug,BugComment].each {|c| c.optimize}
       end
       x.report("Parsing data from Bug CSVs"){BugParser.new.parse_and_load_csv}
       x.report("Optimizing block,labels,et al.") do
-        [Block,Label,BugLabel].each {|c| c.on_optimize}
+        [Block,Label,BugLabel].each {|c| c.optimize}
       end
       x.report("Optimizing commits, cve,et al.") do 
-        [Commit,CommitFilepath,CommitBug,Cvenum].each {|c| c.on_optimize}
+        [Commit,CommitFilepath,CommitBug,Cvenum].each {|c| c.optimize}
       end
-      x.report("Optimizing sheriffs") { SheriffRotation.on_optimize}
+      x.report("Optimizing sheriffs") { SheriffRotation.optimize}
       x.report("Loading release tree") {ReleaseFilepathLoader.new.load}
       x.report("Optimizing releases et al.") do 
-        [Release,ReleaseFilepath].each{|c| c.on_optimize}
+        [Release,ReleaseFilepath].each{|c| c.optimize}
       end
       x.report("Consolidating filepaths") {FilepathConsolidator.new.consolidate}
       x.report("Loading sloc") {SlocLoader.new.load}
-      x.report("Optimizing contributors"){ Contributor.on_optimize}
-      x.report("Optimizing participants"){ Participant.on_optimize}
-      x.report("Optimizing filepath"){ Filepath.on_optimize}
+      x.report("Optimizing contributors"){ Contributor.optimize}
+      x.report("Optimizing participants"){ Participant.optimize}
+      x.report("Optimizing filepath"){ Filepath.optimize}
       x.report("Deleting duplicate reviewers") {DeveloperConsolidator.new.consolidate_reviewers}
   	  x.report("Parsing OWNERS") {OwnersParser.new.parse}
 	    x.report("Loading OWNERS") {OwnersLoader.new.load}
-      x.report("Optimizing OWNERS") {ReleaseOwner.on_optimize}
+      x.report("Optimizing OWNERS") {ReleaseOwner.optimize}
       x.report("Running PSQL ANALYZE"){ ActiveRecord::Base.connection.execute "ANALYZE" }
     end
   end

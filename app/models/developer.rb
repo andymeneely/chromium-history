@@ -5,8 +5,8 @@ class Developer < ActiveRecord::Base
   has_many :reviewers, primary_key: 'id', foreign_key: 'dev_id'
   has_many :sheriff_rotations, primary_key: 'id', foreign_key: 'dev_id'
 
-  def self.on_optimize
-    ActiveRecord::Base.connection.add_index :developers, :email, unique: true
+  def self.optimize
+    connection.add_index :developers, :email, unique: true
     # ActiveRecord::Base.connection.add_index :developers, :name
   end
 

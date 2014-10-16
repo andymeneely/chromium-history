@@ -3,7 +3,7 @@ class ReleaseOwner < ActiveRecord::Base
   belongs_to :filepath, foreign_key: 'filepath', primary_key: 'filepath'
   belongs_to :developer, foreign_key: 'owner_email', primary_key: 'email'
 
-  def self.on_optimize
+  def self.optimize
     connection.add_index :release_owners, :release
     connection.add_index :release_owners, :filepath
     connection.add_index :release_owners, [:release,:filepath]

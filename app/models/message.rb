@@ -2,8 +2,8 @@
 class Message < ActiveRecord::Base
   belongs_to :code_review
   
-  def self.on_optimize
-    ActiveRecord::Base.connection.add_index :messages, :sender
-    ActiveRecord::Base.connection.add_index :messages, :code_review_id
+  def self.optimize
+    connection.add_index :messages, :sender
+    connection.add_index :messages, :code_review_id
   end
 end

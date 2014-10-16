@@ -4,8 +4,8 @@ class Label < ActiveRecord::Base
 
   self.primary_key = :label
 
-  def self.on_optimize
-    ActiveRecord::Base.connection.add_index :labels, :label_id
-    ActiveRecord::Base.connection.add_index :labels, :label
+  def self.optimize
+    connection.add_index :labels, :label_id
+    connection.add_index :labels, :label
   end
 end

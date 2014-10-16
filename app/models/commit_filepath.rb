@@ -7,9 +7,9 @@ class CommitFilepath < ActiveRecord::Base
     Commit.joins(code_reviews: :cvenums).where(commit_hash: commit_hash).any?
   end
 
-	def self.on_optimize
-    ActiveRecord::Base.connection.add_index :commit_filepaths, :commit_hash
-    ActiveRecord::Base.connection.add_index :commit_filepaths, :filepath
-    ActiveRecord::Base.connection.add_index :commit_filepaths, [:commit_hash, :filepath], unique: true
+	def self.optimize
+    connection.add_index :commit_filepaths, :commit_hash
+    connection.add_index :commit_filepaths, :filepath
+    connection.add_index :commit_filepaths, [:commit_hash, :filepath], unique: true
 	end
 end

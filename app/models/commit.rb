@@ -10,10 +10,10 @@ class Commit < ActiveRecord::Base
     Commit.joins(code_reviews: :reviewers).where(commit_hash: commit_hash)
   end
 
-  def self.on_optimize
-    ActiveRecord::Base.connection.add_index :commits, :commit_hash, unique: true
-    ActiveRecord::Base.connection.add_index :commits, :parent_commit_hash
-    ActiveRecord::Base.connection.add_index :commits, :author_email
+  def self.optimize
+    connection.add_index :commits, :commit_hash, unique: true
+    connection.add_index :commits, :parent_commit_hash
+    connection.add_index :commits, :author_email
   end
 
 end

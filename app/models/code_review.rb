@@ -11,14 +11,13 @@ class CodeReview < ActiveRecord::Base
   
   self.primary_key = :issue
   
-  def self.on_optimize
-    ActiveRecord::Base.connection.add_index :code_reviews, :issue, unique: true
-    ActiveRecord::Base.connection.add_index :code_reviews, :created, order: :asc
-    ActiveRecord::Base.connection.add_index :code_reviews, :owner_id
-    ActiveRecord::Base.connection.add_index :code_reviews, :commit_hash
+  def self.optimize
+    connection.add_index :code_reviews, :issue, unique: true
+    connection.add_index :code_reviews, :created, order: :asc
+    connection.add_index :code_reviews, :owner_id
+    connection.add_index :code_reviews, :commit_hash
     # Physically re-arrange code_reviews by date so security_exp_participants is faster
-    # ...although I'm not convinced it's making a difference.
-    ActiveRecord::Base.connection.execute "CLUSTER code_reviews USING index_code_reviews_on_created"
+    connection.execute "CLUSTER code_reviews USING index_code_reviews_on_created"
   end
 
   def is_inspecting_vulnerability?
