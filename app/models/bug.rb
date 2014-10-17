@@ -15,7 +15,7 @@ class Bug < ActiveRecord::Base
   self.primary_key = :bug_id
 
   def self.optimize
-    connection.add_index :bugs, :bug_id, unique: true
+    connection.add_index :bugs, :bug_id
     connection.add_index :bugs, :title
     connection.add_index :bugs, :stars
     connection.add_index :bugs, :status
