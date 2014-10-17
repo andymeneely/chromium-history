@@ -5,7 +5,7 @@ class BugLabel < ActiveRecord::Base
   def self.optimize
     connection.add_index :bug_labels, :label_id
     connection.add_index :bug_labels, :bug_id
-    connection.add_index :bug_labels, [:bug_id,:label_id], unique: true
+    connection.add_index :bug_labels, [:bug_id,:label_id]
     connection.execute 'CLUSTER bug_labels USING index_bug_labels_on_bug_id_and_label_id'
   end
 
