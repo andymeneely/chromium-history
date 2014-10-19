@@ -1,7 +1,12 @@
-f = open(arg[1], 'r')
-word_list = json.loads(f.read)
+import nltk
+import sys
+import json
+from word_bag import WordBag
 
-technical_words = word_difference(word_list, nltk.corpus.words.words())
-technical_words = word_difference(technical_words, nltk.corpus.webtext.words())
-technical_words = word_difference(technical_words, nltk.corpus.brown.words(categories='news'))
+f = open(sys.argv[1], 'r')
+word_list = json.loads(f.read())
+
+bag = WordBag()
+technical_words = bag.word_difference(word_list, nltk.corpus.words.words())
+technical_words = bag.word_difference(technical_words, nltk.corpus.brown.words(categories='news'))
 print(json.dumps(technical_words))

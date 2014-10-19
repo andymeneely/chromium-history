@@ -162,18 +162,6 @@ namespace :run do
 
   namespace :nlp do
 
-    desc "Creating Corpus"
-    task :create_corpus, [:source, :dbname] => [:env] do |t, args|
-      Benchmark.bm(40) do |x|
-        corpus = nil
-        x.report("Loading #{args[:source]}") {corpus = Corpus.new(args[:source], args[:dbname])} #'/home/vagrant/data/brown/'
-        x.report("Chunking collection") {corpus.apply :chunk}
-        x.report("Segmenting collection") {corpus.apply({:segment => :punkt})}
-        x.report("Tokenizing collection") {corpus.apply({:tokenize => :punkt})}
-        x.report("Saving corpus to #{args[:dbname]}") {corpus.export_to_mongo}
-      end
-    end
-
     desc "Run NLP analysis"
     task :word_stats => :env do 
       Benchmark.bm(40) do |x|
@@ -181,6 +169,12 @@ namespace :run do
       end
     end
 
+    desc "Creating a corpus of ACM abstracts"
+    task :scrape_acm => :env do 
+      Benchmark.bm(40) do |x|
+        puts 'what'
+      end
+    end
 
     task :technical_feedback => :env do
       Benchmark.bm(40) do |x|
@@ -193,8 +187,7 @@ namespace :run do
       Benchmark.bm(40) do |x|
         vocab_loader = VocabLoader.new
         x.report('Generating technical vocab') {vocab_loader.load}
-        # x.report('Associating vocab words with developers') {vocab_loader.associate_developer_vocab}
-        # x.report('Associating vocab words with developers') {vocab_loader.associate_code_review_vocab}
+        x.report('Associating vocab words with developers') {vocab_loader.associate_developer_vocab}
       end
     end
   end

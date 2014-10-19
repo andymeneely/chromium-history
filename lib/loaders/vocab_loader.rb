@@ -8,10 +8,28 @@ class VocabLoader
     vocab_file = @tmp_dir+'/vocab.txt'
     Comment.new.get_all_convo vocab_file
     remove_quoted_comments vocab_file, @tmp_dir+'/clean_vocab.txt'
+    corpus = Corpus.new
+    comment_doc = corpus.document vocab_file
+    acm_doc = corpus.document "#{Rails.configuration.datadir}/acm/raw_abstracts.txt"
+    comment_corpus = corpus.create comment_doc
+    acm_corpus = corpus.create acm_doc
 
-    # Use NLTK to parse text and 
-    res = `python lib/nlp/python/plain_text_word_diff.py #{@tmp_dir}/ clean_vocab.txt`
-    words = Oj.load(res)
+    comment_words = []
+    comment_corpus.words.each do |word|
+      comment_words << word.to_s
+    end
+
+    Oj.to_file @tmp_dir+'/wordlist.json', comment_words
+
+    # Use NLTK's built in Corpora to remove non-technical words 
+    res = `python lib/nlp/python/json_word_diff.py #{@tmp_dir}/wordlist.json`
+    diff_words = Oj.load(res)
+    acm_words = []
+    acm_corpus.words.each do |word|
+      acm_words << word.to_s
+    end
+
+    words = corpus.word_intersect diff_words, acm_words
     vocabCopy = CSV.open @tmp_dir + '/vocab.csv', 'w+'
     words.each do |word|
       vocabCopy << [word]
@@ -22,24 +40,33 @@ class VocabLoader
   end
 
   def associate_developer_vocab
-    conversations = Comment.new.get_developer_comments
-    author_comments = {}
-    conversations.each do |conversation|
-      authorComments[conversation['author_id']] = conversation['string_agg']
+    table = CSV.open "#{@tmp_dir}/dev_words.csv", 'w+'
+    words = ActiveRecord::Base.connection.execute "SELECT * FROM technical_words"
+
+    convos = Comment.new.get_developer_comments
+    convos.each do |convo| 
+      clean = convo['string_agg'].gsub("'", "")
+      res = ActiveRecord::Base.connection.execute %Q{ 
+        SELECT to_tsvector('#{clean}') 
+        @@ to_tsquery('#{words.map{|word| word['word']}.join(" | ")}')
+        AS found
+      }
+      if(res[0]['found'] == 't') 
+        words.each do |word| 
+           res = ActiveRecord::Base.connection.execute %Q{ 
+            SELECT to_tsvector('#{clean}') 
+            @@ to_tsquery('#{word['word']}')
+            AS found
+          }
+          if(res[0]['found'] == 't') 
+            table << [convo['author_id'], word['id']]
+          endpsql
+        end
+      end
+    
     end
-
-    File.open("#{tmp_dir}/vocab/devs.json", 'w+') { |file| file.write(Oj.dump(author_comments)) }
-    res = `python lib/nlp/python/json_word_diff.py #{tmp_dir}/vocab/devs.json`
-  end
-
-  def associate_code_review_vocab
-    conversations = Comment.new.get_all_convo
-    code_review_comments = {}
-    conversations.each do |conversation|
-      code_review_comments[conversation['code_review_id']] = conversation['string_agg']
-    end
-
-    File.open("#{tmp_dir}/vocab/revs.json", 'w+') { |file| file.write(Oj.dump(code_review_comments)) }
+    table.fsync
+    ActiveRecord::Base.connection.execute "COPY developers_technical_words FROM '#{@tmp_dir}/dev_words.csv' DELIMITER ',' CSV"
   end
 
   def remove_quoted_comments target_file, result_file
