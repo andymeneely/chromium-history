@@ -205,6 +205,8 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.integer "num_post_bugs"
     t.integer "num_pre_vulnerabilities"
     t.integer "num_post_vulnerabilities"
+    t.boolean "was_buggy"
+    t.boolean "becomes_buggy"
     t.boolean "was_vulnerable"
     t.boolean "becomes_vulnerable"
   end
