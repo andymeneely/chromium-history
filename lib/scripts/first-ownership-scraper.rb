@@ -25,7 +25,7 @@ class FirstOwnershipScript
   # owners emails and puts the information along with the commit hash
   # , path, and date into the owner-ownerfile hash
   def analyze_commit_file(commitNum)
-    files = `git checkout `+ commitNum  #TODO not sure if this works
+    files = `git checkout #{commitNum}`
     files.each do |file|
       if file=="OWNERS.txt" #if the file is an owners file
         get_owners_info(file, commitNum) #TODO might need to get file dir and commit date for here
