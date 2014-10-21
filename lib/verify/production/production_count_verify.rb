@@ -13,6 +13,14 @@ class ProductionCountVerify < VerifyBase
     assert_equal 185948, Commit.count
   end
 
+  def verify_release_owner_count
+    assert_equal 1156207, ReleaseOwner.count
+  end
+
+  def verify_release_owners_release
+    assert_equal 1, ReleaseOwner.pluck(:release).uniq.size
+  end
+
   def verify_dangling_bug_commits
     query = <<-EOSQL
       SELECT COUNT(DISTINCT commit_bugs.bug_id) 
