@@ -17,7 +17,7 @@ class FirstOwnershipScript
   def get_ownership()
     #Get all commits with git log command
     log = `git log --all -- '*OWNERS.txt'`
-    puts log
+    puts log #TODO call analyze_commit_file for each commit num returned
     
   end
 
@@ -25,29 +25,49 @@ class FirstOwnershipScript
   # owners emails and puts the information along with the commit hash
   # , path, and date into the owner-ownerfile hash
   def analyze_commit_file(commitNum)
-    files = `git checkout ` + commitNum
+    files = `git checkout `+ commitNum  #TODO not sure if this works
     files.each do |file|
       if file=="OWNERS.txt" #if the file is an owners file
-        get_owners_info(file, commitNum)
+        get_owners_info(file, commitNum) #TODO might need to get file dir and commit date for here
       end
     end
   end
 
   # Open up an owners file and add information to the hash
   def get_owners_info(file, commitNum)
-    File.foreach(file)  do |line|
-        #do processing to find emails and check/put in hash
-
+    File.foreach(file) do |line|
+      if contains_email(line)
+	email = line.match(/^[^=][a-z0-9_-]+@[a-z0-9.-]+\.[a-z]{2,4}$/) #TODO test this regex
+	directory = "" #TODO get this
+	date = "" #TODO get this - the commit date
+ 	key = email + "~" + directory
+	value = [commitNum, date]
+        if @@hashmap.key?(key)
+	  currHashDate = @@hashmap[key][0]
+	  if date < currHashDate #TODO may need to use Date.parse?
+ 	    @@hashmap[key] = value
+	  end
+	else 
+	  @@hashmap[key] = value
+        end
       end
-    end 
+    end
   end
 
-  # Add information to the CSV file
+  # Check if a line in a file contains an email, return boolean 
+  #  true if contains else false
+  def contains_email(line)
+    #TODO
+  end
+
+  # Add information to the CSV file in format of 
+  #  email, directory, commit id
   def create_csv()
     CSV.open(@csvLoc, "a") do |cfile|
-      #add email, directory, first-owner-commit id to csv
-      
-      cfile << []
+      @@hashmap.each do |key, val|
+	emailAndDir = key.split(/~/)
+        cfile << [emailAndDir[0],emailAndDir[1],val[0]]
+      end
     end
   end
 end
