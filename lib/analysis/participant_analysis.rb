@@ -16,7 +16,7 @@ class ParticipantAnalysis
     end
   end#method
 
-  # At the given code review, each participant may or may not have had experience 
+  # At the given code review, each participant may or may not have had experience in security
   def populate_security_experienced
     Participant.find_each do |participant|
       c = participant.code_review
@@ -24,6 +24,19 @@ class ParticipantAnalysis
         .where('code_reviews.created < ?', c.created)  
 
       participant.update(security_experienced: vuln_reviews.any?)
+    end
+  end
+
+  # At the given code review, each participant may or may not have had experience in stability 
+  def populate_stability_experienced
+    Participant.find_each do |participant|
+      c = participant.code_review
+      stability_reviews = participant.developer.participants\
+        .joins(code_review: [commit: [commit_bugs: [bug: :labels]]])\
+        .where('code_reviews.created < :created AND labels.label = :label_text'\
+               ,{created: c.created, label_text: 'stability-crash'})  
+
+      participant.update(stability_experienced: stability_reviews.any?)
     end
   end
 
