@@ -38,7 +38,7 @@ This also removes deprecated |enableDeviceEmulation| implementation.
 
 BUG=20248
 
-Review URL: https://codereview.chromium.org/68713002
+Review URL: https://codereview.chromium.org/18533
 
 git-svn-id: svn://svn.chromium.org/chrome/trunk/src@234512 0039d316-1c4b-4281-b951-d872f2087c98
 ;;;
