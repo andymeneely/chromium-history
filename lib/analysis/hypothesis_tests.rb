@@ -14,7 +14,7 @@ class HypothesisTests
       puts "----- FOR RELEASE #{release.name} -----"
       puts "-"*80
       query_db(release.name)
-      bug_association_test
+      bug_association_tests
       vulnerability_association_tests
     end
     close_db
