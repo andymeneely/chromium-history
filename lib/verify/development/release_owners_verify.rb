@@ -1,4 +1,4 @@
-require_relative "../verify_base"
+require_relative '../verify_base'
 
 class ReleaseOwnersVerify < VerifyBase
 
