@@ -5,6 +5,8 @@ class Developer < ActiveRecord::Base
   has_many :reviewers, primary_key: 'id', foreign_key: 'dev_id'
   has_many :sheriff_rotations, primary_key: 'id', foreign_key: 'dev_id'
   has_many :commits, primary_key: 'id', foreign_key: 'author_id'
+  has_many :release_owners, primary_key: 'id', foreign_key: 'dev_id'
+  has_many :release_owners, primary_key: 'email', foreign_key: 'owner_email'
 
   def self.optimize
     connection.add_index :developers, :email, unique: true
@@ -12,6 +14,7 @@ class Developer < ActiveRecord::Base
 
 
   def self.sanitize_validate_email dirty_email 
+	return dirty_email, true if (dirty_email.eql?("ALL"))
     begin
       email = dirty_email.gsub(/\+\w+(?=@)/, '') #strips any tags on the email
       email.downcase!
@@ -65,8 +68,9 @@ class Developer < ActiveRecord::Base
     email = email[0]
     if (Developer.find_by_email(email).nil?) 
       developer = Developer.new
+	  developer.id = 0 if email.eql?("ALL")
       developer["email"] = email
-      developer.save
+      developer.save!
       return email, false
     else 
       return email, true
