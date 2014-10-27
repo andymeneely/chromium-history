@@ -26,17 +26,25 @@ class ParticipantAnalysis
       participant.update(security_experienced: vuln_reviews.any?)
     end
   end
+  
+  @@bug_experience_metrics = [
+    {:field => 'stability_experienced', :label => 'stability-crash'},
+    {:field => 'build_experienced', :label => 'build'},
+    {:field => 'test_fail_experienced', :label => 'cr-tests-fails'},
+    {:field => 'compatibility_experienced', :label => 'type-compat'}
+  ]
 
-  # At the given code review, each participant may or may not have had experience in stability 
-  def populate_stability_experienced
-    Participant.find_each do |participant|
-      c = participant.code_review
-      stability_reviews = participant.developer.participants\
-        .joins(code_review: [commit: [commit_bugs: [bug: :labels]]])\
-        .where('code_reviews.created < :created AND labels.label = :label_text'\
-               ,{created: c.created, label_text: 'stability-crash'})  
-
-      participant.update(stability_experienced: stability_reviews.any?)
+  # At the given code review, each participant may or may not have had experience in bug-label related reviews. 
+  def populate_bug_related_experience
+    @@bug_experience_metrics.each do |metric|  
+      Participant.find_each do |participant|
+        c = participant.code_review
+        reviews = participant.developer.participants\
+          .joins(code_review: [commit: [commit_bugs: [bug: :labels]]])\
+          .where('code_reviews.created < :created AND labels.label = :label_text'\
+                 ,{created: c.created, label_text: metric[:label]})  
+        participant.update(metric[:field] => reviews.any?)
+      end
     end
   end
 

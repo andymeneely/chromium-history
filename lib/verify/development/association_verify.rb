@@ -43,6 +43,14 @@ class AssociationVerify < VerifyBase
     assert_equal 1, Developer.find_by(email: 'enne@chromium.org').participants.count
   end
 
+  def verify_participants_in_stability_commit
+    assert_equal 1, Developer.find(10).participants.joins(code_review: [commit: [commit_bugs: [bug: :labels]]]).where("labels.label = 'stability-crash'").count()
+  end
+
+  def verify_participants_experience
+    assert_equal true, Developer.find(10).participants.where('issue = 52823002').pluck('stability_experienced')[0]
+  end
+  
   def verify_filepath_participants
     assert_equal ['apatrick@chromium.org','nduca@chromium.org'], Filepath.participants.where(filepath: "DEPS").pluck(:email).sort
   end
