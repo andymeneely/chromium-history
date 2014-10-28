@@ -28,10 +28,10 @@ class ParticipantAnalysis
   end
   
   @@bug_experience_metrics = [
-    {:field => 'stability_experienced', :label => 'stability-crash'},
-    {:field => 'build_experienced', :label => 'build'},
-    {:field => 'test_fail_experienced', :label => 'cr-tests-fails'},
-    {:field => 'compatibility_experienced', :label => 'type-compat'}
+    {:field => 'stability_experienced', :label => 'stability-crash'}
+#    {:field => 'build_experienced', :label => 'build'},
+#    {:field => 'test_fail_experienced', :label => 'cr-tests-fails'},
+#    {:field => 'compatibility_experienced', :label => 'type-compat'}
   ]
 
   # At the given code review, each participant may or may not have had experience in bug-label related reviews. 
