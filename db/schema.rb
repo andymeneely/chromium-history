@@ -17,20 +17,7 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.integer "bug_id"
     t.integer "blocking_id"
   end
-
-  create_table "bug_comments", id: false, force: true do |t|
-    t.integer  "bug_id"
-    t.text     "content"
-    t.string   "author_email"
-    t.string   "author_uri"
-    t.datetime "updated"
-  end
-
-  create_table "bug_labels",id: false, force: true do |t|
-    t.integer "label_id"
-    t.integer "bug_id"
-  end
-
+  
   create_table "bugs", id:false, force: true do |t|
     t.integer  "bug_id"
     t.string   "title",   limit: 500
@@ -43,6 +30,19 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.string   "owner_email"
     t.string   "owner_uri" 
     t.text     "content"
+  end
+
+  create_table "bug_comments", id: false, force: true do |t|
+    t.integer  "bug_id"
+    t.text     "content"
+    t.string   "author_email"
+    t.string   "author_uri"
+    t.datetime "updated"
+  end
+
+  create_table "bug_labels",id: false, force: true do |t|
+    t.integer "label_id"
+    t.integer "bug_id"
   end
 
   create_table "code_reviews", id: false, force: true do |t|
@@ -83,11 +83,6 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.integer  "code_review_id",  limit: 8
   end
 
-  create_table "commit_filepaths", force: true do |t|
-    t.string "commit_hash"
-    t.string "filepath"
-  end
-
   create_table "commits", id: false, force: true do |t|
     t.string   "commit_hash"
     t.string   "parent_commit_hash"
@@ -99,10 +94,19 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.string   "svn_revision"
     t.datetime "created_at"
   end
-
+  
   create_table "commit_bugs", id: false, force: true do |t|
     t.string  "commit_hash"
     t.integer "bug_id"
+  end
+
+  create_table "commit_filepaths", force: true do |t|
+    t.string  "commit_hash"
+    t.string  "filepath"
+    t.integer "lines_added"
+    t.integer "lines_deleted_self"
+    t.integer "lines_deleted_other"
+    t.integer "num_authors_affected"
   end
  
   create_table "contributors", id: false, force: true do |t|
@@ -145,11 +149,17 @@ ActiveRecord::Schema.define(version: 20140512131450) do
   end
 
   create_table "participants", id: false, force: true do |t|
-    t.integer "dev_id"
-    t.integer "issue",                limit: 8
-    t.integer "reviews_with_owner"
-    t.boolean "security_experienced"
-    t.integer "sheriff_hours"
+    t.integer  "dev_id"
+    t.integer  "owner_id"
+    t.integer  "issue",                limit: 8
+    t.datetime "review_date"
+    t.integer  "reviews_with_owner"
+    t.boolean  "security_experienced"
+    t.boolean  "stability_experienced"
+    t.boolean  "build_experienced"
+    t.boolean  "test_fail_experienced"
+    t.boolean  "compatibility_experienced"
+    t.integer  "sheriff_hours"
   end
 
   create_table "patch_set_files", id: false, force: true do |t|
@@ -174,6 +184,11 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.integer  "patchset",               limit: 8
     t.string   "composite_patch_set_id"
   end
+  
+  create_table "releases", id: false, force: true do |t|
+    t.string   "name"
+    t.datetime "date"
+  end
 
   create_table "release_filepaths", id: false, force: true do |t|
     t.string  "release"
@@ -194,12 +209,28 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.decimal "avg_sheriff_hours"
     t.boolean "vulnerable"
     t.integer "num_vulnerabilities"
-    t.integer "num_bugs"
+    t.integer "num_pre_bugs"
+    t.integer "num_pre_features"
+    t.integer "num_pre_compatibility_bugs"
+    t.integer "num_pre_regression_bugs"
+    t.integer "num_pre_security_bugs"
+    t.integer "num_pre_tests_fails_bugs"
+    t.integer "num_pre_stability_crash_bugs"
+    t.integer "num_pre_build_bugs"
+    t.integer "num_post_bugs"
+    t.integer "num_pre_vulnerabilities"
+    t.integer "num_post_vulnerabilities"
+    t.boolean "was_buggy"
+    t.boolean "becomes_buggy"
+    t.boolean "was_vulnerable"
+    t.boolean "becomes_vulnerable"
   end
 
-  create_table "releases", id: false, force: true do |t|
-    t.string   "name"
-    t.datetime "date"
+  create_table "release_owners", id: false, force: true do |t|
+    t.string   "release"
+    t.string   "filepath"
+	t.integer  "dev_id"
+    t.string   "owner_email"
   end
 
   create_table "reviewers", id: false, force: true do |t|
@@ -218,5 +249,4 @@ ActiveRecord::Schema.define(version: 20140512131450) do
   create_table "technical_words", id: false, force: true do |t|
     t.string 'word'
   end
-
 end

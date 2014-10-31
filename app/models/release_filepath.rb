@@ -5,12 +5,13 @@ class ReleaseFilepath < ActiveRecord::Base
  
   self.primary_key = :id
 
-  def self.on_optimize
-    ActiveRecord::Base.connection.execute "ALTER TABLE release_filepaths ADD COLUMN id SERIAL"
-    ActiveRecord::Base.connection.execute "ALTER TABLE release_filepaths ADD PRIMARY KEY (id)"
-    ActiveRecord::Base.connection.add_index :release_filepaths, :thefilepath
-    ActiveRecord::Base.connection.add_index :release_filepaths, :release
-    ActiveRecord::Base.connection.add_index :release_filepaths, [:release, :thefilepath], unique: true
+  def self.optimize
+    connection.execute "ALTER TABLE release_filepaths ADD COLUMN id SERIAL"
+    connection.execute "ALTER TABLE release_filepaths ADD PRIMARY KEY (id)"
+    connection.add_index :release_filepaths, :thefilepath
+    connection.add_index :release_filepaths, :release
+    connection.add_index :release_filepaths, [:release, :thefilepath], unique: true
+    connection.execute 'CLUSTER release_filepaths USING index_release_filepaths_on_release'
   end
 
   def self.source_code? filepath

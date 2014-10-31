@@ -38,7 +38,7 @@ class CodeReviewParser
                  nil, # for total_sheriff_hours
                  nil] # for cursory
 
-        @prtp_set.each {|p| @prtps << [p,cobj['issue'],nil,nil,nil]}
+        @prtp_set.each {|p| @prtps << [p,owner_id,cobj['issue'],cobj['created'],nil,nil,nil,nil,nil,nil,nil]}
         @contrb_set.each {|c| @contrbs << [c,cobj['issue']]}
         @revs_dict.each {|id, email| @revs << [cobj['issue'],id, email]}
 
@@ -49,16 +49,6 @@ class CodeReviewParser
     flush_csvs #get everything out to the files
 
   end #method
-
-  def print_profile(file, profile)
-    full_file = profile.keys.select{|k| k.end_with? file}[0]
-    puts "==== Profile for #{file} ===="
-    File.readlines(full_file).each_with_index do |line,num|
-      sample = profile[full_file][num+1]
-      printf "% 8.1fms, % 8.1fms |  %s", sample[0]/1000.0,sample[1]/1000.0, line
-    end#readlines
-    puts "======================"
-  end
 
   def open_csvs
     @dev_db = Hash.new

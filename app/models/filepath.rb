@@ -1,23 +1,33 @@
 class Filepath < ActiveRecord::Base
 
   has_many :commit_filepaths, primary_key: 'filepath', foreign_key: 'filepath'
+  has_many :release_owners, primary_key: 'filepath', foreign_key: 'filepath'
 
-  def self.on_optimize
-    ActiveRecord::Base.connection.add_index :filepaths, :filepath, unique: true
+  def self.optimize
+    connection.add_index :filepaths, :filepath, unique: true
+    connection.execute 'CLUSTER filepaths USING index_filepaths_on_filepath'
+  end
+
+  def to_s
+    filepath
   end
 
   # If a Filepath has ever been involved in a code review that inspected
   # a vulnerability fix, then this should return true.
   #
   # @param after - check for commit filepaths after a given date. Defaults to Jan 1, 1970
-  def vulnerable?(after=DateTime.new(1970,01,01))
-    cves(after).any?
+  def vulnerable?(dates=@@OPEN_DATES)
+    cves(dates).any?
   end
 
-  def cves(after=DateTime.new(1970,01,01))
+  def cves(dates=@@OPEN_DATES)
+    @@EXPLAINS[:cves] ||= Filepath.joins(commit_filepaths: [commit: [code_reviews: :cvenums]])\
+      .where(filepath: filepath, \
+             'commits.created_at' => dates).explain
+
     Filepath.joins(commit_filepaths: [commit: [code_reviews: :cvenums]])\
       .where(filepath: filepath, \
-             'commits.created_at' => after..DateTime.new(2050,01,01))
+             'commits.created_at' => dates)
   end
 
   # Delegates to the static method with the where clause
@@ -31,6 +41,11 @@ class Filepath < ActiveRecord::Base
   end
 
   def participants(before = DateTime.new(2050,01,01))
+    @@EXPLAINS[:participants] ||= Filepath.participants\
+      .select(:dev_id)\
+      .where(filepath: filepath, \
+             'code_reviews.created' => DateTime.new(1970,01,01)..before).explain
+
     Filepath.participants\
       .select(:dev_id)\
       .where(filepath: filepath, \
@@ -38,16 +53,25 @@ class Filepath < ActiveRecord::Base
       .uniq
   end
   
-  def bugs(before = DateTime.new(2050,01,01))    
-    real_bugs = ['type-bug','type-bug-regression','type-bug-security','type-defect','type-regression']
+  #searches for bugs, with optional labels and years back
+  @@OPEN_DATES = dates=DateTime.new(1970,01,01)..DateTime.new(2050,01,01)
+  @@BUG_LABELS = %w(type-bug type-bug-regression type-bug-security type-defect type-regression)
+  def bugs(dates=@@OPEN_DATES, labels=@@BUG_LABELS)
+    
+    @@EXPLAINS[:bugs] ||= Filepath.bugs\
+      .select('bugs.bug_id')\
+      .where(filepath: filepath, \
+             :labels => {:label => labels},\
+             'bugs.opened' => dates).explain
+
     Filepath.bugs\
       .select('bugs.bug_id')\
       .where(filepath: filepath, \
-             :labels => {:label => real_bugs},\
-             'bugs.opened' => DateTime.new(1970,01,01)..before)
+             :labels => {:label => labels},\
+             'bugs.opened' => dates)
       .uniq
   end
-
+  
   def code_reviews(before = DateTime.new(2050,01,01))
     Filepath.code_reviews\
       .where(filepath: filepath, \
@@ -57,11 +81,20 @@ class Filepath < ActiveRecord::Base
   # The percentage of code reviews prior to this date where the code review
   # had at least one security_experienced partcipant
   def perc_security_exp_part(before = DateTime.new(2050,01,01))
+    
+    @@EXPLAINS[:perc_security_exp_part] ||=  Filepath.participants\
+      .where('filepaths.filepath' => filepath,\
+              'code_reviews.created' => DateTime.new(1970,01,01)..before)\
+      .select('bool_or(security_experienced)')\
+      .group('code_reviews.issue').explain
+
     rs = Filepath.participants\
       .where('filepaths.filepath' => filepath,\
               'code_reviews.created' => DateTime.new(1970,01,01)..before)\
       .select('bool_or(security_experienced)')\
       .group('code_reviews.issue')
+
+
     num = 0.0; denom = 0.0
     rs.each do |had_sec_exp_part|
       num += 1.0 if had_sec_exp_part['bool_or']
@@ -86,6 +119,7 @@ class Filepath < ActiveRecord::Base
 
   #Average number of sheirff hours per code review
   def avg_sheriff_hours(before = DateTime.new(2050,01,01))
+    @@EXPLAINS[:code_reviews_before] ||= code_reviews(before).explain
     code_reviews(before).average(:total_sheriff_hours)
   end
 
@@ -175,6 +209,15 @@ class Filepath < ActiveRecord::Base
 
   def self.bugs
     Filepath.joins(commit_filepaths: [commit: [commit_bugs: [bug: :labels]]])
+  end
+
+  @@EXPLAINS = {}
+  def self.print_sql_explains
+    @@EXPLAINS.each do |query, explain|
+      puts "\n\n======= #{query} ======="
+      puts explain
+      puts "========================\n\n"
+    end
   end
 
 end

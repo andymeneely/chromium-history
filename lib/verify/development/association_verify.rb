@@ -12,6 +12,17 @@ class AssociationVerify < VerifyBase
     assert_equal 2, Filepath.find_by(filepath: 'cc/resources/texture_mailbox_deleter.h').bugs.count
   end
   
+  def verify_filepath_bug_count_by_date
+    dates = DateTime.new(1970,01,01)..DateTime.new(2009,8,26)
+    assert_equal 1, Filepath.find_by(filepath: 'cc/resources/texture_mailbox_deleter.h').bugs(dates).count
+  end
+  
+  def verify_filepath_bug_by_label
+    dates = DateTime.new(1970,01,01)..DateTime.new(2050,1,1)
+    labels = 'type-bug-security'
+    assert_equal 1, Filepath.find_by(filepath: 'cc/resources/texture_mailbox_deleter.h').bugs(dates,labels).count
+  end
+  
   def verify_filepath_vulnerable
     assert_equal true, Filepath.find_by(filepath: 'ui/base/x/x11_util.cc').vulnerable?
   end
@@ -32,6 +43,14 @@ class AssociationVerify < VerifyBase
     assert_equal 1, Developer.find_by(email: 'enne@chromium.org').participants.count
   end
 
+  def verify_participants_in_stability_commit
+    assert_equal 1, Developer.find(10).participants.joins(code_review: [commit: [commit_bugs: [bug: :labels]]]).where("labels.label = 'stability-crash'").count()
+  end
+
+  def verify_participants_experience
+    assert_equal true, Developer.find(10).participants.where('issue = 52823002').pluck('stability_experienced')[0]
+  end
+  
   def verify_filepath_participants
     assert_equal ['apatrick@chromium.org','nduca@chromium.org'], Filepath.participants.where(filepath: "DEPS").pluck(:email).sort
   end

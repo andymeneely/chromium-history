@@ -8,22 +8,43 @@ class ParticipantAnalysis
 
       #find all the code reviews where the owner is owner and one of the reviewers is participant
       #and only include reviews that were done before this one
-      reviews = CodeReview.joins(:participants)\
-        .where("owner_id = ? AND created < ? AND dev_id = ? AND dev_id<>owner_id ", \
+      reviews = Participant\
+        .where("owner_id = ? AND review_date < ? AND dev_id = ? AND dev_id<>owner_id ", \
                c.owner_id, c.created, participant.dev_id)
 
       participant.update(reviews_with_owner: reviews.count)
     end
   end#method
 
-  # At the given code review, each participant may or may not have had experience 
+  # At the given code review, each participant may or may not have had experience in security
   def populate_security_experienced
     Participant.find_each do |participant|
       c = participant.code_review
-      vuln_reviews = participant.developer.participants.joins(code_review: :cvenums)\
-        .where('code_reviews.created < ?', c.created)  
+      vuln_reviews = Participant.joins(code_review: :cvenums)\
+        .where('participants.dev_id = ?  and code_reviews.created < ? ', participant.dev_id, c.created)  
 
       participant.update(security_experienced: vuln_reviews.any?)
+    end
+  end
+  
+  @@bug_experience_metrics = [
+    {:field => 'stability_experienced', :label => 'stability-crash'}
+#    {:field => 'build_experienced', :label => 'build'},
+#    {:field => 'test_fail_experienced', :label => 'cr-tests-fails'},
+#    {:field => 'compatibility_experienced', :label => 'type-compat'}
+  ]
+
+  # At the given code review, each participant may or may not have had experience in bug-label related reviews. 
+  def populate_bug_related_experience
+    @@bug_experience_metrics.each do |metric|  
+      Participant.find_each do |participant|
+        c = participant.code_review
+        reviews = Participant\
+          .joins(code_review: [commit: [commit_bugs: [bug: :labels]]])\
+          .where('participants.dev_id = :dev_id AND code_reviews.created < :created AND labels.label = :label_text'\
+                 ,{dev_id: participant.dev_id, created: c.created, label_text: metric[:label]})  
+        participant.update(metric[:field] => reviews.any?)
+      end
     end
   end
 

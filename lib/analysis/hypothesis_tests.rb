@@ -14,7 +14,8 @@ class HypothesisTests
       puts "----- FOR RELEASE #{release.name} -----"
       puts "-"*80
       query_db(release.name)
-      association_tests
+      bug_association_tests
+      vulnerability_association_tests
     end
     close_db
   end
@@ -45,32 +46,67 @@ class HypothesisTests
     EOR
   end
 
-  def association_tests
-    association 'SLOC', 'sloc'
-    association 'Number of Reviews', 'num_reviews'
-    association 'Number of Reviewers', 'num_reviewers'
-    association 'Number of Participants', 'num_participants'
-    association 'Avg # Non-Participating Reviewers','avg_non_participating_revs'
-    association '% Reviews with 3 or more Reviewers','perc_three_more_reviewers'
-    association '% Reviews with a Security-Experienced Participant', 'perc_security_experienced_participants'
-    association 'Avg Security-Experienced Participants', 'avg_security_experienced_participants'
-    association 'Average Prior Reviews with Owner', 'avg_reviews_with_owner'
-    association 'Average Owner Familiarity Gap', 'avg_owner_familiarity_gap'
-    association '% Reviews over 200 LOC/hour','perc_fast_reviews'
-    association '% Reviews with a Potentially-Overlooked Patchset', 'perc_overlooked_patchsets'
-    association 'Average Sheriff Hours','avg_sheriff_hours'
+  def bug_association_tests
+    association 'SLOC', 'sloc','becomes_buggy'
+    association 'Number of Reviews', 'num_reviews','becomes_buggy'
+    association 'Number of Reviewers', 'num_reviewers','becomes_buggy'
+    association 'Number of Participants', 'num_participants','becomes_buggy'
+    association 'Avg # Non-Participating Reviewers','avg_non_participating_revs','becomes_buggy'
+    association '% Reviews with 3 or more Reviewers','perc_three_more_reviewers','becomes_buggy'
+    association '% Reviews with a Security-Experienced Participant', 'perc_security_experienced_participants','becomes_buggy'
+    association 'Avg Security-Experienced Participants', 'avg_security_experienced_participants','becomes_buggy'
+    association 'Average Prior Reviews with Owner', 'avg_reviews_with_owner','becomes_buggy'
+    association 'Average Owner Familiarity Gap', 'avg_owner_familiarity_gap','becomes_buggy'
+    association '% Reviews over 200 LOC/hour','perc_fast_reviews','becomes_buggy'
+    association '% Reviews with a Potentially-Overlooked Patchset', 'perc_overlooked_patchsets','becomes_buggy'
+    association 'Average Sheriff Hours','avg_sheriff_hours','becomes_buggy'
+    
+    association 'Pre Bugs / Future Bugs','num_pre_bugs','becomes_buggy'
+    association 'Pre Feature Bugs / Future Bugs','num_pre_features','becomes_buggy'
+    association 'Pre Compatibility Bugs / Future Bugs','num_pre_compatibility_bugs','becomes_buggy'
+    association 'Pre Regression Bugs / Future Bugs','num_pre_regression_bugs','becomes_buggy'
+    association 'Pre Security Bugs / Future Bugs','num_pre_security_bugs','becomes_buggy'
+    association 'Pre Test Fails Bugs / Future Bugs','num_pre_tests_fails_bugs','becomes_buggy'
+    association 'Pre Stability Crash Bugs / Future Bugs','num_pre_stability_crash_bugs','becomes_buggy'
+    association 'Pre Build Bugs / Future Bugs','num_pre_build_bugs','becomes_buggy'
+  end
+  
+  def vulnerability_association_tests
+    association 'SLOC', 'sloc','vulnerable'
+    association 'Number of Reviews', 'num_reviews','vulnerable'
+    association 'Number of Reviewers', 'num_reviewers','vulnerable'
+    association 'Number of Participants', 'num_participants','vulnerable'
+    association 'Avg # Non-Participating Reviewers','avg_non_participating_revs','vulnerable'
+    association '% Reviews with 3 or more Reviewers','perc_three_more_reviewers','vulnerable'
+    association '% Reviews with a Security-Experienced Participant', 'perc_security_experienced_participants','vulnerable'
+    association 'Avg Security-Experienced Participants', 'avg_security_experienced_participants','vulnerable'
+    association 'Average Prior Reviews with Owner', 'avg_reviews_with_owner','vulnerable'
+    association 'Average Owner Familiarity Gap', 'avg_owner_familiarity_gap','vulnerable'
+    association '% Reviews over 200 LOC/hour','perc_fast_reviews','vulnerable'
+    association '% Reviews with a Potentially-Overlooked Patchset', 'perc_overlooked_patchsets','vulnerable'
+    association 'Average Sheriff Hours','avg_sheriff_hours','vulnerable'
+    
+    association 'Pre Bugs / Future Vulnerability','num_pre_bugs','becomes_vulnerable'
+    association 'Pre Feature Bugs / Future Vulnerability','num_pre_features','becomes_vulnerable'
+    association 'Pre Compatibility Bugs / Future Vulnerability','num_pre_compatibility_bugs','becomes_vulnerable'
+    association 'Pre Regression Bugs / Future Vulnerability','num_pre_regression_bugs','becomes_vulnerable'
+    association 'Pre Security Bugs / Future Vulnerability','num_pre_security_bugs','becomes_vulnerable'
+    association 'Pre Test Fails Bugs / Future Vulnerability','num_pre_tests_fails_bugs','becomes_vulnerable'
+    association 'Pre Stability Crash Bugs / Future Vulnerability','num_pre_stability_crash_bugs','becomes_vulnerable'
+    association 'Pre Build Bugs / Future Vulnerability','num_pre_build_bugs','becomes_vulnerable'
+    association 'Previous Vulnerability / Post Bugs','num_post_bugs','was_vulnerable'
   end
 
-  def association(title, column)
+  def association(title, column, criteria)
     begin
     R.eval <<-EOR
-      vulnerable <- data$#{column}[data$vulnerable=="TRUE"]
-      neutral <- data$#{column}[data$vulnerable=="FALSE"]
+      vulnerable <- data$#{column}[data$#{criteria}=="TRUE"]
+      neutral <- data$#{column}[data$#{criteria}=="FALSE"]
 
       # Per SLOC populations
-      vulnerable_per_sloc <- vulnerable/data$sloc[data$vulnerable=="TRUE"]
+      vulnerable_per_sloc <- vulnerable/data$sloc[data$#{criteria}=="TRUE"]
       vulnerable_per_sloc <- vulnerable_per_sloc[is.finite(vulnerable_per_sloc)] #remove /0
-      neutral_per_sloc <- neutral/data$sloc[data$vulnerable=="FALSE"]
+      neutral_per_sloc <- neutral/data$sloc[data$#{criteria}=="FALSE"]
       neutral_per_sloc <- neutral_per_sloc[is.finite(neutral_per_sloc)] #remove /0
       
       # MWW tests
