@@ -20,8 +20,8 @@ class ParticipantAnalysis
   def populate_security_experienced
     Participant.find_each do |participant|
       c = participant.code_review
-      vuln_reviews = participant.developer.participants.joins(code_review: :cvenums)\
-        .where('code_reviews.created < ?', c.created)  
+      vuln_reviews = Participant.joins(code_review: :cvenums)\
+        .where('participants.dev_id = ?  and code_reviews.created < ? ', participant.dev_id, c.created)  
 
       participant.update(security_experienced: vuln_reviews.any?)
     end
@@ -39,10 +39,10 @@ class ParticipantAnalysis
     @@bug_experience_metrics.each do |metric|  
       Participant.find_each do |participant|
         c = participant.code_review
-        reviews = participant.developer.participants\
+        reviews = Participant\
           .joins(code_review: [commit: [commit_bugs: [bug: :labels]]])\
-          .where('code_reviews.created < :created AND labels.label = :label_text'\
-                 ,{created: c.created, label_text: metric[:label]})  
+          .where('participants.dev_id = :dev_id AND code_reviews.created < :created AND labels.label = :label_text'\
+                 ,{dev_id: participant.dev_id, created: c.created, label_text: metric[:label]})  
         participant.update(metric[:field] => reviews.any?)
       end
     end
