@@ -59,6 +59,10 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.integer  "owner_familiarity_gap"
     t.integer  "total_sheriff_hours"
     t.boolean  "cursory"
+    t.boolean  "stability_labeled"
+    t.boolean  "build_labeled"
+    t.boolean  "test_fail_labeled"
+    t.boolean  "compatibility_labeled"
   end
 
   create_table "code_reviews_cvenums", id: false, force: true do |t|
@@ -164,7 +168,7 @@ ActiveRecord::Schema.define(version: 20140512131450) do
 
   create_table "patch_sets", id: false, force: true do |t|
     t.datetime "created"
-    t.integer  "num_comments"
+    t.integer  "enum_comments"
     t.text     "message"
     t.datetime "modified"
     t.string   "owner_email"

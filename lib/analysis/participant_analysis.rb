@@ -27,23 +27,22 @@ class ParticipantAnalysis
     end
   end
   
-  @@bug_experience_metrics = [
-    {:field => 'stability_experienced', :label => 'stability-crash'}
-#    {:field => 'build_experienced', :label => 'build'},
-#    {:field => 'test_fail_experienced', :label => 'cr-tests-fails'},
-#    {:field => 'compatibility_experienced', :label => 'type-compat'}
+  @@bug_experience_fields = [
+    {:participants_field => 'stability_experienced', :code_review_field => 'stability_labeled'},
+    {:participants_field => 'build_experienced', :code_review_field => 'build_labeled'},
+    {:participants_field => 'test_fail_experienced', :code_review_field => 'test_fail_labeled'},
+    {:participants_field => 'compatibility_experienced', :code_review_field => 'compatibility_labeled'}
   ]
 
   # At the given code review, each participant may or may not have had experience in bug-label related reviews. 
   def populate_bug_related_experience
-    @@bug_experience_metrics.each do |metric|  
+    @@bug_experience_fields.each do |field|  
       Participant.find_each do |participant|
         c = participant.code_review
-        reviews = Participant\
-          .joins(code_review: [commit: [commit_bugs: [bug: :labels]]])\
-          .where('participants.dev_id = :dev_id AND code_reviews.created < :created AND labels.label = :label_text'\
-                 ,{dev_id: participant.dev_id, created: c.created, label_text: metric[:label]})  
-        participant.update(metric[:field] => reviews.any?)
+        reviews = Participant.joins(:code_review)\
+          .where("participants.dev_id = :dev_id AND code_reviews.created < :created AND #{field[:code_review_field]} = TRUE"\
+                 ,{dev_id: participant.dev_id, created: c.created})  
+        participant.update(field[:participants_field] => reviews.any?)
       end
     end
   end

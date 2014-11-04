@@ -36,7 +36,11 @@ class CodeReviewParser
                  nil, # for total_reviews_with_owner
                  nil, # for owner_familiarity_gap
                  nil, # for total_sheriff_hours
-                 nil] # for cursory
+                 nil, # for cursory
+                 nil, # for stability_labeled
+                 nil, # for build_labeled
+                 nil, # for test_fail_labeled
+                 nil] # for compatibility_labeled
 
         @prtp_set.each {|p| @prtps << [p,owner_id,cobj['issue'],cobj['created'],nil,nil,nil,nil,nil,nil,nil]}
         @contrb_set.each {|c| @contrbs << [c,cobj['issue']]}
