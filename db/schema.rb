@@ -168,7 +168,7 @@ ActiveRecord::Schema.define(version: 20140512131450) do
 
   create_table "patch_sets", id: false, force: true do |t|
     t.datetime "created"
-    t.integer  "enum_comments"
+    t.integer  "num_comments"
     t.text     "message"
     t.datetime "modified"
     t.string   "owner_email"
