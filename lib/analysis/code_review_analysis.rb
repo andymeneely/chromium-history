@@ -22,7 +22,6 @@ class CodeReviewAnalysis
     end
   end
 
-
   @@bug_experience_metrics = [
     {:field => 'stability_labeled', :label => 'stability-crash'},
     {:field => 'build_labeled', :label => 'build'},
@@ -33,9 +32,10 @@ class CodeReviewAnalysis
   def populate_experience_labels
     @@bug_experience_metrics.each do |metric|
       CodeReview.find_each do |review|
-        any_commit = Commit.joins(commit_bugs: [bug: :labels])\
-                     .where('commits.commit_hash = :commit_hash AND labels.label = :label_text',{commit_hash: review.commit_hash,label_text: metric[:label]}).any?
-        review.update(metric[:field] => any_commit)
+        commits = Commit.joins(commit_bugs: [bug: :labels])\
+        .where('commits.commit_hash = :commit_hash AND labels.label = :label_text',\
+               {commit_hash: review.commit_hash,label_text: metric[:label]})
+        review.update(metric[:field] => commits.any?)
        end
      end
   end

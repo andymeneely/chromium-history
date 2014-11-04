@@ -40,8 +40,8 @@ class ParticipantAnalysis
       Participant.find_each do |participant|
         c = participant.code_review
         reviews = Participant.joins(:code_review)\
-          .where("participants.dev_id = :dev_id AND code_reviews.created < :created AND #{field[:code_review_field]} = TRUE"\
-                 ,{dev_id: participant.dev_id, created: c.created})  
+        .where("participants.dev_id = :dev_id AND code_reviews.created < :created AND #{field[:code_review_field]} = TRUE"\
+               ,{dev_id: participant.dev_id, created: c.created})  
         participant.update(field[:participants_field] => reviews.any?)
       end
     end
