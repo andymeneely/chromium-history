@@ -60,7 +60,7 @@ class VocabLoader
           }
           if(res[0]['found'] == 't') 
             table << [convo['author_id'], word['id']]
-          endpsql
+          end
         end
       end
     
@@ -69,7 +69,7 @@ class VocabLoader
     ActiveRecord::Base.connection.execute "COPY developers_technical_words FROM '#{@tmp_dir}/dev_words.csv' DELIMITER ',' CSV"
   end
 
-  def remove_quoted_comments target_file, result_file
+  def self.remove_quoted_comments target_file, result_file
     file = File.open target_file, 'r'
     newFile = file.read.gsub(/^\<.*$/, '')
     File.open(result_file, 'w+') { |file| file.write(newFile) }
