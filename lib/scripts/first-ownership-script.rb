@@ -5,20 +5,28 @@ require "csv"
 # 
 # @author Danielle Neuberger
 class FirstOwnershipScript
-  #class-level variable containing hash of owners information
-  @@hashmap
+  # Class-level variables
+  @@hashmap # contains hash of owners information 
+  @@commitNumsFile # the file name for the commitHashs modifying OWNERS files
+  @csvLoc # the location of the CSV file to produce
 
   # Create a new isntance
   # @return FirstOwnershipScript instance - the new object
   def initialize()
-    @csvLoc = ".."
+    # Assume first commandline arg is the file output of commit hashes that contain
+    # modifications to any OWNERS file TODO change this to use Trollop or something??
+    @@commitNumsFile = ARGV[0] #TODO would need to throw error if this isnt present
+    @csvLoc = "../Results.csv"
   end
 
+  # Method to loop through commit nums in the passed file and call helper methods
+  # to pull information for each 
   def get_ownership()
-    #Get all commits with git log command
-    log = `git log --all -- '*OWNERS'`
-    puts log #TODO call analyze_commit_file for each commit num returned
-    
+    commitHashes = File.read(@@commitNumsFile).split(",").map(&:strip) #TODO test
+    commitHashes.each do |hash| 
+      analyze_commit_file(hash)
+    end    
+    create_csv()
   end
 
   # Checks out the commit and opens the file, gathers all the
