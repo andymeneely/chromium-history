@@ -21,6 +21,7 @@ require 'analysis/ascii_histograms'
 require 'stats'
 require 'nlp/corpus'
 require 'loaders/vocab_loader'
+require 'oj'
 
 # CodeReviewParser.new.parse: Parses JSON files in the codereviews dircetory for the enviornment we're working in.
     	# Loads the json files into an object(a hash). Then pushes data from the created object
@@ -175,25 +176,61 @@ namespace :run do
   end
 
   namespace :nlp do
-
-    desc "Run NLP analysis"
-    task :word_stats => :env do 
-      Benchmark.bm(40) do |x|
-        puts 'what'
+    
+    desc "Create Corpus"
+    task :create_corpus, [:raw_path, :corpus_name] => :env do |t, args|
+      Benchmark.bm(35) do |x|
+        corpus = Corpus.new
+        tmp_dir = Rails.configuration.tmpdir
+        corpus_name = args[:corpus_name]
+        doc = nil
+        x.report('Loading raw') {doc = corpus.document args[:raw_path]}
+        chunked = "#{tmp_dir}/#{corpus_name}_chunked.xml"
+        unless File.exist? chunked
+          x.report('Chunking doc ' + corpus_name) {doc.apply :chunk } 
+          x.report('Save chunked doc ' + corpus_name) {doc.serialize(:xml, file: chunked)}
+        end
+        segmented = "#{tmp_dir}/#{corpus_name}_segmented.xml"
+        unless File.exist? segmented
+          x.report('Segementing doc') {doc.apply({:segment => :punkt})}
+          x.report('Save doc') {doc.serialize(:xml, file: segmented)}
+        end
+        tokenized = "#{tmp_dir}/#{corpus_name}_tokenized.xml"
+        unless File.exist? tokenized
+          x.report('Tokenize doc') {doc.apply({:tokenize => :punkt})}
+          x.report('Save doc') {doc.serialize(:xml, file: tokenized)}
+        end
       end
     end
 
     desc "Creating a corpus of ACM abstracts"
-    task :scrape_acm => :env do 
-      Benchmark.bm(40) do |x|
-        puts 'what'
+    task :create_acm_corpus => :env do 
+      tmp_dir = Rails.configuration.tmpdir
+      Benchmark.bm(35) do |x|
+        x.report('Parsing mongo dump to raw text') do 
+          abstracts = Oj.load_file "#{tmp_dir}/acm.json"
+          File.open "#{tmp_dir}/acm.txt", 'w+' do |file|
+            abstracts['result']['pages'].each do |abstract|
+              file.write abstract['results']
+              file.write "\n\n"
+            end
+          end
+        end
       end
+      Rake::Task['run:nlp:create_corpus'].invoke "#{tmp_dir}/acm.txt", 'acm'
     end
 
-    task :technical_feedback => :env do
-      Benchmark.bm(40) do |x|
-        puts 'what'
+    desc "Creating a corpus of comments"
+    task :create_comments_corpus => :env do
+      tmp_dir = Rails.configuration.tmpdir
+      Benchmark.bm(35) do |x|
+        x.report('Aggregating all comments') do
+          vocab_file = tmp_dir+'/raw_comments.txt'
+          Comment.get_all_convo vocab_file
+          VocabLoader.remove_quoted_comments vocab_file, tmp_dir+'/clean_comments.txt'
+        end
       end
+      Rake::Task['run:nlp:create_corpus'].invoke "#{tmp_dir}/clean_comments.txt", 'chromium_comments'
     end
 
     desc "Building Technical Vocab"
