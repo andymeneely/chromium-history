@@ -93,17 +93,17 @@ function title() {
 }
 
 set -e
-# title "Installing Everything"
-# common
+title "Installing Everything"
+common
 
-# title "Installing Postgresql"
-# vagrantPostgresql
+title "Installing Postgresql"
+vagrantPostgresql
 
-# title "Treat NLP dependencies"
-# treatDeps
+title "Treat NLP dependencies"
+treatDeps
 
-# title "Installing NLTK"
-# nltk
+title "Installing NLTK"
+nltk
 
 environmentVars
 
