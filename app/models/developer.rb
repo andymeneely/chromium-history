@@ -33,7 +33,7 @@ class Developer < ActiveRecord::Base
         email_domain = match[2]
       end
 
-      bad_domains = ['chromioum.org','chroimum.org','chromium.com','chromoium.org','chromium.rg','chromum.org','chormium.org','chromimum.org','chromium.orf','chromiu.org','chroium.org','chcromium.org','chromuim.org','google.com','g']
+      bad_domains = ['chromioum.org','chroimum.org','chromium.com','chromoium.org','chromium.rg','chromum.org','chormium.org','chromimum.org','chromium.orf','chromiu.org','chroium.org','chcromium.org','chromuim.org','google.com','g','chromium.or']
       if bad_domains.include? email_domain 
         email_domain = "@chromium.org"
         email_address = email_local + email_domain
