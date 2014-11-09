@@ -187,7 +187,7 @@ namespace :run do
           Comment.get_all_convo vocab_file
           VocabLoader.remove_file_quoted_comments vocab_file
         end
-         x.report('Parsing mongo dump to raw text') do 
+        x.report('Parsing mongo dump to raw text') do 
           abstracts = Oj.load_file "#{tmp_dir}/acm.json"
           File.open "#{tmp_dir}/raw_acm.txt", 'w+' do |file|
             abstracts['result']['pages'].each do |abstract|
