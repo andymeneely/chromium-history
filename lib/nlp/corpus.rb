@@ -1,48 +1,47 @@
-require 'treat'
 require 'set'
-include Treat::Core::DSL
-
+require 'oj'
 
 class Corpus
 
-  def initialize 
-
-    # Set paths to stanford libs
-    Treat.libraries.stanford.jar_path = ENV['STANFORD_NLP']
-    Treat.libraries.stanford.model_path = ENV['STANFORD_NLP']
-
-    # Set path to punkt segmenter models
-    Treat.libraries.punkt.model_path = ENV['PUNKT_MODELS']
+  def initialize raw
+    @raw_file = raw
+    @words = nil
+    @tmp_dir = Rails.configuration.tmpdir
   end
 
-  # Pass method calls not specified in class to Treat Document class
-  def method_missing method_id, *arguments
-    @col.send(method_id, *arguments)
+  def words
+    if @words
+      return @words
+    else 
+      res = `python lib/nlp/python/tokenizer.py #{@raw_file} #{@tmp_dir}/corpus.json`
+      @words = Oj.load(res)
+      return @words
+    end
   end
 
-  def create doc
-    doc.apply :chunk
-    doc.apply({:segment => :punkt})
-    doc.apply({:tokenize => :punkt})
-    doc
+  def filter
+    Oj.to_file @tmp_dir + '/wordlist.json', words()
+    res = `python lib/nlp/python/json_word_diff.py #{@tmp_dir}/wordlist.json`
+    @words = Oj.load(res)
   end
 
-  def word_diff a, b
-    set_a = clean_vocab a
-    set_b = clean_vocab b
+  def word_diff other
+    set_a = clean_vocab words()
+    set_b = clean_vocab other
     set_a - set_b
   end
 
-  def word_intersect a, b
-    set_a = clean_vocab a
-    set_b = clean_vocab b
+  def word_intersect other
+    set_a = clean_vocab words()
+    set_b = clean_vocab other
     set_a & set_b
   end
 
   def clean_vocab wordlist
     result = Set.new
     wordlist.each do |word|
-      result.add word.downcase.stem
+      result.add word.downcase
     end
+    result
   end
 end 
