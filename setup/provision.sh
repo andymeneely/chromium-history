@@ -99,9 +99,6 @@ common
 title "Installing Postgresql"
 vagrantPostgresql
 
-title "Treat NLP dependencies"
-treatDeps
-
 title "Installing NLTK"
 nltk
 

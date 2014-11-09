@@ -67,45 +67,6 @@ gem 'google_drive', git: 'https://github.com/gimite/google-drive-ruby.git'
 
 gem 'nokogiri'
 
-# NLP framework
-gem 'treat'
-
-# Treat installer is currently broken on rails
-# Current advised solution is 'gem install' all the libs manually
-gem 'linguistics'
-gem 'engtagger'
-gem 'open-nlp'
-gem 'stanford-core-nlp'
-gem 'rwordnet'
-gem 'scalpel'
-gem 'fastimage'
-gem 'decisiontree', git: 'git@github.com:igrigorik/decisiontree.git' # Fix \r warning
-gem 'whatlanguage'
-gem 'zip'
-gem 'nickel'
-gem 'tactful_tokenizer'
-gem 'srx-english'
-gem 'punkt-segmenter'
-gem 'chronic'
-gem 'uea-stemmer'
-gem 'rbtagger'
-gem 'ruby-stemmer'
-gem 'activesupport'
-gem 'rb-libsvm'
-# gem 'tomz-liblinear-ruby-swig'
-gem 'ruby-fann'
-gem 'fuzzy-string-match'
-gem 'levenshtein-ffi'
-# gem 'tf-idf-similarity'
-gem 'kronic'
-gem 'graphr'
-gem 'mongo'
-gem 'bson_ext'
-gem 'lda-ruby'
-# End of Treat dependencies
-
-gem 'rubypython'
-
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false
