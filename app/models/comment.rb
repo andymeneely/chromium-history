@@ -16,7 +16,7 @@ class Comment < ActiveRecord::Base
              FROM Comments 
              GROUP BY code_review_id 
              #{if limit then "LIMIT #{limit}" else "" end}"
-    if result_file then query = "COPY(#{query}) TO '#{result_file}' WITH (FORMAT text)" end
+    if result_file then query = "COPY(SELECT sub.string_agg FROM (#{query}) as sub) TO '#{result_file}' WITH (FORMAT text)" end
     ActiveRecord::Base.connection.execute(query)
   end
 
@@ -25,7 +25,7 @@ class Comment < ActiveRecord::Base
              FROM Comments 
              #{if developer_id then "WHERE author_id = #{developer_id}" else "" end} 
              GROUP BY author_id"
-    if result_file then query = "COPY(#{query}) TO '#{result_file}' WITH (FORMAT text)" end
+    if result_file then query = "COPY(SELECT sub.string_agg FROM (#{query}) as sub) TO '#{result_file}' WITH (FORMAT text)" end
     ActiveRecord::Base.connection.execute(query)
   end
 end
