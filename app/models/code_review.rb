@@ -8,6 +8,7 @@ class CodeReview < ActiveRecord::Base
   belongs_to :commit, foreign_key: "commit_hash", primary_key: "commit_hash"
   
   has_and_belongs_to_many :cvenums
+  has_and_belongs_to_many :technical_words
   
   self.primary_key = :issue
   
