@@ -14,7 +14,7 @@ class ProductionCountVerify < VerifyBase
   end
 
   def verify_release_owner_count
-    assert_equal 1156207, ReleaseOwner.count
+    assert_equal 376824, ReleaseOwner.count
   end
 
   def verify_release_owners_release
