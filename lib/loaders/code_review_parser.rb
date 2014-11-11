@@ -36,13 +36,9 @@ class CodeReviewParser
                  nil, # for total_reviews_with_owner
                  nil, # for owner_familiarity_gap
                  nil, # for total_sheriff_hours
-                 nil, # for cursory
-                 nil, # for stability_labeled
-                 nil, # for build_labeled
-                 nil, # for test_fail_labeled
-                 nil] # for compatibility_labeled
+                 nil] # for cursory
 
-        @prtp_set.each {|p| @prtps << [p,owner_id,cobj['issue'],cobj['created'],nil,nil,nil,nil,nil,nil,nil]}
+        @prtp_set.each {|p| @prtps << [p,owner_id,cobj['issue'],cobj['created'],nil,nil,nil,nil,nil,nil,nil,nil]}
         @contrb_set.each {|c| @contrbs << [c,cobj['issue']]}
         @revs_dict.each {|id, email| @revs << [cobj['issue'],id, email]}
 
@@ -177,7 +173,14 @@ class CodeReviewParser
   # Given our in-memory @dev_db cache, let's now just dump it to a csv
   def dump_developers
     @dev_db.each do |email,dev_id|
-      @devs << [dev_id, email]
+      positive_infinity = "2050/01/01 00:00:00"
+      @devs << [dev_id, 
+                email,
+                positive_infinity, 
+                positive_infinity,
+                positive_infinity,
+                positive_infinity,
+                positive_infinity]
     end
   end
 

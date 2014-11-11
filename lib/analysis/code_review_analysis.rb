@@ -23,21 +23,30 @@ class CodeReviewAnalysis
   end
 
   @@bug_experience_metrics = [
-    {:field => 'stability_labeled', :label => 'stability-crash'},
-    {:field => 'build_labeled', :label => 'build'},
-    {:field => 'test_fail_labeled', :label => 'cr-tests-fails'},
-    {:field => 'compatibility_labeled', :label => 'type-compat'}
+    {:field => 'bug_security_experience', :label => 'type-bug-security'},
+    {:field => 'stability_experience', :label => 'stability-crash'},
+    {:field => 'build_experience', :label => 'build'},
+    {:field => 'test_fail_experience', :label => 'cr-tests-fails'},
+    {:field => 'compatibility_experience', :label => 'type-compat'}
   ]
-
+  
   def populate_experience_labels
     @@bug_experience_metrics.each do |metric|
       CodeReview.find_each do |review|
-        commits = Commit.joins(commit_bugs: [bug: :labels])\
+        any_commits = Commit.joins(commit_bugs: [bug: :labels])\
         .where('commits.commit_hash = :commit_hash AND labels.label = :label_text',\
-               {commit_hash: review.commit_hash,label_text: metric[:label]})
-        review.update(metric[:field] => commits.any?)
-       end
-     end
+               {commit_hash: review.commit_hash,label_text: metric[:label]}).any?
+        if any_commits
+          review.participants.each do |participant|
+            developer = participant.developer
+            if review.created < developer[metric[:field]]
+              developer[metric[:field]] = review.created
+              developer.save
+            end
+          end  
+        end
+      end
+    end
   end
 
   def populate_cursory

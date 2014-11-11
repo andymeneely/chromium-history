@@ -59,10 +59,6 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.integer  "owner_familiarity_gap"
     t.integer  "total_sheriff_hours"
     t.boolean  "cursory"
-    t.boolean  "stability_labeled"
-    t.boolean  "build_labeled"
-    t.boolean  "test_fail_labeled"
-    t.boolean  "compatibility_labeled"
   end
 
   create_table "code_reviews_cvenums", id: false, force: true do |t|
@@ -118,6 +114,11 @@ ActiveRecord::Schema.define(version: 20140512131450) do
 
   create_table "developers", force: true do |t|
     t.string "email"
+    t.datetime "bug_security_experience"
+    t.datetime "stability_experience"
+    t.datetime "build_experience"
+    t.datetime "test_fail_experience"
+    t.datetime "compatibility_experience"
   end
 
   create_table "filepaths", id: false, force: true do |t|
@@ -148,6 +149,7 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.datetime "review_date"
     t.integer  "reviews_with_owner"
     t.boolean  "security_experienced"
+    t.boolean  "bug_security_experienced"
     t.boolean  "stability_experienced"
     t.boolean  "build_experienced"
     t.boolean  "test_fail_experienced"
