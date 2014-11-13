@@ -6,7 +6,7 @@ require 'csv'
 
 #Trollop options for command-line
 opts = Trollop::options do
-  version "Rietveld Scraper 1.0"
+  version "Google Code Scraper 1.0"
   banner <<-EOS
 The Google Code Bug Scraper fetches CSV data from Google Code.
 
