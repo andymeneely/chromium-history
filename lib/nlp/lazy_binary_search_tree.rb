@@ -15,7 +15,7 @@ class LazyBinarySearchTree
 
     def in? vector
       result = ActiveRecord::Base.connection.execute "SELECT to_tsvector('#{vector}') @@ '#{query}' AS found"
-      found = result[0]['found'] == 't'
+      result[0]['found'] == 't'
     end
 
     def search vector
