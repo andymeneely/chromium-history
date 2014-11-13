@@ -26,8 +26,8 @@ end
 # 
 # @author Danielle Neuberger
 class FirstOwnershipScript
-  @@hashmap # contains hash of owners information 
-  @@commitNumsFile # the file name for the commitHashs modifying OWNERS files
+  @@hashmap # hash of owners info with key: email~path, value: [commitNum, date]
+  @@commitNumsFile # the file name for the commit hashes modifying OWNERS files
   @csvLoc # the location of the CSV file to produce
 
   # Create a new isntance
@@ -51,14 +51,11 @@ class FirstOwnershipScript
   # owners emails and puts the information along with the commit hash
   # , path, and date into the owner-ownerfile hash
   def analyze_commit_file(commitNum)
-    puts commitNum
-    `git checkout #{commitNum}`
-    filesWithPaths = `git diff-tree --no-commit-id --name-only -r #{commitNum}`
-    puts "Files for commit :" + filesWithPaths #TODO remove later, only for debugging
+    filesWithPaths = `git diff-tree --no-commit-id --name-only -r #{commitNum}`.split(/\n/)
     date = `git show -s --format=%ci #{commitNum}`
     filesWithPaths.each do |file|
       if file.include? "OWNERS"  #if the file is an owners file
-	path = File.dirname(file) + "/"
+	path = File.dirname(file) + "/" #format path to just be the directory (eg /chrome/common/OWNERS -> /chrome/common/)
         get_owners_info(file, commitNum, date, path)
       end
     end
@@ -66,19 +63,18 @@ class FirstOwnershipScript
 
   # Open up an owners file and add information to the hash
   def get_owners_info(file, commitNum, date, path)
-    File.open(file) do |file|
-      file.each do |line|
-        email = sanitize_validate_email(line) #TODO load Kayla's script first and use this method from there
- 	key = email + "~" + path
-	value = [commitNum, date]
-        if @@hashmap.key?(key)
-	  currHashDate = @@hashmap[key][0]
-	  if date < currHashDate #TODO may need to use Date.parse?
- 	    @@hashmap[key] = value
-	  end
-	else 
-	  @@hashmap[key] = value
+    ownersText = `git show #{commitNum}:#{file}`
+    ownersText.each_line do |line| 
+      email = sanitize_validate_email(line) #TODO load Kayla's script first and use this method from there
+      key = email + "~" + path
+      value = [commitNum, date]
+      if @@hashmap.key?(key)
+	currHashDate = @@hashmap[key][0]
+        if date < currHashDate
+          @@hashmap[key] = value
         end
+      else 
+	@@hashmap[key] = value
       end
     end
   end
