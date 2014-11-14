@@ -199,6 +199,7 @@ namespace :run do
         vocab_loader = VocabLoader.new
         x.report('Generating technical vocab') {vocab_loader.load}
         x.report('Associating vocab words with developers') {vocab_loader.associate_developer_vocab}
+        x.report('Associating vocab words with code reviews'){vocab_loader.associate_code_review_vocab}
       end
     end
   end

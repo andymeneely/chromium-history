@@ -36,6 +36,25 @@ class VocabLoader
     ActiveRecord::Base.connection.execute "COPY developers_technical_words FROM '#{@tmp_dir}/dev_words.csv' DELIMITER ',' CSV"
   end
 
+
+  def associate_code_review_vocab
+    table = CSV.open "#{@tmp_dir}/code_review_words.csv", 'w+'
+    allwords = ActiveRecord::Base.connection.execute "SELECT * FROM technical_words"
+    tree = LazyBinarySearchTree.new allwords.map {|word| word}
+    convos = Comment.get_all_convo
+    convos.each do |convo| 
+      clean = VocabLoader.remove_quoted_comments(convo['string_agg']).gsub("'", "")
+      result = tree.search clean
+      if result
+        table << [convo['code_review_id'], result['id']]
+      end
+    end
+    table.fsync
+    ActiveRecord::Base.connection.execute "COPY code_reviews_technical_words FROM '#{@tmp_dir}/code_review_words.csv' DELIMITER ',' CSV"
+  end
+
+	
+	
   def self.remove_file_quoted_comments target_file
     file = File.open target_file, 'r'
     new_file = VocabLoader.remove_quoted_comments file.read

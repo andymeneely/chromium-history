@@ -67,7 +67,7 @@ ActiveRecord::Schema.define(version: 20140512131450) do
   end
 
   create_table "code_reviews_technical_words", id: false, force: true do |t|
-    t.integer "code_review_id"
+    t.integer "code_review_id", limit: 8
     t.integer "technical_word_id"
   end
 
