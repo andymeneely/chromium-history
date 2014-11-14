@@ -45,6 +45,6 @@ class VocabLoader
   end
 
   def self.remove_quoted_comments string
-    string.gsub(/^\<|\>.*$/, '')
+    string.gsub(/^[\<|\>].*$/, '')
   end
 end
