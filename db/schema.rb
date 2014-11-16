@@ -114,6 +114,7 @@ ActiveRecord::Schema.define(version: 20140512131450) do
 
   create_table "developers", force: true do |t|
     t.string "email"
+    t.datetime "security_experience"
     t.datetime "bug_security_experience"
     t.datetime "stability_experience"
     t.datetime "build_experience"
