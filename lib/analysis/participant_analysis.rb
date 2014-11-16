@@ -16,17 +16,6 @@ class ParticipantAnalysis
     end
   end#method
 
-  # At the given code review, each participant may or may not have had experience in security
-  def populate_security_experienced
-    Participant.find_each do |participant|
-      c = participant.code_review
-      vuln_reviews = Participant.joins(code_review: :cvenums)\
-        .where('participants.dev_id = ?  and code_reviews.created < ? ', participant.dev_id, c.created)  
-
-      participant.update(security_experienced: vuln_reviews.any?)
-    end
-  end
-  
   # At the given code review, each participant may or may not have had experience in bug-label related reviews. 
   def populate_bug_related_experience
     update=<<-eos
