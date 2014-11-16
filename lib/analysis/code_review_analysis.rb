@@ -49,6 +49,18 @@ class CodeReviewAnalysis
     end
   end
 
+  def populate_experience_cve
+    CodeReview.joins(:cvenums).find_each do |review|
+      review.participants.each do |participant|
+        developer = participant.developer
+        if review.created < developer.security_experience
+          developer.security_experience = review.created
+          developer.save
+        end
+      end
+    end
+  end
+
   def populate_cursory
     # create hashes by issue for comments and mess 
     c_issue_text_arr = CodeReview.joins(patch_sets: [{patch_set_files: :comments}]).pluck(:issue,:text)

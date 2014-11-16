@@ -72,6 +72,7 @@ class Developer < ActiveRecord::Base
       developer = Developer.new
 	    developer.id = 0 if email.eql?("ALL")
       developer["email"] = email
+      developer["security_experience"] = positive_infinity
       developer["bug_security_experience"] = positive_infinity
       developer["stability_experience"] = positive_infinity
       developer["build_experience"] = positive_infinity

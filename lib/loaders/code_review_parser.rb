@@ -176,7 +176,8 @@ class CodeReviewParser
       positive_infinity = "2050/01/01 00:00:00"
       @devs << [dev_id, 
                 email,
-                positive_infinity, 
+                positive_infinity,
+                positive_infinity,
                 positive_infinity,
                 positive_infinity,
                 positive_infinity,

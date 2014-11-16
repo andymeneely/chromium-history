@@ -31,7 +31,8 @@ class ParticipantAnalysis
   def populate_bug_related_experience
     update=<<-eos
     UPDATE participants 
-    SET bug_security_experienced = (developers.bug_security_experience < participants.review_date), 
+    SET security_experienced = (developers.security_experience < participants.review_date), 
+        bug_security_experienced = (developers.bug_security_experience < participants.review_date), 
         stability_experienced = (developers.stability_experience < participants.review_date), 
         build_experienced = (developers.build_experience < participants.review_date),
         test_fail_experienced = (developers.test_fail_experience < participants.review_date),

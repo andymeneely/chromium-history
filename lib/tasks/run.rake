@@ -113,7 +113,7 @@ namespace :run do
   task :analyze => :environment do
     Benchmark.bm(35) do |x|
       x.report("Populating reviews_with_owner"){ParticipantAnalysis.new.populate_reviews_with_owner}
-      x.report("Populating security_experienced"){ParticipantAnalysis.new.populate_security_experienced}
+      x.report("Populating security_experienced"){CodeReviewAnalysis.new.populate_experience_cve}
       x.report("Populating code review experience labels"){CodeReviewAnalysis.new.populate_experience_labels}
       x.report("Populating participant bug experience"){ParticipantAnalysis.new.populate_bug_related_experience}
       x.report("Populating total_reviews_with_owner"){CodeReviewAnalysis.new.populate_total_reviews_with_owner}
