@@ -1,7 +1,6 @@
 require "csv"
 require "trollop"
 
-
 # Trollop Command-line parameters
 opts = Trollop::options do
   version "First OWNERShip script"
@@ -17,7 +16,7 @@ Usage:
 where [options] are:
   EOS
   opt :commitsFile, "The file name including path of the file containing the commit hashes to use", :required => true, type: String
-  opt :csv, "The output CSV file for the results", default: "first-owners.csv", type: String
+  opt :csv, "The output CSV file for the results", default: "../first-owners.csv", type: String
 end 
 
 
@@ -28,14 +27,15 @@ end
 class FirstOwnershipScript
   @@hashmap # hash of owners info with key: email~path, value: [commitNum, date]
   @@commitNumsFile # the file name for the commit hashes modifying OWNERS files
-  @csvLoc # the location of the CSV file to produce
+  @@csvLoc # the location of the CSV file to produce
 
   # Create a new isntance
   # @return FirstOwnershipScript instance - the new object
   def initialize(opts)
     File.open(opts[:csv], 'w+').close
     @@commitNumsFile = File.expand_path(opts[:commitsFile])
-    @csvLoc = File.expand_path(opts[:csv])
+    @@csvLoc = File.expand_path(opts[:csv])
+    @@hashmap = Hash.new(0)
   end
 
   # Method to loop through commit nums in the passed file and call helper methods
@@ -56,6 +56,7 @@ class FirstOwnershipScript
     filesWithPaths.each do |file|
       if file.include? "OWNERS"  #if the file is an owners file
 	path = File.dirname(file) + "/" #format path to just be the directory (eg /chrome/common/OWNERS -> /chrome/common/)
+        commitNum = commitNum.strip()
         get_owners_info(file, commitNum, date, path)
       end
     end
@@ -65,16 +66,22 @@ class FirstOwnershipScript
   def get_owners_info(file, commitNum, date, path)
     ownersText = `git show #{commitNum}:#{file}`
     ownersText.each_line do |line| 
-      email = sanitize_validate_email(line) #TODO load Kayla's script first and use this method from there
-      key = email + "~" + path
-      value = [commitNum, date]
-      if @@hashmap.key?(key)
-	currHashDate = @@hashmap[key][0]
-        if date < currHashDate
-          @@hashmap[key] = value
+      if line.include? "@" and line.include? "=" # then email is everything after =
+	email = line.split('=')[-1]
+      elsif line.include? "@" # then email is entire line
+	email = line
+      end
+      if !email.nil? #if there is an email
+        key = email + "~" + path
+        value = [commitNum, date]
+        if @@hashmap.key?(key)
+  	  currHashDate = @@hashmap[key][0]
+          if date < currHashDate
+            @@hashmap[key] = value
+          end
+        else 
+	  @@hashmap[key] = value
         end
-      else 
-	@@hashmap[key] = value
       end
     end
   end
@@ -82,7 +89,7 @@ class FirstOwnershipScript
   # Add information to the CSV file in format of 
   #  email, directory, commit id
   def create_csv()
-    CSV.open(@csvLoc, "a") do |cfile|
+    CSV.open(@@csvLoc, "a") do |cfile|
       @@hashmap.each do |key, val|
 	emailAndDir = key.split(/~/)
         cfile << [emailAndDir[0],emailAndDir[1],val[0]]
