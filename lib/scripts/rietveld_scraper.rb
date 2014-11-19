@@ -79,6 +79,7 @@ class RietveldScraper
       Set.new
     end
     
+    @chunk_issues = Set.new
     @issues = if File.exist?(@@file_location + "issues_completed.log")
       (File.readlines(@@file_location + "issues_completed.log").collect { |l| l.strip.to_i }).to_set
     else
@@ -137,19 +138,22 @@ class RietveldScraper
             end
             # BLOCKING CALL
             hydra.run  # This runs all the requests that are queued
-
-            File.open(@@file_location + "issues_completed.log", "a") { |f| f << "#{issue_id}\n" }
-            
+ 
             #Add issue to chunk temp
             @chunk_temp << issue_result
-            @issues << issue_id
+            #Add the id to chunk issue list, so we can pick up from here later.
+            @chunk_issues << issue_id
             
             if @chunk_temp.size >= chunk_size
               #Save chunk to disk and reset
               Oj.to_file(@@file_location +"chunk#{"%05d" % @cursor}.json", @chunk_temp)
               puts "Saved chunk#{"%05d" % @cursor}.json"
               
+              File.open(@@file_location + "issues_completed.log", "a") { |f| @chunk_issues.each {|chunk_issue_id| f << "#{chunk_issue_id}\n" }}
+              @issues.merge @chunk_issues
+
               @chunk_temp = Array.new
+              @chunk_issues = Set.new
               @cursor += 1
             end
 
