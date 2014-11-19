@@ -71,7 +71,13 @@ class RietveldScraper
   # @return RietveldScraper Our new object
   def initialize(opts)
     @opts = opts
-    @cursor = 0
+    @cursor = if Dir["chunk*.json"].size > 0
+     #Gets the max json chunk file and adds one. 
+     Dir["chunk*.json"].map.each {|chunk| chunk.delete("^0-9").to_i}.max + 1
+    else
+      0
+    end
+
     @chunk_temp = Array.new
     @ids = if File.exist?(ARGV[0])
       (File.readlines(ARGV[0]).collect {|l| l.strip.to_i}).to_set
