@@ -114,24 +114,18 @@ class RietveldScraper
         issue_request = Typhoeus::Request.new(@@baseurl + "/api/#{issue_id}", params: issue_args)  # make a new request
         issue_request.on_complete do |issue_resp|
           if issue_resp.success?
-            issue_result = Oj.load(issue_resp.body) # push a Hash of the response onto our issues list
+            oj_opts = {:symbol_keys => false, :mode => :compat}
+            issue_result = Oj.load(issue_resp.body,oj_opts) # push a Hash of the response onto our issues list
 
-            #Save the issue
-            # Oj.to_file(@@file_location + "#{issue_id}.json", issue_result)
-            issue_result['patchset_data'] = []
+            #Get the patchset data
+            issue_result['patchset_data'] = {}
             issue_result['patchsets'].each do |patch_id|
               patch_request = Typhoeus::Request.new(@@baseurl + "/api/#{issue_id}/#{patch_id}", 
                                                     params: patch_args, followlocation: true)
               patch_request.on_complete do |patch_resp|
                 if patch_resp.success?
-                  # We need to make a directory if one isn't there
-                  #FileUtils.mkdir(@@file_location + "#{issue_id}") unless File.directory?(@@file_location + "#{issue_id}")
-
-                  # Save the patch
-                  #File.open(@@file_location + "#{issue_id}/#{patch_id}.json", "w") { |f| f.write(patch_resp.body) }
-
                   # Add patchset to Issue 'patchset_data'
-                  issue_result['patchset_data'] << Oj.load(patch_resp.body)
+                  issue_result['patchset_data'][patch_id.to_s] = Oj.load(patch_resp.body)
                   # Wait some amount of time
                   sleep(delay)
                 else
