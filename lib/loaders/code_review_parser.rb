@@ -6,6 +6,11 @@ class CodeReviewParser
     open_csvs #initalize our attributes for writing
 
     Dir["#{Rails.configuration.datadir}/codereviews/*.json"].each do |file|
+      
+      #remove non UTF8 chars
+      blank = ' '
+      file.encode('UTF-8',:replace => blank , :invalid => :replace, :undef => :replace)
+      
       json = load_json file
       json.each do |cobj|
         owner_id = get_dev_id(cobj['owner_email'])
@@ -17,10 +22,10 @@ class CodeReviewParser
         parse_reviewers(cobj, owner_id)
 
         cobj['patchsets'].each do |pid|
-          unless cobj['patchset_data'][pid.to_s] == nil
-            parse_patchsets(cobj['patchset_data'][pid.to_s], cobj['issue'])
-          else
+          if cobj['patchset_data'][pid.to_s] == nil
             puts "\n#{cobj['issue']}|#{pid.to_s}" #outputs missing patchset and its issue.
+          else
+            parse_patchsets(cobj['patchset_data'][pid.to_s], cobj['issue'])
           end
         end
 
