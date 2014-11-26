@@ -17,7 +17,11 @@ class CodeReviewParser
         parse_reviewers(cobj, owner_id)
 
         cobj['patchsets'].each do |pid|
-          parse_patchsets(cobj['patchset_data'][pid.to_s], cobj['issue']) unless cobj['patchset_data'][pid.to_s] == nil
+          unless cobj['patchset_data'][pid.to_s] == nil
+            parse_patchsets(cobj['patchset_data'][pid.to_s], cobj['issue'])
+          else
+            puts "\n#{cobj['issue']}|#{pid.to_s}" #outputs missing patchset and its issue.
+          end
         end
 
         parse_messages(file, cobj['issue'], cobj['messages'])
