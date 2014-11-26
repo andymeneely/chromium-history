@@ -8,7 +8,7 @@ class CodeReviewLoader
     ActiveRecord::Base.connection.execute("COPY code_reviews FROM '#{tmp}/code_reviews.csv' DELIMITER ',' CSV")
     ActiveRecord::Base.connection.execute("COPY reviewers FROM '#{tmp}/reviewers.csv' DELIMITER ',' CSV")
     ActiveRecord::Base.connection.execute("COPY patch_sets FROM '#{tmp}/patch_sets.csv' DELIMITER ',' CSV")
-    ActiveRecord::Base.connection.execute("COPY messages FROM '#{tmp}/messages.csv' DELIMITER ',' CSV")
+    # ActiveRecord::Base.connection.execute("COPY messages FROM '#{tmp}/messages.csv' DELIMITER ',' CSV")
     ActiveRecord::Base.connection.execute("COPY patch_set_files FROM '#{tmp}/patch_set_files.csv' DELIMITER ',' CSV")
     ActiveRecord::Base.connection.execute("COPY comments FROM '#{tmp}/comments.csv' DELIMITER ',' CSV")
     ActiveRecord::Base.connection.execute("COPY developers FROM '#{tmp}/developers.csv' DELIMITER ',' CSV")
