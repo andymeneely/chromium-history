@@ -9,7 +9,7 @@ class CodeReviewParser
       
       #remove non UTF8 chars
       blank = ' '
-      file.encode('UTF-8',:replace => blank , :invalid => :replace, :undef => :replace)
+      file = file.encode('UTF-8',:replace => blank , :invalid => :replace, :undef => :replace)
       
       json = load_json file
       json.each do |cobj|
