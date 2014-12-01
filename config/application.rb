@@ -24,20 +24,22 @@ module ChromiumHistory
     #Auto load anything in lib
     #config.autoload_paths += %W(#{config.root}/lib)
     
-    # The tmp directory should not collide with other people or envs
-    # e.gs. /tmp/bobby/test
-    #       /tmp/bobby/production
-    Rails.configuration.tmpdir = "/tmp/#{ENV['USER']}/#{Rails.env}"
-    FileUtils.mkdir_p Rails.configuration.tmpdir
-
     # Where we keep all of our data to load into the database
     if Rails.env == "development"
       Rails.configuration.datadir = "data/development"
+      # The tmp directory should not collide with other people or envs
+      # e.gs. /tmp/bobby/test
+      #       /tmp/bobby/production
+      Rails.configuration.tmpdir = "/tmp/#{ENV['USER']}/#{Rails.env}"
+      FileUtils.mkdir_p Rails.configuration.tmpdir
     else
       data_yml = YAML.load_file("#{Rails.root}/config/data.yml")[Rails.env]
       Rails.configuration.datadir = data_yml['src-relative'] == "true" ? Rails.root + "/" : ""
       Rails.configuration.datadir += data_yml['dir']
       Rails.configuration.google_spreadsheets = data_yml['google-spreadsheet-ids']
+      # For test and production we use the RAM disk
+      Rails.configuration.tmpdir = "/run/shm/tmp/#{ENV['USER']}/#{Rails.env}"
+      FileUtils.mkdir_p Rails.configuration.tmpdir
     end
   end
 end
