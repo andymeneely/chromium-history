@@ -109,8 +109,8 @@ namespace :run do
 	  x.report("Loading OWNERS") {OwnersLoader.new.load}
       x.report("Optimizing OWNERS") {ReleaseOwner.optimize}
 	  x.report("Loading First Ownership"){FirstOwnershipLoader.new.load}
-	  x.report("Optimizing First Ownership){FirstOwnership.optimize}
-      x.report("Running PSQL ANALYZE"){ ActiveRecord::Base.connection.execute "ANALYZE" }
+	  x.report("Optimizing First Ownership"){FirstOwnership.optimize}
+      x.report("Running PSQL ANALYZE"){ActiveRecord::Base.connection.execute "ANALYZE"}
     end
   end
   
