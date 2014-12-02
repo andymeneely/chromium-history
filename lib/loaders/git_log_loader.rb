@@ -134,14 +134,13 @@ class GitLogLoader
     end
 
     arr.each do |element|
-      if fast_match(element, /^git-svn-id:/)
-        hash[:svn_revision] = element.strip.sub("git-svn-id:", "")
-
-      elsif fast_match(element, /^Review URL:/)
+      if fast_match(element, /^Review URL:/)
         @reviews_to_update << "(#{element[/(\d)+/].to_i}, '#{arr[0].strip}')"
 
       elsif fast_match(element, /^BUG=/)
-        hash[:bug] = element.strip.sub("BUG=", "")
+        bug_str = element.strip.sub("BUG=", "")
+        hash[:bug] = bug_str[0..255]
+        puts "WARNING! Bug is too long for #{bug_str}" if bug_str.length > 255
 
       elsif fast_match(element, /^;;;/)
         in_files = true
@@ -176,12 +175,16 @@ class GitLogLoader
     arr.each_with_index do |element,index|
 
       if index == 0
-        #add parent hash
-        hash[:commit_hash] = element.strip
+        #add commit hash
+        commit_hash_str = element.strip
+        hash[:commit_hash] = commit_hash_str[0..255]
+        puts "WARNING! Hash too long #{commit_hash_str}" if commit_hash_str.length > 255
 
       elsif index == 1
         #add email
-        hash[:author_email] = element.strip
+        author_email_str = element.strip
+        hash[:author_email] = author_email_str[0..255]
+        puts "WARNING! Email too long #{author_email_str}" if author_email_str.length > 255
 
       elsif index == 2
         #add email w/ hash
@@ -193,7 +196,9 @@ class GitLogLoader
 
       elsif index == 4
         #add parent_commit_hash
-        hash[:parent_commit_hash] = element.strip
+        parent_hash = element.strip
+        hash[:parent_commit_hash] = parent_hash[0..255]
+        puts "WARNING! Parent hash too long #{parent_hash}" if parent_hash.length > 255
 
       end
 
