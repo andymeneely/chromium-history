@@ -139,8 +139,8 @@ class GitLogLoader
 
       elsif fast_match(element, /^BUG=/)
         bug_str = element.strip.sub("BUG=", "")
-        hash[:bug] = bug_str[0..255]
-        puts "WARNING! Bug is too long for #{bug_str}" if bug_str.length > 255
+        hash[:bug] = bug_str[0..254]
+        puts "WARNING! Bug is too long for #{bug_str}" if bug_str.length > 254
 
       elsif fast_match(element, /^;;;/)
         in_files = true
@@ -177,14 +177,14 @@ class GitLogLoader
       if index == 0
         #add commit hash
         commit_hash_str = element.strip
-        hash[:commit_hash] = commit_hash_str[0..255]
-        puts "WARNING! Hash too long #{commit_hash_str}" if commit_hash_str.length > 255
+        hash[:commit_hash] = commit_hash_str[0..254]
+        puts "WARNING! Hash too long #{commit_hash_str}" if commit_hash_str.length > 254
 
       elsif index == 1
         #add email
         author_email_str = element.strip
-        hash[:author_email] = author_email_str[0..255]
-        puts "WARNING! Email too long #{author_email_str}" if author_email_str.length > 255
+        hash[:author_email] = author_email_str[0..254]
+        puts "WARNING! Email too long #{author_email_str}" if author_email_str.length > 254
 
       elsif index == 2
         #add email w/ hash
@@ -197,8 +197,8 @@ class GitLogLoader
       elsif index == 4
         #add parent_commit_hash
         parent_hash = element.strip
-        hash[:parent_commit_hash] = parent_hash[0..255]
-        puts "WARNING! Parent hash too long #{parent_hash}" if parent_hash.length > 255
+        hash[:parent_commit_hash] = parent_hash[0..254]
+        puts "WARNING! Parent hash too long #{parent_hash}" if parent_hash.length > 254
 
       end
 
