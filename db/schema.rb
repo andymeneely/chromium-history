@@ -83,7 +83,7 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.string   "author_email"
     t.integer  "author_id"
     t.text     "message"
-    t.string   "bug"
+    t.text   "bug"
     t.string   "reviewers"
     t.string   "svn_revision"
     t.datetime "created_at"
