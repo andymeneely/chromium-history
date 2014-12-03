@@ -55,7 +55,7 @@ class BugParser
     @bug_comments.fsync
 
     begin 
-      ActiveRecord::Base.connection.execute("COPY bugs FROM '#{tmp}/bug_entries.csv' DELIMITER ',' CSV")
+      ActiveRecord::Base.connection.execute("COPY bugs FROM '#{tmp}/bug_entries.csv' DELIMITER ',' CSV ENCODNG 'utf-8'")
     rescue Exception => e
       $stderr.puts "COPY bug_entries failed"
       $stderr.puts e.message
@@ -63,7 +63,7 @@ class BugParser
     end
 
     begin
-      ActiveRecord::Base.connection.execute("COPY bug_comments FROM '#{tmp}/bug_comments.csv' DELIMITER ',' CSV")
+      ActiveRecord::Base.connection.execute("COPY bug_comments FROM '#{tmp}/bug_comments.csv' DELIMITER ',' CSV ENCODING 'utf-8'")
     rescue Exception => e
       $stderr.puts "COPY bug_comments failed"
       $stderr.puts e.message

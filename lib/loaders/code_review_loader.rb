@@ -11,7 +11,7 @@ class CodeReviewLoader
     ActiveRecord::Base.connection.execute("COPY patch_set_files FROM '#{tmp}/patch_set_files.csv' DELIMITER ',' CSV")
     
     begin
-      ActiveRecord::Base.connection.execute("COPY messages FROM '#{tmp}/messages.csv' DELIMITER ',' CSV")
+      ActiveRecord::Base.connection.execute("COPY messages FROM '#{tmp}/messages.csv' DELIMITER ',' CSV ENCODING 'utf-8'")
     rescue Exception => e
       $stderr.puts "COPY messages failed!" 
       $stderr.puts e.message  
@@ -19,7 +19,7 @@ class CodeReviewLoader
     end
 
     begin
-      ActiveRecord::Base.connection.execute("COPY comments FROM '#{tmp}/comments.csv' DELIMITER ',' CSV")
+      ActiveRecord::Base.connection.execute("COPY comments FROM '#{tmp}/comments.csv' DELIMITER ',' CSV ENCODING 'utf-8'")
     rescue Exception => e
       $stderr.puts "COPY messages failed!" 
       $stderr.puts e.message  
