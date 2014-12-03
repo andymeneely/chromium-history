@@ -54,8 +54,21 @@ class BugParser
     @bug_entries.fsync
     @bug_comments.fsync
 
-    ActiveRecord::Base.connection.execute("COPY bugs FROM '#{tmp}/bug_entries.csv' DELIMITER ',' CSV")
-    ActiveRecord::Base.connection.execute("COPY bug_comments FROM '#{tmp}/bug_comments.csv' DELIMITER ',' CSV")
+    begin 
+      ActiveRecord::Base.connection.execute("COPY bugs FROM '#{tmp}/bug_entries.csv' DELIMITER ',' CSV")
+    rescue Exception => e
+      $stderr.puts "COPY bug_entries failed"
+      $stderr.puts e.message
+      $stderr.puts e.backtrace.inspect
+    end
+
+    begin
+      ActiveRecord::Base.connection.execute("COPY bug_comments FROM '#{tmp}/bug_comments.csv' DELIMITER ',' CSV")
+    rescue Exception => e
+      $stderr.puts "COPY bug_comments failed"
+      $stderr.puts e.message
+      $stderr.puts e.backtrace.inspect
+    end
   end
 
   def parse_and_load_csv
@@ -101,7 +114,7 @@ class BugParser
   def load_json(file)
     txt = ''
     File.open(file) do |f|
-      txt = f.read
+      txt = f.read.encode(encoding: 'UTF-8', replace: '', invalid: :replace, undef: :replace)
     end
     json = Oj.load(txt, {:symbol_keys => false, :mode => :compat})
     return json

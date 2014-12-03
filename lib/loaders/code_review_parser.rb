@@ -6,11 +6,6 @@ class CodeReviewParser
     open_csvs #initalize our attributes for writing
 
     Dir["#{Rails.configuration.datadir}/codereviews/*.json"].each do |file|
-      
-      #remove non UTF8 chars
-      blank = ' '
-      file = file.force_encoding('iso-8859-1').encode('UTF-8',:replace => blank , :invalid => :replace, :undef => :replace)
-      
       json = load_json file
       json.each do |cobj|
         owner_id = get_dev_id(cobj['owner_email'])
@@ -97,9 +92,9 @@ class CodeReviewParser
   def load_json(file)
     txt = ''
     File.open(file) do |f|
-      txt = f.read
+      txt = f.read.encode(encoding: 'UTF-8', replace: '', invalid: :replace, undef: :replace)
     end
-    json = Oj.load(txt, {:symbol_keys => false, :mode => :compat})
+    json = Oj.load(txt, {symbol_keys: false, mode: :compat})
     return json
   end
 
