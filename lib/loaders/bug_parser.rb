@@ -55,7 +55,7 @@ class BugParser
     @bug_comments.fsync
 
     begin 
-      ActiveRecord::Base.connection.execute("COPY bugs FROM '#{tmp}/bug_entries.csv' DELIMITER ',' CSV ENCODNG 'utf-8'")
+      ActiveRecord::Base.connection.execute("COPY bugs FROM '#{tmp}/bug_entries.csv' DELIMITER ',' CSV ENCODING 'utf-8'")
     rescue Exception => e
       $stderr.puts "COPY bug_entries failed"
       $stderr.puts e.message
