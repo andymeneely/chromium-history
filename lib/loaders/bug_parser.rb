@@ -1,3 +1,4 @@
+# encoding: utf-8
 require 'csv'
 
 class BugParser
@@ -114,7 +115,10 @@ class BugParser
   def load_json(file)
     txt = ''
     File.open(file) do |f|
-      txt = f.read.encode(encoding: 'UTF-8', replace: '', invalid: :replace, undef: :replace)
+      txt = f.read
+        .encode('UTF-16be', :invalid => :replace, :undef => :replace, :replace => '')
+        .encode('UTF-8')
+      txt.gsub! /\\u0000/,'' #delete strings that will be INTERPRETED as nulls
     end
     json = Oj.load(txt, {:symbol_keys => false, :mode => :compat})
     return json
