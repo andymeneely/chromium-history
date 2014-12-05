@@ -2,35 +2,19 @@ require 'set'
 require 'csv'
 
 class CodeReviewLoader
-  
+
   def copy_parsed_tables 
     tmp = Rails.configuration.tmpdir
     ActiveRecord::Base.connection.execute("COPY code_reviews FROM '#{tmp}/code_reviews.csv' DELIMITER ',' CSV")
     ActiveRecord::Base.connection.execute("COPY reviewers FROM '#{tmp}/reviewers.csv' DELIMITER ',' CSV")
     ActiveRecord::Base.connection.execute("COPY patch_sets FROM '#{tmp}/patch_sets.csv' DELIMITER ',' CSV")
     ActiveRecord::Base.connection.execute("COPY patch_set_files FROM '#{tmp}/patch_set_files.csv' DELIMITER ',' CSV")
-    
-    begin
-      ActiveRecord::Base.connection.execute("COPY messages FROM '#{tmp}/messages.csv' DELIMITER ',' CSV ENCODING 'utf-8'")
-    rescue Exception => e
-      $stderr.puts "COPY messages failed!" 
-      $stderr.puts e.message  
-      $stderr.puts e.backtrace.inspect 
-    end
-
-    begin
-      ActiveRecord::Base.connection.execute("COPY comments FROM '#{tmp}/comments.csv' DELIMITER ',' CSV ENCODING 'utf-8'")
-    rescue Exception => e
-      $stderr.puts "COPY messages failed!" 
-      $stderr.puts e.message  
-      $stderr.puts e.backtrace.inspect 
-    end
-    
+    ActiveRecord::Base.connection.execute("COPY messages FROM '#{tmp}/messages.csv' DELIMITER ',' CSV ENCODING 'utf-8'")
+    ActiveRecord::Base.connection.execute("COPY comments FROM '#{tmp}/comments.csv' DELIMITER ',' CSV ENCODING 'utf-8'")
     ActiveRecord::Base.connection.execute("COPY developers FROM '#{tmp}/developers.csv' DELIMITER ',' CSV")
     ActiveRecord::Base.connection.execute("SELECT setval('developers_id_seq', (SELECT MAX(id) FROM developers)+1 )")
     ActiveRecord::Base.connection.execute("COPY participants FROM '#{tmp}/participants.csv' DELIMITER ',' CSV")
     ActiveRecord::Base.connection.execute("COPY contributors FROM '#{tmp}/contributors.csv' DELIMITER ',' CSV")
-     
   end
 
   def add_primary_keys
