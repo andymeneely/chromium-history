@@ -119,7 +119,7 @@ class BugParser
         txt = f.read
           .encode('UTF-16be', :invalid => :replace, :undef => :replace, :replace => '')
           .encode('UTF-8')
-        #txt.gsub! /\\u0000/,'' #delete strings that will be INTERPRETED as nulls
+        txt.gsub! /\\u0000/,'' #delete strings that will be INTERPRETED as nulls
       end
       json = Oj.load(txt, {:symbol_keys => false, :mode => :compat})
     rescue Exception => e
