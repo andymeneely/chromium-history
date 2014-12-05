@@ -113,20 +113,13 @@ class BugParser
   end                       
 
   def load_json(file)
-    begin 
-      txt = ''
-      File.open(file) do |f|
-        txt = f.read
-          .encode('UTF-16be', :invalid => :replace, :undef => :replace, :replace => '')
-          .encode('UTF-8')
-        txt.gsub! /\\u0000/,'' #delete strings that will be INTERPRETED as nulls
-      end
-      json = Oj.load(txt, {:symbol_keys => false, :mode => :compat})
-    rescue Exception => e
-      $stderr.puts "COPY parse bugs failed on file #{file}"
-      $stderr.puts e.message
+    txt = ''
+    File.open(file) do |f|
+      txt = f.read
+        .encode('UTF-16be', :invalid => :replace, :undef => :replace, :replace => '')
+        .encode('UTF-8')
+      return Oj.load(txt, {:symbol_keys => false, :mode => :compat})
     end
-    return json
   end
 
   def update_bug_issue(line, bug_issue)
