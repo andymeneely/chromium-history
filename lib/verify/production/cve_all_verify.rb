@@ -13,6 +13,6 @@ class CveAllVerify < VerifyBase
      # Through our own manual investigation, we know that some 
      # vulnerabilities don't trace to code reviews in trunk
      # We'll keep that number here for regression testing
-     assert_equal 222, reviewless_cves, "All CVEs should have at least one code review."
+     assert_equal 205, reviewless_cves, "All CVEs should have at least one code review."
   end
 end

@@ -6,11 +6,11 @@ class ProductionCountVerify < VerifyBase
   end
 
   def verify_count_code_reviews
-    assert_equal 159254, CodeReview.count
+    assert_equal 207500, CodeReview.count
   end
 
   def verify_count_commits
-    assert_equal 185948, Commit.count
+    assert_equal 242635, Commit.count
   end
 
   def verify_release_owner_count
