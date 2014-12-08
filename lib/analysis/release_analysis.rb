@@ -21,7 +21,7 @@ class ReleaseAnalysis
         rf.num_vulnerabilities = rf.filepath.cves().count
         
         #effect reach for bugs and vulnerabilities
-        effect_reach = 2.years
+        effect_reach = 1.years
 
         #pre_ metrics for bugs
         reach_date= r.date - effect_reach
