@@ -115,10 +115,17 @@ class BugParser
   def load_json(file)
     txt = ''
     File.open(file) do |f|
+      begin 
       txt = f.read
         .encode('UTF-16be', :invalid => :replace, :undef => :replace, :replace => '')
         .encode('UTF-8')
-      return Oj.load(txt, {:symbol_keys => false, :mode => :compat})
+      hash = Oj.load(txt, {:symbol_keys => false, :mode => :compat})
+      return hash
+      rescue Exception => e
+        $stderr.puts "ERROR PARSING BUGS JSON: #{file}"
+        raise e #continue on and kill the build
+      end
+
     end
   end
 
