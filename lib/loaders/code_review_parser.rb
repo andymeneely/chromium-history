@@ -18,9 +18,7 @@ class CodeReviewParser
         parse_reviewers(cobj, owner_id)
 
         cobj['patchsets'].each do |pid|
-          if cobj['patchset_data'][pid.to_s] == nil
-            puts "\n#{cobj['issue']}|#{pid.to_s}" #outputs missing patchset and its issue.
-          else
+          if not cobj['patchset_data'][pid.to_s] == nil
             parse_patchsets(cobj['patchset_data'][pid.to_s], cobj['issue'])
           end
         end
