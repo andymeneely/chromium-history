@@ -1,4 +1,5 @@
 require "csv"
+require "date"
 require "trollop"
 
 # Trollop Command-line parameters
@@ -57,7 +58,7 @@ class FirstOwnershipScript
     
 	Dir.chdir @srcLoc do
 	  filesWithPaths = `git diff-tree --no-commit-id --name-only -r #{commitNum}`.split(/\n/)
-      date = `git show -s --format=%ci #{commitNum}`
+      date = `git show -s --format=%cd --date=short #{commitNum}`
       filesWithPaths.each do |file|
         if file.include? "OWNERS"  #if the file is an owners file
 	      path = File.dirname(file) + "/" #format path to just be the directory (eg /chrome/common/OWNERS -> /chrome/common/)
@@ -89,11 +90,12 @@ class FirstOwnershipScript
   end
   
   def add_first_ownership(email, path, commitNum, date)
+	  date = Date.strptime(date, '%Y-%m-%d')
       key = email + "~" + path
       value = [commitNum, date]
       
 	  if @hashmap.key?(key)
-  	    currHashDate = @hashmap[key][0]
+  	    currHashDate = @hashmap[key][1]
         if date < currHashDate
           @hashmap[key] = value
         end
@@ -103,12 +105,12 @@ class FirstOwnershipScript
   end
 
   # Add information to the CSV file in format of 
-  #  email, directory, commit id
+  #  email, directory, commit id, date
   def create_csv()
     CSV.open(@csvLoc, "a") do |cfile|
       @hashmap.each do |key, val|
 	emailAndDir = key.split(/~/)
-        cfile << [emailAndDir[0],emailAndDir[1],val[0]]
+        cfile << [emailAndDir[0],emailAndDir[1],val[0],val[1]]
       end
     end
   end

@@ -9,12 +9,13 @@ class FirstOwnershipLoader
 
     CSV.foreach("#{datadir}/first_ownership/first-owners.csv") do |line| 
 	  em = Developer.search_or_add(line[0]) 
-	  next if (em[0].nil?)
+	  puts "email search or add fail" if (em[0].nil?)
 	  dev_id = Developer.where(email: em[0]).limit(1).pluck(:id)[0]
 	  owner_email = em[0]
 	  commitHash = line[2]
-	  filepath = line[1]
-	  ownership << [owner_email, dev_id, filepath, commitHash]
+	  date = line[3]
+	  directory = line[1]
+	  ownership << [owner_email, dev_id, directory, commitHash, date]
     end
     ownership.fsync
 	ActiveRecord::Base.connection.execute("COPY first_ownerships FROM '#{tmp}/first-ownership.csv' DELIMITER ',' CSV")

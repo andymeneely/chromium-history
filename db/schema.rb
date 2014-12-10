@@ -131,8 +131,9 @@ ActiveRecord::Schema.define(version: 20140512131450) do
   create_table "first_ownerships", id: false, force: true do |t|
     t.string   "owner_email"
 	t.integer  "dev_id"
-    t.string   "filepath"
-    t.string   "commit_hash"
+    t.string   "directory"
+    t.string   "first_owner_hash"
+	t.datetime "first_owner_date"
   end
 
   create_table "labels",id:false, force: true do |t|
