@@ -91,7 +91,7 @@ class BugParser
           bug_issue = Bug.find_by(bug_id: bug_id) # match the json issue num with the csv issue num 
        
           if bug_issue.nil?
-           $stderr.puts "Bug issue #{bug_id} not found" 
+           #$stderr.puts "Bug issue #{bug_id} not found" 
           else
            update_bug_issue line, bug_issue # update nil fields in the bugs table
            parse_labels line  
