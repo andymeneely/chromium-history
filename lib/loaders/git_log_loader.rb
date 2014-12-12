@@ -138,9 +138,7 @@ class GitLogLoader
         @reviews_to_update << "(#{element[/(\d)+/].to_i}, '#{arr[0].strip}')"
 
       elsif fast_match(element, /^BUG=/)
-        bug_str = element.strip.sub("BUG=", "")
-        hash[:bug] = bug_str[0..254]
-        puts "WARNING! Bug is too long for #{bug_str}" if bug_str.length > 254
+        hash[:bug] = element.strip.sub("BUG=", "")
 
       elsif fast_match(element, /^;;;/)
         in_files = true
