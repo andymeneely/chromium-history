@@ -12,8 +12,7 @@ require 'profiler_util'
 #
 # Based on the following git log command:
 #
-# git log --pretty=format:":::%n%H%n%an%n%ae%n%ad%n%P%n%s%n%b" --stat --stat-width=300 --stat-name-width=300 --ignore-space-change
-#
+# git log --pretty=format:":::%n%H%n%an%n%ae%n%ad%n%P%n%s%n%b;;;" --stat --stat-width=300 --stat-name-width=300 --ignore-space-change
 # @author - Christopher C. Ketant
 # @author - Andy Meneely
 #
