@@ -29,7 +29,7 @@ class ProductionCountVerify < VerifyBase
         WHERE bugs.bug_id IS NULL
     EOSQL
     rs = ActiveRecord::Base.connection.execute query
-    assert_equal 7145, rs.getvalue(0,0).to_i, "Number of expected dangling bug commits was wrong"
+    assert_equal 7159, rs.getvalue(0,0).to_i, "Number of expected dangling bug commits was wrong"
   end
 end
 
