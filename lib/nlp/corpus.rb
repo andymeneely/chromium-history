@@ -12,8 +12,8 @@ class Corpus
   def words
     if @words
       return @words
-    else 
-      res = `python lib/nlp/python/tokenizer.py #{@raw_file} #{@tmp_dir}/corpus.json`
+    else
+      res = `python lib/nlp/python/tokenizer.py #{@raw_file}`
       @words = Oj.load(res)
       return @words
     end

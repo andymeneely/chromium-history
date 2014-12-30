@@ -182,11 +182,6 @@ namespace :run do
     task :build_vocab => :env do
       Benchmark.bm(40) do |x|
         tmp_dir = Rails.configuration.tmpdir
-        x.report('Aggregating all comments') do
-          vocab_file = tmp_dir+'/raw_comments.txt'
-          Comment.get_all_convo vocab_file
-          VocabLoader.remove_file_quoted_comments vocab_file
-        end
         x.report('Parsing mongo dump to raw text') do 
           abstracts = Oj.load_file "#{tmp_dir}/acm.json"
           File.open "#{tmp_dir}/raw_acm.txt", 'w+' do |file|
@@ -195,6 +190,18 @@ namespace :run do
               file.write "\n\n"
             end
           end
+        end
+        x.report('Aggregating all comments') do
+          raw = tmp_dir+'/raw_comments.txt'
+          Comment.get_all_convo raw
+          VocabLoader.clean_file raw, tmp_dir+'/comments.txt'
+          File.unlink raw
+        end
+        x.report('Aggregating all messages') do
+          raw = tmp_dir+'/raw_messages.txt'
+          Message.get_all_messages raw
+          VocabLoader.clean_file raw, tmp_dir+'/messages.txt'
+          File.unlink raw
         end
         vocab_loader = VocabLoader.new
         x.report('Generating technical vocab') {vocab_loader.load}

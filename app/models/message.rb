@@ -15,9 +15,9 @@ class Message < ActiveRecord::Base
 
   def self.get_all_messages result_file=nil, limit=nil
     query = "SELECT code_review_id, string_agg(text, E'\n') 
-             FROM messages 
-             GROUP BY code_review_id 
-             #{if limit then "LIMIT #{limit}" else "" end}"
+             FROM messages  
+             #{if limit then "LIMIT #{limit}" else "WHERE sender_id != -1" end}
+             GROUP BY code_review_id"
     if result_file then query = "COPY(SELECT sub.string_agg FROM (#{query}) as sub) TO '#{result_file}' WITH (FORMAT text)" end
     ActiveRecord::Base.connection.execute(query)
   end
@@ -25,7 +25,7 @@ class Message < ActiveRecord::Base
   def self.get_developer_messages developer_id=nil, result_file=nil
     query = "SELECT sender_id, string_agg(text, E'\n') 
              FROM messages 
-             #{if developer_id then "WHERE sender_id = #{developer_id}" else "" end} 
+             #{if developer_id then "WHERE sender_id = #{developer_id}" else "WHERE sender_id != -1" end} 
              GROUP BY sender_id"
     if result_file then query = "COPY(SELECT sub.string_agg FROM (#{query}) as sub) TO '#{result_file}' WITH (FORMAT text)" end
     ActiveRecord::Base.connection.execute(query)
