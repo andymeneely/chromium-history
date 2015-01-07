@@ -37,7 +37,7 @@ class GoogleCodeBugScraper
   @@baseurl = "http://code.google.com/feeds/issues/p/chromium/issues/full?alt=json&can=all&max-results=500&start-index="
 
   #create variables in GoogleCodeBugScraper to be able to read/write to 
-  attr_accessor :ids, :data, :patches
+  attr_accessor :ids, :data, :patches, :cursor
    
   # Return the baseurl (for accessing outside this script)
   # 
@@ -54,10 +54,6 @@ class GoogleCodeBugScraper
   def initialize(opts)
     @opts = opts
     @cursor = @opts[:cursor]
-  end
-
-  def get_cursor()
-    return @cursor
   end
 
   # Gets the issues and issue replies and dumps them to a json file 
@@ -138,7 +134,7 @@ end
 s = GoogleCodeBugScraper.new(opts)
 
 # execute get_data on the issues until you reach a non-successfull http resopnce
-while s.get_cursor() != -1  do
+while s.cursor != -1  do
    s.get_data
 end
 

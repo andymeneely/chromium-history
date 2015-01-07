@@ -31,9 +31,8 @@ class GoogleCodeBugScraperCSV
   @@baseurl = "http://code.google.com/p/chromium/issues/csv?colspec=Id+Summary+Blocked+BlockedOn+Blocking+Stars+Status+Reporter+Opened+Closed+Modified&can=1&num=500&start="
 
   #create variables in GoogleCodeBugScraperCSV to be able to read/write to
-  attr_accessor :ids, :data, :patches
-  
-  # 
+  attr_accessor :ids, :data, :patches, :cursor
+   
   # return the baseurl
   # 
   # @return String baseurl
@@ -45,10 +44,6 @@ class GoogleCodeBugScraperCSV
     @opts = opts
     @total = 0
     @cursor = 1 
-  end
-
-  def get_cursor()
-    return @cursor
   end
 
   def get_data(next_link="",delay=@opts[:delay], concurrent_connections=1)
@@ -99,7 +94,7 @@ end
 s = GoogleCodeBugScraperCSV.new(opts)
 
 # execute get_data on the issues until you reach a non-successfull http resopnce
-while (s.get_cursor() != -1)  do
+while s.cursor != -1  do
   s.get_data
 end
 
