@@ -5,7 +5,12 @@ require 'typhoeus' #handles http requests
 require 'oj'
 require 'csv'
 
-# This script collects all dangling bugs
+# IMPORTANT: 
+#  - Before you run this file run the chrome_bugs_scraper.rb and chrome_bugs_csv_scraper.rb first and make sure they've finished
+#  - If you are running this file you need to be in the production enviornment
+#  - If you are running this file you also you need to run it after the new data from
+#    chrome_bugs_scraper.rb and chrome_bugs_csv_scraper.rb has been parsed and added to the db.
+#    This is because the script queries the database to figure out which issues need to be recovered.
 class GoogleCodeBugRecoverer < ActiveRecord::Base
   
   # makes it so you're not getting all the connection information with a request
