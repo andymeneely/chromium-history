@@ -23,12 +23,12 @@ class GitLogLoader
 
   @@GIT_LOG_BUG_PROPERTIES = [:commit_hash, :bug_id]
   @@GIT_LOG_FILE_PROPERTIES = [:commit_hash, :filepath]
-  @@GIT_LOG_PROPERTIES = [:commit_hash, :parent_commit_hash, :author_email, :bug, :svn_revision, :created_at, :message]
+  @@GIT_LOG_PROPERTIES = [:commit_hash, :parent_commit_hash, :author_email,:author_id, :bug, :svn_revision, :created_at, :message]
 
   def load
     @reviews_to_update = []
     @con = ActiveRecord::Base.connection.raw_connection
-    @con.prepare('commitInsert', "INSERT INTO commits (#{@@GIT_LOG_PROPERTIES.map{|key| key.to_s}.join(', ')}) VALUES ($1, $2, $3, $4, $5, $6, $7)")
+    @con.prepare('commitInsert', "INSERT INTO commits (#{@@GIT_LOG_PROPERTIES.map{|key| key.to_s}.join(', ')}) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)")
     @con.prepare('fileInsert', "INSERT INTO commit_filepaths (#{@@GIT_LOG_FILE_PROPERTIES.map{|key| key.to_s}.join(', ')}) VALUES ($1, $2)")
     @con.prepare('bugInsert', "INSERT INTO commit_bugs (#{@@GIT_LOG_BUG_PROPERTIES.map{|key| key.to_s}.join(', ')}) VALUES ($1, $2)")
     get_commits(File.open("#{Rails.configuration.datadir}/chromium-gitlog.txt", "r"))
@@ -182,6 +182,8 @@ class GitLogLoader
         author_email_str = element.strip
         hash[:author_email] = author_email_str[0..254]
         puts "WARNING! Email too long #{author_email_str}" if author_email_str.length > 254
+        email = Developer.search_or_add author_email_str
+        hash[:author_id] = Developer.where(email: email).pluck(:id).first.to_i
 
       elsif index == 2
         #add email w/ hash
