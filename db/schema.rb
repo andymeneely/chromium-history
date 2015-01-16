@@ -85,7 +85,6 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.text     "message"
     t.text   "bug"
     t.string   "reviewers"
-    t.string   "svn_revision"
     t.datetime "created_at"
   end
   
