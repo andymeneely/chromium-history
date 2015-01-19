@@ -26,18 +26,24 @@ class GitLogLoader
   @@GIT_LOG_PROPERTIES = [:commit_hash, :parent_commit_hash, :author_email,:author_id, :bug, :created_at, :message]
 
   def load
-    @reviews_to_update = []
+    @reviews_to_update = Hash.new
     @con = ActiveRecord::Base.connection.raw_connection
+    
+    # create prepared insert statments because we will be using them many times
+    # the insert statments will insert the values for each git log property into the db every time it is executed
     @con.prepare('commitInsert', "INSERT INTO commits (#{@@GIT_LOG_PROPERTIES.map{|key| key.to_s}.join(', ')}) VALUES ($1, $2, $3, $4, $5, $6, $7)")
     @con.prepare('fileInsert', "INSERT INTO commit_filepaths (#{@@GIT_LOG_FILE_PROPERTIES.map{|key| key.to_s}.join(', ')}) VALUES ($1, $2)")
     @con.prepare('bugInsert', "INSERT INTO commit_bugs (#{@@GIT_LOG_BUG_PROPERTIES.map{|key| key.to_s}.join(', ')}) VALUES ($1, $2)")
     get_commits(File.open("#{Rails.configuration.datadir}/chromium-gitlog.txt", "r"))
 
-    update = "UPDATE code_reviews SET
-              commit_hash = m.hash
-              FROM (values #{@reviews_to_update.join(', ')}) AS m (id, hash) 
-              WHERE issue = m.id;"
-    ActiveRecord::Base.connection.execute(update)
+    #update each code review you can find in the git log with its hash
+    @reviews_to_update.each do |id,hash|
+      rev = CodeReview.find_by(issue: id)
+      unless rev.nil?
+        rev.update_attribute(:commit_hash, hash)
+      end
+    end
+
   end
 
   #
@@ -126,7 +132,7 @@ class GitLogLoader
 
     arr.each do |element|
       if fast_match(element, /^Review URL:/)
-        @reviews_to_update << "(#{element[/(\d)+/].to_i}, '#{arr[0].strip}')"
+        @reviews_to_update[element[/(\d)+/].to_i] = arr[0].strip
 
       elsif fast_match(element, /^BUG=/)
         hash[:bug] = element.strip.sub("BUG=", "")
@@ -200,7 +206,9 @@ class GitLogLoader
   # @param- Hash
   #
   def add_commit_to_db(hash)
+    #insert hash values into proper attribute in commits table
     @con.exec_prepared('commitInsert', hash.values_at(*@@GIT_LOG_PROPERTIES))
+    
     create_commit_filepath(hash["filepaths"], hash[:commit_hash])
     create_commit_bug(hash[:bug], hash[:commit_hash]) if hash[:bug]!=nil
   end#add_commit_to_db
