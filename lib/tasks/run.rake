@@ -107,9 +107,13 @@ namespace :run do
       x.report("Optimizing participants"){ Participant.optimize}
       x.report("Optimizing filepath"){ Filepath.optimize}
       x.report("Deleting duplicate reviewers") {DeveloperConsolidator.new.consolidate_reviewers}
-	  x.report("Loading release OWNERS") {OwnersLoader.new.load}
+      x.report("Loading release OWNERS") {OwnersLoader.new.load}
       x.report("Optimizing OWNERS") {ReleaseOwner.optimize}
       x.report("Running PSQL ANALYZE"){ ActiveRecord::Base.connection.execute "ANALYZE" }
+      vocab_loader = VocabLoader.new
+      x.report('Generating technical vocab') {vocab_loader.load}
+      x.report('Associating vocab words with developers') {vocab_loader.associate_developer_vocab}
+      x.report('Associating vocab words with code reviews'){vocab_loader.associate_code_review_vocab}
     end
   end
   
