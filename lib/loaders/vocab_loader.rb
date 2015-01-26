@@ -4,9 +4,19 @@ class VocabLoader
 
   def initialize
     @tmp_dir = Rails.configuration.tmpdir
+    allwords = ActiveRecord::Base.connection.execute "SELECT * FROM technical_words"
+    @search_tree = LazyBinarySearchTree.new allwords.map {|word| word}
   end
 
   def load
+    raw = @tmp_dir+'/raw_comments.txt'
+    Comment.get_all_convo raw
+    VocabLoader.clean_file raw, @tmp_dir+'/comments.txt'
+    File.unlink raw
+    raw = @tmp_dir+'/raw_messages.txt'
+    Message.get_all_messages raw
+    VocabLoader.clean_file raw, @tmp_dir+'/messages.txt'
+    File.unlink raw
     acm_corpus = Corpus.new "#{@tmp_dir}/raw_acm.txt"
     comment_corpus = Corpus.new "#{@tmp_dir}/comments.txt"
     message_corpus = Corpus.new "#{@tmp_dir}/messages.txt"
@@ -14,65 +24,55 @@ class VocabLoader
     message_corpus.filter
     words = comment_corpus.word_intersect acm_corpus.words
     words = words + message_corpus.word_intersect(acm_corpus.words)
-    vocabCopy = CSV.open @tmp_dir + '/vocab.csv', 'w+'
-    words.each do |word|
-      vocabCopy << [word]
+    block do |table|
+      words.each do |word|
+        table << [word]
+      end
     end
-    vocabCopy.fsync
-    ActiveRecord::Base.connection.execute "COPY technical_words FROM '#{@tmp_dir}/vocab.csv' DELIMITER ',' CSV"
+    copy_results "#{@tmp_dir}/vocab.csv", 'technical_words', block
     ActiveRecord::Base.connection.execute "ALTER TABLE technical_words ADD COLUMN id SERIAL; ALTER TABLE technical_words ADD PRIMARY KEY (id);"
   end
 
   def associate_developer_vocab
-    table = CSV.open "#{@tmp_dir}/dev_words.csv", 'w+'
-    allwords = ActiveRecord::Base.connection.execute "SELECT * FROM technical_words"
-    tree = LazyBinarySearchTree.new allwords.map {|word| word}
-    convos = Comment.get_developer_comments
-    convos.each do |convo| 
-      clean = VocabLoader.clean(convo['string_agg'])
-      result = tree.search clean
-      if result
-        table << [convo['author_id'], result['id']]
-      end
+    block do |table|
+      convos = Comment.get_developer_comments
+      table = reassociate convos, 'author_id', 'string_agg', table
+      convos.clear
+      messages = Message.get_developer_messages
+      table = reassociate messages, 'sender_id', 'string_agg', table
+      messages.clear
     end
-    convos.clear
-    messages = Message.get_developer_messages
-    messages.each do |message|
-      clean = VocabLoader.clean(message['string_agg'])
-      result = tree.search clean
-      if result
-        table << [message['sender_id'], result['id']]
-      end
-    end
-    messages.clear
-    table.fsync
-    ActiveRecord::Base.connection.execute "COPY developers_technical_words FROM '#{@tmp_dir}/dev_words.csv' DELIMITER ',' CSV"
+    copy_results "#{@tmp_dir}/dev_words.csv", 'developers_technical_words', block
   end
 
   def associate_code_review_vocab
-    table = CSV.open "#{@tmp_dir}/code_review_words.csv", 'w+'
-    allwords = ActiveRecord::Base.connection.execute "SELECT * FROM technical_words"
-    tree = LazyBinarySearchTree.new allwords.map {|word| word}
-    convos = Comment.get_all_convo
-    convos.each do |convo| 
-      clean = VocabLoader.clean(convo['string_agg'])
-      result = tree.search clean
-      if result
-        table << [convo['code_review_id'], result['id']]
-      end
+    block do |table|
+      convos = Comment.get_all_convo
+      table = reassociate convos, 'code_review_id', 'string_agg', table
+      convos.clear
+      messages = Message.get_all_messages
+      table = reassociate convos, 'code_review_id', 'string_agg', table
+      messages.clear
     end
-    convos.clear
-    messages = Message.get_all_messages
-    messages.each do |message|
-      clean = VocabLoader.clean(message['string_agg'])
-      result = tree.search clean
-      if result
-        table << [message['sender_id'], result['id']]
-      end
-    end
-    messages.clear
+    copy_results "#{@tmp_dir}/code_review_words.csv", 'code_reviews_technical_words', block
+  end
+
+  def copy_results file_name, table_name, &block
+    table = CSV.open "#{file_name}", 'w+'
+    block.call table
     table.fsync
-    ActiveRecord::Base.connection.execute "COPY code_reviews_technical_words FROM '#{@tmp_dir}/code_review_words.csv' DELIMITER ',' CSV"
+    ActiveRecord::Base.connection.execute "COPY #{table_name} FROM '#{file_name}' DELIMITER ',' CSV"
+  end
+
+  def reassociate origins, origin_id_key, origin_text_key, table
+    origins.each do |origin|
+      clean = VocablLoader.clean origin[origin_text_key]
+      results = @search_tree.search clean
+      results.each do |result|
+        table << [origin[origin_id_key], result.id]
+      end
+    end
+    table
   end
 
   def self.clean_file target_file, output_file

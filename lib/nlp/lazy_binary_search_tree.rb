@@ -5,7 +5,9 @@ class LazyBinarySearchTree
   end
 
   def search vector
-    @root.search vector
+    resultList = ListNode.new
+    @root.search vector, resultList
+    resultList
   end
 
   class Node 
@@ -24,6 +26,22 @@ class LazyBinarySearchTree
 
     def query
       raise "Must override this method"
+    end
+  end
+
+  class ListNode 
+    include Enumerable
+
+    attr_accessor :next
+
+    def initialize leaf
+      @word = leaf.words[0]
+      @next = nil
+    end
+
+    def each &block
+      block.call @word
+      @next.each block
     end
   end
 
@@ -67,14 +85,12 @@ class LazyBinarySearchTree
       end
     end
 
-    def search vector
+    def search vector, resultList
       if in? vector
-        l = left().search vector
-        return l if l
-        r = right().search vector
-        return r if r
+        resultList = left().search vector, resultList
+        resultList = right().search vector, resultList
       end
-      nil
+      resultList
     end
   end
 
@@ -83,11 +99,12 @@ class LazyBinarySearchTree
       super word
       @parent = parent
       @id = word[0]['id']
+      @word = @word[0]['word']
     end
 
-    def search vector
-      return @words[0] if in? vector
-      nil
+    def search vector, resultList
+      resultList.next = self if in? vector
+      resultList
     end
 
     def query
@@ -95,5 +112,4 @@ class LazyBinarySearchTree
       @query = @words[0]['word']
     end
   end
-
 end
