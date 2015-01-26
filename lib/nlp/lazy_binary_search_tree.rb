@@ -5,7 +5,7 @@ class LazyBinarySearchTree
   end
 
   def search vector
-    resultList = ListNode.new
+    resultList = ListNode.new nil
     @root.search vector, resultList
     resultList
   end
@@ -32,16 +32,20 @@ class LazyBinarySearchTree
   class ListNode 
     include Enumerable
 
-    attr_accessor :next
+    attr_accessor :next, :word
 
     def initialize leaf
-      @word = leaf.words[0]
+      @word = leaf.words[0] if leaf
       @next = nil
     end
 
     def each &block
-      block.call @word
-      @next.each block
+      unless @word
+        @next.each &block if @next
+      else 
+        block.call @word
+        @next.each &block if @next 
+      end
     end
   end
 
@@ -95,15 +99,16 @@ class LazyBinarySearchTree
   end
 
   class Leaf < Node
+    attr_accessor :words
     def initialize parent, word
       super word
       @parent = parent
       @id = word[0]['id']
-      @word = @word[0]['word']
+      @word = word[0]['word']
     end
 
     def search vector, resultList
-      resultList.next = self if in? vector
+      resultList.next = ListNode.new(self) if in? vector
       resultList
     end
 

@@ -5,8 +5,14 @@ class VocabLoader
   def initialize
     @tmp_dir = Rails.configuration.tmpdir
     @data_dir = Rails.configuration.datadir
+  end
+
+  def search_tree 
+    return @search_tree unless @search_tree.nil?
     allwords = ActiveRecord::Base.connection.execute "SELECT * FROM technical_words"
-    @search_tree = LazyBinarySearchTree.new allwords.map {|word| word}
+    wordArr = allwords.map {|word| word}
+    return nil unless wordArr.size > 0
+    @search_tree = LazyBinarySearchTree.new wordArr
   end
 
   def load
@@ -68,9 +74,9 @@ class VocabLoader
   def reassociate origins, origin_id_key, origin_text_key, table
     origins.each do |origin|
       clean = VocabLoader.clean origin[origin_text_key]
-      results = @search_tree.search clean
+      results = search_tree().search clean
       results.each do |result|
-        table << [origin[origin_id_key], result.id]
+        table << [origin[origin_id_key], result['id']]
       end
     end
     table
