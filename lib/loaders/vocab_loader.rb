@@ -4,6 +4,7 @@ class VocabLoader
 
   def initialize
     @tmp_dir = Rails.configuration.tmpdir
+    @data_dir = Rails.configuration.datadir
     allwords = ActiveRecord::Base.connection.execute "SELECT * FROM technical_words"
     @search_tree = LazyBinarySearchTree.new allwords.map {|word| word}
   end
@@ -17,7 +18,7 @@ class VocabLoader
     Message.get_all_messages raw
     VocabLoader.clean_file raw, @tmp_dir+'/messages.txt'
     File.unlink raw
-    acm_corpus = Corpus.new "#{@tmp_dir}/raw_acm.txt"
+    acm_corpus = Corpus.new "#{@data_dir}/raw_acm.txt"
     comment_corpus = Corpus.new "#{@tmp_dir}/comments.txt"
     message_corpus = Corpus.new "#{@tmp_dir}/messages.txt"
     comment_corpus.filter
