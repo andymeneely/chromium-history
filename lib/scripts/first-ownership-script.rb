@@ -1,6 +1,7 @@
 require "csv"
 require "date"
 require "trollop"
+require 'open3'
 
 # Trollop Command-line parameters
 opts = Trollop::options do
@@ -71,21 +72,32 @@ class FirstOwnershipScript
 
   # Open up an owners file and add information to the hash
   def get_owner_email(file, commitNum, date, path)
-    ownersText = `git show #{commitNum}:#{file}`
+    cmd = "git show #{commitNum}:#{file}"
+    ownersText = ''
+    Open3.popen3(cmd) do |stdin,stdout,stderr,wait_thr| # capture all the io: http://www.ruby-doc.org/core-2.2.0/IO.html#method-i-read
+      # note: if this command gives us a "fatal: Path 'foo' does not exist in 'foohash' 
+      #       that's ok. It means the file was deleted, so the authors were clearly not 
+      #       there - nothing to process
+      unless stderr.read =~ /fatal: Path '.*' does not exist in '.*'/
+        $stderr.print stderr.read
+      end
+      ownersText = stdout.read
+    end
+
     ownersText.each_line do |line|
       case line
-		when /^[^=][a-z0-9_-]+@[a-z0-9.-]+\.[a-z]{2,4}$/
+		  when /^[^=][a-z0-9_-]+@[a-z0-9.-]+\.[a-z]{2,4}$/
           line.slice!(-1)
           email = line
-		when /^\*$/	#i.e. the entire line is just *
+		  when /^\*$/	#i.e. the entire line is just *
           email = "ALL"
-		when /per-file.+=.*\*/
+		  when /per-file.+=.*\*/
           email = "ALL"
-		when /per-file.+@.+/
+		  when /per-file.+@.+/
           line.slice!(-1)
           email = line.split('=')[-1]
-	  end
-	  add_first_ownership(email, path, commitNum, date) unless email.nil?
+	    end
+	    add_first_ownership(email, path, commitNum, date) unless email.nil?
     end
   end
   
