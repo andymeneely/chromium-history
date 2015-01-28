@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# One of the earliest major releases was 5.0.306.0
+# Jan 26 2010
+#COMMIT=7c4ea146bc033d89c1a0d527ae3d43b587a23cab
+#RELEASE=5.0
+
 # We're defining Jan 28 2011 as our release date
 # Manual inspection of that git log makes the official commit as being 
 #
@@ -11,6 +16,17 @@ RELEASE=11.0
 #
 #COMMIT=d653361472c0f286b260f68d5032173d505661b1
 #RELEASE=19.0
+
+# Next one is Feb 14 2013
+#COMMIT=d572bfd0d4688449141d9de6a65792b2ece5e683
+#RELEASE=27.0
+
+# Feb 20 2014
+#COMMIT=00404744a13c38f24fc6f6c537558eb55245abea
+#RELEASE=35.0
+
+
+
 
 # Use git ls-tree and then just take the filename part of the output with awk
 # Note that Release v11 is hardcoded into that print command
