@@ -19,6 +19,10 @@ require 'analysis/data_visualization'
 require 'analysis/visualization_queries'
 require 'analysis/ascii_histograms'
 require 'stats'
+require 'nlp/corpus'
+require 'nlp/lazy_binary_search_tree'
+require 'loaders/vocab_loader'
+require 'oj'
 
 # CodeReviewParser.new.parse: Parses JSON files in the codereviews dircetory for the enviornment we're working in.
     	# Loads the json files into an object(a hash). Then pushes data from the created object
@@ -103,9 +107,13 @@ namespace :run do
       x.report("Optimizing participants"){ Participant.optimize}
       x.report("Optimizing filepath"){ Filepath.optimize}
       x.report("Deleting duplicate reviewers") {DeveloperConsolidator.new.consolidate_reviewers}
-	    x.report("Loading release OWNERS") {OwnersLoader.new.load}
+      x.report("Loading release OWNERS") {OwnersLoader.new.load}
       x.report("Optimizing OWNERS") {ReleaseOwner.optimize}
       x.report("Running PSQL ANALYZE"){ ActiveRecord::Base.connection.execute "ANALYZE" }
+      vocab_loader = VocabLoader.new
+      x.report('Generating technical vocab') {vocab_loader.load}
+      x.report('Associating vocab words with developers') {vocab_loader.associate_developer_vocab}
+      x.report('Associating vocab words with code reviews'){vocab_loader.associate_code_review_vocab}
     end
   end
   
@@ -173,4 +181,15 @@ namespace :run do
    puts "ASCII Histograms created at #{Time.now}"
   end
 
+  namespace :nlp do
+    desc "Building Technical Vocab"
+    task :build_vocab => :env do
+      Benchmark.bm(40) do |x|
+        vocab_loader = VocabLoader.new
+        x.report('Generating technical vocab') {vocab_loader.load}
+        x.report('Associating vocab words with developers') {vocab_loader.associate_developer_vocab}
+        x.report('Associating vocab words with code reviews'){vocab_loader.associate_code_review_vocab}
+      end
+    end
+  end
 end
