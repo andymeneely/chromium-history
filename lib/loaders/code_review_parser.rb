@@ -1,3 +1,4 @@
+# encoding: utf-8
 require 'csv'
 
 class CodeReviewParser
@@ -17,7 +18,9 @@ class CodeReviewParser
         parse_reviewers(cobj, owner_id)
 
         cobj['patchsets'].each do |pid|
-          parse_patchsets(cobj['patchset_data'][pid.to_s], cobj['issue'])
+          if not cobj['patchset_data'][pid.to_s] == nil
+            parse_patchsets(cobj['patchset_data'][pid.to_s], cobj['issue'])
+          end
         end
 
         parse_messages(file, cobj['issue'], cobj['messages'])
@@ -38,7 +41,7 @@ class CodeReviewParser
                  nil, # for total_sheriff_hours
                  nil] # for cursory
 
-        @prtp_set.each {|p| @prtps << [p,owner_id,cobj['issue'],cobj['created'],nil,nil,nil,nil,nil,nil,nil]}
+        @prtp_set.each {|p| @prtps << [p,owner_id,cobj['issue'],cobj['created'],nil,nil,nil,nil,nil,nil,nil,nil]}
         @contrb_set.each {|c| @contrbs << [c,cobj['issue']]}
         @revs_dict.each {|id, email| @revs << [cobj['issue'],id, email]}
 
@@ -89,8 +92,11 @@ class CodeReviewParser
     txt = ''
     File.open(file) do |f|
       txt = f.read
+        .encode('UTF-16be', :invalid => :replace, :undef => :replace, :replace => '')
+        .encode('UTF-8')
+      txt.gsub! /\\u0000/,'' #delete strings that will be INTERPRETED as nulls
     end
-    json = Oj.load(txt, {:symbol_keys => false, :mode => :compat})
+    json = Oj.load(txt, {symbol_keys: false, mode: :compat})
     return json
   end
 
@@ -175,7 +181,15 @@ class CodeReviewParser
   # Given our in-memory @dev_db cache, let's now just dump it to a csv
   def dump_developers
     @dev_db.each do |email,dev_id|
-      @devs << [dev_id, email]
+      positive_infinity = "2050/01/01 00:00:00"
+      @devs << [dev_id, 
+                email,
+                positive_infinity,
+                positive_infinity,
+                positive_infinity,
+                positive_infinity,
+                positive_infinity,
+                positive_infinity]
     end
   end
 

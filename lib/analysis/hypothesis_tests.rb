@@ -14,7 +14,15 @@ class HypothesisTests
       puts "----- FOR RELEASE #{release.name} -----"
       puts "-"*80
       query_db(release.name)
+      
+      puts "-"*80
+      puts "----- BUG ASSOCIATION FOR RELEASE #{release.name} -----"
+      puts "-"*80
       bug_association_tests
+      
+      puts "-"*80
+      puts "----- VULNERABILITY ASSOCIATION FOR RELEASE #{release.name} -----"
+      puts "-"*80
       vulnerability_association_tests
     end
     close_db

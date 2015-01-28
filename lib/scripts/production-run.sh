@@ -16,6 +16,8 @@ OUTCOME="FAILED"
 export RAILS_ENV="production"
 export RAILS_BLAST_PRODUCTION="YesPlease"
 
+mkdir -p /run/shm/chromium/realdata
+rsync -a ~/chromium/realdata /run/shm/chromium/
 
 cd $HISTORY_DIR
 git clean -f

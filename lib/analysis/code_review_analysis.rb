@@ -22,6 +22,45 @@ class CodeReviewAnalysis
     end
   end
 
+  @@bug_experience_metrics = [
+    {:field => 'bug_security_experience', :label => 'type-bug-security'},
+    {:field => 'stability_experience', :label => 'stability-crash'},
+    {:field => 'build_experience', :label => 'build'},
+    {:field => 'test_fail_experience', :label => 'cr-tests-fails'},
+    {:field => 'compatibility_experience', :label => 'type-compat'}
+  ]
+  
+  def populate_experience_labels
+    @@bug_experience_metrics.each do |metric|
+      CodeReview.find_each do |review|
+        any_commits = Commit.joins(commit_bugs: [bug: :labels])\
+        .where('commits.commit_hash = :commit_hash AND labels.label = :label_text',\
+               {commit_hash: review.commit_hash,label_text: metric[:label]}).any?
+        if any_commits
+          review.participants.each do |participant|
+            developer = participant.developer
+            if review.created < developer[metric[:field]]
+              developer[metric[:field]] = review.created
+              developer.save
+            end
+          end  
+        end
+      end
+    end
+  end
+
+  def populate_experience_cve
+    CodeReview.joins(:cvenums).find_each do |review|
+      review.participants.each do |participant|
+        developer = participant.developer
+        if review.created < developer.security_experience
+          developer.security_experience = review.created
+          developer.save
+        end
+      end
+    end
+  end
+
   def populate_cursory
     # create hashes by issue for comments and mess 
     c_issue_text_arr = CodeReview.joins(patch_sets: [{patch_set_files: :comments}]).pluck(:issue,:text)

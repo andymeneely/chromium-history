@@ -42,6 +42,7 @@ gem 'uglifier', '>= 1.3.0'
 # Using PostgreSQL as our database
 gem 'pg'
 
+# You may need to sudo apt-get install libsqlite3-dev before sqlite3 installs properly 
 # Make sqlite3 available as a fallback
 gem 'sqlite3', :platforms => [:mswin, :mingw, :ruby]
 

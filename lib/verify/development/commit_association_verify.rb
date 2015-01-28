@@ -13,5 +13,10 @@ class CommitAssociationVerify < VerifyBase
   def verify_bugs_for_1bcf224
     assert_equal 17941, Commit.joins(:commit_bugs).where(:commit_hash => '1bcf224fd40b497997827af5f04b0628e648700f').pluck(:bug_id)[0]
   end
+
+  def verify_author_id_for_1bcf224
+     dev_id = Developer.where(email: 'phajdan.jr@chromium.org').pluck(:id).first
+     assert_equal 19, Commit.where(commit_hash: '1bcf224fd40b497997827af5f04b0628e648700f').pluck(:author_id).first
+  end
 end
 

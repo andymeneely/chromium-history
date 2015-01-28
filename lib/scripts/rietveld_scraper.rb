@@ -18,15 +18,19 @@ Errors are directed to stderr.
 Finished downloads are stored in issues_completed.log, which is also read at the beginning to determine where to pick up.
 
 Usage:
-       test [options] <ids_file.json>
+       test [options] <ids_file.txt>
 
-ids_file.json is a JSON file containing an array of IDs to fetch
+ids_file.txt is a file containing an array of IDs to fetch (One per line)
+
+To get file use: 
+git log --pretty=format:"%n%s%n%b" --ignore-space-change | grep "^Review URL:" | grep 'codereview.chromium.org\|chromiumcodereview.appspot.com' | grep -o \[0-9]* >> ids_file.txt
 
 where [options] are:
 EOS
 
   opt :delay, "Set the amount of delay (in seconds) between get calls.", default: 0.25, type: Float
   opt :connections, "Set the number of concurrent connections.", default: 2, type: Integer
+  opt :chunk_size, "Set the number of issues per chunk", default: 250, type: Integer
 end
 
 Trollop::die :connections, "must be greater than 1" if opts[:connections] <= 0
@@ -50,7 +54,6 @@ class RietveldScraper
   @@file_location = './'
   @@baseurl = 'https://codereview.chromium.org'
 
-
   attr_accessor :ids, :data, :patches
   # 
   # return the baseurl
@@ -68,13 +71,21 @@ class RietveldScraper
   # @return RietveldScraper Our new object
   def initialize(opts)
     @opts = opts
-    @cursor = nil
+    @cursor = if Dir["chunk*.json"].size > 0
+     #Gets the max json chunk file and adds one. 
+     Dir["chunk*.json"].map.each {|chunk| chunk.delete("^0-9").to_i}.max + 1
+    else
+      0
+    end
+
+    @chunk_temp = Array.new
     @ids = if File.exist?(ARGV[0])
       (File.readlines(ARGV[0]).collect {|l| l.strip.to_i}).to_set
     else 
       Set.new
     end
-
+    
+    @chunk_issues = Set.new
     @issues = if File.exist?(@@file_location + "issues_completed.log")
       (File.readlines(@@file_location + "issues_completed.log").collect { |l| l.strip.to_i }).to_set
     else
@@ -87,7 +98,7 @@ class RietveldScraper
   # @param  with_messages=true Bool whether we want messages in the response
   # 
   # @return Array The data we've grabbed (a reference to our IVAR)
-  def get_data(delay=@opts[:delay], concurrent_connections=@opts[:connections], with_messages_and_comments=true)
+  def get_data(delay=@opts[:delay], concurrent_connections=@opts[:connections],chunk_size=@opts[:chunk_size], with_messages_and_comments=true)
     puts "Fetching Data:"
     if @ids.empty?  # let's make sure we've got some ids
       $stderr.puts "There appear to be no IDs, exiting."
@@ -110,22 +121,18 @@ class RietveldScraper
         issue_request = Typhoeus::Request.new(@@baseurl + "/api/#{issue_id}", params: issue_args)  # make a new request
         issue_request.on_complete do |issue_resp|
           if issue_resp.success?
-            issue_result = Oj.load(issue_resp.body) # push a Hash of the response onto our issues list
+            oj_opts = {:symbol_keys => false, :mode => :compat}
+            issue_result = Oj.load(issue_resp.body,oj_opts) # push a Hash of the response onto our issues list
 
-            #Save the issue
-            Oj.to_file(@@file_location + "#{issue_id}.json", issue_result)
-
+            #Get the patchset data
+            issue_result['patchset_data'] = {}
             issue_result['patchsets'].each do |patch_id|
               patch_request = Typhoeus::Request.new(@@baseurl + "/api/#{issue_id}/#{patch_id}", 
                                                     params: patch_args, followlocation: true)
               patch_request.on_complete do |patch_resp|
                 if patch_resp.success?
-                  # We need to make a directory if one isn't there
-                  FileUtils.mkdir(@@file_location + "#{issue_id}") unless File.directory?(@@file_location + "#{issue_id}")
-
-                  # Save the patch
-                  File.open(@@file_location + "#{issue_id}/#{patch_id}.json", "w") { |f| f.write(patch_resp.body) }
-
+                  # Add patchset to Issue 'patchset_data'
+                  issue_result['patchset_data'][patch_id.to_s] = Oj.load(patch_resp.body)
                   # Wait some amount of time
                   sleep(delay)
                 else
@@ -133,24 +140,40 @@ class RietveldScraper
                 end
               end
 
-              hydra.queue_front patch_request  # push our request onto the front of the queue
+              hydra.queue patch_request  # push our request onto the front of the queue
+            end
+            # BLOCKING CALL
+            hydra.run  # This runs all the requests that are queued
+ 
+            #Add issue to chunk temp
+            @chunk_temp << issue_result
+            #Add the id to chunk issue list, so we can pick up from here later.
+            @chunk_issues << issue_id
+            
+            if @chunk_temp.size >= chunk_size
+              #Save chunk to disk and reset
+              Oj.to_file(@@file_location +"chunk#{"%05d" % @cursor}.json", @chunk_temp)
+              puts "Saved chunk#{"%05d" % @cursor}.json"
+              
+              File.open(@@file_location + "issues_completed.log", "a") { |f| @chunk_issues.each {|chunk_issue_id| f << "#{chunk_issue_id}\n" }}
+              @issues.merge @chunk_issues
+
+              @chunk_temp = Array.new
+              @chunk_issues = Set.new
+              @cursor += 1
             end
 
-            File.open(@@file_location + "issues_completed.log", "a") { |f| f << "#{issue_id}\n" }
-            @issues << issue_id
             sleep(delay)
+          
           else
             $stderr.puts "We could not fetch issue #{issue_id}"
           end
         end
-        hydra.queue issue_request  # and enqueue the request
+        issue_request.run  # run the request
       else
         puts "Skipping #{issue_id}, already downloaded"
       end
     end
-
-    # BLOCKING CALL
-    hydra.run  # This runs all the requests that are queued
 
     @issues
   end

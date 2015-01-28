@@ -10,7 +10,7 @@ class OwnersLoader
 	Dir["#{datadir}/owners/*.csv"].each do |ocsv|
     CSV.foreach(ocsv) do |line| 
       if (Release.exists?(:name => line[0])) 
-		if (Filepath.exists?(:filepath => line[1]))
+		if (ReleaseFilepath.exists?(:thefilepath => line[1]))
 			em = Developer.search_or_add(line[2]) 
 			next if (em[0].nil?)
 			dev_id = Developer.where(email: em[0]).limit(1).pluck(:id)[0]

@@ -16,36 +16,19 @@ class ParticipantAnalysis
     end
   end#method
 
-  # At the given code review, each participant may or may not have had experience in security
-  def populate_security_experienced
-    Participant.find_each do |participant|
-      c = participant.code_review
-      vuln_reviews = Participant.joins(code_review: :cvenums)\
-        .where('participants.dev_id = ?  and code_reviews.created < ? ', participant.dev_id, c.created)  
-
-      participant.update(security_experienced: vuln_reviews.any?)
-    end
-  end
-  
-  @@bug_experience_metrics = [
-    {:field => 'stability_experienced', :label => 'stability-crash'}
-#    {:field => 'build_experienced', :label => 'build'},
-#    {:field => 'test_fail_experienced', :label => 'cr-tests-fails'},
-#    {:field => 'compatibility_experienced', :label => 'type-compat'}
-  ]
-
   # At the given code review, each participant may or may not have had experience in bug-label related reviews. 
   def populate_bug_related_experience
-    @@bug_experience_metrics.each do |metric|  
-      Participant.find_each do |participant|
-        c = participant.code_review
-        reviews = Participant\
-          .joins(code_review: [commit: [commit_bugs: [bug: :labels]]])\
-          .where('participants.dev_id = :dev_id AND code_reviews.created < :created AND labels.label = :label_text'\
-                 ,{dev_id: participant.dev_id, created: c.created, label_text: metric[:label]})  
-        participant.update(metric[:field] => reviews.any?)
-      end
-    end
+    update=<<-eos
+    UPDATE participants 
+    SET security_experienced = (developers.security_experience < participants.review_date), 
+        bug_security_experienced = (developers.bug_security_experience < participants.review_date), 
+        stability_experienced = (developers.stability_experience < participants.review_date), 
+        build_experienced = (developers.build_experience < participants.review_date),
+        test_fail_experienced = (developers.test_fail_experience < participants.review_date),
+        compatibility_experienced = (developers.compatibility_experience < participants.review_date)
+    FROM developers WHERE developers.id = participants.dev_id;
+    eos
+    ActiveRecord::Base.connection.execute update
   end
 
   # At the given code review, total the number of sheriff hours that the participant has had

@@ -89,9 +89,8 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.string   "author_email"
     t.integer  "author_id"
     t.text     "message"
-    t.string   "bug"
+    t.text   "bug"
     t.string   "reviewers"
-    t.string   "svn_revision"
     t.datetime "created_at"
   end
   
@@ -120,6 +119,12 @@ ActiveRecord::Schema.define(version: 20140512131450) do
 
   create_table "developers", force: true do |t|
     t.string "email"
+    t.datetime "security_experience"
+    t.datetime "bug_security_experience"
+    t.datetime "stability_experience"
+    t.datetime "build_experience"
+    t.datetime "test_fail_experience"
+    t.datetime "compatibility_experience"
   end
 
   create_table "developers_technical_words", id: false, force: true do |t|
@@ -155,6 +160,7 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.datetime "review_date"
     t.integer  "reviews_with_owner"
     t.boolean  "security_experienced"
+    t.boolean  "bug_security_experienced"
     t.boolean  "stability_experienced"
     t.boolean  "build_experienced"
     t.boolean  "test_fail_experienced"

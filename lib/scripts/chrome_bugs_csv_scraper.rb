@@ -1,12 +1,13 @@
 #!/usr/bin/env ruby
-require 'set'
-require 'trollop'
-require 'typhoeus'
+require 'set' 
+require 'trollop' #command line args handler
+require 'typhoeus' # http requests
 require 'csv'
 
-#Trollop options for command-line
+#Trollop options for command-line (makes it possible to set a delay via cmd-line)
+# opts creates a hash where each 'opt' is a key (ex: opt: :key, "value", defaut 1, type: Integer)
 opts = Trollop::options do
-  version "Rietveld Scraper 1.0"
+  version "Google Code Scraper 1.0"
   banner <<-EOS
 The Google Code Bug Scraper fetches CSV data from Google Code.
 
@@ -19,19 +20,19 @@ EOS
   opt :delay, "Set the amount of delay (in seconds) between get calls.", default: 0.25, type: Float
 end
 
-# 
+# This script gets all of the accessible data from the chromium issues csv feed 
 # @author Felivel Camilo
 class GoogleCodeBugScraperCSV  
-  # Set whether we want verbose debug output or not
+  # Set whether we want verbose debug output or not (false makes it so you're not getting all the connection information)
   Typhoeus::Config.verbose = false 
 
   @@file_location = './bugs/csv/'
   @@increment = 500
   @@baseurl = "http://code.google.com/p/chromium/issues/csv?colspec=Id+Summary+Blocked+BlockedOn+Blocking+Stars+Status+Reporter+Opened+Closed+Modified&can=1&num=500&start="
 
-
-  attr_accessor :ids, :data, :patches
-  # 
+  #create variables in GoogleCodeBugScraperCSV to be able to read/write to
+  attr_accessor :ids, :data, :patches, :cursor
+   
   # return the baseurl
   # 
   # @return String baseurl
@@ -42,11 +43,7 @@ class GoogleCodeBugScraperCSV
   def initialize(opts)
     @opts = opts
     @total = 0
-    @cursor = 301501 
-  end
-
-  def get_cursor()
-    return @cursor
+    @cursor = 1 
   end
 
   def get_data(next_link="",delay=@opts[:delay], concurrent_connections=1)
@@ -58,9 +55,11 @@ class GoogleCodeBugScraperCSV
     issue_request = Typhoeus::Request.new(@@baseurl+@cursor.to_s)  
     # make a new request
     
+    # use on_complete to handle http errors with Typhoeus
     issue_request.on_complete do |issue_resp|
       if issue_resp.success?
         
+        #get csv data in the issue request
         parsedData = CSV.parse(issue_resp.body)
         
         #extract the total number of records.
@@ -94,7 +93,8 @@ end
 # driver code
 s = GoogleCodeBugScraperCSV.new(opts)
 
-while (s.get_cursor() != -1)  do
+# execute get_data on the issues until you reach a non-successfull http resopnce
+while s.cursor != -1  do
   s.get_data
 end
 

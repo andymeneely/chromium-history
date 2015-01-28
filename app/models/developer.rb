@@ -34,7 +34,7 @@ class Developer < ActiveRecord::Base
         email_domain = match[2]
       end
 
-      bad_domains = ['chromioum.org','chroimum.org','chromium.com','chromoium.org','chromium.rg','chromum.org','chormium.org','chromimum.org','chromium.orf','chromiu.org','chroium.org','chcromium.org','chromuim.org','google.com','g']
+      bad_domains = ['chromioum.org','chroimum.org','chromium.com','chromoium.org','chromium.rg','chromum.org','chormium.org','chromimum.org','chromium.orf','chromiu.org','chroium.org','chcromium.org','chromuim.org','google.com','g','chromium.or']
       if bad_domains.include? email_domain 
         email_domain = "@chromium.org"
         email_address = email_local + email_domain
@@ -68,9 +68,17 @@ class Developer < ActiveRecord::Base
 
     email = email[0]
     if (Developer.find_by_email(email).nil?) 
+      positive_infinity = "2050/01/01 00:00:00"
+      
       developer = Developer.new
-	  developer.id = 0 if email.eql?("ALL")
+	    developer.id = 0 if email.eql?("ALL")
       developer["email"] = email
+      developer["security_experience"] = positive_infinity
+      developer["bug_security_experience"] = positive_infinity
+      developer["stability_experience"] = positive_infinity
+      developer["build_experience"] = positive_infinity
+      developer["test_fail_experience"] = positive_infinity
+      developer["compatibility_experience"] = positive_infinity
       developer.save!
       return email, false
     else 
