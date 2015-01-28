@@ -13,7 +13,8 @@ class Corpus
     if @words
       return @words
     else
-      res = `python lib/nlp/python/tokenizer.py #{@raw_file}`
+      path = Rails.root.join 'lib', 'nlp', 'python', 'tokenizer.py'
+      res = `python #{path} #{@raw_file}`
       @words = Oj.load(res)
       return @words
     end
@@ -21,7 +22,8 @@ class Corpus
 
   def filter
     Oj.to_file @tmp_dir + '/wordlist.json', words()
-    res = `python lib/nlp/python/json_word_diff.py #{@tmp_dir}/wordlist.json`
+    path = Rails.root.join 'lib', 'nlp', 'python', 'json_word_diff.py'
+    res = `python #{path} #{@tmp_dir}/wordlist.json`
     @words = Oj.load(res)
   end
 
