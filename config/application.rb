@@ -32,6 +32,7 @@ module ChromiumHistory
       #       /tmp/bobby/production
       Rails.configuration.tmpdir = "/tmp/#{ENV['USER']}/#{Rails.env}"
       FileUtils.mkdir_p Rails.configuration.tmpdir
+      FileUtils.chmod "o+rwx", Rails.configuration.tmpdir
     else
       data_yml = YAML.load_file("#{Rails.root}/config/data.yml")[Rails.env]
       Rails.configuration.datadir = data_yml['src-relative'] == "true" ? Rails.root + "/" : ""
@@ -40,6 +41,7 @@ module ChromiumHistory
       # For test and production we use the RAM disk
       Rails.configuration.tmpdir = "/run/shm/tmp/#{ENV['USER']}/#{Rails.env}"
       FileUtils.mkdir_p Rails.configuration.tmpdir
+      FileUtils.chmod "o+rwx", Rails.configuration.tmpdir
     end
   end
 end
