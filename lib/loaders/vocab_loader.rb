@@ -7,6 +7,7 @@ class VocabLoader
     @data_dir = Rails.configuration.datadir
   end
 
+  # Proivdes a singular way to retieve/create the search tree
   def search_tree 
     return @search_tree unless @search_tree.nil?
     allwords = ActiveRecord::Base.connection.execute "SELECT * FROM technical_words"
@@ -64,6 +65,7 @@ class VocabLoader
     copy_results "#{@tmp_dir}/code_review_words.csv", 'code_reviews_technical_words', &block
   end
 
+  # Use Psql's copy function to upload csv to db
   def copy_results file_name, table_name, &block
     table = CSV.open "#{file_name}", 'w+'
     block.call table
@@ -71,6 +73,7 @@ class VocabLoader
     ActiveRecord::Base.connection.execute "COPY #{table_name} FROM '#{file_name}' DELIMITER ',' CSV"
   end
 
+  # Utilizing the search tree find the origins of words in provided table
   def reassociate origins, origin_id_key, origin_text_key, table
     origins.each do |origin|
       clean = VocabLoader.clean origin[origin_text_key]

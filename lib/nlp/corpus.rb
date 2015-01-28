@@ -1,6 +1,9 @@
 require 'set'
 require 'oj'
 
+# This class provides a facade for running python nltk scripts
+# and basic word set operations
+# TODO: Add tagging to tokeninzation process
 class Corpus
 
   def initialize raw
@@ -9,6 +12,7 @@ class Corpus
     @tmp_dir = Rails.configuration.tmpdir
   end
 
+  # Tokenize raw text file given to the constructor
   def words
     if @words
       return @words
@@ -20,6 +24,8 @@ class Corpus
     end
   end
 
+  # Remove words found in preset corpuses 
+  # TODO allow for chosing nltk corpora from function
   def filter
     Oj.to_file @tmp_dir + '/wordlist.json', words()
     path = Rails.root.join 'lib', 'nlp', 'python', 'json_word_diff.py'
@@ -39,6 +45,7 @@ class Corpus
     set_a & set_b
   end
 
+  # Turns a word list into a downcased set
   def clean_vocab wordlist
     result = Set.new
     wordlist.each do |word|
