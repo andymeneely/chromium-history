@@ -5,8 +5,9 @@ class LazyBinarySearchTree
   end
 
   def search vector
+    search_vector = ActiveRecord::Base.connection.execute "SELECT to_tsvector(coalesce('#{vector}')) as vector"
     resultList = ListNode.new nil
-    @root.search vector, resultList
+    @root.search search_vector[0]['vector'].gsub("'", ''), resultList
     resultList
   end
 
@@ -16,7 +17,7 @@ class LazyBinarySearchTree
     end
 
     def in? vector
-      result = ActiveRecord::Base.connection.execute "SELECT to_tsvector('#{vector}') @@ '#{query}' AS found"
+      result = ActiveRecord::Base.connection.execute "SELECT '#{vector}'::tsvector @@ '#{query}' AS found"
       result[0]['found'] == 't'
     end
 
