@@ -9,7 +9,7 @@ Setup Instructions
 ==================
 
 1. Download and install both [Vagrant](https://www.vagrantup.com/downloads.html) and [virtualbox](https://www.virtualbox.org/wiki/Downloads)
-2. Create a user environment variable called VBOX_USER_HOME and set it to a folder where you want virtualbox to store its config files. 
+2. Create a user environment variable called VBOX_USER_HOME and set it to a folder where you want virtualbox to store its config files. Create an environment variable called VAGRANT_HOME and set it a folder where you want to store your virtual container files.
 3. Open up the newly installed virtualbox GUI. Go to file and then preferences. In the general tab change the "Default Machine Folder" location to a directory where you want to store your VMs.
 4. Clone this repo
 5. Open a terminal (In windows use either cygwin or git bash) in the directory of the repo you just cloned.
