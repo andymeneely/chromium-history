@@ -111,9 +111,9 @@ namespace :run do
       x.report("Optimizing OWNERS") {ReleaseOwner.optimize}
       x.report("Running PSQL ANALYZE"){ ActiveRecord::Base.connection.execute "ANALYZE" }
       vocab_loader = VocabLoader.new
-      x.report('Generating technical vocab') {vocab_loader.load}
-      x.report('Associating vocab words with developers') {vocab_loader.associate_developer_vocab}
-      x.report('Associating vocab words with code reviews'){vocab_loader.associate_code_review_vocab}
+      #x.report('Generating technical vocab') {vocab_loader.load}
+      #x.report('Associating vocab words with developers') {vocab_loader.associate_developer_vocab}
+      #x.report('Associating vocab words with code reviews'){vocab_loader.associate_code_review_vocab}
     end
   end
   
