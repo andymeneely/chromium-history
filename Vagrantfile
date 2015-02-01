@@ -22,4 +22,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     s.path = "setup/provision.sh"
     s.privileged = false
   end
+
+  config.vm.provider "virtualbox" do |v|
+    v.memory = 2048
+    v.cpus = 2
+  end
 end
