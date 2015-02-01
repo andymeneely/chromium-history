@@ -63,10 +63,9 @@ gem 'jbuilder', '~> 1.2'
 
 gem 'nokogiri'
 
-# For downloading our GoogleSheets data
-# As of Jun 18 2014 this is still not release for the google_drive gem, switching temporarily to master to get it working with sheets
-#gem 'google_drive', '>= 0.3.9' 
-gem 'google_drive', git: 'https://github.com/gimite/google-drive-ruby.git'
+gem 'google_drive', '~> 1.0.0'
+
+gem 'google-api-client'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
