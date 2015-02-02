@@ -7,7 +7,8 @@ class ReleaseOwner < ActiveRecord::Base
   def self.optimize
     connection.add_index :release_owners, :release
     connection.add_index :release_owners, :filepath
-    connection.add_index :release_owners, [:release,:filepath]
-    connection.execute "CLUSTER release_owners USING index_release_owners_on_release_and_filepath"
+	connection.add_index :release_owners, :directory
+    connection.add_index :release_owners, [:release,:filepath,:directory]
+    connection.execute "CLUSTER release_owners USING index_release_owners_on_release_and_filepath_and_directory"
   end
 end
