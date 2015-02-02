@@ -3,7 +3,6 @@ arv@chromium.org,net/,a260d0b33e5c3d3a6ea5a64bd4ff6b6ea3b60d7c,2011-03-21
 dhollowa@chromium.org,net/,40a7e41b4820be63de44ece14c70b3bfe7e4c564,2013-04-29
 jhawkins@chromium.org,webkit/,174a621f96913029748c965389706d2b32eb153b,2014-05-11
 estade@chromium.org,net/,f933e00f3890a8c492d1476661a604f8c8658085,2012-03-13
-estade@chromium.org,net/ftp/,149b92db00bc1deab22599e7d3da3fc8be2c0d8b,2014-09-11
 estade@chromium.org,webkit/glue/,f9b5ce493cc2b36b3139aab9066f9681fd34dc63,2014-05-02
 sky@chromium.org,net/,d882ed74b7d636714db50d3f6fe8b5f7939f4299,2011-05-03
 ben@chromium.org,net/,0b56047554368999eeeaf6c939ac9069007e58b9,2011-03-22
@@ -70,7 +69,6 @@ pneubeck@chromium.org,chrome/browser/chromeos/net/,cdbea94e52b0a9fb0590d1e219f76
 keybuk@chromium.org,device/nfc/,34e8500dee2af31aeb2149771e26c237ae7196bc,2014-03-03
 armansito@chromium.org,device/nfc/,34e8500dee2af31aeb2149771e26c237ae7196bc,2014-03-03
 mgiuca@chromium.org,base/third_party/superfasthash/,e30e29479b4babe4d2ae909255e6bb818d077cc1,2014-03-03
-jhawkins@chromium.org,net/ftp/,ad30cfe496dc94957f4c7477afdf0a34a518d60e,2012-10-22
 ben@chromium.org,ui/events/x/,ad30cfe496dc94957f4c7477afdf0a34a518d60e,2012-10-22
 sky@chromium.org,./,1ddb6b1d1d02658cbc05573e8bb21b2f2750ac24,2014-02-07
 ben@chromium.org,net/http/,ad30cfe496dc94957f4c7477afdf0a34a518d60e,2012-10-22
@@ -82,7 +80,6 @@ sky@chromium.org,cc/,a60865a91102be0b19d826fb9d26f0bc98066ca6,2011-04-26
 pam@chromium.org,chrome/browser/prefs/,a60865a91102be0b19d826fb9d26f0bc98066ca6,2011-04-26
 battre@chromium.org,components/user_prefs/,75fee3776f2e159d8e52bb13bb4545ac46021512,2013-03-06
 bauerb@chromium.org,components/user_prefs/,75fee3776f2e159d8e52bb13bb4545ac46021512,2013-03-06
-estade@chromium.org,net/ftp/,1ddb6b1d1d02658cbc05573e8bb21b2f2750ac24,2014-02-07
 mnissler@chromium.org,components/user_prefs/,75fee3776f2e159d8e52bb13bb4545ac46021512,2013-03-06
 pam@chromium.org,components/user_prefs/,75fee3776f2e159d8e52bb13bb4545ac46021512,2013-03-06
 primiano@chromium.org,tools/memory_inspector/,7ae754a87ddf9c29a0b9e1e0201a0d173835de47,2014-02-07
