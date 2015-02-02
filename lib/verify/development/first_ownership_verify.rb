@@ -11,7 +11,7 @@ class FirstOwnershipVerify < VerifyBase
   end
 
   def verify_distinct_directory_owners_match_distinct_first_ownership
-    assert_le( FirstOwnership.pluck(:directory).uniq.count, ReleaseOwner.pluck(:directory).uniq.count, "Too many first ownerships recorded, count should not exceed owner directory count")
+    assert_le( FirstOwnership.pluck(:directory).uniq.count, ReleaseOwner.pluck(:filepath).uniq.count, "Too many first ownerships recorded, count should not exceed owner directory count")
   end
   
   def verify_first_ownership_for_ALL
