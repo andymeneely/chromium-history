@@ -17,7 +17,8 @@ class OwnersLoader
 			owner_email = em[0]
 			release = line[0]
 			filepath = line[1]
-			owners << [release, filepath, dev_id, owner_email]
+			directory = File.dirname(filepath)
+			owners << [release, filepath, directory, dev_id, owner_email]
 		end
 		else
 		break

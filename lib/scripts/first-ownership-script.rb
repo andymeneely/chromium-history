@@ -1,3 +1,4 @@
+#!/usr/bin/ruby
 require "csv"
 require "date"
 require "trollop"
@@ -17,8 +18,8 @@ Usage:
 
 where [options] are:
   EOS
-  opt :commitHashes, "The file name including path of the file containing the commit hashes to use",  :required => true , type: String
-  opt :src, "The directory of the Chromium source code",  :required => true, type: String
+  opt :commitHashes, "The path to file containing the commit hashes to use",  :required => true , type: String
+  opt :src, "The directory of the Chromium source code",  default: "./", type: String
   opt :csv, "The output CSV file for the results", default: "../first-owners.csv", type: String
 end 
 
@@ -78,7 +79,7 @@ class FirstOwnershipScript
       # note: if this command gives us a "fatal: Path 'foo' does not exist in 'foohash' 
       #       that's ok. It means the file was deleted, so the authors were clearly not 
       #       there - nothing to process
-      unless stderr.read =~ /fatal: Path '.*' does not exist in '.*'/
+      unless (stderr.read =~ /fatal: Path '.*' does not exist in '.*'/) #or (stderr.read =~ /fatal: Path '.*' exists on disk, but not in '.*'/))
         $stderr.print stderr.read
       end
       ownersText = stdout.read
