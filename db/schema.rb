@@ -180,6 +180,7 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.boolean  "test_fail_experienced"
     t.boolean  "compatibility_experienced"
     t.integer  "sheriff_hours"
+    t.integer  "security_adjacencys"
   end
 
   create_table "patch_set_files", id: false, force: true do |t|
@@ -221,6 +222,7 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.decimal "avg_non_participating_revs"
     t.decimal "perc_three_more_reviewers"
     t.decimal "perc_security_experienced_participants"
+    t.decimal "avg_security_adjacencys"
     t.decimal "avg_security_experienced_participants"
     t.decimal "avg_reviews_with_owner"
     t.decimal "avg_owner_familiarity_gap"

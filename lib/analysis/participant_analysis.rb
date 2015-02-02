@@ -17,11 +17,11 @@ class ParticipantAnalysis
   end#method
 
   # At the given code review, each participant may or may not have had experience in bug-label related reviews. 
-  def populate_bug_related_experience
+  def popbugulate_bug_related_experience
     update=<<-eos
     UPDATE participants 
     SET security_experienced = (developers.security_experience < participants.review_date), 
-        bug_security_experienced = (developers.bug_security_experience < participants.review_date), 
+        bug_security_experienced = (developers.bug_security_experience < participants.review_date),  
         stability_experienced = (developers.stability_experience < participants.review_date), 
         build_experienced = (developers.build_experience < participants.review_date),
         test_fail_experienced = (developers.test_fail_experience < participants.review_date),
@@ -43,39 +43,34 @@ class ParticipantAnalysis
 
   #
   def populate_security_adjacencys
-    s_adjacencies = {} # hash
+    # all code reviews that have cvenums (looking at vulnerabilities) and all the participants in it. 
+    # total_participants = cvenum.joins(:code_reviews).joins(:participants)
 
     Participant.find_each do |participant|
+      #all the security experienced participants that are not the given participant. Used with group, it returns a hash whoses keys represent dev_id and the value are the count
+
+      #I believe this way is the more appropriate way. 
+      # s_participants = total_participants.group(:dev_id).count(:dev_id, :conditions => ["security_experienced = true AND dev_id <> ?", participant.dev_id])
+
+      #This could also be a possibility. And maybe the :group needs to go before the :condition
+       # s_participants = total_participants.count(:dev_id, :conditions => ["security_experienced = true AND dev_id <> ?", participant.dev_id], :group => "dev_id")
+      # from here I need to put these dev_ids and the counts into the adjacency table
+
+      # code review the participant is in
       c = participant.code_review
 
-      #find all reviews where one of the reviewers is the participant and the
-      # review is inspecting a vulnerability
-      reviews = Participant.where( "dev_id = ? AND cvenums != 0",
-        participant.dev_id)
+      if c.is_inspecting_vulnerability?
+        # i'm unsure which of the following two are correct yet
+        # only security experienced participants and not the given one
+        s_adjacencys_count = c.participants.group(:dev_id).count(:dev_id, :conditions => ["security_experienced = true AND dev_id <> ?", participant.dev_id])
 
-      reviews.each do |review|
-        review.security_experienced_participants.each do |adjacency|
-          s_adjacencies[adjacency] += 1
-        end
+        # the :group may need to come before :conditions to be symmantically equivalent to the statement above
+        # s_adjacencys_count = c.participants.count(:dev_id, :conditions => ["security_experienced = true AND dev_id <> ?", participant.dev_id], :group => "dev_id")
+
+        participant.security_adjacencys = s_adjacencys_count
+
+        participant.save
       end
-
-      # Get all security_experienced participants from all code_reviews a given participant was in where they got their security_experience before the creation of the code_review
-
-      #reviews = Participant.where("dev_id = ? AND is_inspecting_vulnerability?", participant.dev_id)
-
-      #REVIEWS =  all reviews that a given participant is in and is looking at security vulnerabilities
-
-      reviews = Participant.where("dev_id = ? AND NOT cvenums.empty?", participant.dev_id)
-
-      #the NOT cvenums.empty? is also a method in the code_review class called is_inspecting_vulnerability? but i was unsure if you could call that directly
-
-      #s_participants = all security_experienced participants from REVIEWS where they acquired their security_experience (data located in developers table) before the code_review
-
-      s_participants = reviews.participants.where("security_experienced = ? AND ", true)
-
-      #AND participants (developers.security_experienced < code_review.creation)
-
-      s_participants.
     end
   end
 

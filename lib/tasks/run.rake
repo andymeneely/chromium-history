@@ -122,6 +122,7 @@ namespace :run do
     Benchmark.bm(40) do |x|
       x.report("Populating reviews_with_owner"){ParticipantAnalysis.new.populate_reviews_with_owner}
       x.report("Populating security_experienced"){CodeReviewAnalysis.new.populate_experience_cve}
+      x.report("populating security adjacencys"){ParticipantAnalysis.new.populate_security_adjacencys}
       x.report("Populating dev experience dates"){CodeReviewAnalysis.new.populate_experience_labels}
       x.report("Populating participant bug experience"){ParticipantAnalysis.new.populate_bug_related_experience}
       x.report("Populating total_reviews_with_owner"){CodeReviewAnalysis.new.populate_total_reviews_with_owner}

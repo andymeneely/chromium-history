@@ -12,12 +12,11 @@ class CodeReview < ActiveRecord::Base
   
   self.primary_key = :issue
 
-  scope :created_before, -> (time) { where("review_date < ?", time) }
+  # scope :created_before, -> (time) { where("review_date < ?", time) }
 
-  #scope :nonparticipating_reviewers, -> { where('dev_id NOT IN (SELECT dev_id FROM participants WHERE issue=?)', issue})
+  # scope :nonparticipating_reviewers, -> { where('dev_id NOT IN (SELECT dev_id FROM participants WHERE issue=?)', issue})
 
-  # rename this
-  scope :is_inspect_vulnerability, -> { where("NOT cvenums.empty?") }
+  # scope :is_inspecting_vulnerability, -> { where("cvenums IS NOT NULL") }
   
   def self.optimize
     connection.add_index :code_reviews, :issue, unique: true
