@@ -9,10 +9,10 @@ class HypothesisTests
   def run
     puts "\n=== Hypothesis Test Results ===\n\n"
     connect_to_db
-    Release.all.each do |release|
-      puts "-"*80
-      puts "----- FOR RELEASE #{release.name} -----"
-      puts "-"*80
+    Release.order(:date).each do |release|
+      puts "="*80
+      puts "===== FOR RELEASE #{release.name} ====="
+      puts "="*80
       query_db(release.name)
       
       puts "-"*80
@@ -24,7 +24,7 @@ class HypothesisTests
       puts "----- VULNERABILITY ASSOCIATION FOR RELEASE #{release.name} -----"
       puts "-"*80
       vulnerability_association_tests
-      
+
       puts "-"*80
       puts "----- MODELING FOR RELEASE #{release.name} -----"
       puts "-"*80
@@ -143,16 +143,16 @@ class HypothesisTests
 
     EOR
     puts "--- #{title} ---"
-    puts "  Mean of vulnerable: #{R.pull("mean(vulnerable, na.rm=TRUE)")}"
-    puts "  Mean of neutral: #{R.pull("mean(neutral, na.rm=TRUE)")}"
-    puts "  Median of vulnerable: #{R.pull("median(vulnerable, na.rm=TRUE)")}"
-    puts "  Median of neutral: #{R.pull("median(neutral, na.rm=TRUE)")}"
-    puts "  MWW p-value: #{R.pull("wt$p.value")}"
-    puts "  Per SLOC vulnerable mean: #{R.pull("mean(vulnerable_per_sloc, na.rm=TRUE)")}"
-    puts "  Per SLOC neutral mean: #{R.pull("mean(neutral_per_sloc, na.rm=TRUE)")}"
-    puts "  Per SLOC vulnerable median: #{R.pull("median(vulnerable_per_sloc, na.rm=TRUE)")}"
-    puts "  Per SLOC neutral median: #{R.pull("median(neutral_per_sloc, na.rm=TRUE)")}"
-    puts "  Per SLOC MWW p-value: #{R.pull("wt_per_sloc$p.value")}"
+    puts "  Mean of #{criteria}:   #{R.pull("mean(vulnerable, na.rm=TRUE)")}"
+    puts "  Mean of neutral:       #{R.pull("mean(neutral, na.rm=TRUE)")}"
+    puts "  Median of #{criteria}: #{R.pull("median(vulnerable, na.rm=TRUE)")}"
+    puts "  Median of neutral:     #{R.pull("median(neutral, na.rm=TRUE)")}"
+    puts "  MWW p-value:           #{R.pull("wt$p.value")}"
+    puts "  Per SLOC #{criteria} mean:   #{R.pull("mean(vulnerable_per_sloc, na.rm=TRUE)")}"
+    puts "  Per SLOC neutral mean:       #{R.pull("mean(neutral_per_sloc, na.rm=TRUE)")}"
+    puts "  Per SLOC #{criteria} median: #{R.pull("median(vulnerable_per_sloc, na.rm=TRUE)")}"
+    puts "  Per SLOC neutral median:     #{R.pull("median(neutral_per_sloc, na.rm=TRUE)")}"
+    puts "  Per SLOC MWW p-value:        #{R.pull("wt_per_sloc$p.value")}"
     puts "  Per SLOC risk factors"
     puts "    threshold: #{R.pull('thresh')}"
     puts "    p(over), p(under) : #{R.pull('p_over_thresh')},#{R.pull('p_under_thresh')}"
@@ -167,38 +167,42 @@ class HypothesisTests
   def prediction_model(title)
     begin     
     R.eval <<-EOR
-        #Selects relevant prediction data.
+        # Selects relevant prediction data.
         relevant_data <- data[,c(1:3,17:33)]
 
-        #remove data point where no prediction is possible and where sloc is missing
-        relevant_data <- subset(relevant_data, (relevant_data$num_pre_features !=0 |
-                              relevant_data$num_pre_compatibility_bugs !=0 | 
-                              relevant_data$num_pre_regression_bugs !=0 | 
-                              relevant_data$num_pre_security_bugs !=0 | 
-                              relevant_data$num_pre_tests_fails_bugs != 0 | 
-                              relevant_data$num_pre_stability_crash_bugs != 0 |
-                              relevant_data$num_pre_build_bugs != 0 | 
-                              relevant_data$becomes_vulnerable != FALSE) & relevant_data$sloc > 0)
+        # Remove files where there were no bugs of any kind, or if it had no SLOC
+        # i.e. The subset must have at least on bug of ANY kind, and SLOC > 0
+        relevant_data <- subset(relevant_data, 
+                                (relevant_data$num_pre_features !=0 |
+                                  relevant_data$num_pre_compatibility_bugs !=0 | 
+                                  relevant_data$num_pre_regression_bugs !=0 | 
+                                  relevant_data$num_pre_security_bugs !=0 | 
+                                  relevant_data$num_pre_tests_fails_bugs != 0 | 
+                                  relevant_data$num_pre_stability_crash_bugs != 0 |
+                                  relevant_data$num_pre_build_bugs != 0 | 
+                                  relevant_data$becomes_vulnerable != FALSE) 
+                                & relevant_data$sloc > 0)
 
-        #normalize the number of pre-bugs by sloc
+        # Normalize the number of pre-bugs by sloc
         relevant_data <- cbind(relevant_data, relevant_data[,c(7:13)]/relevant_data$sloc)
 
-        #extract paper analisis relevant data.
+        # Extract paper analysis relevant data.
         paper <- relevant_data[,c(7:13,20)] #non normalized
         paper_sloc <- relevant_data[,c(21:27,20)] #normalized
 
-        #normalize and center data, added 1 to the values to be able to calculate the log of zero. log(1)=0
+        # Normalize and center data, added 1 to the values to be able to calculate the log of zero. log(1)=0
         normalized <- as.data.frame(log(paper_sloc[,-c(8)] + 1))
         normalized <- cbind(normalized, becomes_vulnerable = paper_sloc$becomes_vulnerable)
         
         release <- normalized
-        options(warn=-1) #suppress warnings as we are getting : glm.fit: fitted probabilities numerically 0 or 1 occurred
+        options(warn=-1) # suppress warnings as we are getting : glm.fit: fitted probabilities numerically 0 or 1 occurred
         fit_all <- glm (formula= becomes_vulnerable ~ ., 
                         data = release, family = "binomial")
         options(warn=0)
     EOR
     puts "--- GLM model for release #{title} ---"
     R.echo true, false
+    R.eval "summary(release)"
     R.eval "summary(fit_all)"
     R.echo false, false
     R.eval "rm(relevant_data,paper,paper_sloc,normalized,release)"
