@@ -11,6 +11,13 @@ class CodeReview < ActiveRecord::Base
   has_and_belongs_to_many :technical_words
   
   self.primary_key = :issue
+
+  scope :created_before, -> (time) { where("review_date < ?", time) }
+
+  #scope :nonparticipating_reviewers, -> { where('dev_id NOT IN (SELECT dev_id FROM participants WHERE issue=?)', issue})
+
+  # rename this
+  scope :is_inspect_vulnerability, -> { where("NOT cvenums.empty?") }
   
   def self.optimize
     connection.add_index :code_reviews, :issue, unique: true
