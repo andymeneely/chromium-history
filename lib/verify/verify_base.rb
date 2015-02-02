@@ -16,6 +16,21 @@ class VerifyBase
     return_result(false, fail_message)
   end
   
+  def assert_le(exp,actual,fail_message="")
+    if (exp <= actual)
+      pass()
+    else
+      fail(<<-EOS
+
+    Expected: <#{exp}>
+    Actual:   <#{actual}>
+    Message: #{fail_message} 
+    In #{self.class} 
+EOS
+          )
+    end
+  end
+  
   def assert_equal(exp,actual,fail_message="")
     if exp.eql? actual
       pass()
