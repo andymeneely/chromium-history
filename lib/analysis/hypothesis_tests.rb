@@ -24,6 +24,11 @@ class HypothesisTests
       puts "----- VULNERABILITY ASSOCIATION FOR RELEASE #{release.name} -----"
       puts "-"*80
       vulnerability_association_tests
+      
+      puts "-"*80
+      puts "----- MODELING FOR RELEASE #{release.name} -----"
+      puts "-"*80
+      prediction_model(release.name)
     end
     close_db
   end
@@ -159,4 +164,47 @@ class HypothesisTests
     end
   end
 
+  def prediction_model(title)
+    begin     
+    R.eval <<-EOR
+        #Selects relevant prediction data.
+        relevant_data <- data[,c(1:3,17:33)]
+
+        #remove data point where no prediction is possible and where sloc is missing
+        relevant_data <- subset(relevant_data, (relevant_data$num_pre_features !=0 |
+                              relevant_data$num_pre_compatibility_bugs !=0 | 
+                              relevant_data$num_pre_regression_bugs !=0 | 
+                              relevant_data$num_pre_security_bugs !=0 | 
+                              relevant_data$num_pre_tests_fails_bugs != 0 | 
+                              relevant_data$num_pre_stability_crash_bugs != 0 |
+                              relevant_data$num_pre_build_bugs != 0 | 
+                              relevant_data$becomes_vulnerable != FALSE) & relevant_data$sloc > 0)
+
+        #normalize the number of pre-bugs by sloc
+        relevant_data <- cbind(relevant_data, relevant_data[,c(7:13)]/relevant_data$sloc)
+
+        #extract paper analisis relevant data.
+        paper <- relevant_data[,c(7:13,20)] #non normalized
+        paper_sloc <- relevant_data[,c(21:27,20)] #normalized
+
+        #normalize and center data, added 1 to the values to be able to calculate the log of zero. log(1)=0
+        normalized <- as.data.frame(log(paper_sloc[,-c(8)] + 1))
+        normalized <- cbind(normalized, becomes_vulnerable = paper_sloc$becomes_vulnerable)
+        
+        release <- normalized
+        options(warn=-1) #suppress warnings as we are getting : glm.fit: fitted probabilities numerically 0 or 1 occurred
+        fit_all <- glm (formula= becomes_vulnerable ~ ., 
+                        data = release, family = "binomial")
+        options(warn=0)
+    EOR
+    puts "--- GLM model for release #{title} ---"
+    R.echo true, false
+    R.eval "summary(fit_all)"
+    R.echo false, false
+    R.eval "rm(relevant_data,paper,paper_sloc,normalized,release)"
+    puts "\n"
+    rescue 
+      puts "ERROR running glm model test for Release #{title}"
+    end
+  end
 end
