@@ -68,7 +68,7 @@ class ParticipantAnalysis
       # Get all SEP counts from all prior code reviews a given participant was in.
       sep_adj = all_participants.count(:dev_id, :conditions => \
         ["security_experienced = true AND dev_id <> ? AND review_date < ?", \
-        participant.dev_id], cr.created).distinct
+        participant.dev_id, cr.created]).distinct
 
       # We don' need to group if we just want distinct, because it will be
       # grouping puts it into a hash, then getting the count of a hash gives you
