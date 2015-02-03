@@ -11,15 +11,13 @@ class FirstOwnershipLoader
     CSV.foreach("#{datadir}/first_ownership/first-owners.csv") do |line|
 	  em = Developer.search_or_add(line[0]) 
 	  unless(em[0].nil?)
-	    if(ReleaseOwner.exists?(:owner_email => em[0]))
-		  if related?(line[1],ReleaseOwner.where(:owner_email => em[0]).pluck(:directory))
+	    if(ReleaseOwner.exists?(:owner_email => em[0], :directory => line[1]))
 	      dev_id = Developer.where(email: em[0]).limit(1).pluck(:id)[0]
 	      owner_email = em[0]
 	      commitHash = line[2]
 	      date = line[3]
 	      directory = line[1]
 	      ownership << [owner_email, dev_id, directory, commitHash, date]
-		  end
 		end
 	  else
 	    abort ("Failed to clear email: #{line[0]}")
