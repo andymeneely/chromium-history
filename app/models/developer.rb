@@ -6,7 +6,6 @@ class Developer < ActiveRecord::Base
   has_many :sheriff_rotations, primary_key: 'id', foreign_key: 'dev_id'
   has_many :commits, primary_key: 'id', foreign_key: 'author_id'
   has_many :release_owners, primary_key: 'id', foreign_key: 'dev_id'
-  has_many :release_owners, primary_key: 'email', foreign_key: 'owner_email'
 
   def self.optimize
     connection.add_index :developers, :email, unique: true
