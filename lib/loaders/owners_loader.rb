@@ -11,13 +11,13 @@ class OwnersLoader
     CSV.foreach(ocsv) do |line| 
       if (Release.exists?(:name => line[0])) 
 		if (ReleaseFilepath.exists?(:thefilepath => line[1]))
-			em = Developer.search_or_add(line[2]) 
+			em = Developer.search_or_add(line[3]) 
 			next if (em[0].nil?)
 			dev_id = Developer.where(email: em[0]).limit(1).pluck(:id)[0]
 			owner_email = em[0]
 			release = line[0]
 			filepath = line[1]
-			directory = File.dirname(filepath)
+			directory = line[2]
 			owners << [release, filepath, directory, dev_id, owner_email]
 		end
 		else
