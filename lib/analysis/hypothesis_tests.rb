@@ -242,6 +242,7 @@ class HypothesisTests
       # Summary Individual Models
       summary(fit_null)
       summary(fit_control)
+      summary(fit_all)
       summary(fit_num_pre_features)
       summary(fit_num_pre_compatibility_bugs)
       summary(fit_num_pre_regression_bugs)
@@ -258,7 +259,7 @@ class HypothesisTests
     EOR
     R.echo false, false
     R.eval <<-EOR
-    rm(release, fit_null, fit_control, fit_num_pre_features, 
+    rm(release, fit_null, fit_control, fit_all, fit_num_pre_features, 
        fit_num_pre_compatibility_bugs, fit_num_pre_regression_bugs, 
        fit_num_pre_security_bugs, fit_num_pre_tests_fails_bugs, 
        fit_num_pre_stability_crash_bugs, fit_num_pre_build_bugs, 
