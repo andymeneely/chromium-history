@@ -60,7 +60,7 @@ class ParseReleaseFilepathsOwners
       files.each do |filename|
         owners.each do |owner|
           if (self.source_code? filename)
-            cfile << [@release,"#{filename}", "#{owner}"]
+            cfile << [@release,"#{filename}","#{owner[1]}/","#{owner[0]}"]
           end
         end
       end
@@ -73,7 +73,7 @@ class ParseReleaseFilepathsOwners
       #add each version, filename, owner to csv
       (files).each do |filename|
         if File.fnmatch(glob, filename) and (self.source_code? filename)
-          cfile << [@release,"#{filename}", "#{owner}"]
+          cfile << [@release,"#{filename}","#{owner[1]}/","#{owner[0]}"]
         end
       end
     end
@@ -118,11 +118,11 @@ class ParseReleaseFilepathsOwners
           pOwners = Array.new
 
         when /^\*$/	#i.e. the entire line is just *
-          currOwners << "ALL"
+          currOwners << ["ALL", Pathname.new(Dir.pwd).relative_path_from(Pathname.new(@srcLoc))]
 
         when /^[^=][a-z0-9_-]+@[a-z0-9.-]+\.[a-z]{2,4}$/
           rule.slice!(-1)
-          currOwners << rule
+          currOwners << [rule, Pathname.new(Dir.pwd).relative_path_from(Pathname.new(@srcLoc))]
 
         when rule.slice(0).eql?("#") , rule.eql?("\n") #ignore whitespace and comments
         when /per-file.+/
@@ -146,7 +146,7 @@ class ParseReleaseFilepathsOwners
           #comments and whitespace do nothing
         when /per-file.+=.*\*/
           glob = (rule.split("=")[0]).sub("per-file ","")
-          email = "ALL"
+          email = ["ALL", Pathname.new(Dir.pwd).relative_path_from(Pathname.new(@srcLoc))]
           addSingleFileOwnerToCsv(allFiles+noPFiles, email, glob)
 
         when /per-file.*set noparent/
@@ -156,7 +156,7 @@ class ParseReleaseFilepathsOwners
         when /per-file.+@.+/
           rule.slice!(-1)
           glob = (rule.split("=")[0]).sub("per-file ","")
-          email = rule.sub("per-file "+glob+"=","")
+          email = [rule.sub("per-file "+glob+"=",""), Pathname.new(Dir.pwd).relative_path_from(Pathname.new(@srcLoc))]
           addSingleFileOwnerToCsv(allFiles+noPFiles, email, glob)
 
         end
