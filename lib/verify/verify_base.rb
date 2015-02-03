@@ -22,7 +22,7 @@ class VerifyBase
     else
       fail(<<-EOS
 
-    Expected: <#{exp}>
+    Expected (to be lesser): <#{exp}>
     Actual:   <#{actual}>
     Message: #{fail_message} 
     In #{self.class} 
