@@ -167,45 +167,103 @@ class HypothesisTests
   def prediction_model(title)
     begin     
     R.eval <<-EOR
-        # Selects relevant prediction data.
-        relevant_data <- data[,c(1:3,17:33)] #TODO List these out so we don't have magic numbers
-
+        # Extract relevant prediction data
+        release <- data[,c(3,20:26,33)] #TODO List these out so we don't have magic numbers
+        
         # Remove files where there were no bugs of any kind, or if it had no SLOC
         # i.e. The subset must have at least on bug of ANY kind, and SLOC > 0
-        relevant_data <- subset(relevant_data, 
-                                (relevant_data$num_pre_features !=0 |
-                                  relevant_data$num_pre_compatibility_bugs !=0 | 
-                                  relevant_data$num_pre_regression_bugs !=0 | 
-                                  relevant_data$num_pre_security_bugs !=0 | 
-                                  relevant_data$num_pre_tests_fails_bugs != 0 | 
-                                  relevant_data$num_pre_stability_crash_bugs != 0 |
-                                  relevant_data$num_pre_build_bugs != 0 | 
-                                  relevant_data$becomes_vulnerable != FALSE) 
-                                & relevant_data$sloc > 0)
+        # Confirm if we need to remove the points with all variables are zero but outcome is TRUE.
 
-        # Normalize the number of pre-bugs by sloc
-        relevant_data <- cbind(relevant_data, relevant_data[,c(7:13)]/relevant_data$sloc)
+        release <- subset(release, (release$num_pre_features !=0 |
+                                    release$num_pre_compatibility_bugs !=0 | 
+                                    release$num_pre_regression_bugs !=0 | 
+                                    release$num_pre_security_bugs !=0 | 
+                                    release$num_pre_tests_fails_bugs != 0 | 
+                                    release$num_pre_stability_crash_bugs != 0 |
+                                    release$num_pre_build_bugs != 0 | 
+                                    release$becomes_vulnerable != FALSE) 
+                                  & release$sloc > 0)
+        # Normalize and center data, added one to the values to be able to calculate log to zero. log(1)=0
+        release = cbind(as.data.frame(log(release[,-c(9)] + 1)), becomes_vulnerable = release$becomes_vulnerable)
+  
+        options(warn=-1) # Suppress warnings as we are getting : glm.fit: fitted probabilities numerically 0 or 1 occurred
+        
+        # Individuali Variable  Models
+        fit_null <- glm(formula = becomes_vulnerable ~ 1, 
+                        data = release, family = "binomial")
+        
+        fit_control <- glm(formula = becomes_vulnerable ~ sloc, 
+                           data = release, family = "binomial")
 
-        # Extract paper analysis relevant data.
-        paper <- relevant_data[,c(7:13,20)] #non normalized
-        paper_sloc <- relevant_data[,c(21:27,20)] #normalized
+        fit_num_pre_features <- glm(formula= becomes_vulnerable ~ sloc + num_pre_features, 
+                                    data = release, family = "binomial")
+        
+        fit_num_pre_compatibility_bugs <- glm (formula= becomes_vulnerable ~ sloc + num_pre_compatibility_bugs, 
+                                               data = release, family = "binomial")
 
-        # Normalize and center data, added 1 to the values to be able to calculate the log of zero. log(1)=0
-        normalized <- as.data.frame(log(paper_sloc[,-c(8)] + 1))
-        normalized <- cbind(normalized, becomes_vulnerable = paper_sloc$becomes_vulnerable)
+        fit_num_pre_regression_bugs <- glm (formula= becomes_vulnerable ~ sloc + num_pre_regression_bugs, 
+                                            data = release, family = "binomial")
 
-        release <- normalized
-        options(warn=-1) # suppress warnings as we are getting : glm.fit: fitted probabilities numerically 0 or 1 occurred
+        fit_num_pre_security_bugs <- glm (formula= becomes_vulnerable ~ sloc + num_pre_security_bugs, 
+                                          data = release, family = "binomial")
+
+        fit_num_pre_tests_fails_bugs <- glm (formula= becomes_vulnerable ~ sloc + num_pre_tests_fails_bugs, 
+                                             data = release, family = "binomial")
+
+        fit_num_pre_stability_crash_bugs <- glm (formula= becomes_vulnerable ~ sloc + num_pre_stability_crash_bugs, 
+                                                 data = release, family = "binomial")
+
+        fit_num_pre_build_bugs <- glm (formula= becomes_vulnerable ~ sloc + num_pre_build_bugs, 
+                                         data = release, family = "binomial")
+         
         fit_all <- glm (formula= becomes_vulnerable ~ ., 
                         data = release, family = "binomial")
+
+        # Category Based Models
+        fit_features <- glm (formula= becomes_vulnerable ~ sloc + num_pre_features, 
+                             data = release, family = "binomial")
+        
+        fit_security <- glm (formula= becomes_vulnerable ~ sloc + num_pre_security_bugs, 
+                             data = release, family = "binomial")
+        
+        fit_stability <- glm (formula= becomes_vulnerable ~ sloc + num_pre_stability_crash_bugs +
+                              num_pre_compatibility_bugs + num_pre_regression_bugs, 
+                              data = release, family = "binomial")
+        
+        fit_build <- glm (formula= becomes_vulnerable ~ sloc + num_pre_build_bugs + num_pre_tests_fails_bugs, 
+                          data = release, family = "binomial")        
+
         options(warn=0)
     EOR
     puts "--- GLM model for release #{title} ---"
     R.echo true, false
     R.eval "summary(release)"
-    R.eval "summary(fit_all)"
+    R.eval <<-EOR
+      # Summary Individual Models
+      summary(fit_null)
+      summary(fit_control)
+      summary(fit_num_pre_features)
+      summary(fit_num_pre_compatibility_bugs)
+      summary(fit_num_pre_regression_bugs)
+      summary(fit_num_pre_security_bugs)
+      summary(fit_num_pre_tests_fails_bugs)
+      summary(fit_num_pre_stability_crash_bugs)
+      summary(fit_num_pre_build_bugs)
+
+      # Summary Category Models
+      summary(fit_security)
+      summary(fit_features)
+      summary(fit_stability)
+      summary(fit_build)
+    EOR
     R.echo false, false
-    R.eval "rm(relevant_data,paper,paper_sloc,normalized,release)"
+    R.eval <<-EOR
+    rm(release, fit_null, fit_control, fit_num_pre_features, 
+       fit_num_pre_compatibility_bugs, fit_num_pre_regression_bugs, 
+       fit_num_pre_security_bugs, fit_num_pre_tests_fails_bugs, 
+       fit_num_pre_stability_crash_bugs, fit_num_pre_build_bugs, 
+       fit_security, fit_features, fit_stability, fit_build)
+    EOR
     puts "\n"
     rescue 
       puts "ERROR running glm model test for Release #{title}"
