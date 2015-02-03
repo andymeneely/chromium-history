@@ -15,15 +15,15 @@ class HypothesisTests
       puts "="*80
       query_db(release.name)
       
-      puts "-"*80
-      puts "----- BUG ASSOCIATION FOR RELEASE #{release.name} -----"
-      puts "-"*80
-      bug_association_tests
+      #puts "-"*80
+      #puts "----- BUG ASSOCIATION FOR RELEASE #{release.name} -----"
+      #puts "-"*80
+      #bug_association_tests
       
-      puts "-"*80
-      puts "----- VULNERABILITY ASSOCIATION FOR RELEASE #{release.name} -----"
-      puts "-"*80
-      vulnerability_association_tests
+      #puts "-"*80
+      #puts "----- VULNERABILITY ASSOCIATION FOR RELEASE #{release.name} -----"
+      #puts "-"*80
+      #vulnerability_association_tests
 
       puts "-"*80
       puts "----- MODELING FOR RELEASE #{release.name} -----"
@@ -168,7 +168,7 @@ class HypothesisTests
     begin     
     R.eval <<-EOR
         # Selects relevant prediction data.
-        relevant_data <- data[,c(1:3,17:33)]
+        relevant_data <- data[,c(1:3,17:33)] #TODO List these out so we don't have magic numbers
 
         # Remove files where there were no bugs of any kind, or if it had no SLOC
         # i.e. The subset must have at least on bug of ANY kind, and SLOC > 0
@@ -193,7 +193,7 @@ class HypothesisTests
         # Normalize and center data, added 1 to the values to be able to calculate the log of zero. log(1)=0
         normalized <- as.data.frame(log(paper_sloc[,-c(8)] + 1))
         normalized <- cbind(normalized, becomes_vulnerable = paper_sloc$becomes_vulnerable)
-        
+
         release <- normalized
         options(warn=-1) # suppress warnings as we are getting : glm.fit: fitted probabilities numerically 0 or 1 occurred
         fit_all <- glm (formula= becomes_vulnerable ~ ., 
