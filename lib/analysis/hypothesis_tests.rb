@@ -237,8 +237,11 @@ class HypothesisTests
     EOR
     puts "--- GLM model for release #{title} ---"
     R.echo true, false
-    R.eval "summary(release)"
     R.eval <<-EOR
+      # Sanity Checks
+      summary(release)
+      cor(release[,-c(9)],method="spearman")
+
       # Summary Individual Models
       summary(fit_null)
       summary(fit_control)
