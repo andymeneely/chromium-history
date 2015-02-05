@@ -242,23 +242,16 @@ class HypothesisTests
       summary(release)
       cor(release[,-c(9)],method="spearman")
 
-      # Summary Individual Models
+      # Summary base models
       summary(fit_null)
-      summary(fit_control)
-      summary(fit_all)
-      summary(fit_num_pre_features)
-      summary(fit_num_pre_compatibility_bugs)
-      summary(fit_num_pre_regression_bugs)
-      summary(fit_num_pre_security_bugs)
-      summary(fit_num_pre_tests_fails_bugs)
-      summary(fit_num_pre_stability_crash_bugs)
-      summary(fit_num_pre_build_bugs)
+      summary(fit_control) # Sloc
 
       # Summary Category Models
       summary(fit_security)
       summary(fit_features)
       summary(fit_stability)
       summary(fit_build)
+      summary(fit_all)
     EOR
     R.echo false, false
     R.eval <<-EOR
