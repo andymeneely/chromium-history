@@ -1,5 +1,5 @@
+# This script requiers the following R packages: "ROCR" and "bestglm"
 require 'rinruby'
-
 class HypothesisTests
 
   def initialize
