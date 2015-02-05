@@ -1,6 +1,6 @@
 class FirstOwnership < ActiveRecord::Base
-  belongs_to :releaseOwner, foreign_key: 'owner_email', primary_key: 'owner_email'
-  belongs_to :releaseOwner, foreign_key: 'dev_id', primary_key: 'dev_id'
+  has_many :releaseOwners, primary_key: 'dev_id', foreign_key: 'dev_id' 
+  has_many :releaseOwners, primary_key: 'directory', foreign_key: 'directory' 
 
   def self.optimize
 	connection.add_index :first_ownerships, :directory
