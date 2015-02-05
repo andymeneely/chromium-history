@@ -263,18 +263,18 @@ class HypothesisTests
                                     & release$sloc > 0)
 
           release.next <- subset(release.next, (release.next$num_pre_features !=0 |
-                                                  release.next$num_pre_compatibility_bugs !=0 | 
-                                                  release.next$num_pre_regression_bugs !=0 | 
-                                                  release.next$num_pre_security_bugs !=0 | 
-                                                  release.next$num_pre_tests_fails_bugs != 0 | 
-                                                  release.next$num_pre_stability_crash_bugs != 0 |
-                                                  release.next$num_pre_build_bugs != 0 | 
-                                                  release.next$becomes_vulnerable != FALSE) 
-                                                & release.next$sloc > 0)
+                                                release.next$num_pre_compatibility_bugs !=0 | 
+                                                release.next$num_pre_regression_bugs !=0 | 
+                                                release.next$num_pre_security_bugs !=0 | 
+                                                release.next$num_pre_tests_fails_bugs != 0 | 
+                                                release.next$num_pre_stability_crash_bugs != 0 |
+                                                release.next$num_pre_build_bugs != 0 | 
+                                                release.next$becomes_vulnerable != FALSE) 
+                                              & release.next$sloc > 0)
 
           # Normalize and center data, added one to the values to be able to calculate log to zero. log(1)=0
-          release = cbind(as.data.frame(log(release[,-c(9)] + 1)), becomes_vulnerable = release$becomes_vulnerable)
-          release.next = cbind(as.data.frame(log(release.next[,-c(9)] + 1)), becomes_vulnerable = release.next$becomes_vulnerable)
+          release = cbind(as.data.frame(log(release[,-c(10)] + 1)), becomes_vulnerable = release$becomes_vulnerable)
+          release.next = cbind(as.data.frame(log(release.next[,-c(10)] + 1)), becomes_vulnerable = release.next$becomes_vulnerable)
 
           # Modeling (forward selection)
           # Individual Models
@@ -285,6 +285,9 @@ class HypothesisTests
                           data = release, family = "binomial")
 
           fit_all <- glm (formula= becomes_vulnerable ~ ., 
+                          data = release, family = "binomial")
+
+          fit_bugs <- glm (formula= becomes_vulnerable ~ sloc + num_pre_bugs, 
                           data = release, family = "binomial")
 
           # Category Based Models
@@ -316,6 +319,8 @@ class HypothesisTests
           print(summary(fit_control))
           cat("For fit_all\n")
           print(summary(fit_all))
+          cat("For fit_bugs\n")
+          print(summary(fit_bugs))
 
           cat("\n")
           cat("# Summary Category Models\n")
@@ -337,6 +342,8 @@ class HypothesisTests
           print(Dsquared(model = fit_control))
           cat("For fit_all\n")
           print(Dsquared(model = fit_all))
+          cat("For fit_bugs\n")
+          print(Dsquared(model = fit_bugs))
 
           cat("\n")
           cat("# Categories\n")
@@ -355,22 +362,25 @@ class HypothesisTests
           cat("# Prediction Analysis\n")
           cat("Control\n")
           cat("For fit_control\n")
-          print(prediction_analysis(fit_control,release))
+          print(prediction_analysis(fit_control,release.next))
           cat("For fit_all\n")
-          print(prediction_analysis(fit_all,release))
+          print(prediction_analysis(fit_all,release.next))
+          cat("For fit_bugs\n")
+          print(prediction_analysis(fit_bugs,release.next))
+
 
           cat("\n")
           cat("# Categories\n")
           cat("For fit_security\n")
-          print(prediction_analysis(fit_security,release))
+          print(prediction_analysis(fit_security,release.next))
           cat("For fit_features\n")
-          print(prediction_analysis(fit_features,release))
+          print(prediction_analysis(fit_features,release.next))
           cat("For fit_stability\n")
-          print(prediction_analysis(fit_stability,release))
+          print(prediction_analysis(fit_stability,release.next))
           cat("For fit_build\n")
-          print(prediction_analysis(fit_build,release))
+          print(prediction_analysis(fit_build,release.next))
           cat("For best_fit_AIC\n")
-          print(prediction_analysis(best_fit_AIC$BestModel,release))
+          print(prediction_analysis(best_fit_AIC$BestModel,release.next))
 
           options(warn=0)
         }
@@ -381,11 +391,11 @@ class HypothesisTests
         release_filepaths_data <- dbGetQuery(con, "SELECT * FROM release_filepaths")
 
         # Split the data by relase
-        r05 <- release_filepaths_data[ which(release_filepaths_data$release == "5.0"), c(3,20:26,33)]
-        r11 <- release_filepaths_data[ which(release_filepaths_data$release == '11.0'),c(3,20:26,33)]
-        r19 <- release_filepaths_data[ which(release_filepaths_data$release == '19.0'),c(3,20:26,33)]
-        r27 <- release_filepaths_data[ which(release_filepaths_data$release == '27.0'),c(3,20:26,33)]
-        r35 <- release_filepaths_data[ which(release_filepaths_data$release == '35.0'),c(3,20:26,33)]
+        r05 <- release_filepaths_data[ which(release_filepaths_data$release == "5.0"), c(3,19:26,33)]
+        r11 <- release_filepaths_data[ which(release_filepaths_data$release == '11.0'),c(3,19:26,33)]
+        r19 <- release_filepaths_data[ which(release_filepaths_data$release == '19.0'),c(3,19:26,33)]
+        r27 <- release_filepaths_data[ which(release_filepaths_data$release == '27.0'),c(3,19:26,33)]
+        r35 <- release_filepaths_data[ which(release_filepaths_data$release == '35.0'),c(3,19:26,33)]
 
         cat("MODELING FOR RELEASE 05\n")
         release_modeling(r05,r11)
