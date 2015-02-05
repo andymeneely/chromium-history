@@ -9,11 +9,11 @@ class HypothesisTests
   def run
     puts "\n=== Hypothesis Test Results ===\n\n"
     connect_to_db
-    Release.order(:date).each do |release|
-      puts "="*80
-      puts "===== FOR RELEASE #{release.name} ====="
-      puts "="*80
-      query_db(release.name)
+    #Release.order(:date).each do |release|
+      #puts "="*80
+      #puts "===== FOR RELEASE #{release.name} ====="
+      #puts "="*80
+      #query_db(release.name)
       
       #puts "-"*80
       #puts "----- BUG ASSOCIATION FOR RELEASE #{release.name} -----"
@@ -24,12 +24,13 @@ class HypothesisTests
       #puts "----- VULNERABILITY ASSOCIATION FOR RELEASE #{release.name} -----"
       #puts "-"*80
       #vulnerability_association_tests
+    #end
 
-      puts "-"*80
-      puts "----- MODELING FOR RELEASE #{release.name} -----"
-      puts "-"*80
-      prediction_model(release.name)
-    end
+    puts "-"*80
+    puts "----- LOGISTIC REGRESSION MODELING -----"
+    puts "-"*80
+    query_db_all
+    r_modeling
     close_db
   end
 
@@ -49,6 +50,12 @@ class HypothesisTests
   def query_db(release)
     R.eval <<-EOR
       data <- dbGetQuery(con, "SELECT * FROM release_filepaths WHERE release='#{release}'")
+    EOR
+  end
+
+  def query_db_all
+    R.eval <<-EOR
+      
     EOR
   end
 
@@ -164,103 +171,237 @@ class HypothesisTests
     end
   end
 
-  def prediction_model(title)
-    begin     
+  def r_modeling
+    begin 
+
+    # Set up libraries
     R.eval <<-EOR
-        # Extract relevant prediction data
-        release <- data[,c(3,20:26,33)] #TODO List these out so we don't have magic numbers
-        
-        # Remove files where there were no bugs of any kind, or if it had no SLOC
-        # i.e. The subset must have at least on bug of ANY kind, and SLOC > 0
-        # Confirm if we need to remove the points with all variables are zero but outcome is TRUE.
-
-        release <- subset(release, (release$num_pre_features !=0 |
-                                    release$num_pre_compatibility_bugs !=0 | 
-                                    release$num_pre_regression_bugs !=0 | 
-                                    release$num_pre_security_bugs !=0 | 
-                                    release$num_pre_tests_fails_bugs != 0 | 
-                                    release$num_pre_stability_crash_bugs != 0 |
-                                    release$num_pre_build_bugs != 0 | 
-                                    release$becomes_vulnerable != FALSE) 
-                                  & release$sloc > 0)
-        # Normalize and center data, added one to the values to be able to calculate log to zero. log(1)=0
-        release = cbind(as.data.frame(log(release[,-c(9)] + 1)), becomes_vulnerable = release$becomes_vulnerable)
-  
-        options(warn=-1) # Suppress warnings as we are getting : glm.fit: fitted probabilities numerically 0 or 1 occurred
-        
-        # Individuali Variable  Models
-        fit_null <- glm(formula = becomes_vulnerable ~ 1, 
-                        data = release, family = "binomial")
-        
-        fit_control <- glm(formula = becomes_vulnerable ~ sloc, 
-                           data = release, family = "binomial")
-
-        fit_num_pre_features <- glm(formula= becomes_vulnerable ~ sloc + num_pre_features, 
-                                    data = release, family = "binomial")
-        
-        fit_num_pre_compatibility_bugs <- glm (formula= becomes_vulnerable ~ sloc + num_pre_compatibility_bugs, 
-                                               data = release, family = "binomial")
-
-        fit_num_pre_regression_bugs <- glm (formula= becomes_vulnerable ~ sloc + num_pre_regression_bugs, 
-                                            data = release, family = "binomial")
-
-        fit_num_pre_security_bugs <- glm (formula= becomes_vulnerable ~ sloc + num_pre_security_bugs, 
-                                          data = release, family = "binomial")
-
-        fit_num_pre_tests_fails_bugs <- glm (formula= becomes_vulnerable ~ sloc + num_pre_tests_fails_bugs, 
-                                             data = release, family = "binomial")
-
-        fit_num_pre_stability_crash_bugs <- glm (formula= becomes_vulnerable ~ sloc + num_pre_stability_crash_bugs, 
-                                                 data = release, family = "binomial")
-
-        fit_num_pre_build_bugs <- glm (formula= becomes_vulnerable ~ sloc + num_pre_build_bugs, 
-                                         data = release, family = "binomial")
-         
-        fit_all <- glm (formula= becomes_vulnerable ~ ., 
-                        data = release, family = "binomial")
-
-        # Category Based Models
-        fit_features <- glm (formula= becomes_vulnerable ~ sloc + num_pre_features, 
-                             data = release, family = "binomial")
-        
-        fit_security <- glm (formula= becomes_vulnerable ~ sloc + num_pre_security_bugs, 
-                             data = release, family = "binomial")
-        
-        fit_stability <- glm (formula= becomes_vulnerable ~ sloc + num_pre_stability_crash_bugs +
-                              num_pre_compatibility_bugs + num_pre_regression_bugs, 
-                              data = release, family = "binomial")
-        
-        fit_build <- glm (formula= becomes_vulnerable ~ sloc + num_pre_build_bugs + num_pre_tests_fails_bugs, 
-                          data = release, family = "binomial")        
-
-        options(warn=0)
+              suppressMessages(library(ROCR, warn.conflicts = FALSE, quietly=TRUE))
+              suppressMessages(library(bestglm, warn.conflicts = FALSE, quietly=TRUE))
     EOR
-    puts "--- GLM model for release #{title} ---"
-    R.echo true, false
+    # Define the functions
     R.eval <<-EOR
-      # Sanity Checks
-      summary(release)
-      cor(release[,-c(9)],method="spearman")
+        Dsquared <-
+        function(obs = NULL, pred = NULL, model = NULL, adjust = FALSE) {
+          # version 1.3 (3 Jan 2015)
+          
+          model.provided <- ifelse(is.null(model), FALSE, TRUE)
+          
+          if (model.provided) {
+            if (!("glm" %in% class(model))) stop ("'model' must be of class 'glm'.")
+            if (!is.null(pred)) message("Argument 'pred' ignored in favour of 'model'.")
+            if (!is.null(obs)) message("Argument 'obs' ignored in favour of 'model'.")
+            obs <- model$y
+            pred <- model$fitted.values
+            
+          } else { # if model not provided
+            if (is.null(obs) | is.null(pred)) stop("You must provide either 'obs' and 'pred', or a 'model' object of class 'glm'")
+            if (length(obs) != length(pred)) stop ("'obs' and 'pred' must be of the same length (and in the same order).")
+            if (!(obs %in% c(0, 1)) | pred < 0 | pred > 1) stop ("Sorry, 'obs' and 'pred' options currently only implemented for binomial GLMs (binary response variable with values 0 or 1) with logit link.")
+            logit <- log(pred / (1 - pred))
+            model <- glm(obs ~ logit, family = "binomial")
+          }
+          
+          D2 <- (model$null.deviance - model$deviance) / model$null.deviance
+          
+          if (adjust) {
+            if (!model.provided) return(message("Adjusted D-squared not calculated, as it requires a model object (with its number of parameters) rather than just 'obs' and 'pred' values."))
+            
+            n <- length(model$fitted.values)
+            #p <- length(model$coefficients)
+            p <- attributes(logLik(model))$df
+            D2 <- 1 - ((n - 1) / (n - p)) * (1 - D2)
+          }  # end if adj
+          
+          return (D2)
+        }
+      EOR
+      R.eval <<-EOR
+        prediction_analysis<- function(fit,release.next){
+          # Predict based on next release data.
+          prediction <- predict(fit, newdata=release.next, type="response")
+          
+          # Use ROCR library calculate the performance.
+          pred <- prediction(prediction,release.next$becomes_vulnerable)
+          perf <- performance(pred, "prec", "rec")
+          
+          # Select the relevant values
+          precision <- unlist(slot(perf, "y.values"))
+          recall <- unlist(slot(perf, "x.values"))
+          f_score = 2 * ((precision * recall)/(precision + recall))
+          
+          mean_precision= mean(precision, na.rm=TRUE)
+          mean_recall = mean(recall, na.rm=TRUE)
+          mean_f_score = mean(f_score, na.rm=TRUE)
+          
+          # Create ROC Curve, 
+          # plot(perf, colorize=T)
+          
+          # Calculate the Area under the curve
+          auc <- performance(pred,"auc")
+          auc <- unlist(slot(auc, "y.values"))
+          
+          return (as.data.frame(cbind(mean_precision,mean_recall,mean_f_score,auc)))
+        }
+        EOR
+        R.eval <<-EOR
+        release_modeling <- function(release,release.next){
+          options(warn=-1)
 
-      # Summary base models
-      summary(fit_null)
-      summary(fit_control) # Sloc
+          # Remove files where there were no bugs of any kind, or if it had no SLOC
+          # i.e. The subset must have at least on bug of ANY kind, and SLOC > 0
+          # Confirm if we need to remove the points with al variables are zero but outcome is TRUE.
 
-      # Summary Category Models
-      summary(fit_security)
-      summary(fit_features)
-      summary(fit_stability)
-      summary(fit_build)
-      summary(fit_all)
+          release <- subset(release, (release$num_pre_features !=0 |
+                                      release$num_pre_compatibility_bugs !=0 | 
+                                      release$num_pre_regression_bugs !=0 | 
+                                      release$num_pre_security_bugs !=0 | 
+                                      release$num_pre_tests_fails_bugs != 0 | 
+                                      release$num_pre_stability_crash_bugs != 0 |
+                                      release$num_pre_build_bugs != 0 | 
+                                      release$becomes_vulnerable != FALSE) 
+                                    & release$sloc > 0)
+
+          release.next <- subset(release.next, (release.next$num_pre_features !=0 |
+                                                  release.next$num_pre_compatibility_bugs !=0 | 
+                                                  release.next$num_pre_regression_bugs !=0 | 
+                                                  release.next$num_pre_security_bugs !=0 | 
+                                                  release.next$num_pre_tests_fails_bugs != 0 | 
+                                                  release.next$num_pre_stability_crash_bugs != 0 |
+                                                  release.next$num_pre_build_bugs != 0 | 
+                                                  release.next$becomes_vulnerable != FALSE) 
+                                                & release.next$sloc > 0)
+
+          # Normalize and center data, added one to the values to be able to calculate log to zero. log(1)=0
+          release = cbind(as.data.frame(log(release[,-c(9)] + 1)), becomes_vulnerable = release$becomes_vulnerable)
+          release.next = cbind(as.data.frame(log(release.next[,-c(9)] + 1)), becomes_vulnerable = release.next$becomes_vulnerable)
+
+          # Modeling (forward selection)
+          # Individual Models
+          fit_null <- glm(formula = becomes_vulnerable ~ 1, 
+                          data = release, family = "binomial")
+
+          fit_control <- glm(formula = becomes_vulnerable ~ sloc, 
+                          data = release, family = "binomial")
+
+          fit_all <- glm (formula= becomes_vulnerable ~ ., 
+                          data = release, family = "binomial")
+
+          # Category Based Models
+          fit_features <- glm (formula= becomes_vulnerable ~ sloc + num_pre_features, 
+                               data = release, family = "binomial")
+
+          fit_security <- glm (formula= becomes_vulnerable ~ sloc + num_pre_security_bugs, 
+                               data = release, family = "binomial")
+
+          fit_stability <- glm (formula= becomes_vulnerable ~ sloc + num_pre_stability_crash_bugs 
+                                + num_pre_compatibility_bugs + num_pre_regression_bugs, 
+                                data = release, family = "binomial")
+
+          fit_build <- glm (formula= becomes_vulnerable ~ sloc + num_pre_build_bugs + num_pre_tests_fails_bugs, 
+                                data = release, family = "binomial")     
+          
+          # Automatic Best Model Predictions
+          best_fit_AIC <- bestglm(release,family=binomial,IC = "AIC")
+
+          # Display Results:
+          cat(" Spearman's rank Correlation")
+          print(cor(release[,-c(9)],method="spearman"))
+
+          cat("# Summary Control Models\n")
+          cat("For fit_null")
+          print(summary(fit_null))
+          cat("For fit_control")
+          print(summary(fit_control))
+          cat("For fit_all")
+          print(summary(fit_all))
+
+          cat("# Summary Category Models\n")
+          cat("For fit_security\n")
+          print(summary(fit_security))
+          cat("For fit_features")
+          print(summary(fit_features))
+          cat("For fit_stability")
+          print(summary(fit_stability))
+          cat("For fit_build")
+          print(summary(fit_build))
+          cat("For best_fit_AIC")
+          print(summary(best_fit_AIC$BestModel))
+
+          
+          cat("# D^2 Analysys\n")
+          cat("Control\n")
+          cat("For fit_control\n")
+          print(Dsquared(model = fit_control))
+          cat("For fit_all")
+          print(Dsquared(model = fit_all))
+
+          cat("# Categories\n")
+          cat("For fit_security")
+          print(Dsquared(model = fit_security))
+          cat("For fit_features")
+          print(Dsquared(model = fit_features))
+          cat("For fit_stability")
+          print(Dsquared(model = fit_stability))
+          cat("For fit_build")
+          print(Dsquared(model = fit_build))
+          cat("For best_fit_AIC")
+          print(Dsquared(model = best_fit_AIC$BestModel))
+
+          cat("# Prediction Analysis\n")
+          cat("Control\n")
+          cat("For fit_control")
+          print(prediction_analysis(fit_control,release))
+          cat("For fit_all")
+          print(prediction_analysis(fit_all,release))
+
+          
+          cat("# Categories\n")
+          cat("For fit_security")
+          print(prediction_analysis(fit_security,release))
+          cat("For fit_features")
+          print(prediction_analysis(fit_features,release))
+          cat("For fit_stability")
+          print(prediction_analysis(fit_stability,release))
+          cat("For fit_build")
+          print(prediction_analysis(fit_build,release))
+          cat("For best_fit_AIC")
+          print(prediction_analysis(best_fit_AIC$BestModel,release))
+
+          options(warn=0)
+        }
+    EOR
+    R.echo true, false
+    #execute the functions on each release
+    R.eval <<-EOR
+        release_filepaths_data <- dbGetQuery(con, "SELECT * FROM release_filepaths")
+
+        # Split the data by relase
+        r05 <- release_filepaths_data[ which(release_filepaths_data$release == "5.0"), c(3,20:26,33)]
+        r11 <- release_filepaths_data[ which(release_filepaths_data$release == '11.0'),c(3,20:26,33)]
+        r19 <- release_filepaths_data[ which(release_filepaths_data$release == '19.0'),c(3,20:26,33)]
+        r27 <- release_filepaths_data[ which(release_filepaths_data$release == '27.0'),c(3,20:26,33)]
+        r35 <- release_filepaths_data[ which(release_filepaths_data$release == '35.0'),c(3,20:26,33)]
+
+        cat("MODELING FOR RELEASE 05\n")
+        release_modeling(r05,r11)
+
+        cat("MODELING FOR RELEASE 11\n")
+        release_modeling(r11,r19)
+
+        cat("MODELING FOR RELEASE 19\n")
+        release_modeling(r19,r27)
+
+        cat("MODELING FOR RELEASE 27\n")
+        release_modeling(r27,r35)
+
+        cat("MODELING FOR RELEASE 35")
+        release_modeling(r35,r35) #TODO check if its correct to predict with same data.
+        
+
+        rm(release_filepaths_data,r05,r11,r19,r27,r35)
     EOR
     R.echo false, false
-    R.eval <<-EOR
-    rm(release, fit_null, fit_control, fit_all, fit_num_pre_features, 
-       fit_num_pre_compatibility_bugs, fit_num_pre_regression_bugs, 
-       fit_num_pre_security_bugs, fit_num_pre_tests_fails_bugs, 
-       fit_num_pre_stability_crash_bugs, fit_num_pre_build_bugs, 
-       fit_security, fit_features, fit_stability, fit_build)
-    EOR
     puts "\n"
     rescue 
       puts "ERROR running glm model test for Release #{title}"
