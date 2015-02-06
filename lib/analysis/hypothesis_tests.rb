@@ -308,8 +308,23 @@ class HypothesisTests
           best_fit_AIC <- bestglm(release,family=binomial,IC = "AIC")
 
           # Display Results:
-          cat(" Spearman's rank Correlation\n")
+          cat("Spearman's rank Correlation\n")
           print(cor(release[,-c(9)],method="spearman"))
+
+          release_v <- release[ which(release$becomes_vulnerable == TRUE), ]
+          release_n <- release[ which(release$becomes_vulnerable == FALSE), ]
+
+          cat("\nWilcoxon Rank Sum\n")
+          # Perform wilcox test
+          print(wilcox.test(release_v$sloc, release_n$sloc, alternative="greater"))
+          print(wilcox.test(release_v$num_pre_bugs, release_n$num_pre_bugs, alternative="greater"))
+          print(wilcox.test(release_v$num_pre_features, release_n$num_pre_features, alternative="greater"))
+          print(wilcox.test(release_v$num_pre_compatibility_bugs, release_n$num_pre_compatibility_bugs, alternative="greater"))
+          print(wilcox.test(release_v$num_pre_regression_bugs, release_n$num_pre_regression_bugs, alternative="greater"))
+          print(wilcox.test(release_v$num_pre_security_bugs, release_n$num_pre_security_bugs, alternative="greater"))
+          print(wilcox.test(release_v$num_pre_tests_fails_bugs, release_n$num_pre_tests_fails_bugs, alternative="greater"))
+          print(wilcox.test(release_v$num_pre_stability_crash_bugs, release_n$num_pre_stability_crash_bugs, alternative="greater"))
+          print(wilcox.test(release_v$num_pre_build_bugs, release_n$num_pre_build_bugs, alternative="greater"))
           
           cat("\n")
           cat("# Summary Control Models\n")
