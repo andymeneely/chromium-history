@@ -54,11 +54,10 @@ class VocabLoader
           technical_words t 
         WHERE 
           to_tsvector('english', a.#{searchable_field}) @@ to_tsquery(t.word)
-      ) TO #{tmp_file} WITH (FORMAT CSV)
+      ) TO '#{tmp_file}' WITH (FORMAT CSV)
       eos
     ActiveRecord::Base.connection.execute sql
-    copy_results 
-    ActiveRecord::Base.connection.execute "COPY #{linking_table} FROM #{tmp_file} DELIMITER ',' CSV"
+    copy_results tmp_file, linking_table 
   end
 
   # iterate through block to fill csv table file
