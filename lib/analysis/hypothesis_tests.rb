@@ -308,11 +308,20 @@ class HypothesisTests
           best_fit_AIC <- bestglm(release,family=binomial,IC = "AIC")
 
           # Display Results:
-          cat("Spearman's rank Correlation\n")
+          cat("\nRelease Summary\n")
+          print(summary(release))
+
+          cat("\nSpearman's rank Correlation\n")
           print(cor(release[,-c(9)],method="spearman"))
 
           release_v <- release[ which(release$becomes_vulnerable == TRUE), ]
           release_n <- release[ which(release$becomes_vulnerable == FALSE), ]
+
+          cat("\n% Vulnerable\n")
+          print(cbind(Total = length(release[,1]),
+                      Neutral = length(release_n[,1]), 
+                      Vulnerable = length(release_v[,1]),
+                      Percentage = (length(release_v[,1])/length(release_n[,1]))*100))
 
           cat("\nWilcoxon Rank Sum\n")
           # Perform wilcox test
