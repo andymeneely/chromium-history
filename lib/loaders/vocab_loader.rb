@@ -19,6 +19,7 @@ class VocabLoader
     acm_corpus = Corpus.new "#{@data_dir}/acm/raw_acm.txt"
     comment_corpus = Corpus.new "#{@tmp_dir}/comments.txt"
     message_corpus = Corpus.new "#{@tmp_dir}/messages.txt"
+    acm_corpus.filter
     comment_corpus.filter
     message_corpus.filter
     words = comment_corpus.word_intersect acm_corpus.words
