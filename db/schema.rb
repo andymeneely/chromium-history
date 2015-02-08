@@ -66,11 +66,6 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.integer "code_review_id"
   end
 
-  create_table "code_reviews_technical_words", id: false, force: true do |t|
-    t.integer "code_review_id", limit: 8
-    t.integer "technical_word_id"
-  end
-
   create_table "comments", id: false, force: true do |t|
     t.string   "author_email"
     t.integer  "author_id"
@@ -81,6 +76,11 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.boolean  "left"
     t.string   "composite_patch_set_file_id", limit: 1000
     t.integer  "code_review_id",  limit: 8
+  end
+
+  create_table "comments_technical_words", id: false, force: true do |t|
+    t.integer "comment_id"
+    t.integer "technical_word_id"
   end
 
   create_table "commits", id: false, force: true do |t|
@@ -127,11 +127,6 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.datetime "compatibility_experience"
   end
 
-  create_table "developers_technical_words", id: false, force: true do |t|
-    t.integer "developer_id"
-    t.integer "technical_word_id"
-  end 
-
   create_table "filepaths", id: false, force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -152,6 +147,11 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.datetime "date"
     t.integer  "code_review_id", limit: 8
   end
+
+  create_table "messages_technical_words", id: false, force: true do |t|
+    t.integer "message_id"
+    t.integer "technical_word_id"
+  end 
 
   create_table "participants", id: false, force: true do |t|
     t.integer  "dev_id"

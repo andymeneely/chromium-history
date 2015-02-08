@@ -7,15 +7,6 @@ class VocabLoader
     @data_dir = Rails.configuration.datadir
   end
 
-  # Proivdes a singular way to retieve/create the search tree
-  def search_tree 
-    return @search_tree unless @search_tree.nil?
-    allwords = ActiveRecord::Base.connection.execute "SELECT * FROM technical_words"
-    wordArr = allwords.map {|word| word}
-    return nil unless wordArr.size > 0
-    @search_tree = LazyBinarySearchTree.new wordArr
-  end
-
   def load
     raw = @tmp_dir+'/raw_comments.txt'
     Comment.get_all_convo raw
@@ -28,6 +19,7 @@ class VocabLoader
     acm_corpus = Corpus.new "#{@data_dir}/acm/raw_acm.txt"
     comment_corpus = Corpus.new "#{@tmp_dir}/comments.txt"
     message_corpus = Corpus.new "#{@tmp_dir}/messages.txt"
+    acm_corpus.filter
     comment_corpus.filter
     message_corpus.filter
     words = comment_corpus.word_intersect acm_corpus.words
@@ -37,52 +29,52 @@ class VocabLoader
         table << [word]
       end
     end
-    copy_results "#{@tmp_dir}/vocab.csv", 'technical_words', &block
+    vocab_file = "#{@tmp_dir}/vocab.csv"
+    agg_csv vocab_file, &block
+    copy_results vocab_file, 'technical_words'
     ActiveRecord::Base.connection.execute "ALTER TABLE technical_words ADD COLUMN id SERIAL; ALTER TABLE technical_words ADD PRIMARY KEY (id);"
   end
 
-  def associate_developer_vocab
-    block = lambda do |table|
-      convos = Comment.get_developer_comments
-      table = reassociate convos, 'author_id', 'string_agg', table
-      convos.clear
-      messages = Message.get_developer_messages
-      table = reassociate messages, 'sender_id', 'string_agg', table
-      messages.clear
-    end
-    copy_results "#{@tmp_dir}/dev_words.csv", 'developers_technical_words', &block
+  def reassociate_comments
+    reassociate 'comments', 'text', 'comments_technical_words'
   end
 
-  def associate_code_review_vocab
-    block = lambda do |table|
-      convos = Comment.get_all_convo
-      table = reassociate convos, 'code_review_id', 'string_agg', table
-      convos.clear
-      messages = Message.get_all_messages
-      table = reassociate messages, 'code_review_id', 'string_agg', table
-      messages.clear
-    end
-    copy_results "#{@tmp_dir}/code_review_words.csv", 'code_reviews_technical_words', &block
+  def reassociate_messages
+    reassociate 'messages', 'text', 'messages_technical_words'
   end
 
-  # Use Psql's copy function to upload csv to db
-  def copy_results file_name, table_name, &block
+  def reassociate target_table, searchable_field, linking_table
+    tmp_file = "#{@tmp_dir}/copy_tmp.csv"
+    sql = <<-eos 
+      COPY (
+        SELECT 
+          a.id, 
+          t.id 
+        FROM 
+          #{target_table} a, 
+          technical_words t 
+        WHERE 
+          to_tsvector('english', a.#{searchable_field}) @@ to_tsquery(t.word)
+      ) TO '#{tmp_file}' WITH (FORMAT CSV)
+      eos
+    ActiveRecord::Base.connection.execute sql
+    copy_results tmp_file, linking_table 
+  end
+
+  # iterate through block to fill csv table file
+  def agg_csv file_name, &block
     table = CSV.open "#{file_name}", 'w+'
     block.call table
     table.fsync
+  end
+
+  # Use Psql's copy function to upload csv to db
+  def copy_results file_name, table_name
     ActiveRecord::Base.connection.execute "COPY #{table_name} FROM '#{file_name}' DELIMITER ',' CSV"
   end
 
-  # Utilizing the search tree find the origins of words in provided table
-  def reassociate origins, origin_id_key, origin_text_key, table
-    origins.each do |origin|
-      clean = VocabLoader.clean origin[origin_text_key]
-      results = search_tree().search clean
-      results.each do |result|
-        table << [origin[origin_id_key], result['id']]
-      end
-    end
-    table
+  def self.add_fulltext_search_index table_name, searchable_field
+    ActiveRecord::Base.connection.execute "CREATE INDEX #{table_name}_search ON #{table_name} USING gin(to_tsvector('english', #{searchable_field}));"
   end
 
   def self.clean_file target_file, output_file

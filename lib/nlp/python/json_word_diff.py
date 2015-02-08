@@ -8,5 +8,5 @@ word_list = json.loads(f.read())
 
 bag = WordBag()
 technical_words = bag.word_difference(word_list, nltk.corpus.words.words())
-technical_words = bag.word_difference(technical_words, nltk.corpus.brown.words(categories='news'))
+technical_words = bag.word_difference(technical_words, nltk.corpus.brown.words())
 print(json.dumps(list(technical_words)))

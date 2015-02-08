@@ -7,8 +7,7 @@ class Developer < ActiveRecord::Base
   has_many :commits, primary_key: 'id', foreign_key: 'author_id'
   has_many :release_owners, primary_key: 'id', foreign_key: 'dev_id'
   has_many :release_owners, primary_key: 'email', foreign_key: 'owner_email'
-  has_and_belongs_to_many :technical_words
-
+  
   def self.optimize
     connection.add_index :developers, :email, unique: true
   end
