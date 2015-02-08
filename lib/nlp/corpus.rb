@@ -27,9 +27,13 @@ class Corpus
   # Remove words found in preset corpuses 
   # TODO allow for chosing nltk corpora from function
   def filter
-    Oj.to_file @tmp_dir + '/wordlist.json', words()
+    file_path = "#{@tmp_dir}/wordlist.json"
+    tmp_file = File.new file_path, 'w+'
+    Oj.to_stream tmp_file, words()
+    tmp_file.fsync
     path = Rails.root.join 'lib', 'nlp', 'python', 'json_word_diff.py'
-    res = `python #{path} #{@tmp_dir}/wordlist.json`
+    res = `python #{path} #{file_path}`
+    File.unlink file_path
     @words = Oj.load(res)
   end
 
