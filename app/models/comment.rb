@@ -3,6 +3,7 @@ class Comment < ActiveRecord::Base
   
   def self.optimize
     connection.add_index :comments, :composite_patch_set_file_id
+    VocabLoader.add_fulltext_search_index 'comments', 'text'
   end
 
   def self.get_convo issue

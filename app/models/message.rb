@@ -5,6 +5,7 @@ class Message < ActiveRecord::Base
   def self.optimize
     connection.add_index :messages, :sender
     connection.add_index :messages, :code_review_id
+    VocabLoader.add_fulltext_search_index 'messages', 'text'
   end
 
   def self.get_message issue
