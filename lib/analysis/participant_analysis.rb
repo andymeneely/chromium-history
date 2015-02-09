@@ -50,6 +50,7 @@ class ParticipantAnalysis
   def populate_security_adjacencys
     # Get all participants from security related code reviews
     all_participants = Participant.joins(:code_review)
+    # all_participants = CodeReview.joins(:participants)
 
     Participant.find_each do |participant|
     # The code review the participant is in.
