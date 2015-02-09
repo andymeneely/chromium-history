@@ -104,14 +104,19 @@ class Filepath < ActiveRecord::Base
     return num/denom
   end
 
-  # "Let's make it a distinct number of developers so two people working together doesn't keep stacking up." - issue description
-  # If we want to make it a distinct number of developers, then we have to keep track of which developers is on a participants security_adjacency list. Meaning we will want to keep track of security-adjacencys not only on participants (for a specific code_review) but also within developer 
-  # i.e we need to have an adjacencys table 
   def avg_security_adjacencys(before = DateTime.new(2050,01,01))
     denom = code_reviews(before).size
     return nil if denom == 0.0
 
-    # num = Filepath.participants.where
+    num = Filepath.participants\
+      .where('filepaths.filepath' => filepath,\
+              'code_reviews.created' => DateTime.new(1970,01,01)..before)\
+      .sum(:security_adjacencys)
+
+    # num = Filepath.participants.sum(:security_adjacencys, :conditions => ['filepaths.filepath' => filepath,\
+    #           'code_reviews.created' => DateTime.new(1970,01,01)..before])
+
+    return num / denom
   end
 
   def avg_security_exp_part(before = DateTime.new(2050,01,01))

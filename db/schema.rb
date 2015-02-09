@@ -13,20 +13,6 @@
 
 ActiveRecord::Schema.define(version: 20140512131450) do
 
-  create_table "adjacencys", id: false, force: true do |t|
-    t.integer "dev_id"
-    t.integer "adjacency_id"
-    t.integer "exposure"
-
-    # We could have ajacency for each type of issue, if we care for that. 
-    # t.boolean "security"
-    # t.boolean "stability"
-    # t.boolean "bug_security"
-    # t.boolean "build"
-    # t.boolean "test_fail"
-    # t.boolean "compatibility"
-  end
-
   create_table "blocks", id: false, force: true do |t|
     t.integer "bug_id"
     t.integer "blocking_id"

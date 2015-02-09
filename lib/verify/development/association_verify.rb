@@ -47,7 +47,7 @@ class AssociationVerify < VerifyBase
     assert_equal 1, Developer.find(10).participants.joins(code_review: [commit: [commit_bugs: [bug: :labels]]]).where("labels.label = 'stability-crash'").count()
   end
 
-  def verify_participants_experience
+  def verify_participants_stability_experience
     assert_equal true, Developer.find(10).participants.where('issue = 52823002').pluck('stability_experienced')[0]
   end
   

@@ -47,40 +47,18 @@ class ParticipantAnalysis
 
   # Determine the security experienced participants (SEP) who a given
   # participant has worked with before a given code review.
-  # The assumption is made of the knowledge transfer from a SEP to a non-SEP (NSEP).
   def populate_security_adjacencys
     # Get all participants from security related code reviews
-    all_participants = Participant.joins(code_reviews: :cvenums)
-
-    # In issue #184, the examples indicate that participants will gain security
-    # adjacency's through non-security related code reviews.
-    # With the aforementioned assumption, it seems like it would be more easily
-    # accepted that a NSEP would have a greater knowledge transfer in security
-    # code reviews then not. We may want to see both and see if the correlation
-    # is higher for one or the other.
-    # For just all code reviews, we'd want the line below.
-    # all_Participants = Participant.joins(:code_reviews)
+    all_participants = Participant.joins(:code_review)
 
     Participant.find_each do |participant|
     # The code review the participant is in.
       cr = participant.code_review
 
       # Get all SEP counts from all prior code reviews a given participant was in.
-      sep_adj = all_participants.count(:dev_id, :conditions => \
-        ["security_experienced = true AND dev_id <> ? AND review_date < ?", \
-        participant.dev_id, cr.created]).distinct
+      # sep_adj = all_participants.count(:dev_id, :conditions => ["security_experienced = true AND dev_id <> ? AND review_date < ?", participant.dev_id, cr.created])
 
-      # We don' need to group if we just want distinct, because it will be
-      # grouping puts it into a hash, then getting the count of a hash gives you
-      # how many times that group col showed up.
-      # I think we could do .group(:dev_id). \ 
-        # having("security_experienced = true AND dev_id <> ? AND review_date < ?", \
-        # participant.dev_id], cr.created").size
-
-      # Get all SEP counts from all prior code reviews a given participant was in.
-      # sep_adj = all_participants.group(:dev_id).count(:dev_id, :conditions => \
-        # ["security_experienced = true AND dev_id <> ? AND review_date < ?", \
-        # participant.dev_id], cr.created).distinct
+      sep_adj = all_participants.where("created < ? AND dev_id <> ? AND security_experienced = ?", cr.created, participant.dev_id, true).count(:dev_id)
 
       participant.security_adjacencys = sep_adj
       participant.save
