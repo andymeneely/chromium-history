@@ -30,8 +30,7 @@ class ReleaseOwnersVerify < VerifyBase
   
   def verify_first_ownership_association
 	rel_own = ReleaseOwner.where(owner_email:'sky@chromium.org',filepath:'net/ftp/ftp_directory_listing_parser_windows.h').take
-    assert_equal(false, rel_own.firstOwnership.nil?,"No firstOwnership found")
-	assert_equal("d882ed74b7d636714db50d3f6fe8b5f7939f4299", rel_own.firstOwnership.first_owner_hash, "firstOwnership not unique")
+	assert_equal("d882ed74b7d636714db50d3f6fe8b5f7939f4299", rel_own.first_ownership_sha, "firstOwnership not matching")
   end
 
   def verify_filepath_count_match_release_11
