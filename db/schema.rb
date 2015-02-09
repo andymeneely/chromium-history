@@ -127,14 +127,6 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.datetime "updated_at"
     t.string   "filepath",   limit: 500
   end
-  
-  create_table "first_ownerships", id: false, force: true do |t|
-    t.string   "owner_email"
-	t.integer  "dev_id"
-    t.string   "directory"
-    t.string   "first_owner_hash"
-	t.datetime "first_owner_date"
-  end
 
   create_table "labels",id:false, force: true do |t|
     t.integer "label_id"
@@ -236,6 +228,8 @@ ActiveRecord::Schema.define(version: 20140512131450) do
 	t.string   "directory"
 	t.integer  "dev_id"
     t.string   "owner_email"
+	t.string   "first_ownership_sha"
+	t.datetime "first_ownership_date"
   end
 
   create_table "reviewers", id: false, force: true do |t|
