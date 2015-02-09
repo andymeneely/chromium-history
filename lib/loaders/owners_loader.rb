@@ -18,7 +18,7 @@ class OwnersLoader
 			release = line[0]
 			filepath = line[1]
 			directory = line[2]
-			owners << [release, filepath, directory, dev_id, owner_email]
+			owners << [release, filepath, directory, dev_id, owner_email,nil,nil]
 		end
 		else
 		break
