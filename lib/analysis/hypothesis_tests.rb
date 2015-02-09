@@ -311,8 +311,8 @@ class HypothesisTests
           cat("\nRelease Summary\n")
           print(summary(release))
 
-          cat("\nSpearman's rank Correlation\n")
-          print(cor(release[,-c(9)],method="spearman"))
+          cat("\nSpearman's rank Correlation Type Bugs\n")
+          print(cor(release[,-c(1,2,10)],method="spearman"))
 
           release_v <- release[ which(release$becomes_vulnerable == TRUE), ]
           release_n <- release[ which(release$becomes_vulnerable == FALSE), ]
