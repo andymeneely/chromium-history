@@ -326,14 +326,31 @@ class HypothesisTests
           cat("\nWilcoxon Rank Sum\n")
           # Perform wilcox test
           print(wilcox.test(release_v$sloc, release_n$sloc, alternative="greater"))
+          print(cbind(median_v = median(release_v$sloc, na.rm=TRUE),median_n = median(release_n$sloc, na.rm=TRUE)))
+          
           print(wilcox.test(release_v$num_pre_bugs, release_n$num_pre_bugs, alternative="greater"))
+          print(cbind(median_v = median(release_v$num_pre_bugs, na.rm=TRUE),median_n = median(release_n$num_pre_bugs, na.rm=TRUE)))
+          
           print(wilcox.test(release_v$num_pre_features, release_n$num_pre_features, alternative="greater"))
+          print(cbind(median_v = median(release_v$num_pre_features, na.rm=TRUE),median_n = median(release_n$num_pre_features, na.rm=TRUE)))
+          
           print(wilcox.test(release_v$num_pre_compatibility_bugs, release_n$num_pre_compatibility_bugs, alternative="greater"))
+          print(cbind(median_v = median(release_v$num_pre_compatibility_bugs, na.rm=TRUE),median_n = median(release_n$num_pre_compatibility_bugs, na.rm=TRUE)))
+          
           print(wilcox.test(release_v$num_pre_regression_bugs, release_n$num_pre_regression_bugs, alternative="greater"))
+          print(cbind(median_v = median(release_v$num_pre_regression_bugs, na.rm=TRUE),median_n = median(release_n$num_pre_regression_bugs, na.rm=TRUE)))
+          
           print(wilcox.test(release_v$num_pre_security_bugs, release_n$num_pre_security_bugs, alternative="greater"))
+          print(cbind(median_v = median(release_v$num_pre_security_bugs, na.rm=TRUE),median_n = median(release_n$num_pre_security_bugs, na.rm=TRUE)))
+          
           print(wilcox.test(release_v$num_pre_tests_fails_bugs, release_n$num_pre_tests_fails_bugs, alternative="greater"))
+          print(cbind(median_v = median(release_v$num_pre_tests_fails_bugs, na.rm=TRUE),median_n = median(release_n$num_pre_tests_fails_bugs, na.rm=TRUE)))
+          
           print(wilcox.test(release_v$num_pre_stability_crash_bugs, release_n$num_pre_stability_crash_bugs, alternative="greater"))
+          print(cbind(median_v = median(release_v$num_pre_stability_crash_bugs, na.rm=TRUE),median_n = median(release_n$num_pre_stability_crash_bugs, na.rm=TRUE)))
+          
           print(wilcox.test(release_v$num_pre_build_bugs, release_n$num_pre_build_bugs, alternative="greater"))
+          print(cbind(median_v = median(release_v$num_pre_build_bugs, na.rm=TRUE),median_n = median(release_n$num_pre_build_bugs, na.rm=TRUE)))
           
           cat("\n")
           cat("# Summary Control Models\n")
