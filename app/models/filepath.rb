@@ -2,6 +2,7 @@ class Filepath < ActiveRecord::Base
 
   has_many :commit_filepaths, primary_key: 'filepath', foreign_key: 'filepath'
   has_many :release_owners, primary_key: 'filepath', foreign_key: 'filepath'
+  has_many :commits, through: :commit_filepaths
 
   def self.optimize
     connection.add_index :filepaths, :filepath, unique: true
