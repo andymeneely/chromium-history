@@ -3,6 +3,7 @@ class Commit < ActiveRecord::Base
   has_many :commit_filepaths, foreign_key: 'commit_hash', primary_key: 'commit_hash' # For join table assoc
   has_many :commit_bugs, foreign_key: 'commit_hash', primary_key: 'commit_hash' # For join table assoc
   has_many :code_reviews, primary_key: "commit_hash", foreign_key: "commit_hash"
+  belongs_to :developer, primary_key: "id", foreign_key: "author_id"
   
   def reviewers
     Commit.joins(code_reviews: :reviewers).where(commit_hash: commit_hash)
