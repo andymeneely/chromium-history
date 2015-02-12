@@ -225,13 +225,15 @@ ActiveRecord::Schema.define(version: 20140512131450) do
   create_table "release_owners", id: false, force: true do |t|
     t.string   "release"
     t.string   "filepath"
-	  t.string   "directory"
-	  t.integer  "dev_id"
+	t.string   "directory"
+	t.integer  "dev_id"
     t.string   "owner_email"
-	  t.string   "first_ownership_sha"
-	  t.datetime "first_ownership_date"
-    t.string   "first_dircommit_sha"
-    t.datetime "firsT_dircommit_date"
+	t.string   "first_ownership_sha"
+	t.datetime "first_ownership_date"
+	t.datetime "first_file_commit_sha"
+	t.string   "first_file_commit_date"
+	t.integer  "file_commits_to_ownership"
+	t.integer  "file_commits_to_release"
   end
 
   create_table "reviewers", id: false, force: true do |t|
