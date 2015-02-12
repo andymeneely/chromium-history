@@ -21,7 +21,7 @@ require 'analysis/visualization_queries'
 require 'analysis/ascii_histograms'
 require 'stats'
 require 'nlp/corpus'
-require 'nlp/lazy_binary_search_tree'
+require 'utils/psql_util'
 require 'loaders/vocab_loader'
 require 'oj'
 
@@ -108,14 +108,15 @@ namespace :run do
       x.report("Optimizing participants"){ Participant.optimize}
       x.report("Optimizing filepath"){ Filepath.optimize}
       x.report("Deleting duplicate reviewers") {DeveloperConsolidator.new.consolidate_reviewers}
-	  x.report("Loading release OWNERS") {OwnersLoader.new.load}
+      x.report("Loading release OWNERS") {OwnersLoader.new.load}
       x.report("Optimizing OWNERS") {ReleaseOwner.optimize}
-	  x.report("Loading First Ownership"){FirstOwnershipLoader.new.load}
+      x.report("Loading First Ownership"){FirstOwnershipLoader.new.load}
       x.report("Running PSQL ANALYZE"){ ActiveRecord::Base.connection.execute "ANALYZE" }
       vocab_loader = VocabLoader.new
       x.report('Generating technical vocab') {vocab_loader.load}
       x.report('Associating vocab words with comments') {vocab_loader.reassociate_comments}
       x.report('Associating vocab words with messages'){vocab_loader.reassociate_messages}
+      x.report("Running PSQL ANALYZE"){ ActiveRecord::Base.connection.execute "ANALYZE" }
     end
   end
   

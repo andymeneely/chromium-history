@@ -58,7 +58,7 @@ class BugParser
     @bug_comments.fsync
 
     begin 
-      ActiveRecord::Base.connection.execute("COPY bugs FROM '#{tmp}/bug_entries.csv' DELIMITER ',' CSV ENCODING 'utf-8'")
+      PsqlUtil.copy_from_file 'bugs', "#{tmp}/bug_entries.csv"
     rescue Exception => e
       $stderr.puts "COPY bug_entries failed"
       $stderr.puts e.message
@@ -66,7 +66,7 @@ class BugParser
     end
 
     begin
-      ActiveRecord::Base.connection.execute("COPY bug_comments FROM '#{tmp}/bug_comments.csv' DELIMITER ',' CSV ENCODING 'utf-8'")
+      PsqlUtil.copy_from_file 'bug_comments', "#{tmp}/bug_comments.csv"
     rescue Exception => e
       $stderr.puts "COPY bug_comments failed"
       $stderr.puts e.message
@@ -109,9 +109,9 @@ class BugParser
     @bug_labels.fsync
     @bug_blocked.fsync
 
-    ActiveRecord::Base.connection.execute("COPY labels FROM '#{tmp}/labels.csv' DELIMITER ',' CSV")
-    ActiveRecord::Base.connection.execute("COPY bug_labels FROM '#{tmp}/bug_labels.csv' DELIMITER ',' CSV")
-    ActiveRecord::Base.connection.execute("COPY blocks FROM '#{tmp}/bug_blocked.csv' DELIMITER ',' CSV")
+    PsqlUtil.copy_from_file 'labels', "#{tmp}/labels.csv"
+    PsqlUtil.copy_from_file 'bug_labels', "#{tmp}/bug_labels.csv"
+    PsqlUtil.copy_from_file 'blocks', "#{tmp}/bug_blocked.csv"
   end                       
 
   def load_json(file)

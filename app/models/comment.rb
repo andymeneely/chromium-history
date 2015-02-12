@@ -4,7 +4,7 @@ class Comment < ActiveRecord::Base
 
   def self.optimize
     connection.add_index :comments, :composite_patch_set_file_id
-    VocabLoader.add_fulltext_search_index 'comments', 'text'
+    PsqlUtil.add_fulltext_search_index 'comments', 'text'
   end
 
   def self.get_convo issue
@@ -18,8 +18,12 @@ class Comment < ActiveRecord::Base
              FROM Comments 
              GROUP BY code_review_id 
              #{if limit then "LIMIT #{limit}" else "" end}"
-    if result_file then query = "COPY(SELECT sub.string_agg FROM (#{query}) as sub) TO '#{result_file}' WITH (FORMAT text)" end
-    ActiveRecord::Base.connection.execute(query)
+    if result_file 
+      query = "SELECT sub.string_agg FROM (#{query}) as sub"
+      PsqlUtil.copy_to_file query, result_file, 'text'
+    else
+      ActiveRecord::Base.connection.execute(query)
+    end
   end
 
   def self.get_developer_comments developer_id=nil, result_file=nil
@@ -27,7 +31,11 @@ class Comment < ActiveRecord::Base
              FROM Comments 
              #{if developer_id then "WHERE author_id = #{developer_id}" else "" end} 
              GROUP BY author_id"
-    if result_file then query = "COPY(SELECT sub.string_agg FROM (#{query}) as sub) TO '#{result_file}' WITH (FORMAT text)" end
-    ActiveRecord::Base.connection.execute(query)
+    if result_file
+      query = "SELECT sub.string_agg FROM (#{query}) as sub"
+      PsqlUtil.copy_to_file query, result_file, 'text'
+    else
+      ActiveRecord::Base.connection.execute(query)
+    end
   end
 end

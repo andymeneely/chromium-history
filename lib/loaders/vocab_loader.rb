@@ -30,51 +30,37 @@ class VocabLoader
       end
     end
     vocab_file = "#{@tmp_dir}/vocab.csv"
-    agg_csv vocab_file, &block
-    copy_results vocab_file, 'technical_words'
-    ActiveRecord::Base.connection.execute "ALTER TABLE technical_words ADD COLUMN id SERIAL; ALTER TABLE technical_words ADD PRIMARY KEY (id);"
+    PsqlUtil.create_upload_file vocab_file, &block
+    PsqlUtil.copy_from_file 'technical_words', vocab_file
+    PsqlUtil.add_auto_increment_key 'technical_words'
   end
 
   def reassociate_comments
     reassociate 'comments', 'text', 'comments_technical_words'
+    PsqlUtil.add_index 'comments_technical_words', 'comment_id', 'hash'
+    PsqlUtil.add_index 'comments_technical_words', 'technical_word_id', 'hash'
   end
 
   def reassociate_messages
     reassociate 'messages', 'text', 'messages_technical_words'
+    PsqlUtil.add_index 'messages_technical_words', 'message_id', 'hash'
+    PsqlUtil.add_index 'messages_technical_words', 'technical_word_id', 'hash'
   end
 
   def reassociate target_table, searchable_field, linking_table
     tmp_file = "#{@tmp_dir}/copy_tmp.csv"
-    sql = <<-eos 
-      COPY (
-        SELECT 
-          a.id, 
-          t.id 
-        FROM 
-          #{target_table} a, 
-          technical_words t 
-        WHERE 
-          to_tsvector('english', a.#{searchable_field}) @@ to_tsquery(t.word)
-      ) TO '#{tmp_file}' WITH (FORMAT CSV)
-      eos
-    ActiveRecord::Base.connection.execute sql
-    copy_results tmp_file, linking_table 
-  end
-
-  # iterate through block to fill csv table file
-  def agg_csv file_name, &block
-    table = CSV.open "#{file_name}", 'w+'
-    block.call table
-    table.fsync
-  end
-
-  # Use Psql's copy function to upload csv to db
-  def copy_results file_name, table_name
-    ActiveRecord::Base.connection.execute "COPY #{table_name} FROM '#{file_name}' DELIMITER ',' CSV"
-  end
-
-  def self.add_fulltext_search_index table_name, searchable_field
-    ActiveRecord::Base.connection.execute "CREATE INDEX #{table_name}_search ON #{table_name} USING gin(to_tsvector('english', #{searchable_field}));"
+    query = " 
+      SELECT 
+        a.id, 
+        t.id 
+      FROM 
+        #{target_table} a, 
+        technical_words t 
+      WHERE 
+        to_tsvector('english', a.#{searchable_field}) @@ to_tsquery(t.word)
+     "
+    PsqlUtil.copy_to_file query, tmp_file
+    PsqlUtil.copy_from_file linking_table, tmp_file
   end
 
   def self.clean_file target_file, output_file

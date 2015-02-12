@@ -6,7 +6,7 @@ class Message < ActiveRecord::Base
   def self.optimize
     connection.add_index :messages, :sender
     connection.add_index :messages, :code_review_id
-    VocabLoader.add_fulltext_search_index 'messages', 'text'
+    PsqlUtil.add_fulltext_search_index 'messages', 'text'
   end
 
   def self.get_message issue
@@ -20,8 +20,12 @@ class Message < ActiveRecord::Base
              FROM messages  
              #{if limit then "LIMIT #{limit}" else "WHERE sender_id != -1" end}
              GROUP BY code_review_id"
-    if result_file then query = "COPY(SELECT sub.string_agg FROM (#{query}) as sub) TO '#{result_file}' WITH (FORMAT text)" end
-    ActiveRecord::Base.connection.execute(query)
+    if result_file
+      query = "SELECT sub.string_agg FROM (#{query}) as sub"
+      PsqlUtil.copy_to_file query, result_file, 'text'
+    else
+      ActiveRecord::Base.connection.execute(query)
+    end
   end
 
   def self.get_developer_messages developer_id=nil, result_file=nil
@@ -29,7 +33,11 @@ class Message < ActiveRecord::Base
              FROM messages 
              #{if developer_id then "WHERE sender_id = #{developer_id}" else "WHERE sender_id != -1" end} 
              GROUP BY sender_id"
-    if result_file then query = "COPY(SELECT sub.string_agg FROM (#{query}) as sub) TO '#{result_file}' WITH (FORMAT text)" end
-    ActiveRecord::Base.connection.execute(query)
+    if result_file 
+      query = "SELECT sub.string_agg FROM (#{query}) as sub"
+      PsqlUtil.copy_to_file query, result_file, 'text'
+    else
+      ActiveRecord::Base.connection.execute(query)
+    end
   end
 end

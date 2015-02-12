@@ -18,7 +18,6 @@ class SheriffRotationLoader
     end
     
     @sheriffs.fsync
-    
-    ActiveRecord::Base.connection.execute("COPY sheriff_rotations FROM '#{tmp}/sheriffs.csv' DELIMITER ',' CSV")
+    PsqlUtil.copy_from_file 'sheriff_rotations', "#{tmp}/sheriffs.csv"
   end
 end

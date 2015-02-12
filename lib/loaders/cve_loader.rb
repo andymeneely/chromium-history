@@ -48,8 +48,8 @@ class CveLoader
 
   def copy_to_db
     tmp = Rails.configuration.tmpdir
-    ActiveRecord::Base.connection.execute("COPY cvenums FROM '#{tmp}/cvenums.csv' DELIMITER ',' CSV")
-    ActiveRecord::Base.connection.execute("COPY code_reviews_cvenums FROM '#{tmp}/code_reviews_cvenums.csv' DELIMITER ',' CSV")
+    PsqlUtil.copy_from_file 'cvenums', "#{tmp}/cvenums.csv"
+    PsqlUtil.copy_from_file 'code_reviews_cvenums', "#{tmp}/code_reviews_cvenums.csv"
     ActiveRecord::Base.connection.execute <<-EOSQL
       WITH issues AS ((SELECT code_review_id from code_reviews_cvenums) 
                     EXCEPT (SELECT issue FROM code_reviews)) 

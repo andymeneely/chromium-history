@@ -21,8 +21,6 @@ class ReleaseFilepathLoader
         Release.create(name: name, date: date)
       end
     end
-
-    copy = "COPY release_filepaths FROM '#{tmp}/release_filepaths.csv' DELIMITER ',' CSV"
-    ActiveRecord::Base.connection.execute(copy)
+    PsqlUtil.copy_from_file 'release_filepaths', "#{tmp}/release_filepaths.csv"
   end
 end
