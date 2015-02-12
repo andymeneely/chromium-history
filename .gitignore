@@ -66,3 +66,5 @@ Gemfile.lock
 
 #Ignore nodejs temporary stuff
 /node_modules/*
+*.pyc
+npm-debug.log

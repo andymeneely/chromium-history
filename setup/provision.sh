@@ -1,33 +1,107 @@
 #!/bin/bash
-sudo apt-get update -y
-sudo apt-get install vim -y
-sudo apt-get install git -y
-sudo apt-get install r-base -y
+function update() {
+  sudo apt-get update -y
+}
 
-sudo apt-get --purge remove ruby-rvm -y
-sudo rm -f /usr/share/ruby-rvm /etc/rvmrc /etc/profile.d/rvm.sh
+function common() {
+  update
+  sudo apt-get install -y r-base openjdk-7-jdk python-dev unzip vim wget git-core curl libpq-dev zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev python-software-properties
+}
 
-sudo apt-get install curl -y
+function postgresql() {
+  sudo update-locale LANG=en_US.UTF-8
+  sudo update-locale LC_ALL=en_US.UTF-8
+  . /etc/default/locale
+  sudo apt-get install postgresql postgresql-contrib -y
+}
 
-\curl -L https://get.rvm.io | bash -s stable --ruby --autolibs=enable --auto-dotfiles 
+function vagrantPostgresql() {
+  sudo -u postgres createuser --superuser vagrant
+  sudo -u postgres psql -U postgres -d postgres -c "alter user vagrant with password 'vagrant';"
+}
 
-source /home/vagrant/.rvm/scripts/rvm
+function rvm() {
+  sudo apt-get -y install libgdbm-dev libncurses5-dev automake libtool bison libffi-dev
+  curl -L https://get.rvm.io | bash -s stable
+  source ~/.rvm/scripts/rvm
+  echo "source ~/.rvm/scripts/rvm" >> ~/.bashrc
 
-rvm install ruby-1.9.3
-rvm use --default 1.9.3
-sudo apt-get install libpq-dev -y
-sudo apt-get install nodejs -y
+  rvm install ruby-1.9.3
+  rvm use --default 1.9.3
+  sudo apt-get install libpq-dev -y
+}
 
-cd /home/vagrant/chromium-history
-gem install --no-rdoc --no-ri rails 
-gem install --no-rdoc --no-ri bundler
+function rbenv() {
+  curl https://raw.githubusercontent.com/fesplugas/rbenv-installer/master/bin/rbenv-installer | bash
+  cp /vagrant/setup/.bash_aliases ~/
+  source ~/.bashrc
+  rbenv bootstrap-ubuntu-14-04
+  rbenv install 1.9.3-p392
+  rbenv rehash
+  rbenv global 1.9.3-p392
+}
 
-sudo update-locale LANG=en_US.UTF-8
-sudo update-locale LC_ALL=en_US.UTF-8
-. /etc/default/locale
+function rails() {
+  node
+  pushd /home/vagrant/chromium-history
+  gem install --no-rdoc --no-ri bundlervag
+  gem install --no-rdoc --no-ri rake 
+  gem install --no-rdoc --no-ri rails
+  popd
+}
 
-sudo apt-get install postgresql postgresql-contrib -y
-sudo -u postgres createuser --superuser vagrant
-sudo -u postgres psql -U postgres -d postgres -c "alter user vagrant with password 'vagrant';"
+function treatDeps() {
+  wget http://louismullie.com/treat/stanford-core-nlp-full.zip 
+  sudo unzip stanford-core-nlp-full.zip -d /opt/stanford-core-nlp
 
-sudo cp /vagrant/setup/chromium_history.sh /etc/profile.d/
+  wget http://louismullie.com/treat/punkt/english.yaml
+  sudo mkdir /opt/punkt
+  sudo chmod 777 /opt/punkt
+  mv english.yaml /opt/punkt/
+}
+
+function node() {
+  sudo apt-add-repository -y ppa:chris-lea/node.js
+  update
+  sudo apt-get -y install nodejs
+}
+
+function environmentVars() {
+  sudo cp /vagrant/setup/chromium_history.sh /etc/profile.d/
+}
+
+function nltk() {
+  sudo apt-get -y install python-setuptools
+  sudo easy_install pip 
+  sudo pip install -U numpy
+  sudo pip install -U nltk
+  python -m nltk.downloader all
+}
+
+function lineSep() {
+  for n in {1..20}
+  do
+    printf "="
+  done
+  printf "\n"
+}
+
+function title() {
+  lineSep
+  echo "$1"
+  lineSep
+}
+
+set -e
+title "Installing Everything"
+common
+
+title "Installing Postgresql"
+vagrantPostgresql
+
+title "Installing NLTK"
+nltk
+
+environmentVars
+
+title "Finished Everything"

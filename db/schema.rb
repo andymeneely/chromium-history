@@ -75,6 +75,12 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.datetime "date"
     t.boolean  "left"
     t.string   "composite_patch_set_file_id", limit: 1000
+    t.integer  "code_review_id",  limit: 8
+  end
+
+  create_table "comments_technical_words", id: false, force: true do |t|
+    t.integer "comment_id"
+    t.integer "technical_word_id"
   end
 
   create_table "commits", id: false, force: true do |t|
@@ -85,7 +91,6 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.text     "message"
     t.text   "bug"
     t.string   "reviewers"
-    t.string   "svn_revision"
     t.datetime "created_at"
   end
   
@@ -142,6 +147,11 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.datetime "date"
     t.integer  "code_review_id", limit: 8
   end
+
+  create_table "messages_technical_words", id: false, force: true do |t|
+    t.integer "message_id"
+    t.integer "technical_word_id"
+  end 
 
   create_table "participants", id: false, force: true do |t|
     t.integer  "dev_id"
@@ -248,5 +258,8 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.integer  "duration"
     t.string   "title"
   end
-  
+
+  create_table "technical_words", id: false, force: true do |t|
+    t.string 'word'
+  end
 end

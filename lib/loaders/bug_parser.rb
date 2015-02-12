@@ -26,6 +26,7 @@ class BugParser
         end
 
         content = entry["content"].nil? ? '' : entry["content"]["$t"]
+        content.gsub! /\u0000/,'' #delete actual nulls 
 
         @bug_entries << [entry["issues$id"]["$t"],
                          nil, #title
@@ -41,8 +42,9 @@ class BugParser
         
         unless entry["replies"].nil?
           entry["replies"].each do |comment|
+            comm_content = comment["content"]["$t"].gsub(/\u0000/,'') #delete nulls
             @bug_comments << [entry["issues$id"]["$t"],
-                              comment["content"]["$t"],
+                              comm_content,
                               comment["author"][0]["name"]["$t"],
                               comment["author"][0]["uri"]["$t"],
                               comment["updated"]["$t"]]
@@ -91,7 +93,7 @@ class BugParser
           bug_issue = Bug.find_by(bug_id: bug_id) # match the json issue num with the csv issue num 
        
           if bug_issue.nil?
-           $stderr.puts "Bug issue #{bug_id} not found" 
+           #$stderr.puts "Bug issue #{bug_id} not found" 
           else
            update_bug_issue line, bug_issue # update nil fields in the bugs table
            parse_labels line  
@@ -115,10 +117,16 @@ class BugParser
   def load_json(file)
     txt = ''
     File.open(file) do |f|
-      txt = f.read
-        .encode('UTF-16be', :invalid => :replace, :undef => :replace, :replace => '')
-        .encode('UTF-8')
-      return Oj.load(txt, {:symbol_keys => false, :mode => :compat})
+      begin
+        txt = f.read
+        #txt.gsub! /\\u0000/,'' #delete strings that will be INTERPRETED as nulls
+        hash = Oj.load(txt, {:symbol_keys => false, :mode => :compat})
+        return hash
+      rescue Exception => e
+        $stderr.puts "ERROR PARSING BUGS JSON: #{file}"
+        raise e #continue on and kill the build
+      end
+
     end
   end
 

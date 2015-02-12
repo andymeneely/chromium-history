@@ -12,8 +12,7 @@ require 'profiler_util'
 #
 # Based on the following git log command:
 #
-# git log --pretty=format:":::%n%H%n%an%n%ae%n%ad%n%P%n%s%n%b" --stat --stat-width=300 --stat-name-width=300 --ignore-space-change
-#
+# git log --pretty=format:":::%n%H%n%an%n%ae%n%ad%n%P%n%s%n%b;;;" --stat --stat-width=300 --stat-name-width=300 --ignore-space-change
 # @author - Christopher C. Ketant
 # @author - Andy Meneely
 #
@@ -24,21 +23,27 @@ class GitLogLoader
 
   @@GIT_LOG_BUG_PROPERTIES = [:commit_hash, :bug_id]
   @@GIT_LOG_FILE_PROPERTIES = [:commit_hash, :filepath]
-  @@GIT_LOG_PROPERTIES = [:commit_hash, :parent_commit_hash, :author_email, :bug, :svn_revision, :created_at, :message]
+  @@GIT_LOG_PROPERTIES = [:commit_hash, :parent_commit_hash, :author_email,:author_id, :bug, :created_at, :message]
 
   def load
-    @reviews_to_update = []
+    @reviews_to_update = Hash.new
     @con = ActiveRecord::Base.connection.raw_connection
+    
+    # create prepared insert statments because we will be using them many times
+    # the insert statments will insert the values for each git log property into the db every time it is executed
     @con.prepare('commitInsert', "INSERT INTO commits (#{@@GIT_LOG_PROPERTIES.map{|key| key.to_s}.join(', ')}) VALUES ($1, $2, $3, $4, $5, $6, $7)")
     @con.prepare('fileInsert', "INSERT INTO commit_filepaths (#{@@GIT_LOG_FILE_PROPERTIES.map{|key| key.to_s}.join(', ')}) VALUES ($1, $2)")
     @con.prepare('bugInsert', "INSERT INTO commit_bugs (#{@@GIT_LOG_BUG_PROPERTIES.map{|key| key.to_s}.join(', ')}) VALUES ($1, $2)")
     get_commits(File.open("#{Rails.configuration.datadir}/chromium-gitlog.txt", "r"))
 
-    update = "UPDATE code_reviews SET
-              commit_hash = m.hash
-              FROM (values #{@reviews_to_update.join(', ')}) AS m (id, hash) 
-              WHERE issue = m.id;"
-    ActiveRecord::Base.connection.execute(update)
+    #update each code review you can find in the git log with its hash
+    @reviews_to_update.each do |id,hash|
+      rev = CodeReview.find_by(issue: id)
+      unless rev.nil?
+        rev.update_attribute(:commit_hash, hash)
+      end
+    end
+
   end
 
   #
@@ -50,7 +55,6 @@ class GitLogLoader
   # @param - file
   #
   def get_commits(file)
-    commit_count = 0
     commit_queue= Array.new
     isCommitSec = false
     isStarted = false
@@ -60,32 +64,25 @@ class GitLogLoader
         #begin processing, encountered
         #first commit (:::) avoid adding 
         #any garbage before first commit
-        if commit_count == 0
+        if not isStarted
           isStarted = true
         else
-          process_commits(commit_queue) #We already have queued the commit
-        end	
-        commit_count+=1 
+          # Process commits, we already have queued the commit
+          commit, hash = regex_process_commit(commit_queue)
+          index_process_commit(commit, hash)
+        end
+
       else
         #avoid adding empty string or havent started yet
-        commit_queue.push(line) unless line.strip == "" or !isStarted
+        commit_queue.push(line) unless line.strip == "" or not isStarted
       end
     end#loop
 
-    process_commits(commit_queue)
-  end#get_commits
-
-  #
-  # Processes the commits 
-  # using our processing
-  # methods
-  #
-  # @param - Commit array
-  #
-  def process_commits(arr)
-    commit, hash = regex_process_commit(arr)
+    #process commits
+    commit, hash = regex_process_commit(commit_queue)
     index_process_commit(commit, hash)
-  end
+
+  end#get_commits
 
   #
   # The commits have information that we 
@@ -94,9 +91,8 @@ class GitLogLoader
   #
   #
   # @param - Array for each commit
-  # @param - Hash to pass in data transfer
   #
-  # @return - Array, Hash
+  # @return - Array, Hash to pass into data transfer
   #
   def regex_process_commit(arr)
     message = ""
@@ -107,7 +103,8 @@ class GitLogLoader
 
     #index 5 should be the start
     #of the message
-    for i in (5..arr.size-1)
+    (5..arr.size-1).each do |i|
+      #add lines to message string if they are not identifers of lines we want to get later
       if not arr.fetch(i) =~ (/^git-svn-id:/) and
         not arr.fetch(i) =~ (/^Review URL:/) and
         not arr.fetch(i) =~ (/^BUG/) and
@@ -129,23 +126,22 @@ class GitLogLoader
     arr[5] = message
 
     #remove the multi line message since we condensed it
-    for i in (6..end_message_index) 
+    (6..end_message_index).each do |i| 
       arr.delete(i) 
     end
 
     arr.each do |element|
       if fast_match(element, /^Review URL:/)
-        @reviews_to_update << "(#{element[/(\d)+/].to_i}, '#{arr[0].strip}')"
+        @reviews_to_update[element[/(\d)+/].to_i] = arr[0].strip
 
       elsif fast_match(element, /^BUG=/)
-        bug_str = element.strip.sub("BUG=", "")
-        hash[:bug] = bug_str[0..254]
-        puts "WARNING! Bug is too long for #{bug_str}" if bug_str.length > 254
+        hash[:bug] = element.strip.sub("BUG=", "")
 
       elsif fast_match(element, /^;;;/)
         in_files = true
 
       elsif in_files and element.include?('|')  # stats output needs to have a pipe
+        # get the filepath and push it into the filepaths array
         filepaths.push(element.slice(0,element.index('|')).strip)
 
       end#if
@@ -172,37 +168,29 @@ class GitLogLoader
   #
   def index_process_commit(arr, hash)
 
-    arr.each_with_index do |element,index|
+    commit_hash_str = arr[0].strip
+    author_email_str = arr[1].strip
+    created_at_tstamp = DateTime.parse(arr[3].strip)
+    parent_hash = arr[4].strip
 
-      if index == 0
-        #add commit hash
-        commit_hash_str = element.strip
-        hash[:commit_hash] = commit_hash_str[0..254]
-        puts "WARNING! Hash too long #{commit_hash_str}" if commit_hash_str.length > 254
+    #add commit hash
+    hash[:commit_hash] = commit_hash_str[0..254]
+    puts "WARNING! Hash too long #{commit_hash_str}" if commit_hash_str.length > 254
 
-      elsif index == 1
-        #add email
-        author_email_str = element.strip
-        hash[:author_email] = author_email_str[0..254]
-        puts "WARNING! Email too long #{author_email_str}" if author_email_str.length > 254
+    #add email
+    hash[:author_email] = author_email_str[0..254]
+    puts "WARNING! Email too long #{author_email_str}" if author_email_str.length > 254
+    
+    #add author id 
+    email = Developer.search_or_add author_email_str
+    hash[:author_id] = Developer.where(email: email).pluck(:id).first.to_i
 
-      elsif index == 2
-        #add email w/ hash
-        #Do we add this?
+    #add Date/Time created
+    hash[:created_at] = created_at_tstamp
 
-      elsif index == 3
-        #Date/Time created
-        hash[:created_at] = DateTime.parse(element.strip)
-
-      elsif index == 4
-        #add parent_commit_hash
-        parent_hash = element.strip
-        hash[:parent_commit_hash] = parent_hash[0..254]
-        puts "WARNING! Parent hash too long #{parent_hash}" if parent_hash.length > 254
-
-      end
-
-    end#loop
+    #add parent_commit_hash
+    hash[:parent_commit_hash] = parent_hash[0..254]
+    puts "WARNING! Parent hash too long #{parent_hash}" if parent_hash.length > 254
 
     add_commit_to_db(hash)
 
@@ -218,7 +206,9 @@ class GitLogLoader
   # @param- Hash
   #
   def add_commit_to_db(hash)
+    #insert hash values into proper attribute in commits table
     @con.exec_prepared('commitInsert', hash.values_at(*@@GIT_LOG_PROPERTIES))
+    
     create_commit_filepath(hash["filepaths"], hash[:commit_hash])
     create_commit_bug(hash[:bug], hash[:commit_hash]) if hash[:bug]!=nil
   end#add_commit_to_db
@@ -247,7 +237,6 @@ class GitLogLoader
     # split the bugs by comma and any space char.
     bugs = bugs.split(%r{,\s*})
     bugs_set = Set.new
-
 
     bugs.each do |bug|
 

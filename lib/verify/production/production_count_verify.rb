@@ -14,7 +14,7 @@ class ProductionCountVerify < VerifyBase
   end
 
   def verify_release_owner_count
-    assert_equal 376824, ReleaseOwner.count
+    assert_equal 1320439, ReleaseOwner.count
   end
 
   def verify_release_owners_release
@@ -29,7 +29,7 @@ class ProductionCountVerify < VerifyBase
         WHERE bugs.bug_id IS NULL
     EOSQL
     rs = ActiveRecord::Base.connection.execute query
-    assert_equal 4202, rs.getvalue(0,0).to_i, "Number of expected dangling bug commits was wrong"
+    assert_equal 7159, rs.getvalue(0,0).to_i, "Number of expected dangling bug commits was wrong"
   end
 end
 

@@ -29,7 +29,7 @@ do
     if  echo "$file" | grep -Eq "*.(h|cc|js|cpp|gyp|py|c|make|sh|S|scons|sb)$|Makefile$" 
     then  
       echo -n $SEP
-      ../history/lib/scripts/git-interaction-churn.rb $rev $file 
+      ../../../home/kd9205/chromium/history/lib/scripts/git-interaction-churn.rb $rev $file
       SEP=","
     fi
   done
