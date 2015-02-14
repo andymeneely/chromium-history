@@ -1,4 +1,4 @@
-# This script requiers the following R packages: "ROCR" and "bestglm"
+# This script requiers the following R packages: "ROCR" , "bestglm" and "lsr"
 require 'rinruby'
 class HypothesisTests
 
@@ -244,6 +244,71 @@ class HypothesisTests
           return (as.data.frame(cbind(mean_precision,mean_recall,mean_f_score,auc)))
         }
         EOR
+
+      R.eval <<-EOR
+        cohensD_dataframe <-
+          function(r_data = NULL) {
+            library(lsr)
+            data.frame(
+            num_pre_features = c(num_pre_features = cohensD(r_data$num_pre_features,r_data$num_pre_features),
+                  num_pre_compatibility_bugs = cohensD(r_data$num_pre_features,r_data$num_pre_compatibility_bugs),
+                  num_pre_regression_bugs = cohensD(r_data$num_pre_features,r_data$num_pre_regression_bugs),
+                  num_pre_security_bugs = cohensD(r_data$num_pre_features,r_data$num_pre_security_bugs),
+                  num_pre_tests_fails_bugs = cohensD(r_data$num_pre_features,r_data$num_pre_tests_fails_bugs),
+                  num_pre_stability_crash_bugs = cohensD(r_data$num_pre_features,r_data$num_pre_stability_crash_bugs),
+                  num_pre_build_bugs = cohensD(r_data$num_pre_features,r_data$num_pre_build_bugs)),
+
+            num_pre_compatibility_bugs = c(num_pre_features = cohensD(r_data$num_pre_compatibility_bugs,r_data$num_pre_features),
+                  num_pre_compatibility_bugs = cohensD(r_data$num_pre_compatibility_bugs,r_data$num_pre_compatibility_bugs),
+                  num_pre_regression_bugs = cohensD(r_data$num_pre_compatibility_bugs,r_data$num_pre_regression_bugs),
+                  num_pre_security_bugs = cohensD(r_data$num_pre_compatibility_bugs,r_data$num_pre_security_bugs),
+                  num_pre_tests_fails_bugs = cohensD(r_data$num_pre_compatibility_bugs,r_data$num_pre_tests_fails_bugs),
+                  num_pre_stability_crash_bugs = cohensD(r_data$num_pre_compatibility_bugs,r_data$num_pre_stability_crash_bugs),
+                  num_pre_build_bugs = cohensD(r_data$num_pre_compatibility_bugs,r_data$num_pre_build_bugs)),
+
+            num_pre_regression_bugs = c(num_pre_features = cohensD(r_data$num_pre_regression_bugs,r_data$num_pre_features),
+                  num_pre_compatibility_bugs = cohensD(r_data$num_pre_regression_bugs,r_data$num_pre_compatibility_bugs),
+                  num_pre_regression_bugs = cohensD(r_data$num_pre_regression_bugs,r_data$num_pre_regression_bugs),
+                  num_pre_security_bugs = cohensD(r_data$num_pre_regression_bugs,r_data$num_pre_security_bugs),
+                  num_pre_tests_fails_bugs = cohensD(r_data$num_pre_regression_bugs,r_data$num_pre_tests_fails_bugs),
+                  num_pre_stability_crash_bugs = cohensD(r_data$num_pre_regression_bugs,r_data$num_pre_stability_crash_bugs),
+                  num_pre_build_bugs = cohensD(r_data$num_pre_regression_bugs,r_data$num_pre_build_bugs)),
+
+            num_pre_security_bugs = c(num_pre_features = cohensD(r_data$num_pre_security_bugs,r_data$num_pre_features),
+                  num_pre_compatibility_bugs = cohensD(r_data$num_pre_security_bugs,r_data$num_pre_compatibility_bugs),
+                  num_pre_regression_bugs = cohensD(r_data$num_pre_security_bugs,r_data$num_pre_regression_bugs),
+                  num_pre_security_bugs = cohensD(r_data$num_pre_security_bugs,r_data$num_pre_security_bugs),
+                  num_pre_tests_fails_bugs = cohensD(r_data$num_pre_security_bugs,r_data$num_pre_tests_fails_bugs),
+                  num_pre_stability_crash_bugs = cohensD(r_data$num_pre_security_bugs,r_data$num_pre_stability_crash_bugs),
+                  num_pre_build_bugs = cohensD(r_data$num_pre_security_bugs,r_data$num_pre_build_bugs)),
+
+            num_pre_tests_fails_bugs = c(num_pre_features = cohensD(r_data$num_pre_tests_fails_bugs,r_data$num_pre_features),
+                  num_pre_compatibility_bugs = cohensD(r_data$num_pre_tests_fails_bugs,r_data$num_pre_compatibility_bugs),
+                  num_pre_regression_bugs = cohensD(r_data$num_pre_tests_fails_bugs,r_data$num_pre_regression_bugs),
+                  num_pre_security_bugs = cohensD(r_data$num_pre_tests_fails_bugs,r_data$num_pre_security_bugs),
+                  num_pre_tests_fails_bugs = cohensD(r_data$num_pre_tests_fails_bugs,r_data$num_pre_tests_fails_bugs),
+                  num_pre_stability_crash_bugs = cohensD(r_data$num_pre_tests_fails_bugs,r_data$num_pre_stability_crash_bugs),
+                  num_pre_build_bugs = cohensD(r_data$num_pre_tests_fails_bugs,r_data$num_pre_build_bugs)),
+
+            num_pre_stability_crash_bugs = c(num_pre_features = cohensD(r_data$num_pre_stability_crash_bugs,r_data$num_pre_features),
+                  num_pre_compatibility_bugs = cohensD(r_data$num_pre_stability_crash_bugs,r_data$num_pre_compatibility_bugs),
+                  num_pre_regression_bugs = cohensD(r_data$num_pre_stability_crash_bugs,r_data$num_pre_regression_bugs),
+                  num_pre_security_bugs = cohensD(r_data$num_pre_stability_crash_bugs,r_data$num_pre_security_bugs),
+                  num_pre_tests_fails_bugs = cohensD(r_data$num_pre_stability_crash_bugs,r_data$num_pre_tests_fails_bugs),
+                  num_pre_stability_crash_bugs = cohensD(r_data$num_pre_stability_crash_bugs,r_data$num_pre_stability_crash_bugs),
+                  num_pre_build_bugs = cohensD(r_data$num_pre_stability_crash_bugs,r_data$num_pre_build_bugs)),
+
+            num_pre_build_bugs = c(num_pre_features = cohensD(r_data$num_pre_build_bugs,r_data$num_pre_features),
+                  num_pre_compatibility_bugs = cohensD(r_data$num_pre_build_bugs,r_data$num_pre_compatibility_bugs),
+                  num_pre_regression_bugs = cohensD(r_data$num_pre_build_bugs,r_data$num_pre_regression_bugs),
+                  num_pre_security_bugs = cohensD(r_data$num_pre_build_bugs,r_data$num_pre_security_bugs),
+                  num_pre_tests_fails_bugs = cohensD(r_data$num_pre_build_bugs,r_data$num_pre_tests_fails_bugs),
+                  num_pre_stability_crash_bugs = cohensD(r_data$num_pre_build_bugs,r_data$num_pre_stability_crash_bugs),
+                  num_pre_build_bugs = cohensD(r_data$num_pre_build_bugs,r_data$num_pre_build_bugs))
+            )
+          }
+        EOR
+
         R.eval <<-EOR
         release_modeling <- function(release,release.next){
           options(warn=-1)
@@ -313,6 +378,9 @@ class HypothesisTests
 
           cat("\nSpearman's rank Correlation Type Bugs\n")
           print(cor(release[,-c(1,2,10)],method="spearman"))
+
+          cat("\nCohen's D Effect Size on Type Bugs\n")
+          print(cohensD_dataframe(release[,-c(1,2,10)]))
 
           release_v <- release[ which(release$becomes_vulnerable == TRUE), ]
           release_n <- release[ which(release$becomes_vulnerable == FALSE), ]
@@ -429,6 +497,10 @@ class HypothesisTests
     R.echo true, false
     #execute the functions on each release
     R.eval <<-EOR
+        
+        #Increase console width
+        options("width"=400)
+
         release_filepaths_data <- dbGetQuery(con, "SELECT * FROM release_filepaths")
 
         # Split the data by relase
