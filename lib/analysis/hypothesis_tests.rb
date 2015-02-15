@@ -178,6 +178,7 @@ class HypothesisTests
     R.eval <<-EOR
               suppressMessages(library(ROCR, warn.conflicts = FALSE, quietly=TRUE))
               suppressMessages(library(bestglm, warn.conflicts = FALSE, quietly=TRUE))
+              suppressMessages(library(lsr, warn.conflicts = FALSE, quietly=TRUE))
     EOR
     # Define the functions
     R.eval <<-EOR
@@ -245,77 +246,24 @@ class HypothesisTests
         }
         EOR
 
+      # Removed comments from script, due to bug in R, the object can be larger that 10,000 bytes.
+      # Remove files where there were no bugs of any kind, or if it had no SLOC
+      # i.e. The subset must have at least on bug of ANY kind, and SLOC > 0
+      # Confirm if we need to remove the points with al variables are zero but outcome is TRUE.
+
+      # Normalize and center data, added one to the values to be able to calculate log to zero. log(1)=0
+
+      # Modeling (forward selection)
+      # Individual Models
+      # Category Based Models
+
+      # Display Results:
+
       R.eval <<-EOR
-        cohensD_dataframe <-
-          function(r_data = NULL) {
-            library(lsr)
-            data.frame(
-            num_pre_features = c(num_pre_features = cohensD(r_data$num_pre_features,r_data$num_pre_features),
-                  num_pre_compatibility_bugs = cohensD(r_data$num_pre_features,r_data$num_pre_compatibility_bugs),
-                  num_pre_regression_bugs = cohensD(r_data$num_pre_features,r_data$num_pre_regression_bugs),
-                  num_pre_security_bugs = cohensD(r_data$num_pre_features,r_data$num_pre_security_bugs),
-                  num_pre_tests_fails_bugs = cohensD(r_data$num_pre_features,r_data$num_pre_tests_fails_bugs),
-                  num_pre_stability_crash_bugs = cohensD(r_data$num_pre_features,r_data$num_pre_stability_crash_bugs),
-                  num_pre_build_bugs = cohensD(r_data$num_pre_features,r_data$num_pre_build_bugs)),
-
-            num_pre_compatibility_bugs = c(num_pre_features = cohensD(r_data$num_pre_compatibility_bugs,r_data$num_pre_features),
-                  num_pre_compatibility_bugs = cohensD(r_data$num_pre_compatibility_bugs,r_data$num_pre_compatibility_bugs),
-                  num_pre_regression_bugs = cohensD(r_data$num_pre_compatibility_bugs,r_data$num_pre_regression_bugs),
-                  num_pre_security_bugs = cohensD(r_data$num_pre_compatibility_bugs,r_data$num_pre_security_bugs),
-                  num_pre_tests_fails_bugs = cohensD(r_data$num_pre_compatibility_bugs,r_data$num_pre_tests_fails_bugs),
-                  num_pre_stability_crash_bugs = cohensD(r_data$num_pre_compatibility_bugs,r_data$num_pre_stability_crash_bugs),
-                  num_pre_build_bugs = cohensD(r_data$num_pre_compatibility_bugs,r_data$num_pre_build_bugs)),
-
-            num_pre_regression_bugs = c(num_pre_features = cohensD(r_data$num_pre_regression_bugs,r_data$num_pre_features),
-                  num_pre_compatibility_bugs = cohensD(r_data$num_pre_regression_bugs,r_data$num_pre_compatibility_bugs),
-                  num_pre_regression_bugs = cohensD(r_data$num_pre_regression_bugs,r_data$num_pre_regression_bugs),
-                  num_pre_security_bugs = cohensD(r_data$num_pre_regression_bugs,r_data$num_pre_security_bugs),
-                  num_pre_tests_fails_bugs = cohensD(r_data$num_pre_regression_bugs,r_data$num_pre_tests_fails_bugs),
-                  num_pre_stability_crash_bugs = cohensD(r_data$num_pre_regression_bugs,r_data$num_pre_stability_crash_bugs),
-                  num_pre_build_bugs = cohensD(r_data$num_pre_regression_bugs,r_data$num_pre_build_bugs)),
-
-            num_pre_security_bugs = c(num_pre_features = cohensD(r_data$num_pre_security_bugs,r_data$num_pre_features),
-                  num_pre_compatibility_bugs = cohensD(r_data$num_pre_security_bugs,r_data$num_pre_compatibility_bugs),
-                  num_pre_regression_bugs = cohensD(r_data$num_pre_security_bugs,r_data$num_pre_regression_bugs),
-                  num_pre_security_bugs = cohensD(r_data$num_pre_security_bugs,r_data$num_pre_security_bugs),
-                  num_pre_tests_fails_bugs = cohensD(r_data$num_pre_security_bugs,r_data$num_pre_tests_fails_bugs),
-                  num_pre_stability_crash_bugs = cohensD(r_data$num_pre_security_bugs,r_data$num_pre_stability_crash_bugs),
-                  num_pre_build_bugs = cohensD(r_data$num_pre_security_bugs,r_data$num_pre_build_bugs)),
-
-            num_pre_tests_fails_bugs = c(num_pre_features = cohensD(r_data$num_pre_tests_fails_bugs,r_data$num_pre_features),
-                  num_pre_compatibility_bugs = cohensD(r_data$num_pre_tests_fails_bugs,r_data$num_pre_compatibility_bugs),
-                  num_pre_regression_bugs = cohensD(r_data$num_pre_tests_fails_bugs,r_data$num_pre_regression_bugs),
-                  num_pre_security_bugs = cohensD(r_data$num_pre_tests_fails_bugs,r_data$num_pre_security_bugs),
-                  num_pre_tests_fails_bugs = cohensD(r_data$num_pre_tests_fails_bugs,r_data$num_pre_tests_fails_bugs),
-                  num_pre_stability_crash_bugs = cohensD(r_data$num_pre_tests_fails_bugs,r_data$num_pre_stability_crash_bugs),
-                  num_pre_build_bugs = cohensD(r_data$num_pre_tests_fails_bugs,r_data$num_pre_build_bugs)),
-
-            num_pre_stability_crash_bugs = c(num_pre_features = cohensD(r_data$num_pre_stability_crash_bugs,r_data$num_pre_features),
-                  num_pre_compatibility_bugs = cohensD(r_data$num_pre_stability_crash_bugs,r_data$num_pre_compatibility_bugs),
-                  num_pre_regression_bugs = cohensD(r_data$num_pre_stability_crash_bugs,r_data$num_pre_regression_bugs),
-                  num_pre_security_bugs = cohensD(r_data$num_pre_stability_crash_bugs,r_data$num_pre_security_bugs),
-                  num_pre_tests_fails_bugs = cohensD(r_data$num_pre_stability_crash_bugs,r_data$num_pre_tests_fails_bugs),
-                  num_pre_stability_crash_bugs = cohensD(r_data$num_pre_stability_crash_bugs,r_data$num_pre_stability_crash_bugs),
-                  num_pre_build_bugs = cohensD(r_data$num_pre_stability_crash_bugs,r_data$num_pre_build_bugs)),
-
-            num_pre_build_bugs = c(num_pre_features = cohensD(r_data$num_pre_build_bugs,r_data$num_pre_features),
-                  num_pre_compatibility_bugs = cohensD(r_data$num_pre_build_bugs,r_data$num_pre_compatibility_bugs),
-                  num_pre_regression_bugs = cohensD(r_data$num_pre_build_bugs,r_data$num_pre_regression_bugs),
-                  num_pre_security_bugs = cohensD(r_data$num_pre_build_bugs,r_data$num_pre_security_bugs),
-                  num_pre_tests_fails_bugs = cohensD(r_data$num_pre_build_bugs,r_data$num_pre_tests_fails_bugs),
-                  num_pre_stability_crash_bugs = cohensD(r_data$num_pre_build_bugs,r_data$num_pre_stability_crash_bugs),
-                  num_pre_build_bugs = cohensD(r_data$num_pre_build_bugs,r_data$num_pre_build_bugs))
-            )
-          }
-        EOR
-
-        R.eval <<-EOR
         release_modeling <- function(release,release.next){
           options(warn=-1)
 
-          # Remove files where there were no bugs of any kind, or if it had no SLOC
-          # i.e. The subset must have at least on bug of ANY kind, and SLOC > 0
-          # Confirm if we need to remove the points with al variables are zero but outcome is TRUE.
+
 
           release <- subset(release, (release$num_pre_features !=0 |
                                       release$num_pre_compatibility_bugs !=0 | 
@@ -337,12 +285,9 @@ class HypothesisTests
                                                 release.next$becomes_vulnerable != FALSE) 
                                               & release.next$sloc > 0)
 
-          # Normalize and center data, added one to the values to be able to calculate log to zero. log(1)=0
           release = cbind(as.data.frame(log(release[,-c(10)] + 1)), becomes_vulnerable = release$becomes_vulnerable)
           release.next = cbind(as.data.frame(log(release.next[,-c(10)] + 1)), becomes_vulnerable = release.next$becomes_vulnerable)
 
-          # Modeling (forward selection)
-          # Individual Models
           fit_null <- glm(formula = becomes_vulnerable ~ 1, 
                           data = release, family = "binomial")
 
@@ -355,7 +300,7 @@ class HypothesisTests
           fit_bugs <- glm (formula= becomes_vulnerable ~ sloc + num_pre_bugs, 
                           data = release, family = "binomial")
 
-          # Category Based Models
+          
           fit_features <- glm (formula= becomes_vulnerable ~ sloc + num_pre_features, 
                                data = release, family = "binomial")
 
@@ -369,18 +314,14 @@ class HypothesisTests
           fit_build <- glm (formula= becomes_vulnerable ~ sloc + num_pre_build_bugs + num_pre_tests_fails_bugs, 
                                 data = release, family = "binomial")     
           
-          # Automatic Best Model Predictions
           best_fit_AIC <- bestglm(release,family=binomial,IC = "AIC")
 
-          # Display Results:
+          
           cat("\nRelease Summary\n")
           print(summary(release))
 
-          cat("\nSpearman's rank Correlation Type Bugs\n")
+          cat("\nSpearman's Correlation\n")
           print(cor(release[,-c(1,2,10)],method="spearman"))
-
-          cat("\nCohen's D Effect Size on Type Bugs\n")
-          print(cohensD_dataframe(release[,-c(1,2,10)]))
 
           release_v <- release[ which(release$becomes_vulnerable == TRUE), ]
           release_n <- release[ which(release$becomes_vulnerable == FALSE), ]
@@ -391,8 +332,7 @@ class HypothesisTests
                       Vulnerable = length(release_v[,1]),
                       Percentage = (length(release_v[,1])/length(release_n[,1]))*100))
 
-          cat("\nWilcoxon Rank Sum\n")
-          # Perform wilcox test
+          cat("\nWilcoxon:\n")
           print(wilcox.test(release_v$sloc, release_n$sloc, alternative="greater"))
           print(cbind(median_v = median(release_v$sloc, na.rm=TRUE),median_n = median(release_n$sloc, na.rm=TRUE)))
           
@@ -419,35 +359,46 @@ class HypothesisTests
           
           print(wilcox.test(release_v$num_pre_build_bugs, release_n$num_pre_build_bugs, alternative="greater"))
           print(cbind(median_v = median(release_v$num_pre_build_bugs, na.rm=TRUE),median_n = median(release_n$num_pre_build_bugs, na.rm=TRUE)))
-          
-          cat("\n")
-          cat("# Summary Control Models\n")
-          cat("For fit_null\n")
+
+          cat("\nCohensD:\n")
+          print(cbind(
+            sloc = cohensD(release_v$sloc, release_n$sloc), 
+            bugs = cohensD(release_v$num_pre_bugs, release_n$num_pre_bugs),
+            features = cohensD(release_v$num_pre_features, release_n$num_pre_features),
+            compatibility_bugs = cohensD(release_v$num_pre_compatibility_bugs, release_n$num_pre_compatibility_bugs),
+            regression_bugs = cohensD(release_v$num_pre_regression_bugs, release_n$num_pre_regression_bugs),
+            security_bugs = cohensD(release_v$num_pre_security_bugs, release_n$num_pre_security_bugs),
+            tests_fails_bugs = cohensD(release_v$num_pre_tests_fails_bugs, release_n$num_pre_tests_fails_bugs),
+            stability_crash_bugs = cohensD(release_v$num_pre_stability_crash_bugs, release_n$num_pre_stability_crash_bugs),
+            build_bugs = cohensD(release_v$num_pre_build_bugs, release_n$num_pre_build_bugs)))
+            
+          cat("\n# Summary Control Models\n")
+          cat("fit_null\n")
           print(summary(fit_null))
-          cat("For fit_control\n")
+          cat("fit_control\n")
           print(summary(fit_control))
-          cat("For fit_all\n")
+          cat("fit_all\n")
           print(summary(fit_all))
-          cat("For fit_bugs\n")
+          cat("fit_bugs\n")
           print(summary(fit_bugs))
 
           cat("\n")
-          cat("# Summary Category Models\n")
-          cat("For fit_security\n")
+          cat("# Summary\n")
+          cat("fit_security\n")
           print(summary(fit_security))
-          cat("For fit_features\n")
+          cat("fit_features\n")
           print(summary(fit_features))
-          cat("For fit_stability\n")
+          cat("fit_stability\n")
           print(summary(fit_stability))
-          cat("For fit_build\n")
+          cat("fit_build\n")
           print(summary(fit_build))
-          cat("For best_fit_AIC\n")
+          cat("best_fit_AIC\n")
           print(summary(best_fit_AIC$BestModel))
 
           cat("\n")
           cat("# D^2 Analysys\n")
           cat("Control\n")
-          cat("For fit_control\n")
+          cat("fit_control\n")
           print(Dsquared(model = fit_control))
           cat("For fit_all\n")
           print(Dsquared(model = fit_all))
@@ -456,7 +407,7 @@ class HypothesisTests
 
           cat("\n")
           cat("# Categories\n")
-          cat("For fit_security\n")
+          cat("fit_security\n")
           print(Dsquared(model = fit_security))
           cat("For fit_features\n")
           print(Dsquared(model = fit_features))
