@@ -182,8 +182,14 @@ class GitLogLoader
     puts "WARNING! Email too long #{author_email_str}" if author_email_str.length > 254
     
     #add author id 
-    email = Developer.search_or_add author_email_str
-    hash[:author_id] = Developer.where(email: email).pluck(:id).first.to_i
+    dev = Developer.search_or_add author_email_str
+    if dev.nil?
+      unless %w(initial.commit).include? author_email_str
+        puts "WARNING! Email invalid for #{author_email_str}"
+      end
+    else
+      hash[:author_id] = dev.id 
+    end
 
     #add Date/Time created
     hash[:created_at] = created_at_tstamp

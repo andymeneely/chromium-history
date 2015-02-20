@@ -4,15 +4,16 @@ class FirstOwnershipLoader
 
   def load
     datadir = File.expand_path(Rails.configuration.datadir)
-	
+
     CSV.foreach("#{datadir}/first_ownership/first-owners.csv") do |line|
-	  em = Developer.search_or_add(line[0]) 
-	  unless(em[0].nil?)
-	    id = Developer.where(email: em[0]).limit(1).pluck(:id)[0]
-	    ReleaseOwner.where(dev_id: id , owner_email: em[0], directory: line[1]).update_all(first_ownership_sha: line[2], first_ownership_date: line[3])
-	  else
-	    abort ("Failed to clear email: #{line[0]}")
-	  end
+      dev = Developer.search_or_add(line[0]) 
+      if dev.nil? 
+        unless line[0].eql? "ALL" # Skip ALL for now
+          $stderr.puts "First ownership email is invalid: #{line[0]}"
+        end
+      else
+        ReleaseOwner.where(dev_id: dev.id, directory: line[1]).update_all(first_ownership_sha: line[2], first_ownership_date: line[3])
+      end
     end
   end
 end

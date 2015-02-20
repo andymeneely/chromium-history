@@ -122,8 +122,8 @@ git-svn-id: svn://svn.chromium.org/chrome/trunk/src@222206 0039d316-1c4b-4281-b9
  1 file changed, 1 insertion(+), 1 deletion(-)
 :::
 ee2815e28d408216cf94e874825b6bcf76c69083
-initial.commit
-initial.commit@0039d316-1c4b-4281-b951-d872f2087c98
+initial.commit@chromium.org
+initial.commit@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
 Sat Jul 26 20:52:30 2008 +0000
 7e5ba5d125a2dc95132e765e949e53e1e779caaf
 Add the build directory to the repository.

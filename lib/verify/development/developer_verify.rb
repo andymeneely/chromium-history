@@ -59,15 +59,15 @@ class DeveloperVerify < VerifyBase
   end
 
   def verify_search_or_add_invalid
-    assert_equal [nil,false], Developer.search_or_add('me@googlegroups.com'), "email is invalid"
+    assert_equal nil, Developer.search_or_add('me@googlegroups.com'), "email is invalid"
   end
 
   def verify_search_or_add_email_exists
-    assert_equal ['danakj@chromium.org',true], Developer.search_or_add('danakj@chromium.org'), "danakj@chromium.org already exists in the db" 
+    assert_equal 'danakj@chromium.org', Developer.search_or_add('danakj@chromium.org').email, "danakj@chromium.org already exists in the db" 
   end
 
   def verify_search_or_add_new_email
-    assert_equal ['newemail@chromium.org',false], Developer.search_or_add('newemail@chromium.org'), "newemail@chromium.org needs to be added to the db"
+    assert_equal 'newemail@chromium.org', Developer.search_or_add('newemail@chromium.org').email, "newemail@chromium.org needs to be added to the db"
     dev_id = Developer.where(email: 'newemail@chromium.org').pluck(:id)
     Developer.delete(dev_id)
   end
