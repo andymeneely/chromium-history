@@ -89,7 +89,7 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.string   "author_email"
     t.integer  "author_id"
     t.text     "message"
-    t.text   "bug"
+    t.text     "bug"
     t.string   "reviewers"
     t.datetime "created_at"
   end
@@ -118,13 +118,13 @@ ActiveRecord::Schema.define(version: 20140512131450) do
   end
 
   create_table "developers", force: true do |t|
-    t.string "email"
-    t.datetime "security_experience"
-    t.datetime "bug_security_experience"
-    t.datetime "stability_experience"
-    t.datetime "build_experience"
-    t.datetime "test_fail_experience"
-    t.datetime "compatibility_experience"
+    t.string   "email"
+    t.datetime "security_experience",     :default => "2050/01/01 00:00:00"
+    t.datetime "bug_security_experience", :default => "2050/01/01 00:00:00"
+    t.datetime "stability_experience",    :default => "2050/01/01 00:00:00"
+    t.datetime "build_experience",        :default => "2050/01/01 00:00:00"
+    t.datetime "test_fail_experience",    :default => "2050/01/01 00:00:00"
+    t.datetime "compatibility_experience",:default => "2050/01/01 00:00:00"
   end
 
   create_table "filepaths", id: false, force: true do |t|

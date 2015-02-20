@@ -67,19 +67,8 @@ class Developer < ActiveRecord::Base
     developer = Developer.find_by_email(email)
     return developer unless developer.nil?
 
-    positive_infinity = "2050/01/01 00:00:00"
-    developer = Developer.new
     # FIXME: This seems wrong. These should not even be considered developers, much less all the same one
-    #developer.id = 0 if email.eql?("ALL") 
-    developer["email"]                    = email
-    developer["security_experience"]      = positive_infinity
-    developer["bug_security_experience"]  = positive_infinity
-    developer["stability_experience"]     = positive_infinity
-    developer["build_experience"]         = positive_infinity
-    developer["test_fail_experience"]     = positive_infinity
-    developer["compatibility_experience"] = positive_infinity
-    developer.save!
-    return developer
+    developer = Developer.create(email: email)
   end
 
 end#class
