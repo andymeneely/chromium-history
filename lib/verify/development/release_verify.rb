@@ -43,4 +43,11 @@ class ReleaseVerify < VerifyBase
   def verify_makefile_included
     assert_equal true, ReleaseFilepath.source_code?('ui/aura/Makefile')
   end
+
+  def verify_regression_example_counts
+    rf = ReleaseFilepath.find_by(thefilepath: 'net/ftp/ftp_directory_listing_parser_windows.h', release: '11.0')
+    assert_equal(1, rf.num_reviews)
+    assert_equal(2, rf.num_reviewers)
+    assert_equal(3, rf.num_participants)
+  end
 end

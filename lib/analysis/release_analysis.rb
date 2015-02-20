@@ -2,6 +2,7 @@
 class ReleaseAnalysis
 
   def populate
+    populate_num_reviews
     Release.all.each do |r|
       r.release_filepaths.find_each do |rf|
         rf.num_reviews = rf.filepath.code_reviews(r.date).size
@@ -49,6 +50,9 @@ class ReleaseAnalysis
         rf.save
       end
     end
+  end
+
+  def populate_num_reviews
   end
 
 end
