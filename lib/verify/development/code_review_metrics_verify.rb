@@ -68,11 +68,4 @@ class CodeReviewMetricsVerify < VerifyBase
     assert_equal 96, CodeReview.find_by(issue: 23454014).total_sheriff_hours
   end
 
-#  def verify_9141024_cursory
-#    assert_equal true, CodeReview.find_by(issue: 9141024).cursory
-#  end
-
-#  def verify_11264_not_cursory
-#    assert_equal false, CodeReview.find_by(issue: 11264).cursory
-#  end
 end
