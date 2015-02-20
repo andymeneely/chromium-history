@@ -34,14 +34,14 @@ class CodeReviewParser
                  cobj['issue'], 
                  cobj['owner_email'],
                  owner_id,
-                 "", #empty commit hash for now
+                 "",  # for commit hash 
                  @non_participating_revs.size,
                  nil, # for total_reviews_with_owner
                  nil, # for owner_familiarity_gap
                  nil, # for total_sheriff_hours
                  nil] # for cursory
 
-        @prtp_set.each {|p| @prtps << [p,owner_id,cobj['issue'],cobj['created'],nil,nil,nil,nil,nil,nil,nil,nil]}
+        @prtp_set.each {|p| @prtps << [p,owner_id,cobj['issue'],cobj['created'],nil,nil,nil,nil,nil,nil,nil,nil,nil]}
         @contrb_set.each {|c| @contrbs << [c,cobj['issue']]}
         @revs_dict.each {|id, email| @revs << [cobj['issue'],id, email]}
 

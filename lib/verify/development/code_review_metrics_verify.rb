@@ -53,7 +53,7 @@ class CodeReviewMetricsVerify < VerifyBase
     cr = CodeReview.find_by(issue: 52823002)
     emails = cr.security_experienced_participants.joins(:developer)\
       .order('developers.email').pluck('developers.email')
-    assert_equal ['darin@chromium.org','derat@chromium.org'],emails
+    assert_equal ['darin@chromium.org','derat@chromium.org', "laforge@chromium.org"],emails
   end
 
   def verify_23444043_total_reviews_with_owner

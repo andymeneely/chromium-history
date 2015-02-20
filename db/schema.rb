@@ -160,6 +160,7 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.datetime "review_date"
     t.integer  "reviews_with_owner"
     t.boolean  "security_experienced"
+    t.integer  "security_adjacencys"
     t.boolean  "bug_security_experienced"
     t.boolean  "stability_experienced"
     t.boolean  "build_experienced"
