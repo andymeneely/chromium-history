@@ -53,10 +53,10 @@ class DeveloperVerify < VerifyBase
                  "Commit bot should be blacklisted"
   end
 
-  def verify_contribution_txt
-    assert_equal false, Contributor.contribution?("0123456789")
-    assert_equal true, Contributor.contribution?("a" * 51)
-  end
+  # def verify_contribution_txt
+  #   assert_equal false, Contributor.contribution?("0123456789")
+  #   assert_equal true, Contributor.contribution?("a" * 51)
+  # end
 
   def verify_search_or_add_invalid
     assert_equal nil, Developer.search_or_add('me@googlegroups.com'), "email is invalid"

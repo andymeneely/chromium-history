@@ -200,9 +200,9 @@ class Filepath < ActiveRecord::Base
   end
 
   # All of the contributors joined
-  def self.contributors
-    Filepath.joins(commit_filepaths: [commit: [code_reviews: [contributors: :developer]]])
-  end
+  # def self.contributors
+  #   Filepath.joins(commit_filepaths: [commit: [code_reviews: [contributors: :developer]]])
+  # end
 
   def self.code_reviews
     Filepath.joins(commit_filepaths: [commit: :code_reviews])

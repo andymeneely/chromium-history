@@ -92,6 +92,7 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.text     "bug"
     t.string   "reviewers"
     t.datetime "created_at"
+    t.boolean  "non-trivial"
   end
   
   create_table "commit_bugs", id: false, force: true do |t|
@@ -108,10 +109,10 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.integer "num_authors_affected"
   end
  
-  create_table "contributors", id: false, force: true do |t|
-    t.integer "dev_id"
-    t.integer "issue",  limit: 8
-  end
+  # create_table "contributors", id: false, force: true do |t|
+  #   t.integer "dev_id"
+  #   t.integer "issue",  limit: 8
+  # end
 
   create_table "cvenums", id: false, force: true do |t|
     t.string "cve"
@@ -202,6 +203,7 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.string  "thefilepath"
     t.integer "sloc"
     t.integer "churn"
+    t.integer "num_commits"
     t.integer "num_reviews"
     t.integer "num_reviewers"
     t.integer "num_participants"
@@ -227,6 +229,8 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.integer "num_post_bugs"
     t.integer "num_pre_vulnerabilities"
     t.integer "num_post_vulnerabilities"
+    t.integer "num_major_contributors"
+    t.integer "num_minor_contributors"
     t.boolean "was_buggy"
     t.boolean "becomes_buggy"
     t.boolean "was_vulnerable"

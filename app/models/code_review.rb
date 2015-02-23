@@ -3,7 +3,7 @@ class CodeReview < ActiveRecord::Base
   has_many :messages, foreign_key: "code_review_id", primary_key: "issue"
   has_many :reviewers, foreign_key: "issue", primary_key: "issue"
   has_many :participants, foreign_key: "issue", primary_key: "issue"
-  has_many :contributors, foreign_key: "issue", primary_key: "issue"
+  # has_many :contributors, foreign_key: "issue", primary_key: "issue"
 
   belongs_to :commit, foreign_key: "commit_hash", primary_key: "commit_hash"
   

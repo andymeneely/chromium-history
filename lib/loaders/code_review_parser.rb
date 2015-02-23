@@ -65,7 +65,7 @@ class CodeReviewParser
     @coms = CSV.open("#{tmp}/comments.csv", 'w+')
     @devs = CSV.open("#{tmp}/developers.csv", 'w+')
     @prtps = CSV.open("#{tmp}/participants.csv", 'w+')
-    @contrbs = CSV.open("#{tmp}/contributors.csv", 'w+')
+    # @contrbs = CSV.open("#{tmp}/contributors.csv", 'w+')
   end
 
   def flush_csvs
@@ -156,9 +156,9 @@ class CodeReviewParser
       comment['code_review_id'] = code_review_id
       @coms << ordered_array(@@COMMENT_PROPS, comment)
       @prtp_set << comment['author_id'] unless comment['author_id'] == -1
-      if Contributor.contribution? comment['text']
-        @contrb_set << comment['author_id'] unless comment['author_id'] == -1
-      end
+      # if Contributor.contribution? comment['text']
+      #   @contrb_set << comment['author_id'] unless comment['author_id'] == -1
+      # end
     end #comments loop
   end #load comments method
 
@@ -172,9 +172,9 @@ class CodeReviewParser
       msg['sender_id'] = get_dev_id(msg['sender'])
       @msgs << ordered_array(@@MESSAGE_PROPS, msg)
       @prtp_set << msg['sender_id'] unless msg['sender_id'] == -1
-      if Contributor.contribution? msg['text']
-        @contrb_set << msg['sender_id'] unless msg['sender_id'] == -1
-      end
+      # if Contributor.contribution? msg['text']
+      #   @contrb_set << msg['sender_id'] unless msg['sender_id'] == -1
+      # end
     end #message loop
   end #load messages method
 

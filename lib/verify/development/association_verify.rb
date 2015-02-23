@@ -55,14 +55,14 @@ class AssociationVerify < VerifyBase
     assert_equal ['apatrick@chromium.org','nduca@chromium.org'], Filepath.participants.where(filepath: "DEPS").pluck(:email).sort
   end
 
-  def verify_filepath_contributors_empty
-    assert_equal [],  Filepath.contributors.where(filepath: "DEPS").pluck(:email)
-  end
+  # def verify_filepath_contributors_empty
+  #   assert_equal [],  Filepath.contributors.where(filepath: "DEPS").pluck(:email)
+  # end
 
-  def verify_filepath_three_contributors
-    contrib_devs = Filepath.contributors.where(filepath: "net/ftp/ftp_util.h").pluck(:email).sort
-    assert_equal ['eroman@chromium.org','phajdan.jr@chromium.org','wtc@chromium.org'],contrib_devs
-  end
+  # def verify_filepath_three_contributors
+  #   contrib_devs = Filepath.contributors.where(filepath: "net/ftp/ftp_util.h").pluck(:email).sort
+  #   assert_equal ['eroman@chromium.org','phajdan.jr@chromium.org','wtc@chromium.org'],contrib_devs
+  # end
 
   def verify_participants_on_filepath
     f = Filepath.where(filepath: "DEPS")

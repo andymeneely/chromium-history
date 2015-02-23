@@ -13,8 +13,8 @@ class CodeReviewLoader
       'messages', 
       'comments', 
       'developers', 
-      'participants', 
-      'contributors'
+      'participants'#, 
+      # 'contributors'
     ].each do |table|
       PsqlUtil.copy_from_file table, "#{tmp}/#{table}.csv"
     end
@@ -28,8 +28,8 @@ class CodeReviewLoader
       'patch_set_files', 
       'messages', 
       'comments',  
-      'participants', 
-      'contributors'
+      'participants'#, 
+      # 'contributors'
     ].each do |table|
       PsqlUtil.add_auto_increment_key table
     end
