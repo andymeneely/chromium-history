@@ -207,6 +207,28 @@ class Filepath < ActiveRecord::Base
     Filepath.joins(commit_filepaths: [commit: [commit_bugs: [bug: :labels]]])
   end
 
+  # # Commits made on a filepath by the given date
+  def self.commits(before = DateTime.new(2050,01,01))
+        CommitFilepath.joins(:commit)\
+        .where('commitFilepath.filepath' => filepath, \
+          'commits.created_at' => DateTime.new(1970,01,01)..before) \
+        .select('commit_filepaths.filepath, commits.author_id)')
+  end
+
+  def self.major_contributors(before = DateTime.new(2050,01,01))
+    # self.contributor('> 5%')
+  end
+
+  def self.minor_contributors(before = DateTime.new(2050,01,01))
+    # self.contributor('< 5%')
+  end
+
+  # Reusable contributor percentage method
+  def self.contributor(percentage, before)
+     # num = 0.0; denom = self.commits(before)
+     
+  end
+
   @@EXPLAINS = {}
   def self.print_sql_explains
     @@EXPLAINS.each do |query, explain|

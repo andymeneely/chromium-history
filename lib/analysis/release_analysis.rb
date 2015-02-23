@@ -17,6 +17,9 @@ class ReleaseAnalysis
         rf.perc_fast_reviews = rf.filepath.perc_fast_reviews(r.date)
         rf.perc_overlooked_patchsets = rf.filepath.perc_overlooked_patchsets(r.date)
         rf.avg_sheriff_hours = rf.filepath.avg_sheriff_hours(r.date)
+        # rf.num_commits = rf.filepath.commits(r.date).size
+        # rf.num_major_contributors = rf.filepath.num_major_contributors(r.date).size
+        # rf.num_minor_contributors = rf.filepath.num_minor_contributors(r.date).size
         
         rf.vulnerable = rf.filepath.vulnerable?
         rf.num_vulnerabilities = rf.filepath.cves().count
@@ -25,7 +28,7 @@ class ReleaseAnalysis
         effect_reach = 1.years
 
         #pre_ metrics for bugs
-        reach_date= r.date - effect_reach
+        reach_date = r.date - effect_reach
         dates = reach_date..r.date
         rf.num_pre_bugs = rf.filepath.bugs(dates).count
         rf.num_pre_features = rf.filepath.bugs(dates,'type-feature').count
