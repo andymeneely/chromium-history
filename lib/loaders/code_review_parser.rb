@@ -77,7 +77,7 @@ class CodeReviewParser
     @coms.fsync
     @devs.fsync
     @prtps.fsync
-    @contrbs.fsync
+    # @contrbs.fsync
   end
 
   def ordered_array(keyOrder, source)
