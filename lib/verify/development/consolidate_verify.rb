@@ -20,17 +20,4 @@ class ConsolidateVerify < VerifyBase
     #      sadrul@chromium.org too
   end
 
-  # def verify_10854242_contributors
-  #   exp =[
-  #     "agl@chromium.org",
-  #     "derat@chromium.org",
-  #     "keescook@chromium.org",
-  #     "palmer@chromium.org",
-  #     "wez@chromium.org",
-  #   ]
-  #   assert_equal exp, Contributor.joins(:developer).where(issue: 10854242).pluck(:email).sort
-  #   #kbr was a participant because he made a comment, but it was just a LGTM so he is not a contributor
-  # end
-
-
 end#end of class

@@ -62,15 +62,6 @@ class ASCIIHistograms
         .each do |filepath,count|
           a << count
       end
-        # puts a.to_s
-        # puts "@@@ Distinct Contributors per Filepath Histogram @@@"
-        # a = Aggregate.new(0,100,1)
-        # Filepath.contributors\
-        #   .group('filepaths.filepath')\
-        #   .count('distinct(contributors.dev_id)')\
-        #   .each do |filepath,count|
-        #     a << count
-      # end
           puts a.to_s
           puts "@@@ Vulnerability Fixes Over Time Histogram @@@"
           dates = CodeReview.joins(:cvenums).order(:created).pluck(:created)

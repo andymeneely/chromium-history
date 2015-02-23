@@ -65,7 +65,6 @@ class CodeReviewParser
     @coms = CSV.open("#{tmp}/comments.csv", 'w+')
     @devs = CSV.open("#{tmp}/developers.csv", 'w+')
     @prtps = CSV.open("#{tmp}/participants.csv", 'w+')
-    # @contrbs = CSV.open("#{tmp}/contributors.csv", 'w+')
   end
 
   def flush_csvs
@@ -77,7 +76,6 @@ class CodeReviewParser
     @coms.fsync
     @devs.fsync
     @prtps.fsync
-    # @contrbs.fsync
   end
 
   def ordered_array(keyOrder, source)

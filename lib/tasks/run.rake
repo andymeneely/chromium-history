@@ -104,7 +104,6 @@ namespace :run do
       end
       x.report("Consolidating filepaths") {FilepathConsolidator.new.consolidate}
       x.report("Loading sloc") {SlocLoader.new.load}
-      # x.report("Optimizing contributors"){ Contributor.optimize}
       x.report("Optimizing participants"){ Participant.optimize}
       x.report("Optimizing filepath"){ Filepath.optimize}
       x.report("Deleting duplicate reviewers") {DeveloperConsolidator.new.consolidate_reviewers}
