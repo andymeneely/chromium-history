@@ -26,7 +26,7 @@ class GitLogLoader
   @@GIT_LOG_PROPERTIES = [:commit_hash, :parent_commit_hash, :author_email,:author_id, :bug, :created_at, :message]
 
   def load
-    @reviews_to_update = []
+    @reviews_to_update = Hash.new
     @con = ActiveRecord::Base.connection.raw_connection
     
     # create prepared insert statments because we will be using them many times
