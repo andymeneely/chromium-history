@@ -5,16 +5,14 @@ class CodeReviewLoader
 
   def copy_parsed_tables 
     tmp = Rails.configuration.tmpdir
-    [
-      'code_reviews',
+    [ 'code_reviews',
       'reviewers',
       'patch_sets', 
       'patch_set_files', 
       'messages', 
       'comments', 
       'developers', 
-      'participants', 
-      'contributors'
+      'participants'
     ].each do |table|
       PsqlUtil.copy_from_file table, "#{tmp}/#{table}.csv"
     end
@@ -22,18 +20,15 @@ class CodeReviewLoader
   end
 
   def add_primary_keys
-    [
-      'reviewers',
+    [ 'reviewers',
       'patch_sets', 
       'patch_set_files', 
       'messages', 
       'comments',  
-      'participants', 
-      'contributors'
+      'participants'
     ].each do |table|
       PsqlUtil.add_auto_increment_key table
     end
     PsqlUtil.add_index 'code_reviews', 'issue', 'hash'   
   end
-
 end #class

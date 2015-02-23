@@ -199,11 +199,6 @@ class Filepath < ActiveRecord::Base
     Filepath.joins(commit_filepaths: [commit: [code_reviews: [participants: :developer]]])
   end
 
-  # All of the contributors joined
-  def self.contributors
-    Filepath.joins(commit_filepaths: [commit: [code_reviews: [contributors: :developer]]])
-  end
-
   def self.code_reviews
     Filepath.joins(commit_filepaths: [commit: :code_reviews])
   end
@@ -220,5 +215,4 @@ class Filepath < ActiveRecord::Base
       puts "========================\n\n"
     end
   end
-
 end
