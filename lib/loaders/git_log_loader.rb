@@ -26,7 +26,7 @@ class GitLogLoader
   @@GIT_LOG_PROPERTIES = [:commit_hash, :parent_commit_hash, :author_email,:author_id, :bug, :created_at, :message]
 
   def load
-    @reviews_to_update = Hash.new
+    @reviews_to_update = []
     @con = ActiveRecord::Base.connection.raw_connection
     
     # create prepared insert statments because we will be using them many times
@@ -37,12 +37,11 @@ class GitLogLoader
     get_commits(File.open("#{Rails.configuration.datadir}/chromium-gitlog.txt", "r"))
 
     #update each code review you can find in the git log with its hash
-    @reviews_to_update.each do |id,hash|
-      rev = CodeReview.find_by(issue: id)
-      unless rev.nil?
-        rev.update_attribute(:commit_hash, hash)
-      end
-    end
+    update = "UPDATE code_reviews 
+              SET commit_hash = m.hash
+              FROM (values #{@reviews_to_update.join(', ')}) AS m (id, hash) 
+              WHERE issue = m.id;"
+    ActiveRecord::Base.connection.execute(update)
 
   end
 
