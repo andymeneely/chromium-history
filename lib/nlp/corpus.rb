@@ -52,7 +52,7 @@ class Corpus
     tmp_file.fsync
     path = Rails.root.join 'lib', 'nlp', 'python', 'json_word_diff.py'
     res = nil
-    res = `python #{path} fiction #{file_path}`
+    res = `python #{path} #{category} #{file_path}`
     File.unlink file_path
     @words = Oj.load(res)
   end
