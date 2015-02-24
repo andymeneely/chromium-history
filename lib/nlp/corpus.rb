@@ -6,6 +6,25 @@ require 'oj'
 # TODO: Add tagging to tokeninzation process
 class Corpus
 
+  @@BROWN_CATEGORIES=[
+    'fiction',
+    'news',
+    'editorial',
+    'reviews',
+    'religion',
+    'hobbies',
+    'lore',
+    'belles_lettres',
+    'government',
+    'learned',
+    'mystery',
+    'science_fiction',
+    'adventure',
+    'romance',
+    'humor',
+    'all' # tag for using all categories
+  ]
+
   def initialize raw
     @raw_file = raw
     @words = nil
@@ -24,15 +43,16 @@ class Corpus
     end
   end
 
-  # Remove words found in preset corpuses 
-  # TODO allow for chosing nltk corpora from function
-  def filter
+  # Remove words found in preset or specified corpuses
+  def filter category=Rails.configuration.brown_category
+    raise "Unknown category selected: #{category}" unless @@BROWN_CATEGORIES.include? category
     file_path = "#{@tmp_dir}/wordlist.json"
     tmp_file = File.new file_path, 'w+'
     Oj.to_stream tmp_file, words()
     tmp_file.fsync
     path = Rails.root.join 'lib', 'nlp', 'python', 'json_word_diff.py'
-    res = `python #{path} #{file_path}`
+    res = nil
+    res = `python #{path} fiction #{file_path}`
     File.unlink file_path
     @words = Oj.load(res)
   end
