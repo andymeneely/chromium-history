@@ -33,7 +33,7 @@ module ChromiumHistory
       Rails.configuration.tmpdir = "/tmp/#{ENV['USER']}/#{Rails.env}"
       FileUtils.mkdir_p Rails.configuration.tmpdir
       FileUtils.chmod "o+rwx", Rails.configuration.tmpdir
-      Rails.configuration.brown_category = 'fiction'
+      Rails.configuration.brown_category = 'science_fiction'
     else
       data_yml = YAML.load_file("#{Rails.root}/config/data.yml")[Rails.env]
       Rails.configuration.datadir = data_yml['src-relative'] == "true" ? Rails.root + "/" : ""
