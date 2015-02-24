@@ -4,9 +4,9 @@ class ReleaseAnalysis
   def populate
     Release.all.each do |r|
       populate_num_reviews(r)
+      populate_num_reviewers(r)
+      populate_num_participants(r)
       r.release_filepaths.find_each do |rf|
-        rf.num_reviewers = rf.filepath.reviewers(r.date).size
-        rf.num_participants  = rf.filepath.participants(r.date).size
         rf.perc_three_more_reviewers = rf.filepath.perc_three_more_reviewers(r.date)
         rf.perc_security_experienced_participants  = rf.filepath.perc_security_exp_part(r.date)
         rf.avg_security_experienced_participants = rf.filepath.avg_security_exp_part(r.date)
@@ -61,7 +61,7 @@ class ReleaseAnalysis
         FROM filepaths INNER JOIN commit_filepaths ON commit_filepaths.filepath = filepaths.filepath
                        INNER JOIN commits ON commits.commit_hash = commit_filepaths.commit_hash
                        INNER JOIN code_reviews ON code_reviews.commit_hash = commits.commit_hash
-        WHERE "code_reviews"."created" BETWEEN '1970-01-01 00:00:00' AND '#{release.date}'
+        WHERE code_reviews.created BETWEEN '1970-01-01 00:00:00' AND '#{release.date}'
         GROUP BY filepaths.filepath
       )
       UPDATE release_filepaths
@@ -73,8 +73,46 @@ class ReleaseAnalysis
     ActiveRecord::Base.connection.execute update
   end
 
-  def populate_num_participants(release)
-
+  def populate_num_reviewers(release)
+    update = <<-EOSQL
+      WITH reviewer_counts AS (
+        SELECT filepaths.filepath, count(*) AS num_reviewers
+        FROM filepaths INNER JOIN commit_filepaths ON commit_filepaths.filepath = filepaths.filepath
+                       INNER JOIN commits ON commits.commit_hash = commit_filepaths.commit_hash
+                       INNER JOIN code_reviews ON code_reviews.commit_hash = commits.commit_hash
+                       INNER JOIN reviewers ON reviewers.issue = code_reviews.issue
+        WHERE code_reviews.created BETWEEN '1970-01-01 00:00:00' AND '#{release.date}'
+        GROUP BY filepaths.filepath
+      )
+      UPDATE release_filepaths
+        SET num_reviewers = reviewer_counts.num_reviewers
+        FROM reviewer_counts
+        WHERE release_filepaths.thefilepath = reviewer_counts.filepath
+          AND release_filepaths.release = '#{release.name}'
+    EOSQL
+    ActiveRecord::Base.connection.execute update
   end
+
+  def populate_num_participants(release)
+    update = <<-EOSQL
+      WITH participant_counts AS (
+        SELECT filepaths.filepath, count(*) AS num_participants
+        FROM filepaths INNER JOIN commit_filepaths ON commit_filepaths.filepath = filepaths.filepath
+                       INNER JOIN commits ON commits.commit_hash = commit_filepaths.commit_hash
+                       INNER JOIN code_reviews ON code_reviews.commit_hash = commits.commit_hash
+                       INNER JOIN participants ON participants.issue = code_reviews.issue
+        WHERE code_reviews.created BETWEEN '1970-01-01 00:00:00' AND '#{release.date}'
+        GROUP BY filepaths.filepath
+      )
+      UPDATE release_filepaths
+        SET num_participants = participant_counts.num_participants
+        FROM participant_counts
+        WHERE release_filepaths.thefilepath = participant_counts.filepath
+          AND release_filepaths.release = '#{release.name}'
+    EOSQL
+    ActiveRecord::Base.connection.execute update
+  end
+
+
 
 end
