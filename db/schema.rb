@@ -78,11 +78,6 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.integer  "code_review_id",  limit: 8
   end
 
-  create_table "comments_technical_words", id: false, force: true do |t|
-    t.integer "comment_id"
-    t.integer "technical_word_id"
-  end
-
   create_table "commits", id: false, force: true do |t|
     t.string   "commit_hash"
     t.string   "parent_commit_hash"

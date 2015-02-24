@@ -8,22 +8,15 @@ class VocabLoader
   end
 
   def load
-    raw = @tmp_dir+'/raw_comments.txt'
-    Comment.get_all_convo raw
-    VocabLoader.clean_file raw, @tmp_dir+'/comments.txt'
-    File.unlink raw
     raw = @tmp_dir+'/raw_messages.txt'
     Message.get_all_messages raw
     VocabLoader.clean_file raw, @tmp_dir+'/messages.txt'
     File.unlink raw
     acm_corpus = Corpus.new "#{@data_dir}/acm/raw_acm.txt"
-    comment_corpus = Corpus.new "#{@tmp_dir}/comments.txt"
     message_corpus = Corpus.new "#{@tmp_dir}/messages.txt"
     acm_corpus.filter
-    comment_corpus.filter
     message_corpus.filter
-    words = comment_corpus.word_intersect acm_corpus.words
-    words = words + message_corpus.word_intersect(acm_corpus.words)
+    words = message_corpus.word_intersect acm_corpus.words
     block = lambda do |table|
       words.each do |word|
         table << [word]
@@ -33,12 +26,6 @@ class VocabLoader
     PsqlUtil.create_upload_file vocab_file, &block
     PsqlUtil.copy_from_file 'technical_words', vocab_file
     PsqlUtil.add_auto_increment_key 'technical_words'
-  end
-
-  def reassociate_comments
-    reassociate 'comments', 'text', 'comments_technical_words'
-    PsqlUtil.add_index 'comments_technical_words', 'comment_id', 'hash'
-    PsqlUtil.add_index 'comments_technical_words', 'technical_word_id', 'hash'
   end
 
   def reassociate_messages
@@ -66,6 +53,7 @@ class VocabLoader
   def self.clean_file target_file, output_file
     file = File.open target_file, 'r'
     new_file = VocabLoader.remove_quoted_comments file.read
+    new_file = VocabLoader.clean_comment_messages new_file
     new_file = VocabLoader.remove_uris new_file
     new_file = VocabLoader.trim_whitespace new_file
     new_file = VocabLoader.remove_nonword new_file
@@ -83,6 +71,10 @@ class VocabLoader
   def self.clean_messages string
     new_file = VocabLoader.remove_quoted_comments string
     new_file = new_file.gsub(/^On.*wrote:$/, '')
+  end
+
+  def self.clean_comment_messages string
+    string.gsub(/^http:\/\/codereview.chromium.org\/\d+\/diff.*[\r\n]{1,2}(Line.+:|.+(left|right)\):)/, '')
   end
   
   def self.remove_quoted_comments string
