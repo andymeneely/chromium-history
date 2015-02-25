@@ -9,6 +9,7 @@ require 'loaders/sloc_loader'
 require 'loaders/sheriff_rotation_loader'
 require 'loaders/first_ownership_loader.rb'
 require 'loaders/owners_loader.rb'
+require 'loaders/ichurn_loader.rb'
 require 'consolidators/filepath_consolidator'
 require 'consolidators/developer_consolidator'
 require 'verify/verify_runner'
@@ -98,6 +99,7 @@ namespace :run do
         [Commit,CommitFilepath,CommitBug,Cvenum].each {|c| c.optimize}
       end
       x.report("Optimizing sheriffs") { SheriffRotation.optimize}
+#      x.report("Loading Interactive Churn"){InteractiveChurn.new.parse_and_load}
       x.report("Loading release tree") {ReleaseFilepathLoader.new.load}
       x.report("Optimizing releases et al.") do 
         [Release,ReleaseFilepath].each{|c| c.optimize}
