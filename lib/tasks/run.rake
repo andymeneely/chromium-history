@@ -231,16 +231,16 @@ namespace :run do
 		old_words = Message.joins(:technical_words).where(date: range0, sender_id: ids).pluck('distinct word')
         old_usage = Message.joins(:technical_words).where(date: range0, sender_id: ids).group(:sender_id, :word).pluck(:sender_id, :word)
 		
-        usage1 = Message.joins(:technical_words).where(date: range1, sender_id: ids, word: old_words).group(:sender_id, :word).pluck(:sender_id, :word)
-		usage2 = Message.joins(:technical_words).where(date: range2, sender_id: ids, word: old_words).group(:sender_id, :word).pluck(:sender_id, :word)
-		usage3 = Message.joins(:technical_words).where(date: range3, sender_id: ids, word: old_words).group(:sender_id, :word).pluck(:sender_id, :word)
-		usage4 = Message.joins(:technical_words).where(date: range4, sender_id: ids, word: old_words).group(:sender_id, :word).pluck(:sender_id, :word)
+        usage1 = Message.joins(:technical_words).where(messages: {date: range1, sender_id: ids},technical_words: {word: old_words}).group(:sender_id, :word).pluck(:sender_id, :word)
+		usage2 = Message.joins(:technical_words).where(messages: {date: range2, sender_id: ids},technical_words: {word: old_words}).group(:sender_id, :word).pluck(:sender_id, :word)
+		usage3 = Message.joins(:technical_words).where(messages: {date: range3, sender_id: ids},technical_words: {word: old_words}).group(:sender_id, :word).pluck(:sender_id, :word)
+		usage4 = Message.joins(:technical_words).where(messages: {date: range4, sender_id: ids},technical_words: {word: old_words}).group(:sender_id, :word).pluck(:sender_id, :word)
 		
 	    puts
 		puts "New dev usage of words from 5.0 in 11.0: #{(usage1 - old_usage).count}"
-		puts "New dev usage of words from 5.0 in 19.0: #{(usage2 - old_usage).count}"
-		puts "New dev usage of words from 5.0 in 27.0: #{(usage3 - old_usage).count}"
-		puts "New dev usage of words from 5.0 in 35.0: #{(usage4 - old_usage).count}"
+		puts "New dev usage of words from 5.0 in 19.0: #{(usage2 - usage1 - old_usage).count}"
+		puts "New dev usage of words from 5.0 in 27.0: #{(usage3 - usage1 - usage2 - old_usage).count}"
+		puts "New dev usage of words from 5.0 in 35.0: #{(usage4 - usage1 - usage2 - usage3 - old_usage).count}"
 	  end
     end
 	
