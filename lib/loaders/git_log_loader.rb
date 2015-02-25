@@ -168,7 +168,7 @@ class GitLogLoader
   def index_process_commit(arr, hash)
 
     commit_hash_str = arr[0].strip
-    author_email_str = arr[1].strip
+    author_email_str = arr[2].strip
     created_at_tstamp = DateTime.parse(arr[3].strip)
     parent_hash = arr[4].strip
 
