@@ -20,6 +20,7 @@ require 'analysis/code_review_analysis'
 require 'analysis/data_visualization'
 require 'analysis/visualization_queries'
 require 'analysis/ascii_histograms'
+require 'analysis/nlp_queries_analysis'
 require 'stats'
 require 'nlp/corpus'
 require 'utils/psql_util'
@@ -193,6 +194,11 @@ namespace :run do
         x.report('Associating vocab words with comments') {vocab_loader.reassociate_comments}
         x.report('Associating vocab words with messages'){vocab_loader.reassociate_messages}
       end
+    end
+    
+    desc "Running interesting nlp queries"
+    task :nlp_queries => :env do
+      NlpQueriesAnalysis.new.run
     end
   end
 end
