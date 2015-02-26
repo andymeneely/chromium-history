@@ -10,11 +10,11 @@ class BlockVerify < VerifyBase
   end
 
   def verify_blocks_join_verify_2  
-    assert_equal "Fixed", Bug.joins(:blocks).where("blocks.blocking_id" => 17941).pluck("bugs.status").first
+    assert_equal %w(Fixed Verified), Bug.joins(:blocks).where("blocks.blocking_id" => 17941).pluck("bugs.status").sort
   end
 
   def verify_blocks_join_verify_3  
-    assert_equal "Invalid", Bug.joins(:blocks).where("blocks.blocking_id" => 20248).pluck("bugs.status").first
+    assert_equal %w(Invalid), Bug.joins(:blocks).where("blocks.blocking_id" => 20248).pluck("bugs.status")
   end
 
   def verify_blocks_join_verify_through  
