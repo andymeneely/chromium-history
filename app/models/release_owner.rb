@@ -25,12 +25,12 @@ class ReleaseOwner < ActiveRecord::Base
   
   def dir_commits_to_ownership
     directory = "" if directory.split(/\.\/|\//).count == 0
-    return Commit.where(commit_hash:  CommitFilepath.where("filepath LIKE ?", "#{directory}%").pluck(:commit_hash), author_id: dev_id, "created_at < ?", first_ownership_date).count
+    return Commit.where(commit_hash:  CommitFilepath.where("filepath LIKE ?", "#{directory}%").pluck(:commit_hash), author_id: dev_id).where("created_at < ?", first_ownership_date).count
   end
   
   def dir_commits_to_release
     directory = "" if directory.split(/\.\/|\//).count == 0
-    return Commit.where(commit_hash:  CommitFilepath.where("filepath LIKE ?", "#{directory}%").pluck(:commit_hash), author_id: dev_id, "created_at < ?", release.date).count
+    return Commit.where(commit_hash:  CommitFilepath.where("filepath LIKE ?", "#{directory}%").pluck(:commit_hash), author_id: dev_id).where( "created_at < ?", release.date).count
   end
   
   def time_to_ownership
@@ -47,12 +47,12 @@ class ReleaseOwner < ActiveRecord::Base
   
   def committed_filepaths_to_ownership
     directory = "" if directory.split(/\.\/|\//).count == 0
-    return Commit.joins(:commit_filepaths).where(commit_hash:  CommitFilepath.where("filepath LIKE ?", "#{directory}%").pluck(:commit_hash), author_id: dev_id, "created_at < ?", first_ownership_date).group(:filepath).count
+    return Commit.joins(:commit_filepaths).where(commit_hash:  CommitFilepath.where("filepath LIKE ?", "#{directory}%").pluck(:commit_hash), author_id: dev_id).where("created_at < ?", first_ownership_date).group(:filepath).count
   end
   
   def committed_filepaths_to_release
     directory = "" if directory.split(/\.\/|\//).count == 0
-    return Commit.joins(:commit_filepaths).where(commit_hash:  CommitFilepath.where("filepath LIKE ?", "#{directory}%").pluck(:commit_hash), author_id: dev_id, "created_at < ?", release.date).group(:filepath).count  
+    return Commit.joins(:commit_filepaths).where(commit_hash:  CommitFilepath.where("filepath LIKE ?", "#{directory}%").pluck(:commit_hash), author_id: dev_id).where("created_at < ?", release.date).group(:filepath).count  
   end
   
 end
