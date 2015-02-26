@@ -25,10 +25,10 @@ class OwnersLoader
                    dev.email,
                    nil, # first_ownership_sha
                    nil, # first_ownership_date
-                   nil, # first_file_commit_sha
-                   nil, # first_file_commit_date
-                   nil, # file_commits_to_ownership
-                   nil] # file_commits_to_release
+                   nil, # first_dir_commit_sha
+                   nil, # first_dir_commit_date
+                   nil, # dir_commits_to_ownership
+                   nil] # dir_commits_to_release
       end
       owners.fsync
       PsqlUtil.copy_from_file 'release_owners', "#{tmp}/parsed_owners.csv"
