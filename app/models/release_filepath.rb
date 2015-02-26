@@ -19,4 +19,47 @@ class ReleaseFilepath < ActiveRecord::Base
     valid_extns.each { |extn| if filepath.ends_with?(extn) then return true end }
     return false
   end
+  
+  def avg_time_to_ownership
+    return 0 if ReleaseOwner.where(release: release, filepath: filepath).count == 0
+    sum = 0.0
+    ReleaseOwner.where(release: release, filepath: filepath).each {|o| sum += o.time_to_ownership}
+	return sum/ReleaseOwner.where(release: release, filepath: filepath).count
+  end
+  
+  def avg_commits_to_ownership
+    return 0 if ReleaseOwner.where(release: release, filepath: filepath).count == 0
+    sum = 0.0
+    ReleaseOwner.where(release: release, filepath: filepath).each {|o| sum += o.dir_commits_to_ownership}
+	return sum/ReleaseOwner.where(release: release, filepath: filepath).count
+  end
+  
+  def avg_owner_commits_to_release
+    return 0 if ReleaseOwner.where(release: release, filepath: filepath).count == 0
+    sum = 0.0
+    ReleaseOwner.where(release: release, filepath: filepath).each {|o| sum += o.dir_commits_to_release}
+	return sum/ReleaseOwner.where(release: release, filepath: filepath).count
+  end
+  
+  def avg_ownership_time_to_release
+    return 0 if ReleaseOwner.where(release: release, filepath: filepath).count == 0
+    sum = 0.0
+    ReleaseOwner.where(release: release, filepath: filepath).each {|o| sum += o.ownership_time_at_release}
+	return sum/ReleaseOwner.where(release: release, filepath: filepath).count
+  end
+  
+  def avg_filepaths_to_release
+    return 0 if ReleaseOwner.where(release: release, filepath: filepath).count == 0
+    sum = 0.0
+    ReleaseOwner.where(release: release, filepath: filepath).each {|o| sum += o.committed_filepaths_to_release}
+	return sum/ReleaseOwner.where(release: release, filepath: filepath).count
+  end
+  
+  def avg_filepaths_to_ownership
+    return 0 if ReleaseOwner.where(release: release, filepath: filepath).count == 0
+    sum = 0.0
+    ReleaseOwner.where(release: release, filepath: filepath).each {|o| sum += o.committed_filepaths_to_ownership}
+	return sum/ReleaseOwner.where(release: release, filepath: filepath).count
+  end
+  
 end
