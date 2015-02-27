@@ -16,6 +16,7 @@ export RAILS_ENV="production"
 export RAILS_BLAST_PRODUCTION="YesPlease"
 
 mkdir -p /run/shm/chromium/realdata
+mkdir -p /run/shm/tmp/production
 rsync -a ~/chromium/realdata /run/shm/chromium/
 
 cd $HISTORY_DIR
