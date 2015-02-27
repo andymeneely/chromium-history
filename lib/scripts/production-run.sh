@@ -9,7 +9,7 @@ HISTORY_DIR="$HOME/chromium/build-repo"
 LOGS_DIR="$HOME/logs"
 DATE=$(date +"%Y_%m_%d_%H_%M_%s")
 ERR="$HOME/logs/err_$DATE.log"
-LOG="$HOME/log_$DATE.log"
+LOG="$HOME/logs/log_$DATE.log"
 OUTCOME="FAILED"
 
 export RAILS_ENV="production"
