@@ -1,16 +1,15 @@
 #!/bin/bash
 
-export GEM_HOME=/home/axmvse/.gems
-export GEM_PATH="/home/axmvse/.gems/:$GEM_PATH"
-export PATH="$PATH:/home/axmvse/.gems/bin"
+export GEM_HOME="$HOME/.gems"
+export GEM_PATH="$HOME/.gems/:$GEM_PATH"
+export PATH="$HOME/.gems/bin:$PATH"
 export RUBYOPT=rubygems
 
-
-HISTORY_DIR=/home/axmvse/chromium/build-repo
-LOGS_DIR=/home/axmvse/logs
+HISTORY_DIR="$HOME/chromium/build-repo"
+LOGS_DIR="$HOME/logs"
 DATE=$(date +"%Y_%m_%d_%H_%M_%s")
-ERR="/home/axmvse/logs/err_$DATE.log"
-LOG="/home/axmvse/logs/log_$DATE.log"
+ERR="$HOME/logs/err_$DATE.log"
+LOG="$HOME/log_$DATE.log"
 OUTCOME="FAILED"
 
 export RAILS_ENV="production"
