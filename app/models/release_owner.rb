@@ -6,11 +6,11 @@ class ReleaseOwner < ActiveRecord::Base
   def self.optimize
     connection.add_index :release_owners, :release
     connection.add_index :release_owners, :filepath
-	connection.add_index :release_owners, :directory
+	  connection.add_index :release_owners, :directory
     connection.add_index :release_owners, :dev_id
     connection.add_index :release_owners, [:directory, :dev_id]
     connection.add_index :release_owners, [:release,:filepath,:directory]
-    connection.execute "CLUSTER release_owners USING index_release_owners_on_directory_and_dev_id"
+    #connection.execute "CLUSTER release_owners USING index_release_owners_on_directory_and_dev_id"
   end
   
   def first_dir_commit_sha
