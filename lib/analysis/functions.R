@@ -60,24 +60,12 @@ prediction_analysis<- function(fit,release.next){
   return (as.data.frame(cbind(mean_precision,mean_recall,mean_f_score,auc)))
 }
 
-# Removed comments from script, due to bug in R, the object can be larger that 10,000 bytes.
-# Remove files where there were no bugs of any kind, or if it had no SLOC
-# i.e. The subset must have at least on bug of ANY kind, and SLOC > 0
-# Confirm if we need to remove the points with al variables are zero but outcome is TRUE.
-
-# Normalize and center data, added one to the values to be able to calculate log to zero. log(1)=0
-
-# Modeling (forward selection)
-# Individual Models
-# Category Based Models
-
-# Display Results:
-
 release_modeling <- function(release,release.next){
   options(warn=-1)
 
 
-
+  # Remove files where there were no bugs of any kind, or if it had no SLOC
+  # i.e. The subset must have at least on bug of ANY kind, and SLOC > 0
   release <- subset(release, (release$num_pre_features !=0 |
                               release$num_pre_compatibility_bugs !=0 | 
                               release$num_pre_regression_bugs !=0 | 
@@ -98,9 +86,12 @@ release_modeling <- function(release,release.next){
                                         release.next$becomes_vulnerable != FALSE) 
                                       & release.next$sloc > 0)
 
-  release = cbind(as.data.frame(log(release[,-c(10)] + 1)), becomes_vulnerable = release$becomes_vulnerable)
-  release.next = cbind(as.data.frame(log(release.next[,-c(10)] + 1)), becomes_vulnerable = release.next$becomes_vulnerable)
+  # Normalize and center data, added one to the values to be able to calculate log to zero. log(1)=0
+  release = cbind(as.data.frame(log(release[,-c(14:17)] + 1)), becomes_vulnerable = release$becomes_vulnerable)
+  release.next = cbind(as.data.frame(log(release.next[,-c(14:17)] + 1)), becomes_vulnerable = release.next$becomes_vulnerable)
 
+  # Modeling (forward selection)
+  # Individual Models
   fit_null <- glm(formula = becomes_vulnerable ~ 1, 
                   data = release, family = "binomial")
 
@@ -113,7 +104,7 @@ release_modeling <- function(release,release.next){
   fit_bugs <- glm (formula= becomes_vulnerable ~ sloc + num_pre_bugs, 
                   data = release, family = "binomial")
 
-  
+  # Category Based Models
   fit_features <- glm (formula= becomes_vulnerable ~ sloc + num_pre_features, 
                        data = release, family = "binomial")
 
@@ -129,7 +120,7 @@ release_modeling <- function(release,release.next){
   
   best_fit_AIC <- bestglm(release,family=binomial,IC = "AIC")
 
-  
+  # Display Results:
   cat("\nRelease Summary\n")
   print(summary(release))
 

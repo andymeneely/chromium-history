@@ -191,15 +191,37 @@ class HypothesisTests
         #Increase console width
         options("width"=400)
 
-        release_filepaths_data <- dbGetQuery(con, "SELECT * FROM release_filepaths")
+        release_filepaths_data <- dbGetQuery(con, "
+        SELECT 
+          release,
+          sloc,
+          num_vulnerabilities,
+          num_pre_bugs,
+          num_pre_features,
+          num_pre_compatibility_bugs,
+          num_pre_regression_bugs,
+          num_pre_security_bugs,
+          num_pre_tests_fails_bugs,
+          num_pre_stability_crash_bugs,
+          num_pre_build_bugs,
+          num_post_bugs,
+          num_pre_vulnerabilities,
+          num_post_vulnerabilities,
+          was_buggy,
+          becomes_buggy,
+          was_vulnerable,
+          becomes_vulnerable
+        FROM release_filepaths")
+        
 
         # Split the data by relase
-        r05 <- release_filepaths_data[ which(release_filepaths_data$release == "5.0"), c(3,19:26,33)]
-        r11 <- release_filepaths_data[ which(release_filepaths_data$release == '11.0'),c(3,19:26,33)]
-        r19 <- release_filepaths_data[ which(release_filepaths_data$release == '19.0'),c(3,19:26,33)]
-        r27 <- release_filepaths_data[ which(release_filepaths_data$release == '27.0'),c(3,19:26,33)]
-        r35 <- release_filepaths_data[ which(release_filepaths_data$release == '35.0'),c(3,19:26,33)]
+        r05 <- release_filepaths_data[ which(release_filepaths_data$release == "5.0"), -c(1)]
+        r11 <- release_filepaths_data[ which(release_filepaths_data$release == '11.0'),-c(1)]
+        r19 <- release_filepaths_data[ which(release_filepaths_data$release == '19.0'),-c(1)]
+        r27 <- release_filepaths_data[ which(release_filepaths_data$release == '27.0'),-c(1)]
+        r35 <- release_filepaths_data[ which(release_filepaths_data$release == '35.0'),-c(1)]
 
+        print(names(r05))
         cat("MODELING FOR RELEASE 05\n")
         release_modeling(r05,r11)
 
