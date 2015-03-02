@@ -19,7 +19,7 @@ class LoadCompleteVerify < VerifyBase
   end
 
   def verify_number_of_messages
-    verify_count("Messages", 154, Message.count)
+    verify_count("Messages", 155, Message.count)
   end
 
   def verify_number_of_patch_set_files

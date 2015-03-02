@@ -1,22 +1,22 @@
 #!/bin/bash
 
-export GEM_HOME=/home/axmvse/.gems
-export GEM_PATH="/home/axmvse/.gems/:$GEM_PATH"
-export PATH="$PATH:/home/axmvse/.gems/bin"
+export GEM_HOME="$HOME/.gems"
+export GEM_PATH="$HOME/.gems/:$GEM_PATH"
+export PATH="$HOME/.gems/bin:$PATH"
 export RUBYOPT=rubygems
 
-
-HISTORY_DIR=/home/axmvse/chromium/build-repo
-LOGS_DIR=/home/axmvse/logs
+HISTORY_DIR="$HOME/chromium/build-repo"
+LOGS_DIR="$HOME/logs"
 DATE=$(date +"%Y_%m_%d_%H_%M_%s")
-ERR="/home/axmvse/logs/err_$DATE.log"
-LOG="/home/axmvse/logs/log_$DATE.log"
+ERR="$HOME/logs/err_$DATE.log"
+LOG="$HOME/logs/log_$DATE.log"
 OUTCOME="FAILED"
 
 export RAILS_ENV="production"
 export RAILS_BLAST_PRODUCTION="YesPlease"
 
 mkdir -p /run/shm/chromium/realdata
+mkdir -p /run/shm/tmp/production
 rsync -a ~/chromium/realdata /run/shm/chromium/
 
 cd $HISTORY_DIR
@@ -42,7 +42,7 @@ else
     psql -U archeology chromium_test -c" SELECT pg_terminate_backend(pg_stat_activity.procpid) FROM pg_stat_activity WHERE pg_stat_activity.datname = 'chromium_real2' AND procpid <> pg_backend_pid()"
     psql -U archeology chromium_test -c" SELECT pg_terminate_backend(pg_stat_activity.procpid) FROM pg_stat_activity WHERE pg_stat_activity.datname = 'chromium_real' AND procpid <> pg_backend_pid()"
     psql -U archeology chromium_test -c "DROP DATABASE chromium_real" 1>>$LOG 2>>$ERR
-    psql -U archeology chromium_test -c "ALTER DATABASE chromium_real2 RENAME TO chromium_real" 1>>$LOG 2>>$ERR
+    psql -U archeology chromium_test -c "ALTER DATABASE chromium_real_inbuild RENAME TO chromium_real" 1>>$LOG 2>>$ERR
 fi ; 
 
 #Email the status report

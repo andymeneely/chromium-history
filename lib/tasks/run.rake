@@ -9,6 +9,7 @@ require 'loaders/sloc_loader'
 require 'loaders/sheriff_rotation_loader'
 require 'loaders/first_ownership_loader.rb'
 require 'loaders/owners_loader.rb'
+require 'loaders/ichurn_loader.rb'
 require 'consolidators/filepath_consolidator'
 require 'consolidators/developer_consolidator'
 require 'verify/verify_runner'
@@ -19,6 +20,7 @@ require 'analysis/code_review_analysis'
 require 'analysis/data_visualization'
 require 'analysis/visualization_queries'
 require 'analysis/ascii_histograms'
+require 'analysis/nlp_queries_analysis'
 require 'stats'
 require 'nlp/corpus'
 require 'utils/psql_util'
@@ -99,13 +101,13 @@ namespace :run do
         [Commit,CommitFilepath,CommitBug,Cvenum].each {|c| c.optimize}
       end
       x.report("Optimizing sheriffs") { SheriffRotation.optimize}
+#      x.report("Loading Interactive Churn"){InteractiveChurn.new.parse_and_load}
       x.report("Loading release tree") {ReleaseFilepathLoader.new.load}
       x.report("Optimizing releases et al.") do 
         [Release,ReleaseFilepath].each{|c| c.optimize}
       end
       x.report("Consolidating filepaths") {FilepathConsolidator.new.consolidate}
       x.report("Loading sloc") {SlocLoader.new.load}
-      x.report("Optimizing contributors"){ Contributor.optimize}
       x.report("Optimizing participants"){ Participant.optimize}
       x.report("Optimizing filepath"){ Filepath.optimize}
       x.report("Deleting duplicate reviewers") {DeveloperConsolidator.new.consolidate_reviewers}
@@ -116,7 +118,6 @@ namespace :run do
       vocab_loader = VocabLoader.new
       x.report('Parsing technical vocab') {vocab_loader.parse_scrape_results}
       x.report('Generating technical vocab') {vocab_loader.load}
-      x.report('Associating vocab words with comments') {vocab_loader.reassociate_comments}
       x.report('Associating vocab words with messages'){vocab_loader.reassociate_messages}
       x.report("Running PSQL ANALYZE"){ ActiveRecord::Base.connection.execute "ANALYZE" }
       x.report('Associating vocab words with messages'){vocab_loader.reassociate_categories}
@@ -131,8 +132,8 @@ namespace :run do
       x.report("Populating dev experience dates"){CodeReviewAnalysis.new.populate_experience_labels}
       x.report("Populating participant bug experience"){ParticipantAnalysis.new.populate_bug_related_experience}
       x.report("Populating total_reviews_with_owner"){CodeReviewAnalysis.new.populate_total_reviews_with_owner}
+      x.report("populating security_adjacencys"){ParticipantAnalysis.new.populate_security_adjacencys}
       x.report("Populating owner_familiarity_gap"){CodeReviewAnalysis.new.populate_owner_familiarity_gap}
-      x.report("Populating cursory"){CodeReviewAnalysis.new.populate_cursory}
       x.report("Populating sheriff_hours") {ParticipantAnalysis.new.populate_sheriff_hours}
       x.report("Populating total_sheriff_hours"){CodeReviewAnalysis.new.populate_total_sheriff_hours}
       x.report("Populating release metrics") {ReleaseAnalysis.new.populate}
@@ -196,6 +197,11 @@ namespace :run do
         x.report('Associating vocab words with comments') {vocab_loader.reassociate_comments}
         x.report('Associating vocab words with messages'){vocab_loader.reassociate_messages}
       end
+    end
+    
+    desc "Running interesting nlp queries"
+    task :nlp_queries => :env do
+      NlpQueriesAnalysis.new.run
     end
   end
 end

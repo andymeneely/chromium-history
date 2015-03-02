@@ -1,10 +1,8 @@
 class Comment < ActiveRecord::Base
   belongs_to :patch_set_file
-  has_and_belongs_to_many :technical_words
 
   def self.optimize
     connection.add_index :comments, :composite_patch_set_file_id
-    PsqlUtil.add_fulltext_search_index 'comments', 'text'
   end
 
   def self.get_convo issue

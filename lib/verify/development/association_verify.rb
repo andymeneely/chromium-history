@@ -44,24 +44,15 @@ class AssociationVerify < VerifyBase
   end
 
   def verify_participants_in_stability_commit
-    assert_equal 1, Developer.find(10).participants.joins(code_review: [commit: [commit_bugs: [bug: :labels]]]).where("labels.label = 'stability-crash'").count()
+    assert_equal 1, Developer.find(10).participants.joins(code_review: [commit: [commit_bugs: [bug: :labels]]]).where("labels.label = 'stability-crash'").count
   end
 
   def verify_participants_experience
-    assert_equal true, Developer.find(10).participants.where('issue = 52823002').pluck('stability_experienced')[0]
+    assert_equal [true], Developer.find(10).participants.where('issue = 52823002').pluck('stability_experienced')
   end
   
   def verify_filepath_participants
     assert_equal ['apatrick@chromium.org','nduca@chromium.org'], Filepath.participants.where(filepath: "DEPS").pluck(:email).sort
-  end
-
-  def verify_filepath_contributors_empty
-    assert_equal [],  Filepath.contributors.where(filepath: "DEPS").pluck(:email)
-  end
-
-  def verify_filepath_three_contributors
-    contrib_devs = Filepath.contributors.where(filepath: "net/ftp/ftp_util.h").pluck(:email).sort
-    assert_equal ['eroman@chromium.org','phajdan.jr@chromium.org','wtc@chromium.org'],contrib_devs
   end
 
   def verify_participants_on_filepath

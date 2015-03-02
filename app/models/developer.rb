@@ -1,19 +1,17 @@
 class Developer < ActiveRecord::Base
 
   has_many :participants, primary_key: 'id', foreign_key: 'dev_id'
-  has_many :contributors, primary_key: 'id', foreign_key: 'dev_id'
   has_many :reviewers, primary_key: 'id', foreign_key: 'dev_id'
   has_many :sheriff_rotations, primary_key: 'id', foreign_key: 'dev_id'
   has_many :commits, primary_key: 'id', foreign_key: 'author_id'
   has_many :release_owners, primary_key: 'id', foreign_key: 'dev_id'
-  
+
   def self.optimize
     connection.add_index :developers, :email, unique: true
   end
 
-
   def self.sanitize_validate_email dirty_email 
-	return dirty_email, true if (dirty_email.eql?("ALL"))
+    # FIXME THIS IS NOT RIGHT return dirty_email, true if (dirty_email.eql?("ALL"))
     begin
       email = dirty_email.gsub(/\+\w+(?=@)/, '') #strips any tags on the email
       email.downcase!
@@ -58,31 +56,18 @@ class Developer < ActiveRecord::Base
   # If not, adds the developer's information to database.
   # Params:
   # 	email:: the email address of a developer
+  # Returns:
+  #   developer - the Developer model, already saved to the db, nil if the email is invalid
   def self.search_or_add(email)
     email = Developer.sanitize_validate_email(email)
-    if email[0].nil?
-      return nil, false
-    end
+    return nil if email[0].nil?
 
     email = email[0]
-    if (Developer.find_by_email(email).nil?) 
-      positive_infinity = "2050/01/01 00:00:00"
-      
-      developer = Developer.new
-	    developer.id = 0 if email.eql?("ALL")
-      developer["email"] = email
-      developer["security_experience"] = positive_infinity
-      developer["bug_security_experience"] = positive_infinity
-      developer["stability_experience"] = positive_infinity
-      developer["build_experience"] = positive_infinity
-      developer["test_fail_experience"] = positive_infinity
-      developer["compatibility_experience"] = positive_infinity
-      developer.save!
-      return email, false
-    else 
-      return email, true
-    end #checking if the email exists
-    # returns the developer email either way
+    developer = Developer.find_by_email(email)
+    return developer unless developer.nil?
+
+    # FIXME: This seems wrong. These should not even be considered developers, much less all the same one
+    developer = Developer.create(email: email)
   end
 
 end#class

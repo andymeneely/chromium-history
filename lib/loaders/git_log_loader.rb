@@ -43,7 +43,6 @@ class GitLogLoader
         rev.update_attribute(:commit_hash, hash)
       end
     end
-
   end
 
   #
@@ -169,7 +168,7 @@ class GitLogLoader
   def index_process_commit(arr, hash)
 
     commit_hash_str = arr[0].strip
-    author_email_str = arr[1].strip
+    author_email_str = arr[2].strip
     created_at_tstamp = DateTime.parse(arr[3].strip)
     parent_hash = arr[4].strip
 
@@ -182,8 +181,14 @@ class GitLogLoader
     puts "WARNING! Email too long #{author_email_str}" if author_email_str.length > 254
     
     #add author id 
-    email = Developer.search_or_add author_email_str
-    hash[:author_id] = Developer.where(email: email).pluck(:id).first.to_i
+    dev = Developer.search_or_add author_email_str
+    if dev.nil?
+      unless %w(initial.commit).include? author_email_str
+        puts "WARNING! Email invalid for #{author_email_str}"
+      end
+    else
+      hash[:author_id] = dev.id 
+    end
 
     #add Date/Time created
     hash[:created_at] = created_at_tstamp

@@ -87,20 +87,16 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.integer  "code_review_id",  limit: 8
   end
 
-  create_table "comments_technical_words", id: false, force: true do |t|
-    t.integer "comment_id"
-    t.integer "technical_word_id"
-  end
-
   create_table "commits", id: false, force: true do |t|
     t.string   "commit_hash"
     t.string   "parent_commit_hash"
     t.string   "author_email"
     t.integer  "author_id"
     t.text     "message"
-    t.text   "bug"
+    t.text     "bug"
     t.string   "reviewers"
     t.datetime "created_at"
+    t.boolean  "non-trivial"
   end
   
   create_table "commit_bugs", id: false, force: true do |t|
@@ -117,23 +113,23 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.integer "num_authors_affected"
   end
  
-  create_table "contributors", id: false, force: true do |t|
-    t.integer "dev_id"
-    t.integer "issue",  limit: 8
-  end
+  # create_table "contributors", id: false, force: true do |t|
+  #   t.integer "dev_id"
+  #   t.integer "issue",  limit: 8
+  # end
 
   create_table "cvenums", id: false, force: true do |t|
     t.string "cve"
   end
 
   create_table "developers", force: true do |t|
-    t.string "email"
-    t.datetime "security_experience"
-    t.datetime "bug_security_experience"
-    t.datetime "stability_experience"
-    t.datetime "build_experience"
-    t.datetime "test_fail_experience"
-    t.datetime "compatibility_experience"
+    t.string   "email"
+    t.datetime "security_experience",     :default => "2050/01/01 00:00:00"
+    t.datetime "bug_security_experience", :default => "2050/01/01 00:00:00"
+    t.datetime "stability_experience",    :default => "2050/01/01 00:00:00"
+    t.datetime "build_experience",        :default => "2050/01/01 00:00:00"
+    t.datetime "test_fail_experience",    :default => "2050/01/01 00:00:00"
+    t.datetime "compatibility_experience",:default => "2050/01/01 00:00:00"
   end
 
   create_table "filepaths", id: false, force: true do |t|
@@ -169,6 +165,7 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.datetime "review_date"
     t.integer  "reviews_with_owner"
     t.boolean  "security_experienced"
+    t.integer  "security_adjacencys"
     t.boolean  "bug_security_experienced"
     t.boolean  "stability_experienced"
     t.boolean  "build_experienced"
@@ -210,6 +207,7 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.string  "thefilepath"
     t.integer "sloc"
     t.integer "churn"
+    t.integer "num_commits"
     t.integer "num_reviews"
     t.integer "num_reviewers"
     t.integer "num_participants"
@@ -235,6 +233,8 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.integer "num_post_bugs"
     t.integer "num_pre_vulnerabilities"
     t.integer "num_post_vulnerabilities"
+    t.integer "num_major_contributors"
+    t.integer "num_minor_contributors"
     t.boolean "was_buggy"
     t.boolean "becomes_buggy"
     t.boolean "was_vulnerable"
