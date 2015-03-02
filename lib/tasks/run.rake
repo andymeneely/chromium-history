@@ -134,6 +134,7 @@ namespace :run do
       x.report("Populating sheriff_hours") {ParticipantAnalysis.new.populate_sheriff_hours}
       x.report("Populating total_sheriff_hours"){CodeReviewAnalysis.new.populate_total_sheriff_hours}
       x.report("Populating release metrics") {ReleaseAnalysis.new.populate}
+
       #puts "Here are a bunch of SQL Explains"
       #Filepath.print_sql_explains
     end
@@ -168,6 +169,7 @@ namespace :run do
     HypothesisTests.new.run
     #VisualizationQueries.new.run_queries
     #DataVisualization.new.run
+    NlpQueriesAnalysis.new.run
   end
 
   desc "run r data visualization"
