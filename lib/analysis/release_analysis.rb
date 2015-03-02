@@ -78,7 +78,7 @@ class ReleaseAnalysis
     index  = 'CREATE UNIQUE INDEX index_filepath_on_code_review_counts ON code_review_counts(filepath)'
     update = <<-EOSQL
       UPDATE release_filepaths
-        SET num_reviews = num_code_reviews
+        SET num_reviews = code_review_counts.num_code_reviews
         FROM code_review_counts
         WHERE release_filepaths.thefilepath = code_review_counts.filepath
               AND release_filepaths.release = '#{release.name}'
