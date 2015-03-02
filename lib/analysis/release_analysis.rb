@@ -2,61 +2,71 @@
 class ReleaseAnalysis
 
   def populate
+    puts "=== Fast Populations ==="
     Release.all.each do |r|
-      populate_num_reviews(r)
-      populate_num_reviewers(r)
-      populate_num_participants(r)
-      r.release_filepaths.find_each do |rf|
-        rf.perc_three_more_reviewers = rf.filepath.perc_three_more_reviewers(r.date)
-        rf.perc_security_experienced_participants  = rf.filepath.perc_security_exp_part(r.date)
-        rf.avg_security_experienced_participants = rf.filepath.avg_security_exp_part(r.date)
-        rf.avg_non_participating_revs  = rf.filepath.avg_non_participating_revs(r.date)
-        rf.avg_reviews_with_owner  = rf.filepath.avg_reviews_with_owner(r.date)
-        rf.avg_owner_familiarity_gap = rf.filepath.avg_owner_familiarity_gap(r.date)
-        rf.perc_fast_reviews = rf.filepath.perc_fast_reviews(r.date)
-        rf.perc_overlooked_patchsets = rf.filepath.perc_overlooked_patchsets(r.date)
-        rf.avg_sheriff_hours = rf.filepath.avg_sheriff_hours(r.date)
-        # rf.num_commits = rf.filepath.commits(r.date).size
-        # rf.num_major_contributors = rf.filepath.num_major_contributors(r.date).size
-        # rf.num_minor_contributors = rf.filepath.num_minor_contributors(r.date).size
-        
-        rf.vulnerable = rf.filepath.vulnerable?
-        rf.num_vulnerabilities = rf.filepath.cves().count
+      Benchmark.bm(40) do |x|
+        x.report ('Populate num_reviews') {populate_num_reviews(r)}
+        x.report ('Populate num_reviewers') {populate_num_reviewers(r)}
+        x.report ('Populate num_participants') {populate_num_participants(r)}
+      end
+    end
+    puts "=== Slow populations ==="
+    Benchmark.bm(40) do |x|
+      x.report('Slow populations together') do
+        Release.all.each do |r|
+          r.release_filepaths.find_each do |rf|
+            rf.perc_three_more_reviewers = rf.filepath.perc_three_more_reviewers(r.date)
+            rf.perc_security_experienced_participants  = rf.filepath.perc_security_exp_part(r.date)
+            rf.avg_security_experienced_participants = rf.filepath.avg_security_exp_part(r.date)
+            rf.avg_non_participating_revs  = rf.filepath.avg_non_participating_revs(r.date)
+            rf.avg_reviews_with_owner  = rf.filepath.avg_reviews_with_owner(r.date)
+            rf.avg_owner_familiarity_gap = rf.filepath.avg_owner_familiarity_gap(r.date)
+            rf.perc_fast_reviews = rf.filepath.perc_fast_reviews(r.date)
+            rf.perc_overlooked_patchsets = rf.filepath.perc_overlooked_patchsets(r.date)
+            rf.avg_sheriff_hours = rf.filepath.avg_sheriff_hours(r.date)
+            # rf.num_commits = rf.filepath.commits(r.date).size
+            # rf.num_major_contributors = rf.filepath.num_major_contributors(r.date).size
+            # rf.num_minor_contributors = rf.filepath.num_minor_contributors(r.date).size
+            rf.vulnerable = rf.filepath.vulnerable?
+            rf.num_vulnerabilities = rf.filepath.cves().count
 
-        #effect reach for bugs and vulnerabilities
-        effect_reach = 1.years
+            #effect reach for bugs and vulnerabilities
+            effect_reach = 1.years
 
-        #pre_ metrics for bugs
-        reach_date = r.date - effect_reach
-        dates = reach_date..r.date
-        rf.num_pre_bugs = rf.filepath.bugs(dates).count
-        rf.num_pre_features = rf.filepath.bugs(dates,'type-feature').count
-        rf.num_pre_compatibility_bugs = rf.filepath.bugs(dates,'type-compat').count
-        rf.num_pre_regression_bugs = rf.filepath.bugs(dates,'type-bug-regression').count
-        rf.num_pre_security_bugs = rf.filepath.bugs(dates,'type-bug-security').count
-        rf.num_pre_tests_fails_bugs = rf.filepath.bugs(dates,'cr-tests-fails').count
-        rf.num_pre_stability_crash_bugs = rf.filepath.bugs(dates,'stability-crash').count
-        rf.num_pre_build_bugs = rf.filepath.bugs(dates,'build').count
-        rf.num_pre_vulnerabilities = rf.filepath.cves(dates).count
-        rf.was_buggy = rf.num_pre_bugs > 0
-        rf.was_vulnerable = rf.filepath.vulnerable?(dates)
+            #pre_ metrics for bugs
+            reach_date = r.date - effect_reach
+            dates = reach_date..r.date
+            rf.num_pre_bugs = rf.filepath.bugs(dates).count
+            rf.num_pre_features = rf.filepath.bugs(dates,'type-feature').count
+            rf.num_pre_compatibility_bugs = rf.filepath.bugs(dates,'type-compat').count
+            rf.num_pre_regression_bugs = rf.filepath.bugs(dates,'type-bug-regression').count
+            rf.num_pre_security_bugs = rf.filepath.bugs(dates,'type-bug-security').count
+            rf.num_pre_tests_fails_bugs = rf.filepath.bugs(dates,'cr-tests-fails').count
+            rf.num_pre_stability_crash_bugs = rf.filepath.bugs(dates,'stability-crash').count
+            rf.num_pre_build_bugs = rf.filepath.bugs(dates,'build').count
+            rf.num_pre_vulnerabilities = rf.filepath.cves(dates).count
+            rf.was_buggy = rf.num_pre_bugs > 0
+            rf.was_vulnerable = rf.filepath.vulnerable?(dates)
 
-        #post_ metrics
-        reach_date = r.date + effect_reach
-        dates = r.date..reach_date
-        rf.num_post_bugs = rf.filepath.bugs(dates).count
-        rf.num_post_vulnerabilities = rf.filepath.cves(dates).count
-        rf.becomes_buggy = rf.num_post_bugs > 0
-        rf.becomes_vulnerable = rf.filepath.vulnerable?(dates)
+            #post_ metrics
+            reach_date = r.date + effect_reach
+            dates = r.date..reach_date
+            rf.num_post_bugs = rf.filepath.bugs(dates).count
+            rf.num_post_vulnerabilities = rf.filepath.cves(dates).count
+            rf.becomes_buggy = rf.num_post_bugs > 0
+            rf.becomes_vulnerable = rf.filepath.vulnerable?(dates)
 
-        rf.save
+            rf.save
+          end
+        end
       end
     end
   end
 
   def populate_num_reviews(release)
-    update = <<-EOSQL
-      WITH code_review_counts AS (
+    drop   = 'DROP TABLE IF EXISTS code_review_counts'
+    create = <<-EOSQL
+      CREATE UNLOGGED TABLE code_review_counts AS (
         SELECT filepaths.filepath, count(*) AS num_code_reviews
         FROM filepaths INNER JOIN commit_filepaths ON commit_filepaths.filepath = filepaths.filepath
                        INNER JOIN commits ON commits.commit_hash = commit_filepaths.commit_hash
@@ -64,18 +74,25 @@ class ReleaseAnalysis
         WHERE code_reviews.created BETWEEN '1970-01-01 00:00:00' AND '#{release.date}'
         GROUP BY filepaths.filepath
       )
+    EOSQL
+    index  = 'CREATE UNIQUE INDEX index_filepath_on_code_review_counts ON code_review_counts(filepath)'
+    update = <<-EOSQL
       UPDATE release_filepaths
         SET num_reviews = num_code_reviews
         FROM code_review_counts
         WHERE release_filepaths.thefilepath = code_review_counts.filepath
               AND release_filepaths.release = '#{release.name}'
     EOSQL
+    ActiveRecord::Base.connection.execute drop
+    ActiveRecord::Base.connection.execute create
+    ActiveRecord::Base.connection.execute index
     ActiveRecord::Base.connection.execute update
   end
 
   def populate_num_reviewers(release)
-    update = <<-EOSQL
-      WITH reviewer_counts AS (
+    drop   = 'DROP TABLE IF EXISTS reviewer_counts'
+    create = <<-EOSQL
+      CREATE UNLOGGED TABLE reviewer_counts AS (
         SELECT filepaths.filepath, count(*) AS num_reviewers
         FROM filepaths INNER JOIN commit_filepaths ON commit_filepaths.filepath = filepaths.filepath
                        INNER JOIN commits ON commits.commit_hash = commit_filepaths.commit_hash
@@ -84,18 +101,25 @@ class ReleaseAnalysis
         WHERE code_reviews.created BETWEEN '1970-01-01 00:00:00' AND '#{release.date}'
         GROUP BY filepaths.filepath
       )
+    EOSQL
+    index  = 'CREATE UNIQUE INDEX index_filepath_on_num_reviewers ON reviewer_counts(filepath)'
+    update = <<-EOSQL
       UPDATE release_filepaths
         SET num_reviewers = reviewer_counts.num_reviewers
         FROM reviewer_counts
         WHERE release_filepaths.thefilepath = reviewer_counts.filepath
           AND release_filepaths.release = '#{release.name}'
     EOSQL
+    ActiveRecord::Base.connection.execute drop
+    ActiveRecord::Base.connection.execute create
+    ActiveRecord::Base.connection.execute index
     ActiveRecord::Base.connection.execute update
   end
 
   def populate_num_participants(release)
-    update = <<-EOSQL
-      WITH participant_counts AS (
+    drop = 'DROP TABLE IF EXISTS participant_counts'
+    create = <<-EOSQL
+      CREATE UNLOGGED TABLE participant_counts AS (
         SELECT filepaths.filepath, count(*) AS num_participants
         FROM filepaths INNER JOIN commit_filepaths ON commit_filepaths.filepath = filepaths.filepath
                        INNER JOIN commits ON commits.commit_hash = commit_filepaths.commit_hash
@@ -104,15 +128,19 @@ class ReleaseAnalysis
         WHERE code_reviews.created BETWEEN '1970-01-01 00:00:00' AND '#{release.date}'
         GROUP BY filepaths.filepath
       )
+    EOSQL
+    index = 'CREATE UNIQUE INDEX index_filepath_on_participant_counts ON participant_counts(filepath)'
+    update = <<-EOSQL
       UPDATE release_filepaths
         SET num_participants = participant_counts.num_participants
         FROM participant_counts
         WHERE release_filepaths.thefilepath = participant_counts.filepath
           AND release_filepaths.release = '#{release.name}'
     EOSQL
+    ActiveRecord::Base.connection.execute drop
+    ActiveRecord::Base.connection.execute create
+    ActiveRecord::Base.connection.execute index
     ActiveRecord::Base.connection.execute update
   end
-
-
 
 end
