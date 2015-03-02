@@ -120,7 +120,12 @@ class ReleaseAnalysis
     drop = 'DROP TABLE IF EXISTS participant_counts'
     create = <<-EOSQL
       CREATE UNLOGGED TABLE participant_counts AS (
-        SELECT filepaths.filepath, count(*) AS num_participants
+        SELECT filepaths.filepath, 
+               COUNT(*) AS num_participants,
+               COUNT( CASE WHEN participants.security_experienced = 't' 
+                           THEN 1
+                           ELSE null
+                      END ) AS num_security_experienced_participants
         FROM filepaths INNER JOIN commit_filepaths ON commit_filepaths.filepath = filepaths.filepath
                        INNER JOIN commits ON commits.commit_hash = commit_filepaths.commit_hash
                        INNER JOIN code_reviews ON code_reviews.commit_hash = commits.commit_hash
