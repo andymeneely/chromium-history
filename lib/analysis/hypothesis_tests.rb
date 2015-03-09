@@ -189,7 +189,7 @@ class HypothesisTests
     R.eval <<-EOR
         
         #Increase console width
-        options("width"=400)
+        options("width"=250)
 
         release_filepaths_data <- dbGetQuery(con, "
         SELECT 
@@ -221,7 +221,6 @@ class HypothesisTests
         r27 <- release_filepaths_data[ which(release_filepaths_data$release == '27.0'),-c(1)]
         r35 <- release_filepaths_data[ which(release_filepaths_data$release == '35.0'),-c(1)]
 
-        print(names(r05))
         cat("MODELING FOR RELEASE 05\n")
         release_modeling(r05,r11)
 

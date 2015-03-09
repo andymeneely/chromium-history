@@ -86,10 +86,19 @@ release_modeling <- function(release,release.next){
                                         release.next$becomes_vulnerable != FALSE) 
                                       & release.next$sloc > 0)
 
+  
   # Normalize and center data, added one to the values to be able to calculate log to zero. log(1)=0
-  release = cbind(as.data.frame(log(release[,-c(14:17)] + 1)), becomes_vulnerable = release$becomes_vulnerable)
-  release.next = cbind(as.data.frame(log(release.next[,-c(14:17)] + 1)), becomes_vulnerable = release.next$becomes_vulnerable)
+  release = cbind(as.data.frame(log(release[,c(1:13)] + 1)), 
+            becomes_vulnerable = release$becomes_vulnerable,
+            was_buggy = release$was_buggy,
+            becomes_buggy = release$becomes_buggy,
+            was_vulnerable = release$was_vulnerable)
 
+  release.next = cbind(as.data.frame(log(release.next[,c(1:13)] + 1)), 
+            becomes_vulnerable = release.next$becomes_vulnerable,
+            was_buggy = release.next$was_buggy,
+            becomes_buggy = release.next$becomes_buggy,
+            was_vulnerable = release.next$was_vulnerable)
   # Modeling (forward selection)
   # Individual Models
   fit_null <- glm(formula = becomes_vulnerable ~ 1, 
@@ -117,15 +126,24 @@ release_modeling <- function(release,release.next){
 
   fit_build <- glm (formula= becomes_vulnerable ~ sloc + num_pre_build_bugs + num_pre_tests_fails_bugs, 
                         data = release, family = "binomial")     
+
+  #history models
+  fit_vuln_to_vuln <- glm(formula = becomes_vulnerable ~ sloc + was_vulnerable, 
+                  data = release, family = "binomial")
+  fit_bug_to_vuln <- glm(formula = becomes_vulnerable ~ sloc + was_buggy, 
+                  data = release, family = "binomial")
+  fit_bug_to_bug <- glm(formula = becomes_buggy ~ sloc + was_buggy, 
+                  data = release, family = "binomial")
+
   
-  best_fit_AIC <- bestglm(release,family=binomial,IC = "AIC")
+  #best_fit_AIC <- bestglm(release,family=binomial,IC = "AIC")
 
   # Display Results:
   cat("\nRelease Summary\n")
   print(summary(release))
 
   cat("\nSpearman's Correlation\n")
-  print(cor(release[,-c(1,2,10)],method="spearman"))
+  print(cor(release[,c(5:11)],method="spearman"))
 
   release_v <- release[ which(release$becomes_vulnerable == TRUE), ]
   release_n <- release[ which(release$becomes_vulnerable == FALSE), ]
@@ -196,8 +214,18 @@ release_modeling <- function(release,release.next){
   print(summary(fit_stability))
   cat("fit_build\n")
   print(summary(fit_build))
-  cat("best_fit_AIC\n")
-  print(summary(best_fit_AIC$BestModel))
+  #cat("best_fit_AIC\n")
+  #print(summary(best_fit_AIC$BestModel))
+
+  cat("\n")
+  cat("# Summary History Models\n")
+  cat("fit_vuln_to_vuln\n")
+  print(summary(fit_vuln_to_vuln))
+  cat("fit_bug_to_vuln\n")  
+  print(summary(fit_bug_to_vuln))
+  cat("fit_bug_to_bug\n")            
+  print(summary(fit_bug_to_bug))
+
 
   cat("\n")
   cat("# D^2 Analysys\n")
@@ -219,8 +247,17 @@ release_modeling <- function(release,release.next){
   print(Dsquared(model = fit_stability))
   cat("For fit_build\n")
   print(Dsquared(model = fit_build))
-  cat("For best_fit_AIC\n")
-  print(Dsquared(model = best_fit_AIC$BestModel))
+  #cat("For best_fit_AIC\n")
+  #rint(Dsquared(model = best_fit_AIC$BestModel))
+
+  cat("\n")
+  cat("# Summary History Models\n")
+  cat("fit_vuln_to_vuln\n")
+  print(Dsquared(model = fit_vuln_to_vuln))
+  cat("fit_bug_to_vuln\n")  
+  print(Dsquared(model = fit_bug_to_vuln))
+  cat("fit_bug_to_bug\n")            
+  print(Dsquared(model = fit_bug_to_bug))
 
   cat("\n")
   cat("# Prediction Analysis\n")
@@ -243,8 +280,17 @@ release_modeling <- function(release,release.next){
   print(prediction_analysis(fit_stability,release.next))
   cat("For fit_build\n")
   print(prediction_analysis(fit_build,release.next))
-  cat("For best_fit_AIC\n")
-  print(prediction_analysis(best_fit_AIC$BestModel,release.next))
+  #cat("For best_fit_AIC\n")
+  #print(prediction_analysis(best_fit_AIC$BestModel,release.next))
+
+  cat("\n")
+  cat("# Summary History Models\n")
+  cat("fit_vuln_to_vuln\n")
+  print(prediction_analysis(fit_vuln_to_vuln,release.next))
+  cat("fit_bug_to_vuln\n")  
+  print(prediction_analysis(fit_bug_to_vuln,release.next))
+  cat("fit_bug_to_bug\n")            
+  print(prediction_analysis(fit_bug_to_bug,release.next))
 
   options(warn=0)
 }
