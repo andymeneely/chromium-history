@@ -16,13 +16,9 @@ class ReleaseAnalysis
         Release.all.each do |r|
           r.release_filepaths.find_each do |rf|
             rf.perc_three_more_reviewers = rf.filepath.perc_three_more_reviewers(r.date)
-            rf.perc_security_experienced_participants  = rf.filepath.perc_security_exp_part(r.date)
-            rf.avg_security_experienced_participants = rf.filepath.avg_security_exp_part(r.date)
-            rf.avg_non_participating_revs  = rf.filepath.avg_non_participating_revs(r.date)
             rf.avg_reviews_with_owner  = rf.filepath.avg_reviews_with_owner(r.date)
             rf.avg_owner_familiarity_gap = rf.filepath.avg_owner_familiarity_gap(r.date)
             rf.perc_fast_reviews = rf.filepath.perc_fast_reviews(r.date)
-            rf.perc_overlooked_patchsets = rf.filepath.perc_overlooked_patchsets(r.date)
             rf.avg_sheriff_hours = rf.filepath.avg_sheriff_hours(r.date)
             # rf.num_commits = rf.filepath.commits(r.date).size
             # rf.num_major_contributors = rf.filepath.num_major_contributors(r.date).size
