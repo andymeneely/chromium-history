@@ -49,6 +49,8 @@ class ReleaseVerify < VerifyBase
     assert_equal(1, rf.num_reviews)
     assert_equal(2, rf.num_reviewers)
     assert_equal(3, rf.num_participants)
+    assert_equal(0,  rf.num_security_experienced_participants.to_i)
+    assert_equal(0,  rf.avg_security_experienced_participants.to_i)
     assert_equal(true, (rf.avg_sheriff_hours - 0.0).abs < 0.01)
     assert_equal(true, (rf.perc_fast_reviews - 1.0).abs < 0.01)
   end

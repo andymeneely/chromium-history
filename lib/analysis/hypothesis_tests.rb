@@ -9,22 +9,22 @@ class HypothesisTests
   def run
     puts "\n=== Hypothesis Test Results ===\n\n"
     connect_to_db
-    #Release.order(:date).each do |release|
-      #puts "="*80
-      #puts "===== FOR RELEASE #{release.name} ====="
-      #puts "="*80
-      #query_db(release.name)
+    Release.order(:date).each do |release|
+      puts "="*80
+      puts "===== FOR RELEASE #{release.name} ====="
+      puts "="*80
+      query_db(release.name)
       
       #puts "-"*80
       #puts "----- BUG ASSOCIATION FOR RELEASE #{release.name} -----"
       #puts "-"*80
       #bug_association_tests
       
-      #puts "-"*80
-      #puts "----- VULNERABILITY ASSOCIATION FOR RELEASE #{release.name} -----"
-      #puts "-"*80
-      #vulnerability_association_tests
-    #end
+      puts "-"*80
+      puts "----- VULNERABILITY ASSOCIATION FOR RELEASE #{release.name} -----"
+      puts "-"*80
+      vulnerability_association_tests
+    end
 
     puts "-"*80
     puts "----- LOGISTIC REGRESSION MODELING -----"
@@ -96,7 +96,6 @@ class HypothesisTests
     association 'Number of Reviews', 'num_reviews','vulnerable'
     association 'Number of Reviewers', 'num_reviewers','vulnerable'
     association 'Number of Participants', 'num_participants','vulnerable'
-    association 'Avg # Non-Participating Reviewers','avg_non_participating_revs','vulnerable'
     association '% Reviews with 3 or more Reviewers','perc_three_more_reviewers','vulnerable'
     association '% Reviews with a Security-Experienced Participant', 'perc_security_experienced_participants','vulnerable'
     association 'Avg Security-Experienced Participants', 'avg_security_experienced_participants','vulnerable'

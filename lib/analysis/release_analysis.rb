@@ -7,7 +7,7 @@ class ReleaseAnalysis
       Benchmark.bm(40) do |x|
         x.report ('Populate num_reviews') {populate_num_reviews(r)}
         x.report ('Populate num_reviewers') {populate_num_reviewers(r)}
-        x.report ('Populate num_participants') {populate_num_participants(r)}
+        x.report ('Populate participant metrics') {populate_participants(r)}
         x.report ('Populate owners data') {populate_owners_data(r)}
       end
     end
@@ -113,7 +113,7 @@ class ReleaseAnalysis
     ActiveRecord::Base.connection.execute update
   end
 
-  def populate_num_participants(release)
+  def populate_participants(release)
     drop = 'DROP TABLE IF EXISTS participant_counts'
     create = <<-EOSQL
       CREATE UNLOGGED TABLE participant_counts AS (
@@ -134,7 +134,9 @@ class ReleaseAnalysis
     index = 'CREATE UNIQUE INDEX index_filepath_on_participant_counts ON participant_counts(filepath)'
     update = <<-EOSQL
       UPDATE release_filepaths
-        SET num_participants = participant_counts.num_participants
+        SET num_participants = participant_counts.num_participants,
+            num_security_experienced_participants = participant_counts.num_security_experienced_participants,
+            avg_security_experienced_participants = participant_counts.num_security_experienced_participants / participant_counts.num_participants
         FROM participant_counts
         WHERE release_filepaths.thefilepath = participant_counts.filepath
           AND release_filepaths.release = '#{release.name}'
