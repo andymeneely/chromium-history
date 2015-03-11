@@ -104,11 +104,6 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.integer "num_authors_affected"
   end
  
-  # create_table "contributors", id: false, force: true do |t|
-  #   t.integer "dev_id"
-  #   t.integer "issue",  limit: 8
-  # end
-
   create_table "cvenums", id: false, force: true do |t|
     t.string "cve"
   end
@@ -202,6 +197,7 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.integer "num_reviews"
     t.integer "num_reviewers"
     t.integer "num_participants"
+    t.integer "num_owners"
     t.decimal "avg_non_participating_revs"
     t.decimal "perc_three_more_reviewers"
     t.decimal "perc_security_experienced_participants"
@@ -235,15 +231,15 @@ ActiveRecord::Schema.define(version: 20140512131450) do
   create_table "release_owners", id: false, force: true do |t|
     t.string   "release"
     t.string   "filepath"
-	t.string   "directory"
-	t.integer  "dev_id"
+    t.string   "directory"
+    t.integer  "dev_id"
     t.string   "owner_email"
-	t.string   "first_ownership_sha"
-	t.datetime "first_ownership_date"
-	t.datetime "first_file_commit_sha"
-	t.string   "first_file_commit_date"
-	t.integer  "file_commits_to_ownership"
-	t.integer  "file_commits_to_release"
+    t.string   "first_ownership_sha"
+    t.datetime "first_ownership_date"
+    t.datetime "first_file_commit_sha"
+    t.string   "first_file_commit_date"
+    t.integer  "file_commits_to_ownership"
+    t.integer  "file_commits_to_release"
   end
 
   create_table "reviewers", id: false, force: true do |t|

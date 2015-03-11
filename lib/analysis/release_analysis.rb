@@ -8,6 +8,7 @@ class ReleaseAnalysis
         x.report ('Populate num_reviews') {populate_num_reviews(r)}
         x.report ('Populate num_reviewers') {populate_num_reviewers(r)}
         x.report ('Populate num_participants') {populate_num_participants(r)}
+        x.report ('Populate owners data') {populate_owners_data(r)}
       end
     end
     puts "=== Slow populations ==="
@@ -136,6 +137,32 @@ class ReleaseAnalysis
         SET num_participants = participant_counts.num_participants
         FROM participant_counts
         WHERE release_filepaths.thefilepath = participant_counts.filepath
+          AND release_filepaths.release = '#{release.name}'
+    EOSQL
+    ActiveRecord::Base.connection.execute drop
+    ActiveRecord::Base.connection.execute create
+    ActiveRecord::Base.connection.execute index
+    ActiveRecord::Base.connection.execute update
+  end
+
+
+  def populate_owners_data(release)
+    drop = 'DROP TABLE IF EXISTS owners_counts'
+    create = <<-EOSQL
+      CREATE UNLOGGED TABLE owners_counts AS (
+        SELECT filepaths.filepath, 
+               COUNT(*) AS num_owners
+        FROM filepaths INNER JOIN release_owners ON filepaths.filepath = release_owners.filepath
+        WHERE release_owners.release = '#{release.name}'
+        GROUP BY filepaths.filepath
+      )
+    EOSQL
+    index = 'CREATE UNIQUE INDEX index_filepath_on_owners_counts ON owners_counts(filepath)'
+    update = <<-EOSQL
+      UPDATE release_filepaths
+        SET num_owners = owners_counts.num_owners
+        FROM owners_counts
+        WHERE release_filepaths.thefilepath = owners_counts.filepath
           AND release_filepaths.release = '#{release.name}'
     EOSQL
     ActiveRecord::Base.connection.execute drop
