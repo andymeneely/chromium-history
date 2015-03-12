@@ -41,7 +41,20 @@ class CodeReviewParser
                  nil, # for total_sheriff_hours
                  nil] # for cursory
 
-        @prtp_set.each {|p| @prtps << [p,owner_id,cobj['issue'],cobj['created'],nil,nil,nil,nil,nil,nil,nil,nil,nil]}
+        @prtp_set.each {|p| @prtps << [p,
+                                       owner_id,
+                                       cobj['issue'],
+                                       cobj['created'],
+                                       0,    # reviews_with_owner
+                                       nil,  # security_experienced
+                                       nil,  # security_adjacencys
+                                       nil,  # bug_security_experienced
+                                       nil,  # stability_experienced
+                                       nil,  # build_experienced
+                                       nil,  # test_fail_experienced
+                                       nil,  # compatibility_experienced
+                                       nil   # sheriff_hours
+                                      ]}
         @contrb_set.each {|c| @contrbs << [c,cobj['issue']]}
         @revs_dict.each {|id, email| @revs << [cobj['issue'],id, email]}
 

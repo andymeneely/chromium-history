@@ -1,20 +1,17 @@
 class ParticipantAnalysis 
-
-  # At a given code review, each participant may have had prior experience with the code
-  # review's owner. Count those prior experiences and update reviews_with_owner 
-  def populate_reviews_with_owner
-    Participant.find_each do |participant|
-      c = participant.code_review
-
-      #find all the code reviews where the owner is owner and one of the reviewers is participant
-      #and only include reviews that were done before this one
-      reviews = Participant\
-        .where("owner_id = ? AND review_date < ? AND dev_id = ? AND dev_id<>owner_id ", \
-               c.owner_id, c.created, participant.dev_id)
-
-      participant.update(reviews_with_owner: reviews.count)
-    end
-  end#method
+  
+  def populate_adjacency_list
+    insert=<<-EOSQL
+      INSERT INTO adjacency_list(dev1_id, dev2_id, issue, review_date)
+        SELECT p1.dev_id, p2.dev_id, p1.issue, p1.review_date
+        FROM participants p1 INNER JOIN participants p2 
+             ON ( p1.issue = p2.issue
+                  AND p1.dev_id < p2.dev_id )
+    EOSQL
+    index = 'CREATE INDEX index_adjacency_list_on_dev_ids ON adjacency_list(dev1_id, dev2_id)'
+    ActiveRecord::Base.connection.execute insert
+    ActiveRecord::Base.connection.execute index
+  end
 
   # At the given code review, each participant may or may not have had experience in bug-label related reviews. 
   def populate_bug_related_experience
@@ -41,19 +38,6 @@ class ParticipantAnalysis
     end
   end
 
-  def populate_adjacency_list
-    insert=<<-EOSQL
-      INSERT INTO adjacency_list(dev1_id, dev2_id, issue)
-        SELECT p1.dev_id, p2.dev_id, p1.issue
-        FROM participants p1 INNER JOIN participants p2 
-             ON ( p1.issue = p2.issue
-                  AND p1.dev_id < p2.dev_id )
-    EOSQL
-    index = 'CREATE INDEX index_adjacency_list_on_dev_ids ON adjacency_list(dev1_id, dev2_id)'
-    ActiveRecord::Base.connection.execute insert
-    ActiveRecord::Base.connection.execute index
-  end
-
   # Determine the number of security experienced participants (SEP) who a given
   # participant has worked with before a given code review.
   def populate_security_adjacencys
@@ -66,4 +50,40 @@ class ParticipantAnalysis
     #  participant.save
     #end
   end#method
+  
+  # At a given code review, each participant may have had prior experience with the code
+  # review's owner. Count those prior experiences and update reviews_with_owner 
+  def populate_reviews_with_owner
+    drop = 'DROP TABLE IF EXISTS reviews_with_owner_counts'
+    # Give me the participations where 
+    #  (a) the owner and participant participated together 
+    #  (b) the review happened in the past
+    #  ...then count those and aggregated it for each participant entry
+    create = <<-EOSQL
+      CREATE UNLOGGED TABLE reviews_with_owner_counts AS (
+        SELECT p_owner.id, 
+               COUNT(*) AS reviews_with_owner
+        FROM participants p_owner INNER JOIN adjacency_list al
+          ON ( ( (p_owner.owner_id = al.dev1_id AND p_owner.dev_id = al.dev2_id)
+                  OR 
+                 (p_owner.owner_id = al.dev2_id AND p_owner.dev_id = al.dev1_id)
+               )
+               AND al.review_date < p_owner.review_date
+             )
+        GROUP BY p_owner.id
+      )
+    EOSQL
+    index = 'CREATE UNIQUE INDEX index_reviews_with_owner_count_on_id ON reviews_with_owner_counts(id)'
+    update = <<-EOSQL
+      UPDATE participants
+      SET reviews_with_owner = reviews_with_owner_counts.reviews_with_owner
+      FROM reviews_with_owner_counts
+      WHERE participants.id = reviews_with_owner_counts.id
+    EOSQL
+    ActiveRecord::Base.connection.execute drop
+    ActiveRecord::Base.connection.execute create
+    ActiveRecord::Base.connection.execute index
+    ActiveRecord::Base.connection.execute update
+  end#method
+
 end#class
