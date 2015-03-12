@@ -122,7 +122,8 @@ class ReleaseAnalysis
                COUNT( CASE WHEN participants.security_experienced = 't' 
                            THEN 1
                            ELSE null
-                      END ) AS num_security_experienced_participants
+                      END ) AS num_security_experienced_participants,
+               SUM(security_adjacencys) AS security_adjacencys
         FROM filepaths INNER JOIN commit_filepaths ON commit_filepaths.filepath = filepaths.filepath
                        INNER JOIN commits ON commits.commit_hash = commit_filepaths.commit_hash
                        INNER JOIN code_reviews ON code_reviews.commit_hash = commits.commit_hash
@@ -136,7 +137,8 @@ class ReleaseAnalysis
       UPDATE release_filepaths
         SET num_participants = participant_counts.num_participants,
             num_security_experienced_participants = participant_counts.num_security_experienced_participants,
-            avg_security_experienced_participants = participant_counts.num_security_experienced_participants / participant_counts.num_participants
+            avg_security_experienced_participants = participant_counts.num_security_experienced_participants / participant_counts.num_participants,
+            security_adjacencys = participant_counts.security_adjacencys
         FROM participant_counts
         WHERE release_filepaths.thefilepath = participant_counts.filepath
           AND release_filepaths.release = '#{release.name}'
