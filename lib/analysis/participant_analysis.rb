@@ -44,13 +44,13 @@ class ParticipantAnalysis
   # Determine the number of security experienced participants (SEP) who a given
   # participant has worked with before a given code review.
   def populate_security_adjacencys
-    Participant.find_each do |participant|
-      # Get all SEP counts from all prior code reviews a given participant was in.
-      # sep_adj = all_participants.count(:dev_id, :conditions => ["security_experienced = true AND dev_id <> ? AND review_date < ?", participant.dev_id, cr.created])
-      query = Participant.where("review_date < ? AND dev_id <> ? AND security_experienced = ?", participant.review_date, participant.dev_id, true)
-      sep_adj = query.count(:dev_id)
-      participant.security_adjacencys = sep_adj
-      participant.save
-    end
+    #Participant.find_each do |participant|
+    #  # Get all SEP counts from all prior code reviews a given participant was in.
+    #  # sep_adj = all_participants.count(:dev_id, :conditions => ["security_experienced = true AND dev_id <> ? AND review_date < ?", participant.dev_id, cr.created])
+    #  query = Participant.where("review_date < ? AND dev_id <> ? AND security_experienced = ?", participant.review_date, participant.dev_id, true)
+    #  sep_adj = query.count(:dev_id)
+    #  participant.security_adjacencys = sep_adj
+    #  participant.save
+    #end
   end#method
 end#class
