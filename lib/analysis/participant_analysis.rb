@@ -41,6 +41,19 @@ class ParticipantAnalysis
     end
   end
 
+  def populate_adjacency_list
+    insert=<<-EOSQL
+      INSERT INTO adjacency_list(dev1_id, dev2_id, issue)
+        SELECT p1.dev_id, p2.dev_id, p1.issue
+        FROM participants p1 INNER JOIN participants p2 
+             ON ( p1.issue = p2.issue
+                  AND p1.dev_id < p2.dev_id )
+    EOSQL
+    index = 'CREATE INDEX index_adjacency_list_on_dev_ids ON adjacency_list(dev1_id, dev2_id)'
+    ActiveRecord::Base.connection.execute insert
+    ActiveRecord::Base.connection.execute index
+  end
+
   # Determine the number of security experienced participants (SEP) who a given
   # participant has worked with before a given code review.
   def populate_security_adjacencys

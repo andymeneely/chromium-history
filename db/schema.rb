@@ -13,6 +13,12 @@
 
 ActiveRecord::Schema.define(version: 20140512131450) do
 
+  create_table "adjacency_list", force: true do |t|
+    t.integer "dev1_id"
+    t.integer "dev2_id"
+    t.integer "issue", limit: 8
+  end
+
   create_table "blocks", id: false, force: true do |t|
     t.integer "bug_id"
     t.integer "blocking_id"
