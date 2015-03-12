@@ -47,7 +47,7 @@ class CodeReviewParser
                                        cobj['created'],
                                        0,    # reviews_with_owner
                                        nil,  # security_experienced
-                                       nil,  # security_adjacencys
+                                       0,    # security_adjacencys
                                        nil,  # bug_security_experienced
                                        nil,  # stability_experienced
                                        nil,  # build_experienced

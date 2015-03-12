@@ -21,6 +21,8 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.integer  "dev2_id"
     t.integer  "issue",       limit: 8
     t.datetime "review_date"
+    t.boolean  "dev1_sec_exp"
+    t.boolean  "dev2_sec_exp"
   end
 
   create_table "blocks", id: false, force: true do |t|
