@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20140512131450) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "acm_categories", id: false, force: true do |t|
     t.string "name"
   end
@@ -22,23 +25,18 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.integer "technical_word_id"
   end
 
+  create_table "adjacency_list", force: true do |t|
+    t.integer  "dev1_id"
+    t.integer  "dev2_id"
+    t.integer  "issue",       limit: 8
+    t.datetime "review_date"
+    t.boolean  "dev1_sec_exp"
+    t.boolean  "dev2_sec_exp"
+  end
+
   create_table "blocks", id: false, force: true do |t|
     t.integer "bug_id"
     t.integer "blocking_id"
-  end
-  
-  create_table "bugs", id:false, force: true do |t|
-    t.integer  "bug_id"
-    t.string   "title",   limit: 500
-    t.integer  "stars"
-    t.string   "status"
-    t.string   "reporter"
-    t.datetime "opened" 
-    t.datetime "closed"
-    t.datetime "modified"
-    t.string   "owner_email"
-    t.string   "owner_uri" 
-    t.text     "content"
   end
 
   create_table "bug_comments", id: false, force: true do |t|
@@ -49,9 +47,23 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.datetime "updated"
   end
 
-  create_table "bug_labels",id: false, force: true do |t|
+  create_table "bug_labels", id: false, force: true do |t|
     t.integer "label_id"
     t.integer "bug_id"
+  end
+
+  create_table "bugs", id: false, force: true do |t|
+    t.integer  "bug_id"
+    t.string   "title",       limit: 500
+    t.integer  "stars"
+    t.string   "status"
+    t.string   "reporter"
+    t.datetime "opened"
+    t.datetime "closed"
+    t.datetime "modified"
+    t.string   "owner_email"
+    t.string   "owner_uri"
+    t.text     "content"
   end
 
   create_table "code_reviews", id: false, force: true do |t|
@@ -59,7 +71,7 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.string   "subject"
     t.datetime "created"
     t.datetime "modified"
-    t.integer  "issue",       limit: 8
+    t.integer  "issue",                    limit: 8
     t.string   "owner_email"
     t.integer  "owner_id"
     t.string   "commit_hash"
@@ -84,21 +96,9 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.datetime "date"
     t.boolean  "left"
     t.string   "composite_patch_set_file_id", limit: 1000
-    t.integer  "code_review_id",  limit: 8
+    t.integer  "code_review_id",              limit: 8
   end
 
-  create_table "commits", id: false, force: true do |t|
-    t.string   "commit_hash"
-    t.string   "parent_commit_hash"
-    t.string   "author_email"
-    t.integer  "author_id"
-    t.text     "message"
-    t.text     "bug"
-    t.string   "reviewers"
-    t.datetime "created_at"
-    t.boolean  "non-trivial"
-  end
-  
   create_table "commit_bugs", id: false, force: true do |t|
     t.string  "commit_hash"
     t.integer "bug_id"
@@ -112,11 +112,18 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.integer "lines_deleted_other"
     t.integer "num_authors_affected"
   end
- 
-  # create_table "contributors", id: false, force: true do |t|
-  #   t.integer "dev_id"
-  #   t.integer "issue",  limit: 8
-  # end
+
+  create_table "commits", id: false, force: true do |t|
+    t.string   "commit_hash"
+    t.string   "parent_commit_hash"
+    t.string   "author_email"
+    t.integer  "author_id"
+    t.text     "message"
+    t.text     "bug"
+    t.string   "reviewers"
+    t.datetime "created_at"
+    t.boolean  "non-trivial"
+  end
 
   create_table "cvenums", id: false, force: true do |t|
     t.string "cve"
@@ -124,12 +131,12 @@ ActiveRecord::Schema.define(version: 20140512131450) do
 
   create_table "developers", force: true do |t|
     t.string   "email"
-    t.datetime "security_experience",     :default => "2050/01/01 00:00:00"
-    t.datetime "bug_security_experience", :default => "2050/01/01 00:00:00"
-    t.datetime "stability_experience",    :default => "2050/01/01 00:00:00"
-    t.datetime "build_experience",        :default => "2050/01/01 00:00:00"
-    t.datetime "test_fail_experience",    :default => "2050/01/01 00:00:00"
-    t.datetime "compatibility_experience",:default => "2050/01/01 00:00:00"
+    t.datetime "security_experience",      default: '2050-01-01 00:00:00'
+    t.datetime "bug_security_experience",  default: '2050-01-01 00:00:00'
+    t.datetime "stability_experience",     default: '2050-01-01 00:00:00'
+    t.datetime "build_experience",         default: '2050-01-01 00:00:00'
+    t.datetime "test_fail_experience",     default: '2050-01-01 00:00:00'
+    t.datetime "compatibility_experience", default: '2050-01-01 00:00:00'
   end
 
   create_table "filepaths", id: false, force: true do |t|
@@ -138,7 +145,7 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.string   "filepath",   limit: 500
   end
 
-  create_table "labels",id:false, force: true do |t|
+  create_table "labels", id: false, force: true do |t|
     t.integer "label_id"
     t.string  "label"
   end
@@ -156,12 +163,12 @@ ActiveRecord::Schema.define(version: 20140512131450) do
   create_table "messages_technical_words", id: false, force: true do |t|
     t.integer "message_id"
     t.integer "technical_word_id"
-  end 
+  end
 
   create_table "participants", id: false, force: true do |t|
     t.integer  "dev_id"
     t.integer  "owner_id"
-    t.integer  "issue",                limit: 8
+    t.integer  "issue",                     limit: 8
     t.datetime "review_date"
     t.integer  "reviews_with_owner"
     t.boolean  "security_experienced"
@@ -196,11 +203,6 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.integer  "patchset",               limit: 8
     t.string   "composite_patch_set_id"
   end
-  
-  create_table "releases", id: false, force: true do |t|
-    t.string   "name"
-    t.datetime "date"
-  end
 
   create_table "release_filepaths", id: false, force: true do |t|
     t.string  "release"
@@ -211,10 +213,22 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.integer "num_reviews"
     t.integer "num_reviewers"
     t.integer "num_participants"
+    t.integer "num_owners"
     t.decimal "avg_non_participating_revs"
     t.decimal "perc_three_more_reviewers"
-    t.decimal "perc_security_experienced_participants"
     t.decimal "avg_security_experienced_participants"
+    t.integer "num_security_experienced_participants"
+    t.decimal "avg_bug_security_experienced_participants"
+    t.integer "num_bug_security_experienced_participants"
+    t.decimal "avg_stability_experienced_participants"
+    t.integer "num_stability_experienced_participants"
+    t.decimal "avg_build_experienced_participants"
+    t.integer "num_build_experienced_participants"
+    t.decimal "avg_test_fail_experienced_participants"
+    t.integer "num_test_fail_experienced_participants"
+    t.decimal "avg_compatibility_experienced_participants"
+    t.integer "num_compatibility_experienced_participants"
+    t.integer "security_adjacencys"
     t.decimal "avg_reviews_with_owner"
     t.decimal "avg_owner_familiarity_gap"
     t.decimal "perc_fast_reviews"
@@ -244,15 +258,20 @@ ActiveRecord::Schema.define(version: 20140512131450) do
   create_table "release_owners", id: false, force: true do |t|
     t.string   "release"
     t.string   "filepath"
-	t.string   "directory"
-	t.integer  "dev_id"
+    t.string   "directory"
+    t.integer  "dev_id"
     t.string   "owner_email"
-	t.string   "first_ownership_sha"
-	t.datetime "first_ownership_date"
-	t.datetime "first_file_commit_sha"
-	t.string   "first_file_commit_date"
-	t.integer  "file_commits_to_ownership"
-	t.integer  "file_commits_to_release"
+    t.string   "first_ownership_sha"
+    t.datetime "first_ownership_date"
+    t.datetime "first_file_commit_sha"
+    t.string   "first_file_commit_date"
+    t.integer  "file_commits_to_ownership"
+    t.integer  "file_commits_to_release"
+  end
+
+  create_table "releases", id: false, force: true do |t|
+    t.string   "name"
+    t.datetime "date"
   end
 
   create_table "reviewers", id: false, force: true do |t|
@@ -269,6 +288,7 @@ ActiveRecord::Schema.define(version: 20140512131450) do
   end
 
   create_table "technical_words", id: false, force: true do |t|
-    t.string 'word'
+    t.string "word"
   end
+
 end

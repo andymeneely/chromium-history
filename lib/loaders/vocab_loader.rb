@@ -117,7 +117,7 @@ class VocabLoader
   end
 
   def self.clean_comment_messages string
-    string.gsub(/^http:\/\/codereview.chromium.org\/\d+\/diff.*[\r\n]{1,2}(Line.+:|.+(left|right)\):)/, '')
+    string.gsub(/https?:\/\/codereview.chromium.org\/\d+\/diff[\/\.\w]+\\n(Line \d+:|File [\/\w\.]+ \((right|left)\):)/, '')
   end
   
   def self.remove_quoted_comments string

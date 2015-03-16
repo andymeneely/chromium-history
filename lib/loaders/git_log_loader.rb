@@ -183,7 +183,10 @@ class GitLogLoader
     #add author id 
     dev = Developer.search_or_add author_email_str
     if dev.nil?
-      unless %w(initial.commit).include? author_email_str
+      unless %w(initial.commit
+                license.bot@0039d316-1c4b-4281-b951-d872f2087c98
+                initial.commit@0039d316-1c4b-4281-b951-d872f2087c98
+               ).include? author_email_str
         puts "WARNING! Email invalid for #{author_email_str}"
       end
     else

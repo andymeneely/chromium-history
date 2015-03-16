@@ -41,6 +41,7 @@ module ChromiumHistory
       Rails.configuration.google_spreadsheets = data_yml['google-spreadsheet-ids']
       # For test and production we use the RAM disk
       Rails.configuration.tmpdir = "/run/shm/tmp/#{ENV['USER']}/#{Rails.env}"
+      Rails.configuration.tmpdir = data_yml['tmpdir'] unless data_yml['tmpdir'].nil?
       FileUtils.mkdir_p Rails.configuration.tmpdir
       FileUtils.chmod "o+rwx", Rails.configuration.tmpdir
       Rails.configuration.brown_category = 'all'

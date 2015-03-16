@@ -113,7 +113,7 @@ namespace :run do
       x.report("Deleting duplicate reviewers") {DeveloperConsolidator.new.consolidate_reviewers}
       x.report("Loading release OWNERS") {OwnersLoader.new.load}
       x.report("Optimizing OWNERS") {ReleaseOwner.optimize}
-      x.report("Loading First Ownership"){FirstOwnershipLoader.new.load}
+      #x.report("Loading First Ownership"){FirstOwnershipLoader.new.load}
       x.report("Running PSQL ANALYZE"){ ActiveRecord::Base.connection.execute "ANALYZE" }
       vocab_loader = VocabLoader.new
       x.report('Parsing technical vocab') {vocab_loader.parse_scrape_results}
@@ -127,16 +127,18 @@ namespace :run do
   desc "Analyze the data for metrics"
   task :analyze => :environment do
     Benchmark.bm(40) do |x|
-      x.report("Populating reviews_with_owner"){ParticipantAnalysis.new.populate_reviews_with_owner}
-      x.report("Populating security_experienced"){CodeReviewAnalysis.new.populate_experience_cve}
       x.report("Populating dev experience dates"){CodeReviewAnalysis.new.populate_experience_labels}
+      x.report("Populating security_experienced"){CodeReviewAnalysis.new.populate_experience_cve}
       x.report("Populating participant bug experience"){ParticipantAnalysis.new.populate_bug_related_experience}
+      x.report("Populating adjacency list") {ParticipantAnalysis.new.populate_adjacency_list}
+      x.report("Populating reviews_with_owner"){ParticipantAnalysis.new.populate_reviews_with_owner}
       x.report("Populating total_reviews_with_owner"){CodeReviewAnalysis.new.populate_total_reviews_with_owner}
-      x.report("populating security_adjacencys"){ParticipantAnalysis.new.populate_security_adjacencys}
+      x.report("Populating adjacency counts"){ParticipantAnalysis.new.populate_adjacency_counts}
       x.report("Populating owner_familiarity_gap"){CodeReviewAnalysis.new.populate_owner_familiarity_gap}
       x.report("Populating sheriff_hours") {ParticipantAnalysis.new.populate_sheriff_hours}
       x.report("Populating total_sheriff_hours"){CodeReviewAnalysis.new.populate_total_sheriff_hours}
       x.report("Populating release metrics") {ReleaseAnalysis.new.populate}
+
       #puts "Here are a bunch of SQL Explains"
       #Filepath.print_sql_explains
     end
@@ -171,6 +173,7 @@ namespace :run do
     HypothesisTests.new.run
     #VisualizationQueries.new.run_queries
     #DataVisualization.new.run
+    NlpQueriesAnalysis.new.run
   end
 
   desc "run r data visualization"

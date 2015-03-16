@@ -31,4 +31,9 @@ class ReleaseOwnersVerify < VerifyBase
     assert_equal(rel_filepaths - 1, rel_owners, "Some filepaths are without owners, but count should match. Don't count ALL")
   end
 
+  def verify_num_owners_deleter_h
+    rf = ReleaseFilepath.find_by(thefilepath: 'cc/resources/texture_mailbox_deleter.h', release: '11.0')
+    assert_equal(2, rf.num_owners, 'num_owners not loaded properly')
+  end
+
 end

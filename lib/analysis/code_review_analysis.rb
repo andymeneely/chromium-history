@@ -29,7 +29,6 @@ class CodeReviewAnalysis
     {:field => 'test_fail_experience', :label => 'cr-tests-fails'},
     {:field => 'compatibility_experience', :label => 'type-compat'}
   ]
-  
   def populate_experience_labels
     @@bug_experience_metrics.each do |metric|
       CodeReview.find_each do |review|
@@ -49,6 +48,9 @@ class CodeReviewAnalysis
     end
   end
 
+  # For each vulnerability-inspecting review, update the earliest date
+  # at which the developer participated. At that date, the developer
+  # is security_experienced
   def populate_experience_cve
     CodeReview.joins(:cvenums).find_each do |review|
       review.participants.each do |participant|

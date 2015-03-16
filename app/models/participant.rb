@@ -5,8 +5,9 @@ class Participant < ActiveRecord::Base
   def self.optimize
     connection.add_index :participants, :dev_id
     connection.add_index :participants, :issue
+    connection.add_index :participants, :review_date
     connection.add_index :participants, [:dev_id, :issue], unique: true
-    connection.execute "CLUSTER participants USING index_participants_on_dev_id_and_issue"
+    connection.execute "CLUSTER participants USING index_participants_on_review_date"
   end
 
 end
