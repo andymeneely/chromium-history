@@ -16,6 +16,15 @@ ActiveRecord::Schema.define(version: 20140512131450) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "acm_categories", id: false, force: true do |t|
+    t.string "name"
+  end
+
+  create_table "acm_categories_technical_words", id: false, force: true do |t|
+    t.integer "acm_category_id"
+    t.integer "technical_word_id"
+  end
+
   create_table "adjacency_list", force: true do |t|
     t.integer  "dev1_id"
     t.integer  "dev2_id"

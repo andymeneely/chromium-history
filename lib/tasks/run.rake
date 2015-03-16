@@ -25,6 +25,7 @@ require 'stats'
 require 'nlp/corpus'
 require 'utils/psql_util'
 require 'loaders/vocab_loader'
+require 'nlp/lazy_binary_search_tree'
 require 'oj'
 
 # CodeReviewParser.new.parse: Parses JSON files in the codereviews dircetory for the enviornment we're working in.
@@ -115,9 +116,11 @@ namespace :run do
       #x.report("Loading First Ownership"){FirstOwnershipLoader.new.load}
       x.report("Running PSQL ANALYZE"){ ActiveRecord::Base.connection.execute "ANALYZE" }
       vocab_loader = VocabLoader.new
+      x.report('Parsing technical vocab') {vocab_loader.parse_scrape_results}
       x.report('Generating technical vocab') {vocab_loader.load}
       x.report('Associating vocab words with messages'){vocab_loader.reassociate_messages}
       x.report("Running PSQL ANALYZE"){ ActiveRecord::Base.connection.execute "ANALYZE" }
+      x.report('Associating vocab words with messages'){vocab_loader.reassociate_categories}
     end
   end
   
