@@ -9,6 +9,7 @@ class ReleaseAnalysis
         x.report ('Populate num_reviewers') {populate_num_reviewers(r)}
         x.report ('Populate participant metrics') {populate_participants(r)}
         x.report ('Populate owners data') {populate_owners_data(r)}
+        x.report ('Populate ownership data'){populate_ownership_data(r)}
       end
     end
     puts "=== Slow populations ==="
@@ -202,6 +203,35 @@ class ReleaseAnalysis
     ActiveRecord::Base.connection.execute drop
     ActiveRecord::Base.connection.execute create
     ActiveRecord::Base.connection.execute index
+    ActiveRecord::Base.connection.execute update
+  end
+
+  def populate_ownership_data(release)
+    drop = 'DROP TABLE IF EXISTS ownership_avgs'
+    
+    create = <<-EOSQL
+    CREATE UNLOGGED TABLE ownership_avgs AS 
+      (SELECT release_owners.release orelease, release_owners.filepath AS ofilepath, 
+              AVG(EXTRACT(epoch FROM (release_owners.first_ownership_date - release_owners.first_dir_commit_date))/86400) AS avg_tto, 
+              AVG(release_owners.dir_commits_to_ownership) AS avg_cto, 
+              AVG(EXTRACT(epoch FROM (releases.date - release_owners.first_ownership_date))/86400) AS avg_otr, 
+              AVG(release_owners.dir_commits_to_release) AS avg_ctr 
+      FROM release_owners INNER JOIN releases ON release_owners.release = releases.name 
+      GROUP BY orelease, ofilepath) 
+    EOSQL
+    
+    update = <<-EOSQL
+    UPDATE release_filepaths 
+      SET avg_time_to_ownership = ownership_avgs.avg_tto, 
+          avg_commits_to_ownership = ownership_avgs.avg_cto, 
+          avg_ownership_time_to_release = ownership_avgs.avg_otr, 
+          avg_owner_commits_to_release  = ownership_avgs.avg_ctr 
+      FROM ownership_avgs 
+      WHERE release_filepaths.thefilepath = ownership_avgs.ofilepath AND release_filepaths.release = ownership_avgs.orelease AND release_filepaths.release = '#{release.name}'
+    EOSQL
+    
+    ActiveRecord::Base.connection.execute drop
+    ActiveRecord::Base.connection.execute create
     ActiveRecord::Base.connection.execute update
   end
 
