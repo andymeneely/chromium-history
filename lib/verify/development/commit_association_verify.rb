@@ -7,7 +7,7 @@ class CommitAssociationVerify < VerifyBase
   end
 
   def verify_commit_filepath_to_cve
-    assert_equal true, CommitFilepath.where(filepath: 'ui/base/x/x11_util.cc').take.cve?
+    assert_equal true, CommitFilepath.where(filepath: 'ui/base/x/x11_util.cc', commit_hash: '5310d2470d215590ed6bbffe32da70fcbd45d12a').take.cve?
   end
 
 #  def verify_commit_filepath_lin_del_oth

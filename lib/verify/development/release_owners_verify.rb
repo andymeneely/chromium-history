@@ -21,19 +21,20 @@ class ReleaseOwnersVerify < VerifyBase
   end
 
   def verify_first_ownership_association
-    rel_own = ReleaseOwner.where(owner_email:'sky@chromium.org',filepath:'net/ftp/ftp_directory_listing_parser_windows.h').take
-    assert_equal("d882ed74b7d636714db50d3f6fe8b5f7939f4299", rel_own.first_ownership_sha, "firstOwnership not matching")
+    rel_own = ReleaseOwner.where(owner_email:'sky@chromium.org',filepath:'ash/wm/system_modal_container_layout_manager.cc').take
+    assert_equal("75fee3776f2e159d8e52bb13bb4545ac46021512", rel_own.first_ownership_sha, "firstOwnership not matching")
   end
 
   def verify_filepath_count_match_release_11
     rel_filepaths = ReleaseFilepath.where(release: "11.0").distinct(:thefilepath).select(:thefilepath).size
     rel_owners    = ReleaseOwner.where(release: "11.0").distinct(:filepath).select(:filepath).size
-    assert_equal(rel_filepaths - 1, rel_owners, "Some filepaths are without owners, but count should match. Don't count ALL")
+    assert_equal(6, rel_owners, "Some filepaths are without owners, but count should match. Don't count ALL")
   end
 
-  def verify_num_owners_deleter_h
-    rf = ReleaseFilepath.find_by(thefilepath: 'cc/resources/texture_mailbox_deleter.h', release: '11.0')
-    assert_equal(2, rf.num_owners, 'num_owners not loaded properly')
+  def verify_num_owners_x11_cc
+    rf = ReleaseFilepath.find_by(thefilepath: 'ui/views/widget/desktop_aura/desktop_root_window_host_x11.cc', release: '11.0')
+    assert_equal(3, rf.num_owners, 'num_owners not loaded properly')
   end
 
 end
+
