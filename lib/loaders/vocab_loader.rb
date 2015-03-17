@@ -89,11 +89,19 @@ class VocabLoader
     reassociate 'acm_abstracts', 'text', 'acm_abstracts_technical_words'
   end
 
-  def reassociate target_table, searchable_field, linking_table
+  def associate_code_review_descriptions
+    reassociate 'code_reviews', 'description', 'code_reviews_technical_words', 'issue'
+  end
+
+  def associate_git_log_messages
+    reassociate 'commits', 'message', 'commits_technical_words'
+  end
+
+  def reassociate target_table, searchable_field, linking_table, index_id='id'
     tmp_file = "#{@tmp_dir}/copy_tmp.csv"
     query = " 
       SELECT 
-        a.id, 
+        a.#{index_id}, 
         t.id 
       FROM 
         #{target_table} a, 

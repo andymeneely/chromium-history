@@ -43,6 +43,7 @@ class GitLogLoader
         rev.update_attribute(:commit_hash, hash)
       end
     end
+    PsqlUtil.add_auto_increment_key 'commits'
   end
 
   #

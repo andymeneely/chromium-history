@@ -6,6 +6,8 @@ class TechnicalWordVerify < VerifyBase
   end
 
   def verify_word_associations
-    assert_equal 584,  Message.joins(:technical_words).size
+    assert_equal 584, Message.joins(:technical_words).size
+    assert_equal 87, Commit.joins(:technical_words).size
+    assert_equal 39, CodeReview.joins(:technical_words).size
   end
 end

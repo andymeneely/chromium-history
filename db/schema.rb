@@ -98,6 +98,11 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.integer "code_review_id"
   end
 
+  create_table "code_reviews_technical_words", id: false, force: true do |t|
+    t.integer "code_review_id", limit: 8
+    t.integer "technical_word_id"
+  end
+
   create_table "comments", id: false, force: true do |t|
     t.string   "author_email"
     t.integer  "author_id"
@@ -134,6 +139,11 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.string   "reviewers"
     t.datetime "created_at"
     t.boolean  "non-trivial"
+  end
+
+  create_table "commits_technical_words", id: false, force: true do |t|
+    t.integer "commit_id"
+    t.integer "technical_word_id"
   end
 
   create_table "cvenums", id: false, force: true do |t|

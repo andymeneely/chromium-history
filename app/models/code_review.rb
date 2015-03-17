@@ -7,6 +7,7 @@ class CodeReview < ActiveRecord::Base
   belongs_to :commit, foreign_key: "commit_hash", primary_key: "commit_hash"
   
   has_and_belongs_to_many :cvenums
+  has_and_belongs_to_many :technical_words
   
   self.primary_key = :issue
   
@@ -15,6 +16,7 @@ class CodeReview < ActiveRecord::Base
     connection.add_index :code_reviews, :created, order: :asc
     connection.add_index :code_reviews, :owner_id
     connection.add_index :code_reviews, :commit_hash
+    PsqlUtil.add_fulltext_search_index 'code_reviews', 'description'
     # Physically re-arrange code_reviews by date so security_exp_participants is faster
     connection.execute "CLUSTER code_reviews USING index_code_reviews_on_created"
   end

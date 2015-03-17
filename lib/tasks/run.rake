@@ -117,8 +117,11 @@ namespace :run do
       vocab_loader = VocabLoader.new
       x.report('Parsing technical vocab') {vocab_loader.parse_scrape_results}
       x.report('Generating technical vocab') {vocab_loader.load}
-      x.report('Associating vocab words with messages'){vocab_loader.reassociate_messages}
-      x.report('Associating vocab words with categories'){vocab_loader.reassociate_categories}
+      puts 'Associating vocab words with '
+      x.report('messages'){vocab_loader.reassociate_messages}
+      x.report('categories'){vocab_loader.reassociate_categories}
+      x.report('code review descriptions'){vocab_loader.associate_code_review_descriptions}
+      x.report('commit messages'){vocab_loader.associate_git_log_messages}
     end
   end
   
