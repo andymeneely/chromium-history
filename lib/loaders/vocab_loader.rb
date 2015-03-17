@@ -6,6 +6,61 @@ class VocabLoader
     'rightli'
   ]
 
+  @@CWE_GLOSSARY_TERMS = [
+    'actor',
+    'attacker',
+    'authentication',
+    'authorization',
+    'behavior',
+    'crud',
+    'canonicalization',
+    'canonicalize',
+    'category',
+    'chain',
+    'check',
+    'cleanse',
+    'cleansing',
+    'cleartext',
+    'composite',
+    'consequence',
+    'enforce',
+    'entry',
+    'equivalence',
+    'filter',
+    'filtering',
+    'graph',
+    'handle',
+    'icta',
+    'improper',
+    'incorrect',
+    'insecure',
+    'insufficient',
+    'internal',
+    'leading',
+    'manipulation',
+    'missing',
+    'neutralization',
+    'neutralize',
+    'node',
+    'permissions',
+    'pillar',
+    'plaintext',
+    'property',
+    'reliance',
+    'resolution',
+    'resolve',
+    'resource',
+    'sdlcsanitization',
+    'sanitize',
+    'slice',
+    'trailing',
+    'unexpected',
+    'variant',
+    'view',
+    'vulnerability',
+    'weakness'
+  ]
+
   def initialize
     @tmp_dir = Rails.configuration.tmpdir
     @data_dir = Rails.configuration.datadir
@@ -75,6 +130,9 @@ class VocabLoader
     acm_corpus.filter
     message_corpus.filter
     words = message_corpus.word_intersect acm_corpus.words
+
+    #Inject currated list after filtering
+    words += stem_words @@CWE_GLOSSARY_TERMS
     block = lambda do |table|
       words.each do |word|
         table << [word] unless @@STEM_BLACKLIST.include? word
@@ -118,6 +176,14 @@ class VocabLoader
      "
     PsqlUtil.copy_to_file query, tmp_file
     PsqlUtil.copy_from_file linking_table, tmp_file
+  end
+
+  def stem_words words
+    stemmed_words = []
+    words.each do |word|
+      stemmed_words << PsqlUtil.execute("SELECT word FROM to_tsquery('#{word}') AS word")[0]['word']
+    end
+    stemmed_words
   end
 
   def self.clean_file target_file, output_file
