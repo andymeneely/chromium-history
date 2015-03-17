@@ -2,6 +2,10 @@ require 'oj'
 
 class VocabLoader
 
+  @@STEM_BLACKLIST = [
+    'rightli'
+  ]
+
   def initialize
     @tmp_dir = Rails.configuration.tmpdir
     @data_dir = Rails.configuration.datadir
@@ -58,7 +62,10 @@ class VocabLoader
     PsqlUtil.add_index 'acm_abstracts', 'id'
     PsqlUtil.add_fulltext_search_index 'acm_abstracts', 'text'
     PsqlUtil.copy_from_file 'acm_abstracts_acm_categories', "#{@tmp_dir}/acm_abstracts_acm_categories.csv"
+    generate_vocab
+  end
 
+  def generate_vocab 
     raw = @tmp_dir+'/raw_messages.txt'
     Message.get_all_messages raw
     VocabLoader.clean_file raw, @tmp_dir+'/messages.txt'
@@ -70,7 +77,7 @@ class VocabLoader
     words = message_corpus.word_intersect acm_corpus.words
     block = lambda do |table|
       words.each do |word|
-        table << [word]
+        table << [word] unless @@STEM_BLACKLIST.include? word
       end
     end
     vocab_file = "#{@tmp_dir}/vocab.csv"
