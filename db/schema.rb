@@ -225,6 +225,10 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.decimal "perc_fast_reviews"
     t.decimal "perc_overlooked_patchsets"
     t.decimal "avg_sheriff_hours"
+    t.decimal "avg_time_to_ownership"
+    t.decimal "avg_commits_to_ownership"
+    t.decimal "avg_ownership_time_to_release"
+    t.decimal "avg_owner_commits_to_release"
     t.boolean "vulnerable"
     t.integer "num_vulnerabilities"
     t.integer "num_pre_bugs"
@@ -254,10 +258,10 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.string   "owner_email"
     t.string   "first_ownership_sha"
     t.datetime "first_ownership_date"
-    t.datetime "first_file_commit_sha"
-    t.string   "first_file_commit_date"
-    t.integer  "file_commits_to_ownership"
-    t.integer  "file_commits_to_release"
+    t.datetime "first_dir_commit_date"
+    t.string   "first_dir_commit_sha"
+    t.integer  "dir_commits_to_ownership"
+    t.integer  "dir_commits_to_release"
   end
 
   create_table "releases", id: false, force: true do |t|
