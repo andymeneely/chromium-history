@@ -9,22 +9,22 @@ class HypothesisTests
   def run
     puts "\n=== Hypothesis Test Results ===\n\n"
     connect_to_db
-    Release.order(:date).each do |release|
-      puts "="*80
-      puts "===== FOR RELEASE #{release.name} ====="
-      puts "="*80
-      query_db(release.name)
+    #Release.order(:date).each do |release|
+      #puts "="*80
+      #puts "===== FOR RELEASE #{release.name} ====="
+      #puts "="*80
+      #query_db(release.name)
       
       #puts "-"*80
       #puts "----- BUG ASSOCIATION FOR RELEASE #{release.name} -----"
       #puts "-"*80
       #bug_association_tests
       
-      puts "-"*80
-      puts "----- VULNERABILITY ASSOCIATION FOR RELEASE #{release.name} -----"
-      puts "-"*80
-      vulnerability_association_tests
-    end
+      #puts "-"*80
+      #puts "----- VULNERABILITY ASSOCIATION FOR RELEASE #{release.name} -----"
+      #puts "-"*80
+      #vulnerability_association_tests
+    #end
 
     puts "-"*80
     puts "----- LOGISTIC REGRESSION MODELING -----"
@@ -36,6 +36,10 @@ class HypothesisTests
 
   def connect_to_db
     conf = Rails.configuration.database_configuration[Rails.env]
+    # To install these packages locally, run R on teh command line (literally R)
+    # and then run
+    # >>> install.packages("DBI")
+    # >>> install.packages("PostgreSQL")
     R.eval <<-EOR
       library(DBI)
       library(RPostgreSQL)

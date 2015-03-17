@@ -19,7 +19,6 @@ class PsqlUtil
     PsqlUtil.execute "COPY #{table_name} FROM '#{file_path}' DELIMITER ',' CSV ENCODING 'utf-8'"
   end
 
-  #TODO: add multiple format support 
   def self.copy_to_file query, file_path, format='CSV'
     PsqlUtil.execute "COPY(#{query}) TO '#{file_path}' WITH (FORMAT #{format})"
   end
