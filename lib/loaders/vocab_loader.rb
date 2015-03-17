@@ -9,7 +9,6 @@ class VocabLoader
 
   def parse_scrape_results
     acm_scrape = Oj.load_file "#{@data_dir}/acm/acm.json"
-    puts acm_scrape['pages'].size
     raw = "#{@data_dir}/acm/raw_acm.txt"
     File.open raw, 'w+' do |file|
       acm_scrape['pages'].each do |page|
@@ -18,24 +17,48 @@ class VocabLoader
       end
       file.fsync
     end
-    @categories = Hash.new
-    PsqlUtil.create_upload_file "#{@tmp_dir}/categories.csv" do |table|
-      acm_scrape['pages'].each do |page|
-        page['results']['categories'].each do |category|
-          cat_name = category['category'].strip
-          @categories[cat_name] ||= []
-          @categories[cat_name] << page['results']['abstracts']
+    abstracts = []
+    categories = Hash.new
+    linker = []
+    cI = 1
+    aI = 1
+    acm_scrape['pages'].each do |page|
+      page['results']['categories'].each do |category|
+        cat = category['category'].strip
+        unless categories.has_key? cat
+          categories[cat] = cI
+          cI += 1
         end
+        linker << [aI, categories[cat]]
       end
-      @categories.each_key do |category|
-        table << [category]
+      abstracts << [aI, page['results']['abstracts']]
+      aI += 1
+    end
+    PsqlUtil.create_upload_file "#{@tmp_dir}/acm_categories.csv" do |table|
+      categories.each do |category, index|
+        table << [index, category]
       end
-    end    
+    end
+    PsqlUtil.create_upload_file "#{@tmp_dir}/acm_abstracts.csv" do |table|
+      abstracts.each do |abstract|
+        table << [abstract[0], abstract[1]]
+      end
+    end
+    PsqlUtil.create_upload_file "#{@tmp_dir}/acm_abstracts_acm_categories.csv" do |table|
+      linker.each do |link|
+        table << [link[0], link[1]]
+      end
+    end
   end
 
   def load
-    PsqlUtil.copy_from_file 'acm_categories', "#{@tmp_dir}/categories.csv"
-    PsqlUtil.add_auto_increment_key 'acm_categories'
+    PsqlUtil.copy_from_file 'acm_categories', "#{@tmp_dir}/acm_categories.csv"
+    PsqlUtil.add_index 'acm_categories', 'id'
+    PsqlUtil.copy_from_file 'acm_abstracts', "#{@tmp_dir}/acm_abstracts.csv"
+    PsqlUtil.add_index 'acm_abstracts', 'id'
+    PsqlUtil.add_fulltext_search_index 'acm_abstracts', 'text'
+    PsqlUtil.copy_from_file 'acm_abstracts_acm_categories', "#{@tmp_dir}/acm_abstracts_acm_categories.csv"
+
     raw = @tmp_dir+'/raw_messages.txt'
     Message.get_all_messages raw
     VocabLoader.clean_file raw, @tmp_dir+'/messages.txt'
@@ -63,18 +86,7 @@ class VocabLoader
   end
 
   def reassociate_categories
-    search_tree = LazyBinarySearchTree.new(TechnicalWords.all.map {|word| word})
-    file = "#{@tmp_dir}/category_vocab.csv"
-    PsqlUtil.create_upload_file file do |table|
-      AcmCategory.all.limit(50).each do |category|
-        abstracts = @categories[category.name]
-        results = search_tree.search VocabLoader.clean(abstracts.join ' ')
-        results.each do |result|
-          table << [category.id, result['id']]
-        end
-      end
-    end
-    PsqlUtil.copy_from_file 'acm_categories_technical_words', file
+    reassociate 'acm_abstracts', 'text', 'acm_abstracts_technical_words'
   end
 
   def reassociate target_table, searchable_field, linking_table

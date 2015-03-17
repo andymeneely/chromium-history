@@ -17,11 +17,22 @@ ActiveRecord::Schema.define(version: 20140512131450) do
   enable_extension "plpgsql"
 
   create_table "acm_categories", id: false, force: true do |t|
+    t.integer "id"
     t.string "name"
   end
 
-  create_table "acm_categories_technical_words", id: false, force: true do |t|
+  create_table "acm_abstracts", id: false, force: true do |t|
+    t.integer "id"
+    t.text "text"
+  end
+
+  create_table "acm_abstracts_acm_categories", id: false, force: true do |t|
+    t.integer "acm_abstract_id"
     t.integer "acm_category_id"
+  end
+
+  create_table "acm_abstracts_technical_words", id: false, force: true do |t|
+    t.integer "acm_abstract_id"
     t.integer "technical_word_id"
   end
 
