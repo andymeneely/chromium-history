@@ -334,4 +334,2456 @@ git-svn-id: svn://svn.chromium.org/chrome/trunk/src@233528 0039d316-1c4b-4281-b9
  ui/views/widget/desktop_aura/desktop_root_window_host_x11.cc |  3 ++-
  13 files changed, 74 insertions(+), 43 deletions(-)
 
+:::
+f8720ff20cf28e0ddacff4b6855056a78e06fe4a
+sky@chromium.org
+sky@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Wed Sep 25 15:43:23 2013 +0000
+11a7caa909151761f5d30743443eede4c58259ad
+Makes hiding window conditional when escape is pressed in move loop
+Hiding makes sense if a new browser window was created for the drag
+(as escape=revert, which means we're going to destroy the
+window). But if the drag isn't because of a new window (you selected
+all the tabs in a window and started dragging), then revert should
+move the window backs to its start location and stop.
+
+BUG=297054
+TEST=see bug
+R=ben@chromium.org
+
+Review URL: https://codereview.chromium.org/24378002
+
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@225189 0039d316-1c4b-4281-b951-d872f2087c98
+;;;
+ chrome/browser/ui/views/tabs/tab_drag_controller.cc          |  7 ++++++-
+ ui/views/widget/desktop_aura/desktop_native_widget_aura.cc   |  6 ++++--
+ ui/views/widget/desktop_aura/desktop_native_widget_aura.h    |  3 ++-
+ ui/views/widget/desktop_aura/desktop_root_window_host.h      |  3 ++-
+ ui/views/widget/desktop_aura/desktop_root_window_host_win.cc |  7 +++++--
+ ui/views/widget/desktop_aura/desktop_root_window_host_win.h  |  3 ++-
+ ui/views/widget/desktop_aura/desktop_root_window_host_x11.cc |  3 ++-
+ ui/views/widget/desktop_aura/desktop_root_window_host_x11.h  |  3 ++-
+ ui/views/widget/native_widget_aura.cc                        |  5 ++++-
+ ui/views/widget/native_widget_aura.h                         |  3 ++-
+ ui/views/widget/native_widget_private.h                      |  3 ++-
+ ui/views/widget/native_widget_win.cc                         |  7 +++++--
+ ui/views/widget/native_widget_win.h                          |  3 ++-
+ ui/views/widget/widget.cc                                    |  8 +++++---
+ ui/views/widget/widget.h                                     | 12 +++++++++++-
+ ui/views/win/hwnd_message_handler.cc                         | 19 +++++++++++--------
+ ui/views/win/hwnd_message_handler.h                          |  2 +-
+ 17 files changed, 68 insertions(+), 29 deletions(-)
+:::
+d7f30a70e355f0d8c77020550226f076e2c01fcd
+sky@chromium.org
+sky@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Sat Oct 5 05:09:41 2013 +0000
+5b9e9bc7fe2e4721ddb466db8829ce3015c56f1a
+Wires up aura to using native tooltips on windows non-metro
+BUG=292738
+TEST=none
+R=ben@chromium.org
+
+Review URL: https://codereview.chromium.org/25415007
+
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@227180 0039d316-1c4b-4281-b951-d872f2087c98
+;;;
+ ash/shell.cc                                                 |   7 +++++--
+ ui/views/corewm/tooltip_aura.cc                              |   4 ----
+ ui/views/corewm/tooltip_controller.cc                        |  49 ++++++++++++++++++++++---------------------------
+ ui/views/corewm/tooltip_controller.h                         |  11 ++---------
+ ui/views/corewm/tooltip_controller_unittest.cc               |   6 +++++-
+ ui/views/corewm/tooltip_win.cc                               | 141 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ ui/views/corewm/tooltip_win.h                                |  70 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ ui/views/views.gyp                                           |  13 +++++++++++--
+ ui/views/widget/desktop_aura/desktop_native_widget_aura.cc   |  13 ++++++++++---
+ ui/views/widget/desktop_aura/desktop_native_widget_aura.h    |   4 ++--
+ ui/views/widget/desktop_aura/desktop_root_window_host.h      |  11 ++++++++++-
+ ui/views/widget/desktop_aura/desktop_root_window_host_win.cc |  14 ++++++++++++--
+ ui/views/widget/desktop_aura/desktop_root_window_host_win.h  |   6 ++++++
+ ui/views/widget/desktop_aura/desktop_root_window_host_x11.cc |   6 ++++++
+ ui/views/widget/desktop_aura/desktop_root_window_host_x11.h  |   1 +
+ ui/views/widget/desktop_aura/scoped_tooltip_client.cc        |  37 -------------------------------------
+ ui/views/widget/desktop_aura/scoped_tooltip_client.h         |  43 -------------------------------------------
+ ui/views/widget/tooltip_manager.cc                           |  15 +++++++++------
+ ui/views/widget/tooltip_manager.h                            |   4 ++++
+ 19 files changed, 316 insertions(+), 139 deletions(-)
+:::
+5c4b83be4a11da9caa5e5f8cbcf9db5aca9c4815
+sky@chromium.org
+sky@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Fri Oct 18 02:33:23 2013 +0000
+6c28d29b0f34efbc8dd71574b872a62e18b510d5
+Gets hiding animations to work again
+This broke when bounds changes was consolidated into
+DesktopNativeWidgetAura::OnRootWindowHostResized. We can't resize the
+child layers when this happens as otherwise we're going to force a
+paint of the layers and thus the views. But at this point nothing is
+valid and we don't want to paint anyway.
+
+Also removing a call to Show() early on as it may trigger animations
+that we don't want. A Show() at this time is before the creator has
+had a chance to turn them off.
+
+BUG=none
+TEST=none
+R=ananta@chromium.org
+
+Review URL: https://codereview.chromium.org/27043007
+
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@229285 0039d316-1c4b-4281-b951-d872f2087c98
+;;;
+ chrome/browser/ui/views/external_tab_container_win.cc        | 25 +++++++++++++++----------
+ chrome/test/base/interactive_test_utils_win.cc               |  1 +
+ ui/views/widget/desktop_aura/desktop_focus_rules.cc          |  8 ++++++++
+ ui/views/widget/desktop_aura/desktop_focus_rules.h           |  2 ++
+ ui/views/widget/desktop_aura/desktop_native_widget_aura.cc   | 12 ++++++++----
+ ui/views/widget/desktop_aura/desktop_root_window_host.h      |  5 ++++-
+ ui/views/widget/desktop_aura/desktop_root_window_host_win.cc |  9 ++++-----
+ ui/views/widget/desktop_aura/desktop_root_window_host_win.h  |  2 +-
+ ui/views/widget/desktop_aura/desktop_root_window_host_x11.cc |  8 ++++----
+ ui/views/widget/desktop_aura/desktop_root_window_host_x11.h  |  2 +-
+ 10 files changed, 48 insertions(+), 26 deletions(-)
+:::
+be67de952a21f563a80669ad160926c1ecfee83e
+sky@chromium.org
+sky@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Fri Oct 18 12:55:49 2013 +0000
+af5fe28964ae5a5b504e65e4ac3b6e911fd7084a
+Converts DesktopNativeWidgetAura back to a per Widget CaptureClient
+Rationale being that even though there is capture Windows may still
+deliver mouse events to other windows. With a global capture
+client this means all the events end up going to the capture client,
+which is not expected here.
+
+Menus seem to trigger this code path. Showing the menu and setting
+capture on the menu generates a delayed mouseexit on the widget the
+user clicked on.
+
+BUG=306210
+TEST=covered by tests now
+R=ben@chromium.org, erg@chromium.org
+
+Review URL: https://codereview.chromium.org/27728002
+
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@229389 0039d316-1c4b-4281-b951-d872f2087c98
+;;;
+ chrome/browser/ui/views/bookmarks/bookmark_bar_view_test.cc  |   2 +-
+ ui/aura/root_window.cc                                       |   3 +--
+ ui/views/corewm/desktop_capture_controller_unittest.cc       |  47 ++++-------------------------------------------
+ ui/views/views.gyp                                           |   2 ++
+ ui/views/widget/desktop_aura/desktop_capture_client.cc       |  79 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ ui/views/widget/desktop_aura/desktop_capture_client.h        |  43 +++++++++++++++++++++++++++++++++++++++++++
+ ui/views/widget/desktop_aura/desktop_native_widget_aura.cc   |  17 +++++------------
+ ui/views/widget/desktop_aura/desktop_native_widget_aura.h    |   4 ++--
+ ui/views/widget/desktop_aura/desktop_root_window_host_x11.cc |   3 ++-
+ ui/views/widget/widget_interactive_uitest.cc                 | 186 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-----------
+ 10 files changed, 314 insertions(+), 72 deletions(-)
+:::
+fa5ecb14e93e7a9a536e825dd530a4f49b96df88
+sky@chromium.org
+sky@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Fri Oct 18 14:18:08 2013 +0000
+49605d47dd965d0fc6663e066b9d571d6aa04c4e
+Revert 229285 "Gets hiding animations to work again"
+> Gets hiding animations to work again
+> 
+> This broke when bounds changes was consolidated into
+> DesktopNativeWidgetAura::OnRootWindowHostResized. We can't resize the
+> child layers when this happens as otherwise we're going to force a
+> paint of the layers and thus the views. But at this point nothing is
+> valid and we don't want to paint anyway.
+> 
+> Also removing a call to Show() early on as it may trigger animations
+> that we don't want. A Show() at this time is before the creator has
+> had a chance to turn them off.
+> 
+> BUG=none
+> TEST=none
+> R=ananta@chromium.org
+> 
+> Review URL: https://codereview.chromium.org/27043007
+
+TBR=sky@chromium.org
+
+Review URL: https://codereview.chromium.org/29143002
+
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@229410 0039d316-1c4b-4281-b951-d872f2087c98
+;;;
+ chrome/browser/ui/views/external_tab_container_win.cc        | 25 ++++++++++---------------
+ chrome/test/base/interactive_test_utils_win.cc               |  1 -
+ ui/views/widget/desktop_aura/desktop_focus_rules.cc          |  8 --------
+ ui/views/widget/desktop_aura/desktop_focus_rules.h           |  2 --
+ ui/views/widget/desktop_aura/desktop_native_widget_aura.cc   | 12 ++++--------
+ ui/views/widget/desktop_aura/desktop_root_window_host.h      |  5 +----
+ ui/views/widget/desktop_aura/desktop_root_window_host_win.cc |  9 +++++----
+ ui/views/widget/desktop_aura/desktop_root_window_host_win.h  |  2 +-
+ ui/views/widget/desktop_aura/desktop_root_window_host_x11.cc |  8 ++++----
+ ui/views/widget/desktop_aura/desktop_root_window_host_x11.h  |  2 +-
+ 10 files changed, 26 insertions(+), 48 deletions(-)
+:::
+4eac1282cd0871b5c9df40cacd1755ed91c6a55b
+sky@chromium.org
+sky@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Fri Oct 18 20:12:43 2013 +0000
+8be960e8e49adf6ef9114a1cc071ed4c85521561
+Gets hiding animations to work again
+This broke when bounds changes was consolidated into
+DesktopNativeWidgetAura::OnRootWindowHostResized. We can't resize the
+child layers when this happens as otherwise we're going to force a
+paint of the layers and thus the views. But at this point nothing is
+valid and we don't want to paint anyway.
+
+Also removing a call to Show() early on as it may trigger animations
+that we don't want. A Show() at this time is before the creator has
+had a chance to turn them off.
+
+BUG=none
+TEST=none
+R=ananta@chromium.org, ben@chromium.org, grt@chromium.org
+
+Committed: https://src.chromium.org/viewvc/chrome?view=rev&revision=229285
+
+Review URL: https://codereview.chromium.org/27043007
+
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@229455 0039d316-1c4b-4281-b951-d872f2087c98
+;;;
+ chrome/browser/ui/views/external_tab_container_win.cc        | 31 +++++++++++++++++++++----------
+ chrome/test/base/interactive_test_utils_win.cc               |  1 +
+ ui/views/widget/desktop_aura/desktop_focus_rules.cc          |  8 ++++++++
+ ui/views/widget/desktop_aura/desktop_focus_rules.h           |  2 ++
+ ui/views/widget/desktop_aura/desktop_native_widget_aura.cc   | 12 ++++++++----
+ ui/views/widget/desktop_aura/desktop_root_window_host.h      |  5 ++++-
+ ui/views/widget/desktop_aura/desktop_root_window_host_win.cc |  9 ++++-----
+ ui/views/widget/desktop_aura/desktop_root_window_host_win.h  |  2 +-
+ ui/views/widget/desktop_aura/desktop_root_window_host_x11.cc |  8 ++++----
+ ui/views/widget/desktop_aura/desktop_root_window_host_x11.h  |  2 +-
+ 10 files changed, 54 insertions(+), 26 deletions(-)
+:::
+29d8491e1828ecd3efe808f817591677c27a6df9
+sky@chromium.org
+sky@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Fri Oct 18 22:42:25 2013 +0000
+25d8c048873f826e9063fab6810a62d9830b7549
+Revert 229455 "Gets hiding animations to work again"
+> Gets hiding animations to work again
+> 
+> This broke when bounds changes was consolidated into
+> DesktopNativeWidgetAura::OnRootWindowHostResized. We can't resize the
+> child layers when this happens as otherwise we're going to force a
+> paint of the layers and thus the views. But at this point nothing is
+> valid and we don't want to paint anyway.
+> 
+> Also removing a call to Show() early on as it may trigger animations
+> that we don't want. A Show() at this time is before the creator has
+> had a chance to turn them off.
+> 
+> BUG=none
+> TEST=none
+> R=ananta@chromium.org, ben@chromium.org, grt@chromium.org
+> 
+> Committed: https://src.chromium.org/viewvc/chrome?view=rev&revision=229285
+> 
+> Review URL: https://codereview.chromium.org/27043007
+
+TBR=sky@chromium.org
+
+Review URL: https://codereview.chromium.org/30083002
+
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@229487 0039d316-1c4b-4281-b951-d872f2087c98
+;;;
+ chrome/browser/ui/views/external_tab_container_win.cc        | 31 ++++++++++---------------------
+ chrome/test/base/interactive_test_utils_win.cc               |  1 -
+ ui/views/widget/desktop_aura/desktop_focus_rules.cc          |  8 --------
+ ui/views/widget/desktop_aura/desktop_focus_rules.h           |  2 --
+ ui/views/widget/desktop_aura/desktop_native_widget_aura.cc   | 12 ++++--------
+ ui/views/widget/desktop_aura/desktop_root_window_host.h      |  5 +----
+ ui/views/widget/desktop_aura/desktop_root_window_host_win.cc |  9 +++++----
+ ui/views/widget/desktop_aura/desktop_root_window_host_win.h  |  2 +-
+ ui/views/widget/desktop_aura/desktop_root_window_host_x11.cc |  8 ++++----
+ ui/views/widget/desktop_aura/desktop_root_window_host_x11.h  |  2 +-
+ 10 files changed, 26 insertions(+), 54 deletions(-)
+:::
+36fc6ac1d42146f01a2ff7545ec32f1903c745f9
+sky@chromium.org
+sky@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Sat Oct 19 16:44:34 2013 +0000
+1dbbf1651b07c57ee9dfce78aa1b76753283b381
+Makes ~RootWindow delete child windows
+This way any children of the Root can call GetRootWindow() from their
+destructor and get a valid root.
+
+BUG=307369
+TEST=covered by unit test
+R=ben@chromium.org
+
+Review URL: https://codereview.chromium.org/27570004
+
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@229586 0039d316-1c4b-4281-b951-d872f2087c98
+;;;
+ ash/display/mirror_window_controller.cc                      |  1 +
+ ui/aura/client/capture_client.cc                             |  6 ++++--
+ ui/aura/root_window.cc                                       | 13 ++++++++++---
+ ui/aura/root_window_unittest.cc                              | 46 ++++++++++++++++++++++++++++++++++++++++++++++
+ ui/aura/test/aura_test_helper.cc                             |  1 +
+ ui/aura/window.cc                                            | 32 ++++++++++++++++++--------------
+ ui/aura/window.h                                             |  5 +++++
+ ui/views/widget/desktop_aura/desktop_root_window_host_win.cc |  5 +++++
+ ui/views/widget/desktop_aura/desktop_root_window_host_x11.cc |  5 +++++
+ 9 files changed, 95 insertions(+), 19 deletions(-)
+:::
+0100d72d9a1ca6d5118389677a847fbdc687e814
+sky@chromium.org
+sky@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Wed Oct 23 01:05:00 2013 +0000
+0c141190b349aadf75bf9f91668c3260f4d7b069
+Gets hiding animations to work again (3)
+This broke when bounds changes was consolidated into
+DesktopNativeWidgetAura::OnRootWindowHostResized. We can't resize the
+child layers when this happens as otherwise we're going to force a
+paint of the layers and thus the views. But at this point nothing is
+valid and we don't want to paint anyway.
+
+Also removing a call to Show() early on as it may trigger animations
+that we don't want. A Show() at this time is before the creator has
+had a chance to turn them off.
+
+Lastly, Widget::ShowInactive() would end up invoking SetFocus() for
+DesktopNativeWidgetAura on windows. I'm changing it to not do
+that. This broke a chrome_frame test.
+
+BUG=309054
+TEST=none
+R=ananta@chromium.org, ben@chromium.org, grt@chromium.org
+TBR=ananta@chromium.org, grt@chromium.org
+
+Review URL: https://codereview.chromium.org/28923009
+
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@230267 0039d316-1c4b-4281-b951-d872f2087c98
+;;;
+ chrome/browser/ui/views/external_tab_container_win.cc                  | 35 +++++++++++++++++++++++++----------
+ chrome/browser/ui/views/tabs/tab_drag_controller.cc                    |  3 ++-
+ chrome/browser/ui/views/tabs/tab_drag_controller_interactive_uitest.cc |  8 +-------
+ chrome/test/base/interactive_test_utils_win.cc                         |  1 +
+ ui/views/widget/desktop_aura/desktop_focus_rules.cc                    |  8 ++++++++
+ ui/views/widget/desktop_aura/desktop_focus_rules.h                     |  2 ++
+ ui/views/widget/desktop_aura/desktop_native_widget_aura.cc             |  7 ++++++-
+ ui/views/widget/desktop_aura/desktop_root_window_host.h                |  5 ++++-
+ ui/views/widget/desktop_aura/desktop_root_window_host_win.cc           |  9 ++++-----
+ ui/views/widget/desktop_aura/desktop_root_window_host_win.h            |  2 +-
+ ui/views/widget/desktop_aura/desktop_root_window_host_x11.cc           |  8 ++++----
+ ui/views/widget/desktop_aura/desktop_root_window_host_x11.h            |  2 +-
+ 12 files changed, 59 insertions(+), 31 deletions(-)
+:::
+86ccbd412375d364cd2e1ea6fabbe696998828fe
+sky@chromium.org
+sky@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Wed Sep 18 18:11:54 2013 +0000
+c51461c08853fd38c3eccda1646cfcc3ceff7b06
+Moves ui/base/events to ui/events
+BUG=none
+TEST=none
+R=ben@chromium.org
+TBR=brettw@chromium.org, scherkus@chromium.org, ananta@chromium.org,
+
+Review URL: https://codereview.chromium.org/23851041
+
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@223906 0039d316-1c4b-4281-b951-d872f2087c98
+;;;
+ ash/accelerators/accelerator_controller.cc                                  |   2 +-
+ ash/accelerators/accelerator_controller_unittest.cc                         |   2 +-
+ ash/accelerators/accelerator_dispatcher.cc                                  |   6 +-
+ ash/accelerators/accelerator_filter.cc                                      |   2 +-
+ ash/accelerators/accelerator_filter.h                                       |   2 +-
+ ash/accelerators/accelerator_table.h                                        |   2 +-
+ ash/accelerators/nested_dispatcher_controller_unittest.cc                   |   4 +-
+ ash/display/display_controller_unittest.cc                                  |   2 +-
+ ash/display/event_transformation_handler.cc                                 |   2 +-
+ ash/display/event_transformation_handler.h                                  |   2 +-
+ ash/display/mouse_cursor_event_filter.cc                                    |   2 +-
+ ash/display/mouse_cursor_event_filter.h                                     |   2 +-
+ ash/display/root_window_transformers_unittest.cc                            |   2 +-
+ ash/drag_drop/drag_drop_controller.cc                                       |   4 +-
+ ash/drag_drop/drag_drop_controller.h                                        |   4 +-
+ ash/drag_drop/drag_drop_controller_unittest.cc                              |   4 +-
+ ash/drag_drop/drag_drop_tracker.cc                                          |   2 +-
+ ash/drag_drop/drag_drop_tracker.h                                           |   2 +-
+ ash/extended_desktop_unittest.cc                                            |   2 +-
+ ash/keyboard_overlay/keyboard_overlay_view.cc                               |   2 +-
+ ash/launcher/launcher_button.cc                                             |   2 +-
+ ash/launcher/launcher_tooltip_manager.cc                                    |   4 +-
+ ash/launcher/launcher_tooltip_manager.h                                     |   2 +-
+ ash/launcher/launcher_tooltip_manager_unittest.cc                           |   6 +-
+ ash/launcher/launcher_view_unittest.cc                                      |   4 +-
+ ash/magnifier/magnification_controller.cc                                   |   4 +-
+ ash/magnifier/partial_magnification_controller.h                            |   2 +-
+ ash/shelf/overflow_bubble.cc                                                |   2 +-
+ ash/shelf/overflow_bubble.h                                                 |   2 +-
+ ash/shelf/shelf_bezel_event_filter.h                                        |   2 +-
+ ash/shelf/shelf_layout_manager.cc                                           |   4 +-
+ ash/shelf/shelf_widget.cc                                                   |   2 +-
+ ash/shell.h                                                                 |   2 +-
+ ash/system/chromeos/screen_security/screen_tray_item_unittest.cc            |   2 +-
+ ash/system/logout_button/logout_button_tray.cc                              |   2 +-
+ ash/system/tray/system_tray.cc                                              |   2 +-
+ ash/system/tray/tray_event_filter.h                                         |   4 +-
+ ash/test/test_activation_delegate.cc                                        |   2 +-
+ ash/test/test_activation_delegate.h                                         |   2 +-
+ ash/touch/touch_hud_debug.cc                                                |   2 +-
+ ash/touch/touch_hud_projection.cc                                           |   2 +-
+ ash/touch/touch_observer_hud.h                                              |   2 +-
+ ash/touch/touch_uma.cc                                                      |   4 +-
+ ash/wm/app_list_controller.cc                                               |   2 +-
+ ash/wm/app_list_controller.h                                                |   2 +-
+ ash/wm/base_layout_manager.h                                                |   2 +-
+ ash/wm/caption_buttons/frame_maximize_button.cc                             |   4 +-
+ ash/wm/caption_buttons/frame_maximize_button_unittest.cc                    |   2 +-
+ ash/wm/event_rewriter_event_filter.cc                                       |   2 +-
+ ash/wm/event_rewriter_event_filter.h                                        |   2 +-
+ ash/wm/gestures/system_pinch_handler.cc                                     |   2 +-
+ ash/wm/gestures/tray_gesture_handler.cc                                     |   2 +-
+ ash/wm/gestures/two_finger_drag_handler.cc                                  |   4 +-
+ ash/wm/mru_window_tracker.cc                                                |   4 +-
+ ash/wm/overlay_event_filter.cc                                              |   2 +-
+ ash/wm/overlay_event_filter.h                                               |   2 +-
+ ash/wm/overview/window_overview.cc                                          |   2 +-
+ ash/wm/overview/window_overview.h                                           |   2 +-
+ ash/wm/overview/window_selector.cc                                          |   4 +-
+ ash/wm/panels/panel_window_event_handler.cc                                 |   2 +-
+ ash/wm/partial_screenshot_view.cc                                           |   2 +-
+ ash/wm/sticky_keys.cc                                                       |   2 +-
+ ash/wm/sticky_keys.h                                                        |   2 +-
+ ash/wm/system_gesture_event_filter.cc                                       |   2 +-
+ ash/wm/system_gesture_event_filter.h                                        |   2 +-
+ ash/wm/system_gesture_event_filter_unittest.cc                              |   4 +-
+ ash/wm/system_modal_container_event_filter.cc                               |   2 +-
+ ash/wm/system_modal_container_event_filter.h                                |   2 +-
+ ash/wm/system_modal_container_layout_manager.cc                             |   2 +-
+ ash/wm/toplevel_window_event_handler.cc                                     |   4 +-
+ ash/wm/toplevel_window_event_handler.h                                      |   2 +-
+ ash/wm/toplevel_window_event_handler_unittest.cc                            |   2 +-
+ ash/wm/user_activity_detector.cc                                            |   2 +-
+ ash/wm/user_activity_detector.h                                             |   2 +-
+ ash/wm/user_activity_detector_unittest.cc                                   |   4 +-
+ ash/wm/window_cycle_controller.cc                                           |   4 +-
+ ash/wm/window_manager_unittest.cc                                           |   4 +-
+ ash/wm/workspace/workspace_event_handler.cc                                 |   4 +-
+ ash/wm/workspace/workspace_layout_manager.cc                                |   2 +-
+ chrome/browser/automation/testing_automation_provider.cc                    |   2 +-
+ chrome/browser/bookmarks/bookmark_utils.cc                                  |   2 +-
+ chrome/browser/chromeos/device_uma.cc                                       |   4 +-
+ chrome/browser/chromeos/keyboard_driven_event_rewriter.cc                   |   2 +-
+ chrome/browser/chromeos/keyboard_driven_event_rewriter_unittest.cc          |   2 +-
+ chrome/browser/chromeos/login/login_display_host_impl.cc                    |   2 +-
+ chrome/browser/chromeos/options/vpn_config_view.cc                          |   2 +-
+ chrome/browser/chromeos/options/wifi_config_view.cc                         |   2 +-
+ chrome/browser/chromeos/options/wimax_config_view.cc                        |   2 +-
+ chrome/browser/chromeos/power/user_activity_notifier.cc                     |   4 +-
+ chrome/browser/chromeos/preferences.cc                                      |   4 +-
+ chrome/browser/chromeos/swap_metrics.cc                                     |   2 +-
+ chrome/browser/chromeos/swap_metrics.h                                      |   2 +-
+ chrome/browser/extensions/api/input/input.cc                                |   2 +-
+ chrome/browser/history/redirect_browsertest.cc                              |   2 +-
+ chrome/browser/ui/ash/event_rewriter.cc                                     |   4 +-
+ chrome/browser/ui/ash/event_rewriter_unittest.cc                            |   2 +-
+ chrome/browser/ui/ash/ime_controller_chromeos_unittest.cc                   |   2 +-
+ chrome/browser/ui/ash/launcher/app_shortcut_launcher_item_controller.cc     |   2 +-
+ chrome/browser/ui/ash/launcher/browser_shortcut_launcher_item_controller.cc |   2 +-
+ chrome/browser/ui/ash/launcher/chrome_launcher_app_menu_item_browser.cc     |   2 +-
+ chrome/browser/ui/ash/launcher/chrome_launcher_app_menu_item_tab.cc         |   2 +-
+ chrome/browser/ui/ash/launcher/chrome_launcher_controller_browsertest.cc    |   2 +-
+ chrome/browser/ui/ash/launcher/shell_window_launcher_item_controller.cc     |   2 +-
+ chrome/browser/ui/autofill/autofill_dialog_controller_impl.cc               |   2 +-
+ chrome/browser/ui/autofill/autofill_popup_controller_impl.cc                |   2 +-
+ chrome/browser/ui/bookmarks/bookmark_bubble_sign_in_delegate_unittest.cc    |   2 +-
+ chrome/browser/ui/gtk/accelerators_gtk.cc                                   |   2 +-
+ chrome/browser/ui/gtk/event_utils.cc                                        |   2 +-
+ chrome/browser/ui/gtk/event_utils_unittest.cc                               |   2 +-
+ chrome/browser/ui/libgtk2ui/gtk2_util.cc                                    |   2 +-
+ chrome/browser/ui/omnibox/omnibox_view_browsertest.cc                       |   2 +-
+ chrome/browser/ui/panels/panel_browsertest.cc                               |   2 +-
+ chrome/browser/ui/views/accelerator_table.cc                                |   2 +-
+ chrome/browser/ui/views/accelerator_table_unittest.cc                       |   2 +-
+ chrome/browser/ui/views/app_menu_button_win.cc                              |   2 +-
+ chrome/browser/ui/views/ash/tab_scrubber.cc                                 |   4 +-
+ chrome/browser/ui/views/ash/tab_scrubber.h                                  |   2 +-
+ chrome/browser/ui/views/ash/tab_scrubber_browsertest.cc                     |   2 +-
+ chrome/browser/ui/views/avatar_label.cc                                     |   2 +-
+ chrome/browser/ui/views/bookmarks/bookmark_drag_drop_views.cc               |   2 +-
+ chrome/browser/ui/views/bookmarks/bookmark_editor_view.cc                   |   2 +-
+ chrome/browser/ui/views/bookmarks/bookmark_sync_promo_view_unittest.cc      |   2 +-
+ chrome/browser/ui/views/browser_action_view.cc                              |   2 +-
+ chrome/browser/ui/views/crypto_module_password_dialog_view.cc               |   2 +-
+ chrome/browser/ui/views/download/download_item_view.cc                      |   2 +-
+ chrome/browser/ui/views/dropdown_bar_host_aura.cc                           |   2 +-
+ chrome/browser/ui/views/dropdown_bar_host_win.cc                            |   2 +-
+ chrome/browser/ui/views/edit_search_engine_dialog.cc                        |   2 +-
+ chrome/browser/ui/views/event_utils.cc                                      |   2 +-
+ chrome/browser/ui/views/extensions/extension_view_views.cc                  |   2 +-
+ chrome/browser/ui/views/external_tab_container_win.cc                       |   2 +-
+ chrome/browser/ui/views/find_bar_host.cc                                    |   2 +-
+ chrome/browser/ui/views/find_bar_host_aura.cc                               |   2 +-
+ chrome/browser/ui/views/find_bar_host_win.cc                                |   2 +-
+ chrome/browser/ui/views/find_bar_view.cc                                    |   2 +-
+ chrome/browser/ui/views/frame/browser_view.cc                               |   2 +-
+ chrome/browser/ui/views/frame/immersive_mode_controller_ash.h               |   2 +-
+ chrome/browser/ui/views/frame/immersive_mode_controller_ash_browsertest.cc  |   2 +-
+ chrome/browser/ui/views/keyboard_access_browsertest.cc                      |   2 +-
+ chrome/browser/ui/views/location_bar/location_bar_decoration_view.cc        |   2 +-
+ chrome/browser/ui/views/location_bar/location_bar_view.cc                   |   2 +-
+ chrome/browser/ui/views/location_bar/page_action_image_view.cc              |   2 +-
+ chrome/browser/ui/views/location_bar/star_view.cc                           |   2 +-
+ chrome/browser/ui/views/location_bar/zoom_view.cc                           |   2 +-
+ chrome/browser/ui/views/notifications/balloon_collection_views.cc           |   4 +-
+ chrome/browser/ui/views/omnibox/omnibox_view_views.cc                       |   2 +-
+ chrome/browser/ui/views/omnibox/omnibox_view_win.cc                         |   4 +-
+ chrome/browser/ui/views/tabs/tab_drag_controller.cc                         |   4 +-
+ chrome/test/reliability/automated_ui_test_base.cc                           |   2 +-
+ content/browser/renderer_host/input/immediate_input_router.cc               |   2 +-
+ content/browser/renderer_host/input/immediate_input_router_unittest.cc      |   2 +-
+ content/browser/renderer_host/input/input_router_unittest.cc                |   2 +-
+ content/browser/renderer_host/native_web_keyboard_event.cc                  |   2 +-
+ content/browser/renderer_host/native_web_keyboard_event_aura.cc             |   2 +-
+ content/browser/renderer_host/render_widget_host_impl.cc                    |   2 +-
+ content/browser/renderer_host/render_widget_host_unittest.cc                |   2 +-
+ content/browser/renderer_host/render_widget_host_view_aura.cc               |   4 +-
+ content/browser/renderer_host/render_widget_host_view_aura_unittest.cc      |   4 +-
+ content/browser/renderer_host/render_widget_host_view_guest.h               |   2 +-
+ content/browser/renderer_host/render_widget_host_view_win.cc                |   4 +-
+ content/browser/renderer_host/touch_smooth_scroll_gesture_aura.cc           |   4 +-
+ content/browser/renderer_host/ui_events_helper.cc                           |   4 +-
+ content/browser/renderer_host/web_input_event_aura.cc                       |   4 +-
+ content/browser/renderer_host/web_input_event_aura_unittest.cc              |   2 +-
+ content/browser/renderer_host/web_input_event_aurax11.cc                    |   4 +-
+ content/browser/web_contents/aura/window_slider.cc                          |   2 +-
+ content/browser/web_contents/aura/window_slider.h                           |   2 +-
+ content/browser/web_contents/touch_editable_impl_aura_browsertest.cc        |   2 +-
+ content/browser/web_contents/web_contents_view_aura.cc                      |   4 +-
+ content/public/browser/native_web_keyboard_event.h                          |   4 +-
+ content/renderer/render_view_browsertest.cc                                 |   4 +-
+ content/shell/browser/shell_aura.cc                                         |   2 +-
+ media/base/keyboard_event_counter.h                                         |   2 +-
+ ui/app_list/views/apps_grid_view.cc                                         |   2 +-
+ ui/app_list/views/contents_view.cc                                          |   2 +-
+ ui/app_list/views/search_box_view.cc                                        |   2 +-
+ ui/app_list/views/search_result_list_view.cc                                |   2 +-
+ ui/aura/demo/demo_main.cc                                                   |   2 +-
+ ui/aura/device_list_updater_aurax11.cc                                      |   2 +-
+ ui/aura/env.h                                                               |   4 +-
+ ui/aura/gestures/gesture_recognizer_unittest.cc                             |   4 +-
+ ui/aura/remote_root_window_host_win.cc                                      |   2 +-
+ ui/aura/remote_root_window_host_win.h                                       |   4 +-
+ ui/aura/root_window.cc                                                      |   2 +-
+ ui/aura/root_window.h                                                       |   4 +-
+ ui/aura/root_window_host_win.cc                                             |   2 +-
+ ui/aura/root_window_host_x11.cc                                             |   4 +-
+ ui/aura/root_window_unittest.cc                                             |   6 +-
+ ui/aura/test/event_generator.cc                                             |   4 +-
+ ui/aura/test/event_generator.h                                              |   2 +-
+ ui/aura/test/test_event_handler.cc                                          |   2 +-
+ ui/aura/test/test_event_handler.h                                           |   2 +-
+ ui/aura/test/test_window_delegate.cc                                        |   2 +-
+ ui/aura/window.h                                                            |   4 +-
+ ui/aura/window_delegate.h                                                   |   4 +-
+ ui/aura/window_unittest.cc                                                  |   4 +-
+ ui/base/accelerators/accelerator.h                                          |   2 +-
+ ui/base/accelerators/accelerator_manager.h                                  |   2 +-
+ ui/base/accelerators/accelerator_manager_unittest.cc                        |   2 +-
+ ui/base/accelerators/platform_accelerator_gtk.cc                            |   2 +-
+ ui/base/cocoa/cocoa_event_utils.mm                                          |   2 +-
+ ui/base/cocoa/cocoa_event_utils_unittest.mm                                 |   2 +-
+ ui/base/cocoa/events_mac.mm                                                 |   4 +-
+ ui/base/cocoa/events_mac_unittest.mm                                        |   4 +-
+ ui/base/events/OWNERS                                                       |   1 -
+ ui/base/events/event.cc                                                     | 787 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ ui/base/events/event.h                                                      | 719 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ ui/base/events/event_constants.h                                            | 116 --------------------------------
+ ui/base/events/event_conversion_gtk.cc                                      |  33 ----------
+ ui/base/events/event_conversion_gtk.h                                       |  20 ------
+ ui/base/events/event_dispatcher.cc                                          | 150 -----------------------------------------
+ ui/base/events/event_dispatcher.h                                           |  80 ----------------------
+ ui/base/events/event_dispatcher_unittest.cc                                 | 586 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
+ ui/base/events/event_handler.cc                                             |  56 ----------------
+ ui/base/events/event_handler.h                                              |  66 -------------------
+ ui/base/events/event_target.cc                                              | 114 --------------------------------
+ ui/base/events/event_target.h                                               | 108 ------------------------------
+ ui/base/events/event_unittest.cc                                            | 293 ---------------------------------------------------------------------------------
+ ui/base/events/event_utils.cc                                               |  28 --------
+ ui/base/events/event_utils.h                                                | 153 ------------------------------------------
+ ui/base/gestures/gesture_point.cc                                           |   4 +-
+ ui/base/gestures/gesture_recognizer.h                                       |   2 +-
+ ui/base/gestures/gesture_recognizer_impl.cc                                 |   6 +-
+ ui/base/gestures/gesture_recognizer_impl.h                                  |   2 +-
+ ui/base/gestures/gesture_sequence.cc                                        |   4 +-
+ ui/base/gestures/gesture_sequence.h                                         |   2 +-
+ ui/base/gestures/gesture_types.h                                            |   2 +-
+ ui/base/ime/character_composer.cc                                           |   2 +-
+ ui/base/ime/character_composer_unittest.cc                                  |   2 +-
+ ui/base/ime/fake_input_method.cc                                            |   6 +-
+ ui/base/ime/input_method_base.h                                             |   2 +-
+ ui/base/ime/input_method_base_unittest.cc                                   |   2 +-
+ ui/base/ime/input_method_delegate.h                                         |   2 +-
+ ui/base/ime/input_method_ibus.cc                                            |   8 +--
+ ui/base/ime/input_method_win.cc                                             |   6 +-
+ ui/base/ozone/evdev/key_event_converter_ozone.cc                            |   2 +-
+ ui/base/ozone/evdev/touch_event_converter_ozone.cc                          |   4 +-
+ ui/base/ozone/evdev/touch_event_converter_ozone.h                           |   2 +-
+ ui/base/ozone/evdev/touch_event_converter_ozone_unittest.cc                 |   2 +-
+ ui/base/ozone/event_converter_ozone.cc                                      |   2 +-
+ ui/base/ozone/events_ozone.cc                                               |   6 +-
+ ui/base/ui_base_types.cc                                                    |   2 +-
+ ui/base/win/events_win.cc                                                   |   4 +-
+ ui/base/window_open_disposition.cc                                          |   2 +-
+ ui/base/x/device_data_manager.cc                                            |   4 +-
+ ui/base/x/device_data_manager.h                                             |   2 +-
+ ui/base/x/events_x.cc                                                       |   4 +-
+ ui/base/x/events_x_unittest.cc                                              |   6 +-
+ ui/base/x/x11_util.cc                                                       |   2 +-
+ ui/base/x/x11_util.h                                                        |   2 +-
+ ui/events/OWNERS                                                            |   1 +
+ ui/events/event.cc                                                          | 787 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ ui/events/event.h                                                           | 719 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ ui/events/event_constants.h                                                 | 116 ++++++++++++++++++++++++++++++++
+ ui/events/event_conversion_gtk.cc                                           |  33 ++++++++++
+ ui/events/event_conversion_gtk.h                                            |  20 ++++++
+ ui/events/event_dispatcher.cc                                               | 150 +++++++++++++++++++++++++++++++++++++++++
+ ui/events/event_dispatcher.h                                                |  80 ++++++++++++++++++++++
+ ui/events/event_dispatcher_unittest.cc                                      | 586 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ ui/events/event_handler.cc                                                  |  56 ++++++++++++++++
+ ui/events/event_handler.h                                                   |  66 +++++++++++++++++++
+ ui/events/event_target.cc                                                   | 114 ++++++++++++++++++++++++++++++++
+ ui/events/event_target.h                                                    | 108 ++++++++++++++++++++++++++++++
+ ui/events/event_unittest.cc                                                 | 293 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ ui/events/event_utils.cc                                                    |  28 ++++++++
+ ui/events/event_utils.h                                                     | 153 ++++++++++++++++++++++++++++++++++++++++++
+ ui/events/keycodes/keyboard_code_conversion.cc                              |   2 +-
+ ui/message_center/views/message_popup_collection_unittest.cc                |   4 +-
+ ui/metro_viewer/metro_viewer_messages.h                                     |   2 +-
+ ui/ui.gyp                                                                   |  44 ++++++-------
+ ui/ui_unittests.gypi                                                        |   8 +--
+ ui/views/bubble/tray_bubble_view.cc                                         |   2 +-
+ ui/views/color_chooser/color_chooser_view.cc                                |   2 +-
+ ui/views/controls/button/custom_button.cc                                   |   2 +-
+ ui/views/controls/button/custom_button.h                                    |   2 +-
+ ui/views/controls/button/menu_button.cc                                     |   4 +-
+ ui/views/controls/combobox/combobox.cc                                      |   2 +-
+ ui/views/controls/combobox/combobox_unittest.cc                             |   2 +-
+ ui/views/controls/link.cc                                                   |   2 +-
+ ui/views/controls/menu/menu_controller.cc                                   |   4 +-
+ ui/views/controls/menu/menu_controller.h                                    |   2 +-
+ ui/views/controls/menu/submenu_view.cc                                      |   2 +-
+ ui/views/controls/scroll_view.cc                                            |   2 +-
+ ui/views/controls/scrollbar/base_scroll_bar.cc                              |   2 +-
+ ui/views/controls/scrollbar/native_scroll_bar.cc                            |   2 +-
+ ui/views/controls/slider.cc                                                 |   2 +-
+ ui/views/controls/table/table_view.cc                                       |   2 +-
+ ui/views/controls/textfield/native_textfield_views.cc                       |   2 +-
+ ui/views/controls/textfield/native_textfield_views.h                        |   2 +-
+ ui/views/controls/textfield/native_textfield_views_unittest.cc              |   2 +-
+ ui/views/controls/textfield/native_textfield_win.cc                         |   2 +-
+ ui/views/controls/textfield/textfield.cc                                    |   2 +-
+ ui/views/controls/textfield/textfield_controller.cc                         |   2 +-
+ ui/views/controls/tree/tree_view.cc                                         |   2 +-
+ ui/views/controls/webview/unhandled_keyboard_event_handler_aurax11.cc       |   2 +-
+ ui/views/controls/webview/unhandled_keyboard_event_handler_win.cc           |   2 +-
+ ui/views/controls/webview/web_dialog_view.cc                                |   2 +-
+ ui/views/controls/webview/webview.cc                                        |   2 +-
+ ui/views/corewm/capture_controller_unittest.cc                              |   4 +-
+ ui/views/corewm/compound_event_filter.cc                                    |   2 +-
+ ui/views/corewm/compound_event_filter.h                                     |   4 +-
+ ui/views/corewm/compound_event_filter_unittest.cc                           |   4 +-
+ ui/views/corewm/desktop_capture_controller_unittest.cc                      |   2 +-
+ ui/views/corewm/focus_controller.cc                                         |   2 +-
+ ui/views/corewm/focus_controller_unittest.cc                                |   2 +-
+ ui/views/corewm/input_method_event_filter.cc                                |   2 +-
+ ui/views/corewm/input_method_event_filter.h                                 |   2 +-
+ ui/views/corewm/tooltip_controller.cc                                       |   2 +-
+ ui/views/corewm/tooltip_controller.h                                        |   2 +-
+ ui/views/corewm/window_modality_controller.cc                               |   2 +-
+ ui/views/corewm/window_modality_controller.h                                |   2 +-
+ ui/views/event_utils_aura.cc                                                |   2 +-
+ ui/views/event_utils_win.cc                                                 |   4 +-
+ ui/views/examples/multiline_example.cc                                      |   2 +-
+ ui/views/examples/textfield_example.cc                                      |   2 +-
+ ui/views/focus/accelerator_handler_win.cc                                   |   2 +-
+ ui/views/focus/focus_manager.cc                                             |   2 +-
+ ui/views/focus/focus_manager_unittest_win.cc                                |   2 +-
+ ui/views/ime/input_method_base.cc                                           |   2 +-
+ ui/views/ime/input_method_bridge.cc                                         |   2 +-
+ ui/views/ime/mock_input_method.cc                                           |   2 +-
+ ui/views/mouse_watcher.cc                                                   |   4 +-
+ ui/views/view.h                                                             |   4 +-
+ ui/views/view_unittest.cc                                                   |   2 +-
+ ui/views/widget/desktop_aura/desktop_drag_drop_client_aurax11.cc            |   2 +-
+ ui/views/widget/desktop_aura/desktop_drop_target_win.cc                     |   4 +-
+ ui/views/widget/desktop_aura/desktop_root_window_host_x11.cc                |   2 +-
+ ui/views/widget/desktop_aura/x11_desktop_window_move_client.cc              |   2 +-
+ ui/views/widget/desktop_aura/x11_whole_screen_move_loop.cc                  |   2 +-
+ ui/views/widget/desktop_aura/x11_window_event_filter.cc                     |   4 +-
+ ui/views/widget/desktop_aura/x11_window_event_filter.h                      |   2 +-
+ ui/views/widget/native_widget_aura.cc                                       |   2 +-
+ ui/views/widget/native_widget_aura.h                                        |   2 +-
+ ui/views/widget/native_widget_aura_unittest.cc                              |   2 +-
+ ui/views/widget/native_widget_delegate.h                                    |   2 +-
+ ui/views/widget/native_widget_win.cc                                        |   2 +-
+ ui/views/widget/root_view.cc                                                |   2 +-
+ ui/views/widget/root_view.h                                                 |   2 +-
+ ui/views/widget/widget.cc                                                   |   2 +-
+ ui/views/widget/widget_unittest.cc                                          |   2 +-
+ ui/views/win/hwnd_message_handler.cc                                        |   4 +-
+ ui/views/win/hwnd_message_handler.h                                         |   2 +-
+ win8/metro_driver/chrome_app_view_ash.h                                     |   2 +-
+ 343 files changed, 3731 insertions(+), 3731 deletions(-)
+:::
+9d4314aa8d3542ef3213654d7062d795f95e8d83
+sky@chromium.org
+sky@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Thu Apr 19 19:55:05 2012 +0000
+f12c2f9daa912122ae0b47fa3d82ec853ea49d38
+Makes showing the modal dialog release capture. Without this capture would stay on a window below the modal dialog, and the mouse released wouldn't get processed by the window because the SystemModalContainerEventFilter doesn't let any events through to it.
+BUG=124040
+TEST=covered by unit tests, see bug for details.
+R=ben@chromium.org
+
+Review URL: https://chromiumcodereview.appspot.com/10127005
+
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@133043 0039d316-1c4b-4281-b951-d872f2087c98
+;;;
+ ash/wm/system_modal_container_event_filter.cc            |  6 ++++--
+ ash/wm/system_modal_container_layout_manager.cc          |  5 +++++
+ ash/wm/system_modal_container_layout_manager_unittest.cc | 44 ++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 53 insertions(+), 2 deletions(-)
+:::
+03fb2fcad8cc08464733957e603fe0f9a21d23e6
+sky@chromium.org
+sky@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Fri Apr 6 22:36:44 2012 +0000
+86b0099b8f40bc1d53c4c5b4c4748828b0e1684d
+Fixes crash if a system modal window was shown while the lock screen was up. The problem was that when the show animation completed SystemModalContainerLayoutManager::OnImplicitAnimationsCompleted() was invoked and it thought it needed to destroy the modal_screen because ShouldDraw returned false. Then when the modal window was removed HideModalScreen was invoked and modal_screen_ is NULL.
+BUG=122353
+TEST=see bug for repro steps, test case covers this now too.
+R=ben@chromium.org
+
+Review URL: https://chromiumcodereview.appspot.com/10010043
+
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@131202 0039d316-1c4b-4281-b951-d872f2087c98
+;;;
+ ash/wm/system_modal_container_layout_manager.cc          | 28 +++++-----------------------
+ ash/wm/system_modal_container_layout_manager.h           |  6 ------
+ ash/wm/system_modal_container_layout_manager_unittest.cc | 19 +++++++++++++++++--
+ ash/wm/window_animations.cc                              |  6 ++++++
+ ash/wm/window_animations.h                               | 11 +++++++++++
+ 5 files changed, 39 insertions(+), 31 deletions(-)
+:::
+7e9acd08b34f56b7eab5f9d93a8c69c556d5b0c7
+sky@chromium.org
+sky@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Tue Sep 17 23:31:16 2013 +0000
+b1d571afd4400219ee44bd15ac9cea7f0ff8e31f
+Moves most files from ui/base/keycodes to ui/events/keycodes
+I'm leaving usb_keycodes_map in ui/base for now.
+
+BUG=none
+TEST=none
+R=ben@chromium.org, benm@chromium.org, scherkus@chromium.org
+TBR=benm@chromium.org, brettw@chromium.org, scherkus@chromium.org
+
+Review URL: https://codereview.chromium.org/23480084
+
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@223739 0039d316-1c4b-4281-b951-d872f2087c98
+;;;
+ android_webview/tools/third_party_files_whitelist.txt                        |   6 +-
+ ash/accelerators/accelerator_controller.cc                                   |   2 +-
+ ash/accelerators/accelerator_table.h                                         |   2 +-
+ ash/launcher/launcher_tooltip_manager_unittest.cc                            |   2 +-
+ ash/wm/sticky_keys.cc                                                        |   2 +-
+ ash/wm/user_activity_detector_unittest.cc                                    |   2 +-
+ chrome/browser/apps/web_view_interactive_browsertest.cc                      |   2 +-
+ chrome/browser/autofill/autofill_browsertest.cc                              |   2 +-
+ chrome/browser/autofill/autofill_interactive_uitest.cc                       |   2 +-
+ chrome/browser/automation/automation_provider_win.cc                         |   2 +-
+ chrome/browser/automation/testing_automation_provider.cc                     |   2 +-
+ chrome/browser/browser_keyevents_browsertest.cc                              |   2 +-
+ chrome/browser/chromeos/input_method/input_method_manager_impl_unittest.cc   |   2 +-
+ chrome/browser/chromeos/power/user_activity_notifier.cc                      |   2 +-
+ chrome/browser/extensions/extension_host.cc                                  |   2 +-
+ chrome/browser/password_manager/password_manager_browsertest.cc              |   2 +-
+ chrome/browser/ui/ash/event_rewriter.cc                                      |   4 +-
+ chrome/browser/ui/ash/event_rewriter.h                                       |   2 +-
+ chrome/browser/ui/ash/ime_controller_chromeos_unittest.cc                    |   2 +-
+ chrome/browser/ui/browser_command_controller.cc                              |   2 +-
+ chrome/browser/ui/browser_command_controller_unittest.cc                     |   2 +-
+ chrome/browser/ui/cocoa/accelerator_utils_cocoa.mm                           |   2 +-
+ chrome/browser/ui/cocoa/web_dialog_window_controller.mm                      |   2 +-
+ chrome/browser/ui/find_bar/find_bar_host_browsertest.cc                      |   2 +-
+ chrome/browser/ui/gtk/accelerators_gtk.cc                                    |   2 +-
+ chrome/browser/ui/gtk/browser_window_gtk.cc                                  |   2 +-
+ chrome/browser/ui/libgtk2ui/gtk2_util.cc                                     |   2 +-
+ chrome/browser/ui/omnibox/omnibox_view_browsertest.cc                        |   2 +-
+ chrome/browser/ui/views/accelerator_table.h                                  |   2 +-
+ chrome/browser/ui/views/autofill/autofill_popup_view_views.cc                |   2 +-
+ chrome/browser/ui/views/bookmarks/bookmark_bar_view_test.cc                  |   2 +-
+ chrome/browser/ui/views/bookmarks/bookmark_bubble_view.cc                    |   2 +-
+ chrome/browser/ui/views/desktop_media_picker_views.cc                        |   2 +-
+ chrome/browser/ui/views/dropdown_bar_host.cc                                 |   2 +-
+ chrome/browser/ui/views/dropdown_bar_host_win.cc                             |   2 +-
+ chrome/browser/ui/views/find_bar_host.cc                                     |   2 +-
+ chrome/browser/ui/views/find_bar_host_interactive_uitest.cc                  |   2 +-
+ chrome/browser/ui/views/frame/global_menu_bar_x11.cc                         |   2 +-
+ chrome/browser/ui/views/fullscreen_exit_bubble_views.cc                      |   2 +-
+ chrome/browser/ui/views/javascript_app_modal_dialog_views.cc                 |   2 +-
+ chrome/browser/ui/views/keyboard_access_browsertest.cc                       |   2 +-
+ chrome/browser/ui/views/omnibox/omnibox_view_win.cc                          |   2 +-
+ chrome/browser/ui/views/sync/one_click_signin_bubble_view.cc                 |   2 +-
+ chrome/browser/ui/views/tab_contents/render_view_context_menu_views.cc       |   2 +-
+ chrome/renderer/autofill/page_click_tracker_browsertest.cc                   |   2 +-
+ chrome/renderer/autofill/password_autofill_agent_browsertest.cc              |   2 +-
+ chrome/renderer/searchbox/searchbox_extension.cc                             |   2 +-
+ chrome/test/automation/automation_json_requests.h                            |   2 +-
+ chrome/test/automation/tab_proxy.h                                           |   2 +-
+ chrome/test/base/ui_test_utils.h                                             |   2 +-
+ chrome/test/chromedriver/chrome/ui_events.h                                  |   2 +-
+ chrome/test/chromedriver/key_converter.h                                     |   2 +-
+ chrome/test/chromedriver/keycode_text_conversion.h                           |   2 +-
+ chrome/test/chromedriver/keycode_text_conversion_mac.mm                      |   2 +-
+ chrome/test/chromedriver/keycode_text_conversion_unittest.cc                 |   2 +-
+ chrome/test/chromedriver/keycode_text_conversion_x.cc                        |   2 +-
+ chrome/test/reliability/automated_ui_tests.cc                                |   2 +-
+ chrome/test/reliability/automated_ui_tests.h                                 |   2 +-
+ chrome/test/webdriver/keycode_text_conversion.h                              |   2 +-
+ chrome/test/webdriver/keycode_text_conversion_gtk.cc                         |   2 +-
+ chrome/test/webdriver/keycode_text_conversion_mac.mm                         |   2 +-
+ chrome/test/webdriver/keycode_text_conversion_unittest.cc                    |   2 +-
+ chrome/test/webdriver/keycode_text_conversion_x.cc                           |   2 +-
+ chrome/test/webdriver/webdriver_automation.h                                 |   2 +-
+ chrome/test/webdriver/webdriver_key_converter.h                              |   2 +-
+ components/autofill/content/renderer/autofill_agent.cc                       |   2 +-
+ components/autofill/content/renderer/password_autofill_agent.cc              |   2 +-
+ components/autofill/core/browser/password_autofill_manager.cc                |   2 +-
+ content/DEPS                                                                 |   1 +
+ content/browser/browser_plugin/browser_plugin_guest.cc                       |   2 +-
+ content/browser/browser_plugin/browser_plugin_guest_manager.cc               |   2 +-
+ content/browser/renderer_host/input/immediate_input_router.cc                |   2 +-
+ content/browser/renderer_host/input/immediate_input_router_unittest.cc       |   2 +-
+ content/browser/renderer_host/input/input_router_unittest.cc                 |   2 +-
+ content/browser/renderer_host/input/web_input_event_builders_android.cc      |   4 +-
+ content/browser/renderer_host/input/web_input_event_builders_gtk.cc          |   2 +-
+ content/browser/renderer_host/input/web_input_event_builders_gtk.h           |   2 +-
+ content/browser/renderer_host/input/web_input_event_builders_gtk_unittest.cc |   2 +-
+ content/browser/renderer_host/input/web_input_event_util.h                   |   2 +-
+ content/browser/renderer_host/input/web_input_event_util_posix.h             |   2 +-
+ content/browser/renderer_host/render_widget_host_impl.cc                     |   2 +-
+ content/browser/renderer_host/render_widget_host_unittest.cc                 |   2 +-
+ content/browser/renderer_host/render_widget_host_view_mac.mm                 |   2 +-
+ content/browser/renderer_host/web_input_event_aurax11.cc                     |   4 +-
+ content/public/test/browser_test_utils.h                                     |   2 +-
+ content/renderer/browser_plugin/browser_plugin.cc                            |   2 +-
+ content/renderer/render_view_browsertest.cc                                  |   4 +-
+ media/DEPS                                                                   |   1 +
+ media/base/keyboard_event_counter.h                                          |   2 +-
+ media/base/user_input_monitor_linux.cc                                       |   2 +-
+ media/base/user_input_monitor_win.cc                                         |   2 +-
+ ppapi/examples/ime/ime.cc                                                    |   2 +-
+ remoting/client/jni/android_keymap.cc                                        |   2 +-
+ ui/aura/remote_root_window_host_win.cc                                       |   2 +-
+ ui/aura/root_window_host_x11.cc                                              |   2 +-
+ ui/aura/root_window_unittest.cc                                              |   2 +-
+ ui/aura/test/event_generator.cc                                              |   2 +-
+ ui/aura/test/event_generator.h                                               |   2 +-
+ ui/aura/test/test_window_delegate.h                                          |   2 +-
+ ui/aura/test/ui_controls_factory_aurax11.cc                                  |   2 +-
+ ui/aura/window_unittest.cc                                                   |   2 +-
+ ui/base/accelerators/accelerator.cc                                          |   2 +-
+ ui/base/accelerators/accelerator.h                                           |   2 +-
+ ui/base/accelerators/accelerator_manager_unittest.cc                         |   2 +-
+ ui/base/accelerators/platform_accelerator_gtk.cc                             |   2 +-
+ ui/base/cocoa/events_mac.mm                                                  |   2 +-
+ ui/base/events/event.cc                                                      |   4 +-
+ ui/base/events/event.h                                                       |   2 +-
+ ui/base/events/event_utils.h                                                 |   2 +-
+ ui/base/gtk/event_synthesis_gtk.cc                                           |   2 +-
+ ui/base/gtk/event_synthesis_gtk.h                                            |   2 +-
+ ui/base/ime/fake_input_method.cc                                             |   4 +-
+ ui/base/ime/input_method.h                                                   |   2 +-
+ ui/base/ime/input_method_delegate.h                                          |   2 +-
+ ui/base/ime/input_method_ibus.cc                                             |   6 +-
+ ui/base/ime/input_method_win.cc                                              |   2 +-
+ ui/base/keycodes/keyboard_code_conversion.cc                                 | 115 -------------------------------
+ ui/base/keycodes/keyboard_code_conversion.h                                  |  38 -----------
+ ui/base/keycodes/keyboard_code_conversion_android.cc                         | 305 ----------------------------------------------------------------------------------
+ ui/base/keycodes/keyboard_code_conversion_android.h                          |  17 -----
+ ui/base/keycodes/keyboard_code_conversion_gtk.cc                             |  85 -----------------------
+ ui/base/keycodes/keyboard_code_conversion_gtk.h                              |  57 ----------------
+ ui/base/keycodes/keyboard_code_conversion_mac.h                              |  41 -----------
+ ui/base/keycodes/keyboard_code_conversion_mac.mm                             | 558 -----------------------------------------------------------------------------------------------------------------------------------------------------
+ ui/base/keycodes/keyboard_code_conversion_win.cc                             |  17 -----
+ ui/base/keycodes/keyboard_code_conversion_win.h                              |  19 ------
+ ui/base/keycodes/keyboard_code_conversion_x.cc                               | 804 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ ui/base/keycodes/keyboard_code_conversion_x.h                                |  31 ---------
+ ui/base/keycodes/keyboard_codes.h                                            |  16 -----
+ ui/base/keycodes/keyboard_codes_posix.h                                      | 228 -------------------------------------------------------------
+ ui/base/keycodes/keyboard_codes_win.h                                        | 192 ----------------------------------------------------
+ ui/base/ozone/evdev/key_event_converter_ozone.cc                             |   2 +-
+ ui/base/test/ui_controls.h                                                   |   2 +-
+ ui/base/test/ui_controls_aura.h                                              |   2 +-
+ ui/base/test/ui_controls_internal_win.cc                                     |   4 +-
+ ui/base/test/ui_controls_mac.mm                                              |   2 +-
+ ui/base/win/events_win.cc                                                    |   2 +-
+ ui/base/x/events_x.cc                                                        |   2 +-
+ ui/base/x/x11_util.cc                                                        |   2 +-
+ ui/base/x/x11_util.h                                                         |   2 +-
+ ui/events/keycodes/keyboard_code_conversion.cc                               | 115 +++++++++++++++++++++++++++++++
+ ui/events/keycodes/keyboard_code_conversion.h                                |  38 +++++++++++
+ ui/events/keycodes/keyboard_code_conversion_android.cc                       | 305 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ ui/events/keycodes/keyboard_code_conversion_android.h                        |  17 +++++
+ ui/events/keycodes/keyboard_code_conversion_gtk.cc                           |  85 +++++++++++++++++++++++
+ ui/events/keycodes/keyboard_code_conversion_gtk.h                            |  57 ++++++++++++++++
+ ui/events/keycodes/keyboard_code_conversion_mac.h                            |  41 +++++++++++
+ ui/events/keycodes/keyboard_code_conversion_mac.mm                           | 558 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ ui/events/keycodes/keyboard_code_conversion_win.cc                           |  17 +++++
+ ui/events/keycodes/keyboard_code_conversion_win.h                            |  19 ++++++
+ ui/events/keycodes/keyboard_code_conversion_x.cc                             | 804 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ ui/events/keycodes/keyboard_code_conversion_x.h                              |  31 +++++++++
+ ui/events/keycodes/keyboard_codes.h                                          |  16 +++++
+ ui/events/keycodes/keyboard_codes_posix.h                                    | 228 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ ui/events/keycodes/keyboard_codes_win.h                                      | 192 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ ui/message_center/views/notifier_settings_view.cc                            |   2 +-
+ ui/ui.gyp                                                                    |  30 ++++----
+ ui/views/color_chooser/color_chooser_view.cc                                 |   2 +-
+ ui/views/controls/button/custom_button.cc                                    |   2 +-
+ ui/views/controls/combobox/combobox.cc                                       |   2 +-
+ ui/views/controls/combobox/combobox_unittest.cc                              |   2 +-
+ ui/views/controls/link.cc                                                    |   2 +-
+ ui/views/controls/menu/menu_controller.cc                                    |   2 +-
+ ui/views/controls/menu/menu_win.cc                                           |   2 +-
+ ui/views/controls/menu/native_menu_win.cc                                    |   2 +-
+ ui/views/controls/native_control.cc                                          |   4 +-
+ ui/views/controls/native_control.h                                           |   2 +-
+ ui/views/controls/scrollbar/base_scroll_bar.cc                               |   2 +-
+ ui/views/controls/scrollbar/bitmap_scroll_bar.cc                             |   2 +-
+ ui/views/controls/scrollbar/native_scroll_bar_views.cc                       |   2 +-
+ ui/views/controls/tabbed_pane/tabbed_pane.cc                                 |   2 +-
+ ui/views/controls/table/table_view_observer.h                                |   2 +-
+ ui/views/controls/textfield/native_textfield_views_unittest.cc               |   2 +-
+ ui/views/controls/textfield/native_textfield_win.cc                          |   2 +-
+ ui/views/controls/textfield/textfield.cc                                     |   2 +-
+ ui/views/controls/textfield/textfield.h                                      |   2 +-
+ ui/views/controls/tree/tree_view.cc                                          |   2 +-
+ ui/views/controls/tree/tree_view_controller.h                                |   2 +-
+ ui/views/controls/webview/web_dialog_view.cc                                 |   2 +-
+ ui/views/focus/accelerator_handler_win.cc                                    |   4 +-
+ ui/views/focus/focus_manager.cc                                              |   2 +-
+ ui/views/focus/focus_manager_unittest.cc                                     |   2 +-
+ ui/views/ime/mock_input_method.cc                                            |   2 +-
+ ui/views/view_unittest.cc                                                    |   2 +-
+ ui/views/widget/native_widget_win.cc                                         |   2 +-
+ ui/views/widget/root_view.cc                                                 |   2 +-
+ ui/views/win/hwnd_message_handler.cc                                         |   2 +-
+ ui/views/window/dialog_client_view.cc                                        |   2 +-
+ 188 files changed, 2708 insertions(+), 2706 deletions(-)
+:::
+edc844a861425e2489483b0cb2fada656b9bab31
+sky@chromium.org
+sky@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Fri Mar 9 04:33:14 2012 +0000
+1ab698d257677a3072cf062986de4e3221962ae5
+Adds an outline beneath the current window as you drag it around to give an indication as to where on the grid the window will land when dropped.
+BUG=116213
+TEST=none
+R=ben@chromium.org
+
+Review URL: https://chromiumcodereview.appspot.com/9646007
+
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@125799 0039d316-1c4b-4281-b951-d872f2087c98
+;;;
+ ash/ash.gyp                                   |   2 ++
+ ash/wm/workspace/phantom_window_controller.cc | 154 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ ash/wm/workspace/phantom_window_controller.h  |  68 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ ash/wm/workspace/workspace_window_resizer.cc  |  73 +++++++++++++++++++++++++++++++++++++++++++++++++++++--------------------
+ ash/wm/workspace/workspace_window_resizer.h   |  13 ++++++++++++-
+ ui/gfx/canvas_skia.cc                         |  89 ++++++++++++++++++++++++++++++++++++++++++++++++-----------------------------------------
+ ui/gfx/canvas_skia.h                          |   3 +++
+ 7 files changed, 340 insertions(+), 62 deletions(-)
+:::
+b9b1e7a4fa49c108c40536cee59ce0b2b0a09d86
+sky@chromium.org
+sky@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Tue May 17 15:29:51 2011 +0000
+2180ba95f998a4a414d2aed0b644079739242aaa
+Makes Transform concrete. Fixes bug in coordinate conversion and makes all conversion routines calculate the transform in the same way. Lastly fixes bug in touch_factory.cc that was causing crashes on my machine when running views_unittests. Oh, and adds some tests of conversion methods.
+BUG=none
+TEST=none
+R=ben@chromium.org,sadrul@chromium.org
+
+Review URL: http://codereview.chromium.org/7033002
+
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@85635 0039d316-1c4b-4281-b951-d872f2087c98
+;;;
+ chrome/browser/ui/touch/frame/touch_browser_frame_view.cc |   5 ++++-
+ ui/gfx/canvas_skia.cc                                     |   4 ++--
+ ui/gfx/transform.cc                                       | 103 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ ui/gfx/transform.h                                        |  61 ++++++++++++++++++++++++++++++++++++-------------------------
+ ui/gfx/transform_skia.cc                                  | 108 ------------------------------------------------------------------------------------------------------------
+ ui/gfx/transform_skia.h                                   |  55 -------------------------------------------------------
+ ui/ui_gfx.gypi                                            |   3 +--
+ views/touchui/touch_factory.cc                            |   2 ++
+ views/view.cc                                             | 133 ++++++++++++++++++++++++++++++++-----------------------------------------------------------------------------------------------------
+ views/view.h                                              |  31 +++++++------------------------
+ views/view_unittest.cc                                    | 112 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++------------------
+ 11 files changed, 281 insertions(+), 336 deletions(-)
+:::
+0e935c74fd6ca38866df63af66dc535497172950
+ben@chromium.org
+ben@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Thu Aug 25 21:24:25 2011 +0000
+bae2bd6410e24c06c64a304bb4be294e835bfb41
+Create a new views_aura_desktop. Get views::Widget rendering working against an aura::Window NativeWidget.
+http://crbug.com/93944
+TEST=none
+Review URL: http://codereview.chromium.org/7741027
+
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@98306 0039d316-1c4b-4281-b951-d872f2087c98
+;;;
+ aura/demo/demo_main.cc                  |  62 ++++++++++++++++++++------------------------------------------
+ aura/desktop.cc                         |  29 ++++++++++++++++++++++++++---
+ aura/desktop.h                          |  12 +++++++++++-
+ aura/window.cc                          |  30 ++++++++++++++++++++++--------
+ aura/window.h                           |  14 ++++++++++----
+ aura/window_delegate.h                  |   9 ++++++---
+ ui/gfx/canvas_skia.cc                   |   4 ++--
+ ui/gfx/screen_aura.cc                   |  55 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ ui/ui.gyp                               |   6 ++++++
+ views/DEPS                              |   1 +
+ views/aura_desktop/aura_desktop_main.cc | 106 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ views/controls/menu/menu_controller.cc  |  10 ++++++++--
+ views/focus/accelerator_handler_aura.cc |  20 ++++++++++++++++++++
+ views/view_aura.cc                      |  21 +++++++++++++++++++++
+ views/views.gyp                         |  51 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ views/widget/native_widget_aura.cc      | 176 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++------------
+ views/widget/native_widget_aura.h       |  11 ++++++++++-
+ 17 files changed, 539 insertions(+), 78 deletions(-)
+:::
+50bde0387560560e711ca9ec376b0f7734ea5054
+ben@chromium.org
+ben@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Thu Aug 25 21:44:29 2011 +0000
+31fd99b24c73754eac6e6417ce76ada710166b69
+Revert 98306 - Create a new views_aura_desktop. Get views::Widget rendering working against an aura::Window NativeWidget.
+http://crbug.com/93944
+TEST=none
+Review URL: http://codereview.chromium.org/7741027
+
+TBR=ben@chromium.org
+Review URL: http://codereview.chromium.org/7749020
+
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@98312 0039d316-1c4b-4281-b951-d872f2087c98
+;;;
+ aura/demo/demo_main.cc                  |  62 ++++++++++++++++++++++++++++++++++++++++++--------------------
+ aura/desktop.cc                         |  29 +++--------------------------
+ aura/desktop.h                          |  12 +-----------
+ aura/window.cc                          |  30 ++++++++----------------------
+ aura/window.h                           |  14 ++++----------
+ aura/window_delegate.h                  |   9 +++------
+ ui/gfx/canvas_skia.cc                   |   4 ++--
+ ui/gfx/screen_aura.cc                   |  55 -------------------------------------------------------
+ ui/ui.gyp                               |   6 ------
+ views/DEPS                              |   1 -
+ views/aura_desktop/aura_desktop_main.cc | 106 ----------------------------------------------------------------------------------------------------------
+ views/controls/menu/menu_controller.cc  |  10 ++--------
+ views/focus/accelerator_handler_aura.cc |  20 --------------------
+ views/view_aura.cc                      |  21 ---------------------
+ views/views.gyp                         |  51 ---------------------------------------------------
+ views/widget/native_widget_aura.cc      | 176 ++++++++++++--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ views/widget/native_widget_aura.h       |  11 +----------
+ 17 files changed, 78 insertions(+), 539 deletions(-)
+:::
+8d8c773c297d22dbf01e2bbb69b7335f52208845
+ben@chromium.org
+ben@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Thu Aug 25 22:35:13 2011 +0000
+93543752960447decfc8f0ca38ef9f44f7209cfd
+Re-land: Create a new views_aura_desktop. Get views::Widget rendering working against an aura::Window NativeWidget.
+http://crbug.com/93944
+TEST=none
+
+Original review URL: http://codereview.chromium.org/7741027
+Review URL: http://codereview.chromium.org/7747032
+
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@98331 0039d316-1c4b-4281-b951-d872f2087c98
+;;;
+ aura/demo/demo_main.cc                  |  62 ++++++++++++++++++++------------------------------------------
+ aura/desktop.cc                         |  29 ++++++++++++++++++++++++++---
+ aura/desktop.h                          |  12 +++++++++++-
+ aura/window.cc                          |  30 ++++++++++++++++++++++--------
+ aura/window.h                           |  14 ++++++++++----
+ aura/window_delegate.h                  |   9 ++++++---
+ ui/gfx/canvas_skia.cc                   |   4 ++--
+ ui/gfx/screen_aura.cc                   |  55 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ ui/ui.gyp                               |   6 ++++++
+ views/DEPS                              |   1 +
+ views/aura_desktop/aura_desktop_main.cc | 106 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ views/controls/menu/menu_controller.cc  |  10 ++++++++--
+ views/focus/accelerator_handler_aura.cc |  20 ++++++++++++++++++++
+ views/view_aura.cc                      |  21 +++++++++++++++++++++
+ views/views.gyp                         |  59 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++--
+ views/widget/native_widget_aura.cc      | 176 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++------------
+ views/widget/native_widget_aura.h       |  11 ++++++++++-
+ 17 files changed, 545 insertions(+), 80 deletions(-)
+:::
+4244d69919a960f93e90150f93300b5d9425ab44
+ben@chromium.org
+ben@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Mon Jan 23 17:14:33 2012 +0000
+4babc3efd2df2b1e29f5ada5446637ed803e7beb
+Add animations for system modal and tooltips.
+http://crbug.com/110024
+TEST=none
+Review URL: https://chromiumcodereview.appspot.com/9141024
+
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@118691 0039d316-1c4b-4281-b951-d872f2087c98
+;;;
+ ash/ash.gyp                                     |  2 ++
+ ash/shell.cc                                    |  4 +++-
+ ash/wm/menu_container_layout_manager.cc         | 46 ++++++++++++++++++++++++++++++++++++++++++++++
+ ash/wm/menu_container_layout_manager.h          | 36 ++++++++++++++++++++++++++++++++++++
+ ash/wm/system_modal_container_layout_manager.cc |  5 +++++
+ ash/wm/toplevel_layout_manager.cc               |  8 +-------
+ ash/wm/window_animations.cc                     | 46 ++++++++++++++++++++++++++++++++++++++++++----
+ ash/wm/window_animations.h                      | 10 ++++++----
+ 8 files changed, 141 insertions(+), 16 deletions(-)
+:::
+ddd91e99989b2aa7539516f673f746f088cc607c
+ben@chromium.org
+ben@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Fri Jan 27 16:03:48 2012 +0000
+92c0ca8e8f3873d7cbd8b72d751ba0106486c7dc
+Allow hide animations to work again:
+- Introduces VisibilityClient, which aura::Window defers to to update layer visibility, if present. This replaces code which previously undid layer visibility changes after they were set. Layer visibility changes are potentially destructiver (they can drop textures associated with the layer and require a repaint).
+- Implements this in ash in VisibilityController, which animates the visibility changes of children in annotated parents.
+- Annotates various windows as requiring child window visibility change animations. This replaces animating visibility changes in LayoutManagers.
+- Adds a second layer of visibility determination to aura::Window. Some code may check Window->IsVisible which was simply testing layer visibility. We want Window->IsVisible to return false as soon as Window::Hide() is called, so we add a member for this.
+- We prevent stacking changes to the window from being propagated to the layer if the layer's delegate has been detached (i.e. the layer is hiding)
+
+BUG=none
+TEST=none
+Review URL: https://chromiumcodereview.appspot.com/9235016
+
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@119453 0039d316-1c4b-4281-b951-d872f2087c98
+;;;
+ ash/ash.gyp                                     |   5 +++--
+ ash/shell.cc                                    |  11 +++++++++--
+ ash/shell.h                                     |   2 ++
+ ash/shell/window_type_launcher.cc               |  35 ++++++++++++++++++++++++++++++++++-
+ ash/shell/window_type_launcher.h                |   1 +
+ ash/wm/menu_container_layout_manager.cc         |  46 ----------------------------------------------
+ ash/wm/menu_container_layout_manager.h          |  36 ------------------------------------
+ ash/wm/system_modal_container_layout_manager.cc |   1 -
+ ash/wm/toplevel_layout_manager.cc               |   1 -
+ ash/wm/visibility_controller.cc                 |  54 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ ash/wm/visibility_controller.h                  |  37 +++++++++++++++++++++++++++++++++++++
+ ash/wm/visibility_controller_unittest.cc        |  46 ++++++++++++++++++++++++++++++++++++++++++++++
+ ash/wm/window_animations.cc                     |   9 +++------
+ ui/aura/aura.gyp                                |   2 ++
+ ui/aura/client/visibility_client.cc             |  29 +++++++++++++++++++++++++++++
+ ui/aura/client/visibility_client.h              |  35 +++++++++++++++++++++++++++++++++++
+ ui/aura/root_window.cc                          |   1 -
+ ui/aura/window.cc                               |  49 ++++++++++++++++++++++++++++++++++++-------------
+ ui/aura/window.h                                |  39 +++++++++++++++++++++++++++++++--------
+ ui/aura/window_unittest.cc                      | 103 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-------------------
+ ui/views/widget/native_widget_aura.cc           |  15 ++++-----------
+ 21 files changed, 410 insertions(+), 147 deletions(-)
+:::
+d5106a2f78b3e4ac84140e4bd6d0edda21626857
+ben@chromium.org
+ben@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Tue Jan 31 21:05:20 2012 +0000
+bd68281ba08cc627fc1e33273cb2d77f20a454f8
+Remove Owner param to EventFilter's ctor.
+BUG=none
+TEST=existing unittests
+Review URL: https://chromiumcodereview.appspot.com/9315004
+
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@119954 0039d316-1c4b-4281-b951-d872f2087c98
+;;;
+ ash/accelerators/accelerator_filter.cc          |  3 +--
+ ash/app_list/app_list.cc                        |  5 +----
+ ash/drag_drop/drag_drop_controller.cc           |  3 +--
+ ash/ime/input_method_event_filter.cc            |  3 +--
+ ash/ime/input_method_event_filter_unittest.cc   |  2 +-
+ ash/tooltips/tooltip_controller.cc              |  3 +--
+ ash/wm/root_window_event_filter.cc              |  3 +--
+ ash/wm/root_window_event_filter_unittest.cc     |  6 ++----
+ ash/wm/system_modal_container_event_filter.cc   |  4 +---
+ ash/wm/system_modal_container_event_filter.h    |  3 +--
+ ash/wm/system_modal_container_layout_manager.cc |  2 +-
+ ash/wm/toplevel_window_event_filter.cc          |  2 +-
+ ash/wm/toplevel_window_event_filter.h           |  4 ++++
+ ash/wm/window_cycle_controller.cc               |  3 +--
+ ash/wm/window_modality_controller.cc            |  2 +-
+ ui/aura/aura.gyp                                |  1 -
+ ui/aura/event_filter.cc                         | 21 ---------------------
+ ui/aura/event_filter.h                          | 11 +----------
+ ui/aura/event_filter_unittest.cc                |  7 +++----
+ ui/aura/test/test_event_filter.cc               |  5 ++---
+ ui/aura/test/test_event_filter.h                |  2 +-
+ 21 files changed, 26 insertions(+), 69 deletions(-)
+:::
+ca70609833412dd0cdc758724a92681474d62ee2
+ben@chromium.org
+ben@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Wed Aug 8 18:05:25 2012 +0000
+cb3221b804cdad65aaade7faff1f612644dee4a3
+Convert Aura to use ui::Event.
+http://crbug.com/125937
+TEST=existing
+Review URL: https://chromiumcodereview.appspot.com/10827145
+
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@150587 0039d316-1c4b-4281-b951-d872f2087c98
+;;;
+ ash/accelerators/accelerator_controller.cc                                        |   2 +-
+ ash/accelerators/accelerator_controller_unittest.cc                               |  14 +++----
+ ash/accelerators/accelerator_dispatcher.cc                                        |   4 +-
+ ash/accelerators/accelerator_filter.cc                                            |  10 ++---
+ ash/accelerators/accelerator_filter.h                                             |  11 ++---
+ ash/accelerators/accelerator_table.cc                                             |   1 -
+ ash/accelerators/accelerator_table.h                                              |   2 +-
+ ash/display/mouse_cursor_event_filter.cc                                          |  12 +++---
+ ash/display/mouse_cursor_event_filter.h                                           |  11 ++---
+ ash/display/screen_position_controller.cc                                         |   4 +-
+ ash/drag_drop/drag_drop_controller.cc                                             |  19 +++++----
+ ash/drag_drop/drag_drop_controller.h                                              |  16 +++----
+ ash/drag_drop/drag_drop_controller_unittest.cc                                    |  10 ++---
+ ash/event_rewriter_delegate.h                                                     |   6 +--
+ ash/extended_desktop_unittest.cc                                                  |  18 ++++----
+ ash/keyboard_overlay/keyboard_overlay_view.cc                                     |   3 +-
+ ash/keyboard_overlay/keyboard_overlay_view.h                                      |   2 +-
+ ash/launcher/launcher_button.cc                                                   |   1 -
+ ash/launcher/launcher_tooltip_manager.cc                                          |  14 +++----
+ ash/launcher/launcher_tooltip_manager.h                                           |  11 ++---
+ ash/launcher/launcher_tooltip_manager_unittest.cc                                 |  12 +++---
+ ash/launcher/launcher_view_unittest.cc                                            |   6 +--
+ ash/magnifier/magnification_controller.cc                                         |  23 ++++++-----
+ ash/system/tray/tray_bubble_view.cc                                               |  12 +++---
+ ash/system/tray/tray_bubble_view.h                                                |  12 +++---
+ ash/test/test_activation_delegate.cc                                              |   3 +-
+ ash/test/test_activation_delegate.h                                               |   2 +-
+ ash/tooltips/tooltip_controller.cc                                                |  10 ++---
+ ash/tooltips/tooltip_controller.h                                                 |  14 +++----
+ ash/touch/touch_observer_hud.cc                                                   |  10 ++---
+ ash/touch/touch_observer_hud.h                                                    |  13 +++---
+ ash/touch/touch_uma.cc                                                            |  22 +++++-----
+ ash/touch/touch_uma.h                                                             |   6 +--
+ ash/wm/activation_controller.cc                                                   |   8 ++--
+ ash/wm/activation_controller.h                                                    |   6 +--
+ ash/wm/app_list_controller.cc                                                     |  12 +++---
+ ash/wm/app_list_controller.h                                                      |  15 +++----
+ ash/wm/coordinate_conversion.cc                                                   |   2 +-
+ ash/wm/event_rewriter_event_filter.cc                                             |  10 ++---
+ ash/wm/event_rewriter_event_filter.h                                              |   8 ++--
+ ash/wm/maximize_bubble_controller.cc                                              |   1 -
+ ash/wm/overlay_event_filter.cc                                                    |   9 ++--
+ ash/wm/overlay_event_filter.h                                                     |  11 +++--
+ ash/wm/panel_layout_manager.cc                                                    |   2 +-
+ ash/wm/panel_window_event_filter.cc                                               |  14 +++----
+ ash/wm/panel_window_event_filter.h                                                |  19 +++++----
+ ash/wm/partial_screenshot_view.cc                                                 |   3 +-
+ ash/wm/partial_screenshot_view.h                                                  |   2 +-
+ ash/wm/shelf_layout_manager.cc                                                    |  21 +++++-----
+ ash/wm/system_gesture_event_filter.cc                                             |  23 ++++++-----
+ ash/wm/system_gesture_event_filter.h                                              |  26 ++++++------
+ ash/wm/system_gesture_event_filter_unittest.cc                                    |  50 +++++++++++-----------
+ ash/wm/system_modal_container_event_filter.cc                                     |  10 ++---
+ ash/wm/system_modal_container_event_filter.h                                      |   8 ++--
+ ash/wm/system_modal_container_layout_manager.cc                                   |   2 +-
+ ash/wm/toplevel_window_event_filter.cc                                            |  20 ++++-----
+ ash/wm/toplevel_window_event_filter.h                                             |  23 ++++++-----
+ ash/wm/toplevel_window_event_filter_unittest.cc                                   |   2 +-
+ ash/wm/user_activity_detector.cc                                                  |  10 ++---
+ ash/wm/user_activity_detector.h                                                   |   8 ++--
+ ash/wm/user_activity_detector_unittest.cc                                         |  14 +++----
+ ash/wm/window_cycle_controller.cc                                                 |  21 +++++-----
+ ash/wm/window_manager_unittest.cc                                                 |  44 ++++++++++----------
+ ash/wm/window_modality_controller.cc                                              |  12 +++---
+ ash/wm/window_modality_controller.h                                               |  15 +++----
+ ash/wm/window_modality_controller_unittest.cc                                     |   2 +-
+ ash/wm/workspace/frame_maximize_button.cc                                         |  18 ++++----
+ ash/wm/workspace/multi_window_resize_controller.cc                                |   6 +--
+ ash/wm/workspace/workspace_event_filter.cc                                        |   6 +--
+ ash/wm/workspace/workspace_event_filter.h                                         |   5 +--
+ ash/wm/workspace/workspace_layout_manager.cc                                      |   2 +-
+ ash/wm/workspace/workspace_layout_manager.h                                       |   1 -
+ ash/wm/workspace/workspace_window_resizer.cc                                      |   2 +-
+ chrome/browser/ui/ash/event_rewriter.cc                                           |  20 ++++-----
+ chrome/browser/ui/ash/event_rewriter.h                                            |  18 ++++----
+ chrome/browser/ui/ash/event_rewriter_unittest.cc                                  |   6 +--
+ chrome/browser/ui/views/ash/launcher/browser_launcher_item_controller_unittest.cc |   3 +-
+ chrome/browser/ui/views/toolbar_view.cc                                           |   2 +-
+ content/browser/renderer_host/native_web_keyboard_event_aura.cc                   |   8 ++--
+ content/browser/renderer_host/render_widget_host_view_aura.cc                     |  20 ++++-----
+ content/browser/renderer_host/render_widget_host_view_aura.h                      |  11 ++---
+ content/browser/renderer_host/web_input_event_aura.cc                             |  44 ++++++++++----------
+ content/browser/renderer_host/web_input_event_aura.h                              |  20 ++++-----
+ content/browser/renderer_host/web_input_event_aura_unittest.cc                    |  10 ++---
+ content/browser/renderer_host/web_input_event_aurax11.cc                          |  22 +++++-----
+ content/browser/web_contents/web_contents_view_aura.cc                            |  20 ++++-----
+ content/browser/web_contents/web_contents_view_aura.h                             |  19 +++++----
+ content/renderer/render_view_browsertest.cc                                       |  14 +++----
+ ui/aura/aura.gyp                                                                  |   5 ---
+ ui/aura/bench/bench_main.cc                                                       |   1 -
+ ui/aura/client/activation_client.h                                                |   9 ++--
+ ui/aura/client/activation_delegate.h                                              |   7 +++-
+ ui/aura/client/drag_drop_client.h                                                 |  13 ++++--
+ ui/aura/client/drag_drop_delegate.h                                               |  11 +++--
+ ui/aura/client/tooltip_client.h                                                   |   1 -
+ ui/aura/demo/demo_main.cc                                                         |  11 ++---
+ ui/aura/desktop/desktop_activation_client.cc                                      |   2 +-
+ ui/aura/desktop/desktop_activation_client.h                                       |   3 +-
+ ui/aura/event.cc                                                                  | 479 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ ui/aura/event.h                                                                   | 400 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ ui/aura/event_filter.h                                                            |  22 ++++++----
+ ui/aura/event_filter_unittest.cc                                                  |  13 +++---
+ ui/aura/event_mac.h                                                               |  18 --------
+ ui/aura/event_mac.mm                                                              |  15 -------
+ ui/aura/event_unittest.cc                                                         | 116 ---------------------------------------------------
+ ui/aura/focus_manager.cc                                                          |   2 +-
+ ui/aura/focus_manager.h                                                           |   7 +++-
+ ui/aura/gestures/gesture_recognizer_unittest.cc                                   | 264 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++---------------------------------------------------------
+ ui/aura/root_window.cc                                                            |  81 ++++++++++++++++++++----------------
+ ui/aura/root_window.h                                                             |  37 +++++++++--------
+ ui/aura/root_window_host_delegate.h                                               |  19 +++++----
+ ui/aura/root_window_host_linux.cc                                                 |  16 +++----
+ ui/aura/root_window_host_win.cc                                                   |   6 +--
+ ui/aura/root_window_unittest.cc                                                   |  57 +++++++++++++------------
+ ui/aura/shared/compound_event_filter.cc                                           |  68 +++++++++++++++---------------
+ ui/aura/shared/compound_event_filter.h                                            |  44 +++++++++++---------
+ ui/aura/shared/compound_event_filter_unittest.cc                                  |  12 +++---
+ ui/aura/shared/input_method_event_filter.cc                                       |  16 +++----
+ ui/aura/shared/input_method_event_filter.h                                        |  21 +++++-----
+ ui/aura/test/event_generator.cc                                                   |  56 +++++++++++++------------
+ ui/aura/test/event_generator.h                                                    |   7 +++-
+ ui/aura/test/test_activation_client.cc                                            |   2 +-
+ ui/aura/test/test_activation_client.h                                             |   3 +-
+ ui/aura/test/test_event_filter.cc                                                 |  15 ++++---
+ ui/aura/test/test_event_filter.h                                                  |  15 ++++---
+ ui/aura/test/test_window_delegate.cc                                              |  17 ++++----
+ ui/aura/test/test_window_delegate.h                                               |  15 +++----
+ ui/aura/window.cc                                                                 |  11 +++--
+ ui/aura/window.h                                                                  |   2 +-
+ ui/aura/window_delegate.h                                                         |  19 +++++----
+ ui/aura/window_unittest.cc                                                        |  53 +++++++++++++-----------
+ ui/base/event.cc                                                                  |  11 ++++-
+ ui/base/event.h                                                                   |   9 ++--
+ ui/gfx/native_widget_types.h                                                      |   6 ++-
+ ui/views/controls/webview/web_dialog_view.cc                                      |   4 +-
+ ui/views/drag_utils.cc                                                            |   2 +-
+ ui/views/events/event.h                                                           |   9 ++--
+ ui/views/events/event_aura.cc                                                     |  21 +++++-----
+ ui/views/view_unittest.cc                                                         |   1 -
+ ui/views/widget/desktop_native_widget_helper_aura.cc                              |   6 +--
+ ui/views/widget/native_widget_aura.cc                                             |  23 ++++++-----
+ ui/views/widget/native_widget_aura.h                                              |  17 ++++----
+ ui/views/widget/native_widget_aura_unittest.cc                                    |  10 ++---
+ ui/views/widget/tooltip_manager_aura.cc                                           |   4 +-
+ ui/views/widget/widget_message_filter.cc                                          |   1 -
+ ui/views/widget/x11_window_event_filter.cc                                        |   9 ++--
+ ui/views/widget/x11_window_event_filter.h                                         |  12 +++---
+ 147 files changed, 1113 insertions(+), 2049 deletions(-)
+:::
+4a59e4e9b293138235bbb4a1dc559cb2fb54d481
+ben@chromium.org
+ben@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Mon Nov 12 21:15:40 2012 +0000
+9147b761180d25b43e832aad95f31b479aadade6
+Move ui\aura\shared to ui\views\corewm
+http://crbug.com/158115
+TBR=sky@chromium.org,jam@chromium.org
+Review URL: https://codereview.chromium.org/11275139
+
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@167236 0039d316-1c4b-4281-b951-d872f2087c98
+;;;
+ ash/magnifier/magnification_controller.cc             |   2 +-
+ ash/root_window_controller.h                          |  17 ++++++++------
+ ash/shell.cc                                          |  10 ++++-----
+ ash/shell.h                                           |  16 ++++++-------
+ ash/wm/power_button_controller.cc                     |   2 +-
+ ash/wm/session_state_controller.cc                    |   2 +-
+ ash/wm/session_state_controller_impl.cc               |   2 +-
+ ash/wm/session_state_controller_impl2.cc              |   2 +-
+ ash/wm/system_modal_container_layout_manager.cc       |   2 +-
+ ash/wm/window_manager_unittest.cc                     |   6 ++---
+ ash/wm/workspace/multi_window_resize_controller.cc    |   4 ++--
+ content/shell/shell_stacking_client_ash.cc            |   8 +++----
+ content/shell/shell_stacking_client_ash.h             |  15 ++++++++-----
+ ui/aura/shared/compound_event_filter.cc               | 292 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ ui/aura/shared/compound_event_filter.h                |  96 ------------------------------------------------------------------------------
+ ui/aura/shared/compound_event_filter_unittest.cc      | 193 -------------------------------------------------------------------------------------------------------------------------------------------------------------
+ ui/aura/shared/input_method_event_filter.cc           | 101 ----------------------------------------------------------------------------------
+ ui/aura/shared/input_method_event_filter.h            |  67 -------------------------------------------------------
+ ui/aura/shared/input_method_event_filter_unittest.cc  |  93 ----------------------------------------------------------------------------
+ ui/views/corewm/compound_event_filter.cc              | 293 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ ui/views/corewm/compound_event_filter.h               |  99 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ ui/views/corewm/compound_event_filter_unittest.cc     | 190 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ ui/views/corewm/input_method_event_filter.cc          | 101 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ ui/views/corewm/input_method_event_filter.h           |  70 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ ui/views/corewm/input_method_event_filter_unittest.cc |  91 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ ui/views/views.gyp                                    |  18 +++++++--------
+ ui/views/widget/desktop_root_window_host_linux.cc     |   8 +++----
+ ui/views/widget/desktop_root_window_host_linux.h      |  12 +++++-----
+ ui/views/widget/desktop_root_window_host_win.cc       |   8 +++----
+ ui/views/widget/desktop_root_window_host_win.h        |  12 +++++-----
+ 30 files changed, 919 insertions(+), 913 deletions(-)
+:::
+f82017820fe06b6dd5fe5a782919971c9e8ff7f4
+ben@chromium.org
+ben@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Wed Nov 28 22:24:34 2012 +0000
+664b93c14564c47d4c99cee4a6d14d2386ccbf3f
+Split window_animations, moving basic animations to views/corewm. The base definition of the animation type enum also moves to corewm, and the API now allows downstream libraries (like ash) to extend the set of animations available.
+This will allow us to more easily use "core" animations in desktop-aura.
+
+I also removed the internal namespace from window_animations that remained in ash, since the use of namespaces in that file had begun to confuse me.
+
+http://crbug.com/158115
+R=sky@chromium.org
+Review URL: https://codereview.chromium.org/11412223
+
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@170071 0039d316-1c4b-4281-b951-d872f2087c98
+;;;
+ ash/desktop_background/desktop_background_view.cc                        |  17 ++++---
+ ash/desktop_background/user_wallpaper_delegate.h                         |   4 +-
+ ash/launcher/launcher_tooltip_manager.cc                                 |  10 +++--
+ ash/shell.cc                                                             |   4 +-
+ ash/system/tray/tray_background_view.cc                                  |  10 ++---
+ ash/wm/base_layout_manager.cc                                            |   3 +-
+ ash/wm/system_modal_container_layout_manager.cc                          |   2 +-
+ ash/wm/window_animations.cc                                              | 541 ++++++++++++++++++++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ ash/wm/window_animations.h                                               |  76 ++++---------------------------
+ ash/wm/window_animations_unittest.cc                                     |  10 ++---
+ ash/wm/window_modality_controller.cc                                     |   6 +--
+ ash/wm/window_util.cc                                                    |  26 -----------
+ ash/wm/window_util.h                                                     |  15 -------
+ ash/wm/workspace/desktop_background_fade_controller.cc                   |   5 ++-
+ ash/wm/workspace/multi_window_resize_controller.cc                       |   4 +-
+ ash/wm/workspace/workspace.cc                                            |   2 +-
+ ash/wm/workspace/workspace_layout_manager.cc                             |   5 ++-
+ ash/wm/workspace/workspace_window_resizer.cc                             |   5 ++-
+ chrome/browser/chromeos/background/ash_user_wallpaper_delegate.cc        |   4 +-
+ chrome/browser/chromeos/input_method/candidate_window_controller_impl.cc |   8 ++--
+ chrome/browser/chromeos/login/lock_window_aura.cc                        |   4 +-
+ chrome/browser/chromeos/login/webui_login_display_host.cc                |   6 +--
+ chrome/browser/ui/views/constrained_window_views.cc                      |  11 +++--
+ chrome/browser/ui/views/extensions/extension_popup.cc                    |  13 +++---
+ chrome/browser/ui/views/omnibox/omnibox_popup_contents_view.cc           |  20 ++++-----
+ ui/views/corewm/corewm_switches.cc                                       |  17 +++++++
+ ui/views/corewm/corewm_switches.h                                        |  26 +++++++++++
+ ui/views/corewm/window_animations.cc                                     | 494 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ ui/views/corewm/window_animations.h                                      | 101 +++++++++++++++++++++++++++++++++++++++++
+ ui/views/corewm/window_animations_unittest.cc                            | 137 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ ui/views/corewm/window_util.cc                                           |  40 +++++++++++++++++
+ ui/views/corewm/window_util.h                                            |  40 +++++++++++++++++
+ ui/views/views.gyp                                                       |   6 +++
+ 33 files changed, 995 insertions(+), 677 deletions(-)
+:::
+92b18e981f278ae63657c14b1c8c4d5b710afcbc
+ben@chromium.org
+ben@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Wed Nov 28 22:59:31 2012 +0000
+8b4a61a585b621162b043a2ffe5c2154e9fab240
+Revert 170071 - Split window_animations, moving basic animations to views/corewm. The base definition of the animation type enum also moves to corewm, and the API now allows downstream libraries (like ash) to extend the set of animations available.
+This will allow us to more easily use "core" animations in desktop-aura.
+
+I also removed the internal namespace from window_animations that remained in ash, since the use of namespaces in that file had begun to confuse me.
+
+http://crbug.com/158115
+R=sky@chromium.org
+Review URL: https://codereview.chromium.org/11412223
+
+TBR=ben@chromium.org
+
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@170084 0039d316-1c4b-4281-b951-d872f2087c98
+;;;
+ ash/desktop_background/desktop_background_view.cc                        |  17 +++----
+ ash/desktop_background/user_wallpaper_delegate.h                         |   4 +-
+ ash/launcher/launcher_tooltip_manager.cc                                 |  10 ++---
+ ash/shell.cc                                                             |   4 +-
+ ash/system/tray/tray_background_view.cc                                  |  10 ++---
+ ash/wm/base_layout_manager.cc                                            |   3 +-
+ ash/wm/system_modal_container_layout_manager.cc                          |   2 +-
+ ash/wm/window_animations.cc                                              | 541 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--------------------
+ ash/wm/window_animations.h                                               |  76 +++++++++++++++++++++++++++----
+ ash/wm/window_animations_unittest.cc                                     |  10 +++--
+ ash/wm/window_modality_controller.cc                                     |   6 +--
+ ash/wm/window_util.cc                                                    |  26 +++++++++++
+ ash/wm/window_util.h                                                     |  15 +++++++
+ ash/wm/workspace/desktop_background_fade_controller.cc                   |   5 +--
+ ash/wm/workspace/multi_window_resize_controller.cc                       |   4 +-
+ ash/wm/workspace/workspace.cc                                            |   2 +-
+ ash/wm/workspace/workspace_layout_manager.cc                             |   5 +--
+ ash/wm/workspace/workspace_window_resizer.cc                             |   5 +--
+ chrome/browser/chromeos/background/ash_user_wallpaper_delegate.cc        |   4 +-
+ chrome/browser/chromeos/input_method/candidate_window_controller_impl.cc |   8 ++--
+ chrome/browser/chromeos/login/lock_window_aura.cc                        |   4 +-
+ chrome/browser/chromeos/login/webui_login_display_host.cc                |   6 +--
+ chrome/browser/ui/views/constrained_window_views.cc                      |  11 ++---
+ chrome/browser/ui/views/extensions/extension_popup.cc                    |  13 +++---
+ chrome/browser/ui/views/omnibox/omnibox_popup_contents_view.cc           |  20 +++++----
+ ui/views/corewm/corewm_switches.cc                                       |  17 -------
+ ui/views/corewm/corewm_switches.h                                        |  26 -----------
+ ui/views/corewm/window_animations.cc                                     | 494 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ ui/views/corewm/window_animations.h                                      | 101 -----------------------------------------
+ ui/views/corewm/window_animations_unittest.cc                            | 137 --------------------------------------------------------
+ ui/views/corewm/window_util.cc                                           |  40 -----------------
+ ui/views/corewm/window_util.h                                            |  40 -----------------
+ ui/views/views.gyp                                                       |   6 ---
+ 33 files changed, 677 insertions(+), 995 deletions(-)
+:::
+d217769230326a5af129b3cadae785706341a8f9
+ben@chromium.org
+ben@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Thu Nov 29 16:19:04 2012 +0000
+c14a701e971413ac03c8758caec849fe61507f32
+Split window_animations, moving basic animations to views/corewm. The base definition of the animation type enum also moves to corewm, and the API now allows downstream libraries (like ash) to extend the set of animations available.
+This will allow us to more easily use "core" animations in desktop-aura.
+
+I also removed the internal namespace from window_animations that remained in ash, since the use of namespaces in that file had begun to confuse me.
+
+http://crbug.com/158115
+R=sky@chromium.org
+Committed: https://src.chromium.org/viewvc/chrome?view=rev&revision=170071
+Review URL: https://codereview.chromium.org/11412223
+
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@170195 0039d316-1c4b-4281-b951-d872f2087c98
+;;;
+ ash/ash_switches.cc                                                      |   3 --
+ ash/ash_switches.h                                                       |   1 -
+ ash/desktop_background/desktop_background_view.cc                        |  17 ++++---
+ ash/desktop_background/user_wallpaper_delegate.h                         |   4 +-
+ ash/launcher/launcher_tooltip_manager.cc                                 |  10 +++--
+ ash/shell.cc                                                             |   4 +-
+ ash/system/tray/tray_background_view.cc                                  |  10 ++---
+ ash/wm/base_layout_manager.cc                                            |   3 +-
+ ash/wm/system_modal_container_layout_manager.cc                          |   2 +-
+ ash/wm/window_animations.cc                                              | 541 ++++++++++++++++++++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ ash/wm/window_animations.h                                               |  76 ++++---------------------------
+ ash/wm/window_animations_unittest.cc                                     |  10 ++---
+ ash/wm/window_modality_controller.cc                                     |   6 +--
+ ash/wm/window_util.cc                                                    |  26 -----------
+ ash/wm/window_util.h                                                     |  15 -------
+ ash/wm/workspace/auto_window_management.cc                               |   4 +-
+ ash/wm/workspace/desktop_background_fade_controller.cc                   |   5 ++-
+ ash/wm/workspace/multi_window_resize_controller.cc                       |   4 +-
+ ash/wm/workspace/workspace.cc                                            |   2 +-
+ ash/wm/workspace/workspace_animations.cc                                 |   9 ++--
+ ash/wm/workspace/workspace_layout_manager.cc                             |   5 ++-
+ ash/wm/workspace/workspace_manager.cc                                    |   5 +--
+ ash/wm/workspace/workspace_window_resizer.cc                             |   5 ++-
+ chrome/browser/chromeos/background/ash_user_wallpaper_delegate.cc        |   4 +-
+ chrome/browser/chromeos/input_method/candidate_window_controller_impl.cc |   8 ++--
+ chrome/browser/chromeos/login/lock_window_aura.cc                        |   4 +-
+ chrome/browser/chromeos/login/login_utils.cc                             |   3 +-
+ chrome/browser/chromeos/login/webui_login_display_host.cc                |   6 +--
+ chrome/browser/ui/views/constrained_window_views.cc                      |  11 +++--
+ chrome/browser/ui/views/extensions/extension_popup.cc                    |  13 +++---
+ chrome/browser/ui/views/omnibox/omnibox_popup_contents_view.cc           |  20 ++++-----
+ chrome/test/base/test_launcher_utils.cc                                  |   9 ++--
+ ui/views/corewm/corewm_switches.cc                                       |  17 +++++++
+ ui/views/corewm/corewm_switches.h                                        |  26 +++++++++++
+ ui/views/corewm/window_animations.cc                                     | 494 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ ui/views/corewm/window_animations.h                                      | 101 +++++++++++++++++++++++++++++++++++++++++
+ ui/views/corewm/window_animations_unittest.cc                            | 137 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ ui/views/corewm/window_util.cc                                           |  40 +++++++++++++++++
+ ui/views/corewm/window_util.h                                            |  40 +++++++++++++++++
+ ui/views/views.gyp                                                       |   6 +++
+ 40 files changed, 1007 insertions(+), 699 deletions(-)
+:::
+db4fc1e2a877bb9d6871274af4e75180856f7560
+ben@chromium.org
+ben@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Fri Sep 6 20:01:51 2013 +0000
+02ee41de4ba8501e5f9a202978f0749264e1247e
+Move Range code to gfx.
+Part of a set of changes to fix the circular dependency between ui/base and ui/gfx, with the aim of making gfx its own component.
+
+R=jam@chromium.org, jschuh@chromium.org, rsesek@chromium.org
+BUG=285385,103304
+
+Review URL: https://codereview.chromium.org/24012002
+
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@221762 0039d316-1c4b-4281-b951-d872f2087c98
+;;;
+ ash/system/user/tray_user.cc                                                   |   8 ++++----
+ chrome/browser/chromeos/input_method/textinput_surroundingtext_browsertest.cc  |  10 +++++-----
+ chrome/browser/chromeos/input_method/textinput_test_helper.cc                  |   8 ++++----
+ chrome/browser/chromeos/input_method/textinput_test_helper.h                   |   8 ++++----
+ chrome/browser/chromeos/ui/echo_dialog_view.cc                                 |   8 ++++----
+ chrome/browser/chromeos/ui/echo_dialog_view.h                                  |   2 +-
+ chrome/browser/ui/app_list/search/tokenized_string.cc                          |   2 +-
+ chrome/browser/ui/app_list/search/tokenized_string.h                           |   4 ++--
+ chrome/browser/ui/app_list/search/tokenized_string_match.cc                    |   4 ++--
+ chrome/browser/ui/app_list/search/tokenized_string_match.h                     |   4 ++--
+ chrome/browser/ui/app_list/search/tokenized_string_match_unittest.cc           |   2 +-
+ chrome/browser/ui/autofill/autofill_dialog_controller_impl.cc                  |   6 +++---
+ chrome/browser/ui/autofill/autofill_dialog_controller_impl.h                   |   6 +++---
+ chrome/browser/ui/autofill/autofill_dialog_types.cc                            |   2 +-
+ chrome/browser/ui/autofill/autofill_dialog_types.h                             |   6 +++---
+ chrome/browser/ui/autofill/autofill_dialog_view_delegate.h                     |   6 +++---
+ chrome/browser/ui/autofill/generated_credit_card_bubble_controller.cc          |   4 ++--
+ chrome/browser/ui/autofill/generated_credit_card_bubble_controller.h           |   4 ++--
+ chrome/browser/ui/autofill/generated_credit_card_bubble_controller_unittest.cc |   4 ++--
+ chrome/browser/ui/autofill/mock_autofill_dialog_view_delegate.h                |   6 +++---
+ chrome/browser/ui/bookmarks/bookmark_bubble_sign_in_delegate_unittest.cc       |   2 +-
+ chrome/browser/ui/cocoa/autofill/autofill_main_container.mm                    |   4 ++--
+ chrome/browser/ui/views/autofill/autofill_dialog_views.cc                      |   4 ++--
+ chrome/browser/ui/views/autofill/autofill_dialog_views.h                       |   2 +-
+ chrome/browser/ui/views/autofill/generated_credit_card_bubble_views.cc         |   2 +-
+ chrome/browser/ui/views/autofill/generated_credit_card_bubble_views.h          |   2 +-
+ chrome/browser/ui/views/bookmarks/bookmark_sync_promo_view.cc                  |   8 ++++----
+ chrome/browser/ui/views/bookmarks/bookmark_sync_promo_view.h                   |   2 +-
+ chrome/browser/ui/views/bookmarks/bookmark_sync_promo_view_unittest.cc         |   4 ++--
+ chrome/browser/ui/views/extensions/extension_installed_bubble_view.cc          |   2 +-
+ chrome/browser/ui/views/omnibox/omnibox_view_views.cc                          |  22 +++++++++++-----------
+ chrome/browser/ui/views/omnibox/omnibox_view_views.h                           |   8 ++++----
+ chrome/browser/ui/views/omnibox/omnibox_view_win.cc                            |   2 +-
+ chrome/browser/ui/views/omnibox/omnibox_view_win.h                             |   2 +-
+ chrome/browser/ui/views/sync/profile_signin_confirmation_dialog_views.cc       |   8 ++++----
+ chrome/browser/ui/views/sync/profile_signin_confirmation_dialog_views.h        |   2 +-
+ content/browser/renderer_host/gtk_im_context_wrapper.cc                        |   8 ++++----
+ content/browser/renderer_host/ime_adapter_android.cc                           |   4 ++--
+ content/browser/renderer_host/render_view_host_impl.cc                         |   2 +-
+ content/browser/renderer_host/render_view_host_impl.h                          |   7 +++++--
+ content/browser/renderer_host/render_widget_host_impl.cc                       |   4 ++--
+ content/browser/renderer_host/render_widget_host_impl.h                        |   9 ++++++---
+ content/browser/renderer_host/render_widget_host_view_android.cc               |   2 +-
+ content/browser/renderer_host/render_widget_host_view_android.h                |   2 +-
+ content/browser/renderer_host/render_widget_host_view_aura.cc                  |  24 ++++++++++++------------
+ content/browser/renderer_host/render_widget_host_view_aura.h                   |  16 ++++++++--------
+ content/browser/renderer_host/render_widget_host_view_aura_unittest.cc         |   2 +-
+ content/browser/renderer_host/render_widget_host_view_base.cc                  |   4 ++--
+ content/browser/renderer_host/render_widget_host_view_base.h                   |   6 +++---
+ content/browser/renderer_host/render_widget_host_view_gtk.cc                   |   2 +-
+ content/browser/renderer_host/render_widget_host_view_gtk.h                    |   2 +-
+ content/browser/renderer_host/render_widget_host_view_guest.cc                 |   4 ++--
+ content/browser/renderer_host/render_widget_host_view_guest.h                  |   4 ++--
+ content/browser/renderer_host/render_widget_host_view_mac.h                    |  18 +++++++++---------
+ content/browser/renderer_host/render_widget_host_view_mac.mm                   |  46 +++++++++++++++++++++++-----------------------
+ content/browser/renderer_host/render_widget_host_view_mac_unittest.mm          | 144 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++------------------------------------------------------------------------
+ content/browser/renderer_host/render_widget_host_view_win.cc                   |  24 ++++++++++++------------
+ content/browser/renderer_host/render_widget_host_view_win.h                    |  16 ++++++++--------
+ content/browser/renderer_host/test_render_view_host.h                          |   2 +-
+ content/browser/renderer_host/text_input_client_mac.mm                         |   4 ++--
+ content/browser/renderer_host/text_input_client_message_filter.h               |   5 +----
+ content/browser/renderer_host/text_input_client_message_filter.mm              |   2 +-
+ content/browser/web_contents/touch_editable_impl_aura.cc                       |   4 ++--
+ content/child/site_isolation_policy_unittest.cc                                |   2 +-
+ content/common/content_param_traits.cc                                         |  10 +++++-----
+ content/common/content_param_traits.h                                          |  12 ++++++------
+ content/common/mac/attributed_string_coder.h                                   |  10 +++++-----
+ content/common/mac/attributed_string_coder.mm                                  |  10 +++++-----
+ content/common/mac/attributed_string_coder_unittest.mm                         |   6 +++---
+ content/common/text_input_client_messages.h                                    |   6 +++---
+ content/common/view_messages.h                                                 |   8 ++++----
+ content/port/browser/render_widget_host_view_port.h                            |   6 +++---
+ content/renderer/pepper/pepper_plugin_instance_impl.cc                         |   6 +++---
+ content/renderer/pepper/pepper_plugin_instance_impl.h                          |  10 +++++-----
+ content/renderer/render_view_browsertest.cc                                    |  12 ++++++------
+ content/renderer/render_view_impl.cc                                           |  19 ++++++++++---------
+ content/renderer/render_view_impl.h                                            |  10 +++++-----
+ content/renderer/render_view_impl_unittest.cc                                  |  16 ++++++++--------
+ content/renderer/render_widget.cc                                              |  10 +++++-----
+ content/renderer/render_widget.h                                               |  12 ++++++------
+ content/renderer/text_input_client_observer.cc                                 |   4 ++--
+ content/renderer/text_input_client_observer.h                                  |   6 +++---
+ ui/app_list/search_result.h                                                    |   4 ++--
+ ui/base/gtk/gtk_im_context_util.cc                                             |   2 +-
+ ui/base/ime/composition_text.cc                                                |   2 +-
+ ui/base/ime/composition_text.h                                                 |   4 ++--
+ ui/base/ime/input_method_ibus.cc                                               |   8 ++++----
+ ui/base/ime/input_method_ibus.h                                                |   2 +-
+ ui/base/ime/input_method_ibus_unittest.cc                                      |  32 ++++++++++++++++----------------
+ ui/base/ime/input_method_win.cc                                                |  10 +++++-----
+ ui/base/ime/text_input_client.h                                                |  14 +++++++-------
+ ui/base/ime/win/imm32_manager.cc                                               |   4 ++--
+ ui/base/ime/win/tsf_event_router.cc                                            |  32 ++++++++++++++++----------------
+ ui/base/ime/win/tsf_event_router.h                                             |   8 ++++----
+ ui/base/ime/win/tsf_text_store.h                                               |   4 ++--
+ ui/base/ime/win/tsf_text_store_unittest.cc                                     |  14 +++++++-------
+ ui/base/range/OWNERS                                                           |   1 -
+ ui/base/range/range.cc                                                         |  87 ---------------------------------------------------------------------------------------
+ ui/base/range/range.h                                                          | 117 ---------------------------------------------------------------------------------------------------------------------
+ ui/base/range/range_mac.mm                                                     |  36 ------------------------------------
+ ui/base/range/range_mac_unittest.mm                                            |  43 -------------------------------------------
+ ui/base/range/range_unittest.cc                                                | 208 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ ui/base/range/range_win.cc                                                     |  45 ---------------------------------------------
+ ui/base/range/range_win_unittest.cc                                            |  63 ---------------------------------------------------------------
+ ui/gfx/break_list.h                                                            |  14 +++++++-------
+ ui/gfx/break_list_unittest.cc                                                  |  82 +++++++++++++++++++++++++++++++++++++++++-----------------------------------------
+ ui/gfx/canvas_skia.cc                                                          |  18 +++++++++---------
+ ui/gfx/range/OWNERS                                                            |   1 +
+ ui/gfx/range/range.cc                                                          |  87 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ ui/gfx/range/range.h                                                           | 117 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ ui/gfx/range/range_mac.mm                                                      |  36 ++++++++++++++++++++++++++++++++++++
+ ui/gfx/range/range_mac_unittest.mm                                             |  43 +++++++++++++++++++++++++++++++++++++++++++
+ ui/gfx/range/range_unittest.cc                                                 | 208 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ ui/gfx/range/range_win.cc                                                      |  45 +++++++++++++++++++++++++++++++++++++++++++++
+ ui/gfx/range/range_win_unittest.cc                                             |  63 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ ui/gfx/render_text.cc                                                          |  37 +++++++++++++++++++------------------
+ ui/gfx/render_text.h                                                           |  26 +++++++++++++-------------
+ ui/gfx/render_text_linux.cc                                                    |  16 ++++++++--------
+ ui/gfx/render_text_linux.h                                                     |   5 +++--
+ ui/gfx/render_text_mac.cc                                                      |   8 ++++----
+ ui/gfx/render_text_mac.h                                                       |   5 +++--
+ ui/gfx/render_text_unittest.cc                                                 |  76 ++++++++++++++++++++++++++++++++++++++--------------------------------------
+ ui/gfx/render_text_win.cc                                                      |  36 ++++++++++++++++++------------------
+ ui/gfx/render_text_win.h                                                       |   7 ++++---
+ ui/gfx/selection_model.cc                                                      |   2 +-
+ ui/gfx/selection_model.h                                                       |   8 ++++----
+ ui/keyboard/keyboard_controller_unittest.cc                                    |  12 ++++++------
+ ui/ui.gyp                                                                      |  10 +++++-----
+ ui/ui_unittests.gypi                                                           |   6 +++---
+ ui/views/controls/prefix_selector.cc                                           |  20 ++++++++++----------
+ ui/views/controls/prefix_selector.h                                            |  12 ++++++------
+ ui/views/controls/styled_label.cc                                              |   6 +++---
+ ui/views/controls/styled_label.h                                               |  10 +++++-----
+ ui/views/controls/styled_label_listener.h                                      |   4 ++--
+ ui/views/controls/styled_label_unittest.cc                                     |  26 +++++++++++++-------------
+ ui/views/controls/textfield/native_textfield_views.cc                          |  42 +++++++++++++++++++++---------------------
+ ui/views/controls/textfield/native_textfield_views.h                           |  22 +++++++++++-----------
+ ui/views/controls/textfield/native_textfield_views_unittest.cc                 |  32 ++++++++++++++++----------------
+ ui/views/controls/textfield/native_textfield_win.cc                            |  14 +++++++-------
+ ui/views/controls/textfield/native_textfield_win.h                             |  10 +++++-----
+ ui/views/controls/textfield/native_textfield_wrapper.h                         |  10 +++++-----
+ ui/views/controls/textfield/textfield.cc                                       |  12 ++++++------
+ ui/views/controls/textfield/textfield.h                                        |  10 +++++-----
+ ui/views/controls/textfield/textfield_views_model.cc                           |  48 ++++++++++++++++++++++++------------------------
+ ui/views/controls/textfield/textfield_views_model.h                            |  15 ++++++---------
+ ui/views/controls/textfield/textfield_views_model_unittest.cc                  | 124 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--------------------------------------------------------------
+ ui/views/examples/textfield_example.cc                                         |   6 +++---
+ ui/views/ime/input_method_bridge.cc                                            |  12 ++++++------
+ ui/views/ime/input_method_bridge.h                                             |  12 ++++++------
+ ui/views/touchui/touch_selection_controller_impl_unittest.cc                   |  40 ++++++++++++++++++++--------------------
+ 150 files changed, 1461 insertions(+), 1456 deletions(-)
+:::
+dbb97ba9f0608c2ebf6f02f750df9c5e433b770e
+ben@chromium.org
+ben@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Mon Sep 9 22:15:25 2013 +0000
+9045c60ac4a8cbeeb911aadcd771fb4ec020703c
+Move text_elider to gfx.
+R=sky@chromium.org
+http://crbug.com/103304
+
+Review URL: https://codereview.chromium.org/23731010
+
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@222106 0039d316-1c4b-4281-b951-d872f2087c98
+;;;
+ ash/system/user/tray_user.cc                                          |   15 +--
+ chrome/browser/chromeos/external_protocol_dialog.cc                   |    4 +-
+ chrome/browser/download/download_item_model.cc                        |   10 +-
+ chrome/browser/extensions/menu_manager.cc                             |    4 +-
+ chrome/browser/signin/signin_ui_util.cc                               |    4 +-
+ chrome/browser/tab_contents/render_view_context_menu.cc               |    4 +-
+ chrome/browser/ui/app_modal_dialogs/javascript_app_modal_dialog.cc    |   10 +-
+ chrome/browser/ui/autofill/autofill_popup_controller_impl.cc          |   10 +-
+ chrome/browser/ui/cocoa/download/download_item_cell.mm                |    8 +-
+ chrome/browser/ui/cocoa/download/download_item_controller.mm          |    2 +-
+ chrome/browser/ui/cocoa/external_protocol_dialog.mm                   |    4 +-
+ chrome/browser/ui/cocoa/location_bar/ev_bubble_decoration.mm          |    6 +-
+ chrome/browser/ui/cocoa/omnibox/omnibox_popup_view_mac_unittest.mm    |    2 +-
+ chrome/browser/ui/cocoa/status_bubble_mac.mm                          |    6 +-
+ chrome/browser/ui/external_protocol_dialog_delegate.cc                |    6 +-
+ chrome/browser/ui/gtk/avatar_menu_item_gtk.cc                         |    6 +-
+ chrome/browser/ui/gtk/bookmarks/bookmark_utils_gtk.cc                 |    6 +-
+ chrome/browser/ui/gtk/content_setting_bubble_gtk.cc                   |    6 +-
+ chrome/browser/ui/gtk/download/download_item_gtk.cc                   |    6 +-
+ chrome/browser/ui/gtk/global_history_menu.cc                          |    4 +-
+ chrome/browser/ui/gtk/gtk_util.cc                                     |    6 +-
+ chrome/browser/ui/gtk/status_bubble_gtk.cc                            |    6 +-
+ chrome/browser/ui/login/login_prompt.cc                               |    4 +-
+ chrome/browser/ui/omnibox/location_bar_util.cc                        |    4 +-
+ chrome/browser/ui/toolbar/back_forward_menu_model.cc                  |    4 +-
+ chrome/browser/ui/views/bookmarks/bookmark_bar_view.cc                |    8 +-
+ chrome/browser/ui/views/download/download_item_view.cc                |    6 +-
+ chrome/browser/ui/views/extensions/extension_installed_bubble_view.cc |    6 +-
+ chrome/browser/ui/views/external_protocol_dialog.cc                   |    6 +-
+ chrome/browser/ui/views/frame/global_menu_bar_x11.cc                  |    4 +-
+ chrome/browser/ui/views/omnibox/omnibox_result_view.cc                |    4 +-
+ chrome/browser/ui/views/status_bubble_views.cc                        |    6 +-
+ chrome/browser/ui/views/tabs/tab.cc                                   |    2 +-
+ content/browser/renderer_host/render_widget_host_view_gtk.cc          |    4 +-
+ content/browser/renderer_host/render_widget_host_view_win.cc          |    4 +-
+ content/browser/web_contents/navigation_entry_impl.cc                 |    4 +-
+ content/shell/browser/shell_login_dialog.cc                           |    4 +-
+ printing/backend/print_backend.cc                                     |    4 +-
+ printing/print_settings_initializer.cc                                |    4 +-
+ printing/printed_document.cc                                          |    2 +-
+ ui/base/cocoa/menu_controller.mm                                      |    4 +-
+ ui/base/text/text_elider.cc                                           |   28 +++---
+ ui/base/text/text_elider_unittest.cc                                  |    2 +-
+ ui/gfx/canvas_skia.cc                                                 |   20 ++--
+ ui/gfx/render_text.cc                                                 |    4 +-
+ ui/gfx/text_elider.cc                                                 | 1172 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ ui/gfx/text_elider.h                                                  |  232 ++++++++++++++++++++++++++++++++++++++++++++
+ ui/gfx/text_elider_unittest.cc                                        |  934 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ ui/message_center/cocoa/notification_controller.mm                    |   12 +--
+ ui/message_center/views/bounded_label.cc                              |   12 +--
+ ui/message_center/views/notification_view.cc                          |    8 +-
+ ui/ui.gyp                                                             |    4 +-
+ ui/ui_unittests.gypi                                                  |    2 +-
+ ui/views/controls/label.cc                                            |   13 +--
+ ui/views/controls/styled_label.cc                                     |    6 +-
+ ui/views/corewm/tooltip_controller.cc                                 |    7 +-
+ ui/views/corewm/tooltip_controller_unittest.cc                        |    6 +-
+ ui/views/widget/tooltip_manager.cc                                    |    4 +-
+ 58 files changed, 2513 insertions(+), 172 deletions(-)
+:::
+c4eb2947a68a9ceb064f789ded6f06ce8a5b0497
+ben@chromium.org
+ben@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Fri Sep 20 17:41:39 2013 +0000
+f746ee6b3e71c5688a1f774faa0602799c7118d6
+Move XID, XDisplay, GetXDisplay and a few other types to ui/gfx/x/x11_types.h
+This is to break a dependency on ui/base from ui/compositor.
+
+R=sky@chromium.org
+TBR=sky@chromium.org
+BUG=none
+
+Review URL: https://codereview.chromium.org/23460052
+
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@224419 0039d316-1c4b-4281-b951-d872f2087c98
+;;;
+ ash/display/display_controller.cc                                  |   3 ++-
+ ash/display/display_controller_unittest.cc                         |   4 ++--
+ ash/display/mirror_window_controller.cc                            |   4 ++--
+ chrome/browser/chromeos/keyboard_driven_event_rewriter_unittest.cc |   4 ++--
+ chrome/browser/chromeos/system_key_event_listener.cc               |   2 +-
+ chrome/browser/chromeos/xinput_hierarchy_changed_event_listener.cc |   2 +-
+ chrome/browser/fullscreen_gtk.cc                                   |   2 +-
+ chrome/browser/idle_query_x11.cc                                   |   8 ++++----
+ chrome/browser/ui/ash/event_rewriter.cc                            |   4 ++--
+ chrome/test/chromedriver/keycode_text_conversion_x.cc              |   2 +-
+ content/browser/aura/software_output_device_x11.cc                 |   2 +-
+ content/browser/aura/software_output_device_x11.h                  |   4 ++--
+ content/browser/power_save_blocker_x11.cc                          |   3 ++-
+ content/browser/renderer_host/backing_store_gtk.cc                 |  22 +++++++++++-----------
+ content/browser/renderer_host/backing_store_gtk.h                  |   6 +++---
+ content/browser/renderer_host/gtk_window_utils.cc                  |   5 +++--
+ content/browser/renderer_host/web_input_event_aura_unittest.cc     |   6 +++---
+ content/plugin/webplugin_proxy.cc                                  |   8 ++++----
+ ui/aura/root_window_host_x11.cc                                    |   6 +++---
+ ui/aura/root_window_host_x11.h                                     |   2 +-
+ ui/aura/test/ui_controls_factory_aurax11.cc                        |   8 ++++----
+ ui/base/clipboard/clipboard_aurax11.cc                             |  10 +++++-----
+ ui/base/clipboard/clipboard_gtk.cc                                 |   8 ++++----
+ ui/base/cursor/cursor_loader_x11.cc                                |   6 +++---
+ ui/base/dragdrop/os_exchange_data_provider_aurax11.cc              |   4 ++--
+ ui/base/ime/character_composer.cc                                  |   4 ++--
+ ui/base/touch/touch_factory_x11.cc                                 |   6 +++---
+ ui/base/x/device_data_manager.cc                                   |   8 ++++----
+ ui/base/x/events_x.cc                                              |   4 ++--
+ ui/base/x/selection_utils.cc                                       |   6 +++---
+ ui/base/x/x11_error_tracker.cc                                     |   4 ++--
+ ui/base/x/x11_util.cc                                              | 112 ++++++++++++++++++++++++++++++++++++++++++++++++++++++----------------------------------------------------------
+ ui/base/x/x11_util.h                                               |  40 ++++++++++++++++------------------------
+ ui/compositor/test/test_compositor_host_x11.cc                     |   4 ++--
+ ui/gfx/x/x11_types.cc                                              |  16 ++++++++++++++++
+ ui/gfx/x/x11_types.h                                               |  25 +++++++++++++++++++++++++
+ ui/surface/transport_dib.h                                         |   5 +++--
+ ui/surface/transport_dib_gtk.cc                                    |   2 +-
+ ui/ui.gyp                                                          |   2 ++
+ ui/views/widget/desktop_aura/desktop_drag_drop_client_aurax11.cc   |   6 +++---
+ ui/views/widget/desktop_aura/desktop_root_window_host_x11.cc       |   2 +-
+ ui/views/widget/desktop_aura/desktop_root_window_host_x11.h        |   2 +-
+ ui/views/widget/desktop_aura/desktop_screen_x11.cc                 |   6 +++---
+ ui/views/widget/desktop_aura/x11_desktop_handler.cc                |   4 ++--
+ ui/views/widget/desktop_aura/x11_desktop_handler.h                 |   3 ++-
+ ui/views/widget/desktop_aura/x11_whole_screen_move_loop.cc         |   6 +++---
+ ui/views/widget/desktop_aura/x11_window_event_filter.cc            |   6 +++---
+ ui/views/widget/desktop_aura/x11_window_event_filter.h             |   3 ++-
+ 48 files changed, 224 insertions(+), 187 deletions(-)
+:::
+2bafce5a996698c5a70c02ab3b4fbd4f4236d2bf
+ben@chromium.org
+ben@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Fri Oct 18 17:38:59 2013 +0000
+f1d41f43c5015a7bb61f3d92918baab83e186c46
+Remove old FocusManager code from Aura.
+Needed to add a simple TestFocusClient that can be used by tests, which were still using the old FocusManager. This allows us to remove some obsolete methods from FocusClient/RootWindow/etc.
+
+R=sky@chromium.org
+BUG=
+
+Review URL: https://codereview.chromium.org/26116008
+
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@229437 0039d316-1c4b-4281-b951-d872f2087c98
+;;;
+ ash/shell.cc                                                 |   1 -
+ ash/wm/dock/docked_window_layout_manager.cc                  |   2 +-
+ ash/wm/panels/panel_layout_manager.cc                        |   2 +-
+ chrome/browser/ui/views/omnibox/omnibox_view_views.cc        |   2 +-
+ ui/aura/aura.gyp                                             |   4 ++--
+ ui/aura/bench/bench_main.cc                                  |   5 +++--
+ ui/aura/client/focus_client.h                                |   9 ---------
+ ui/aura/demo/demo_main.cc                                    |   6 +++---
+ ui/aura/focus_manager.cc                                     | 105 ---------------------------------------------------------------------------------------------------------
+ ui/aura/focus_manager.h                                      |  49 -------------------------------------------------
+ ui/aura/remote_root_window_host_win.cc                       |   1 -
+ ui/aura/root_window.cc                                       |   7 -------
+ ui/aura/root_window_host_win.cc                              |   1 -
+ ui/aura/root_window_host_x11.cc                              |   1 -
+ ui/aura/root_window_unittest.cc                              |   2 +-
+ ui/aura/test/aura_test_helper.cc                             |   4 ++--
+ ui/aura/test/test_cursor_client.h                            |   1 +
+ ui/aura/test/test_focus_client.cc                            |  70 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ ui/aura/test/test_focus_client.h                             |  43 +++++++++++++++++++++++++++++++++++++++++++
+ ui/aura/window.cc                                            |   2 +-
+ ui/aura/window_unittest.cc                                   |  62 --------------------------------------------------------------
+ ui/shell/minimal_shell.cc                                    |   4 ++--
+ ui/views/controls/native/native_view_host_aura.cc            |   2 +-
+ ui/views/corewm/compound_event_filter.cc                     |   1 -
+ ui/views/corewm/focus_controller.cc                          |   9 ---------
+ ui/views/corewm/focus_controller.h                           |   3 ---
+ ui/views/widget/desktop_aura/desktop_native_widget_aura.cc   |   2 +-
+ ui/views/widget/desktop_aura/desktop_root_window_host_win.cc |   2 +-
+ ui/views/widget/desktop_aura/desktop_root_window_host_x11.cc |   1 -
+ ui/views/widget/desktop_aura/x11_desktop_handler.cc          |   1 -
+ ui/views/widget/native_widget_aura.cc                        |   2 +-
+ 31 files changed, 135 insertions(+), 271 deletions(-)
+:::
+d9ddff90179610845884d13e8cd7422cabae018f
+ben@chromium.org
+ben@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Fri Oct 18 20:25:21 2013 +0000
+35b035ffdb95d3df0ea5c643b1808ea037f8e872
+Revert 229437 "Remove old FocusManager code from Aura."
+> Remove old FocusManager code from Aura.
+> 
+> Needed to add a simple TestFocusClient that can be used by tests, which were still using the old FocusManager. This allows us to remove some obsolete methods from FocusClient/RootWindow/etc.
+> 
+> R=sky@chromium.org
+> BUG=
+> 
+> Review URL: https://codereview.chromium.org/26116008
+
+TBR=ben@chromium.org
+
+Review URL: https://codereview.chromium.org/29693004
+
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@229464 0039d316-1c4b-4281-b951-d872f2087c98
+;;;
+ ash/shell.cc                                                 |   1 +
+ ash/wm/dock/docked_window_layout_manager.cc                  |   2 +-
+ ash/wm/panels/panel_layout_manager.cc                        |   2 +-
+ chrome/browser/ui/views/omnibox/omnibox_view_views.cc        |   2 +-
+ ui/aura/aura.gyp                                             |   4 ++--
+ ui/aura/bench/bench_main.cc                                  |   5 ++---
+ ui/aura/client/focus_client.h                                |   9 +++++++++
+ ui/aura/demo/demo_main.cc                                    |   6 +++---
+ ui/aura/focus_manager.cc                                     | 105 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ ui/aura/focus_manager.h                                      |  49 +++++++++++++++++++++++++++++++++++++++++++++++++
+ ui/aura/remote_root_window_host_win.cc                       |   1 +
+ ui/aura/root_window.cc                                       |   7 +++++++
+ ui/aura/root_window_host_win.cc                              |   1 +
+ ui/aura/root_window_host_x11.cc                              |   1 +
+ ui/aura/root_window_unittest.cc                              |   2 +-
+ ui/aura/test/aura_test_helper.cc                             |   4 ++--
+ ui/aura/test/test_cursor_client.h                            |   1 -
+ ui/aura/test/test_focus_client.cc                            |  70 ----------------------------------------------------------------------
+ ui/aura/test/test_focus_client.h                             |  43 -------------------------------------------
+ ui/aura/window.cc                                            |   2 +-
+ ui/aura/window_unittest.cc                                   |  62 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ ui/shell/minimal_shell.cc                                    |   4 ++--
+ ui/views/controls/native/native_view_host_aura.cc            |   2 +-
+ ui/views/corewm/compound_event_filter.cc                     |   1 +
+ ui/views/corewm/focus_controller.cc                          |   9 +++++++++
+ ui/views/corewm/focus_controller.h                           |   3 +++
+ ui/views/widget/desktop_aura/desktop_native_widget_aura.cc   |   2 +-
+ ui/views/widget/desktop_aura/desktop_root_window_host_win.cc |   2 +-
+ ui/views/widget/desktop_aura/desktop_root_window_host_x11.cc |   1 +
+ ui/views/widget/desktop_aura/x11_desktop_handler.cc          |   1 +
+ ui/views/widget/native_widget_aura.cc                        |   2 +-
+ 31 files changed, 271 insertions(+), 135 deletions(-)
+:::
+980969549b2d830274e99d8919d6bb2fa0d82b5e
+ben@chromium.org
+ben@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Fri Oct 18 22:07:34 2013 +0000
+145e5a1d4494df83036fa4a6f81fd5bf3adbcf90
+Attempt to re-land FocusManager removal from Aura.
+content_browsertests ContentWindowReparent test was failing, presumably because a focus notification wasn't being broadcast by the new test focus client.
+
+R=sky@chromium.org
+BUG=
+
+Review URL: https://codereview.chromium.org/29883002
+
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@229480 0039d316-1c4b-4281-b951-d872f2087c98
+;;;
+ ash/shell.cc                                                       |   1 -
+ ash/wm/dock/docked_window_layout_manager.cc                        |   2 +-
+ ash/wm/panels/panel_layout_manager.cc                              |   2 +-
+ chrome/browser/ui/views/omnibox/omnibox_view_views.cc              |   2 +-
+ content/browser/web_contents/web_contents_view_aura_browsertest.cc |  16 ++++++++--------
+ ui/aura/aura.gyp                                                   |   4 ++--
+ ui/aura/bench/bench_main.cc                                        |   5 +++--
+ ui/aura/client/focus_client.h                                      |   9 ---------
+ ui/aura/demo/demo_main.cc                                          |   6 +++---
+ ui/aura/focus_manager.cc                                           | 105 ---------------------------------------------------------------------------------------------------------
+ ui/aura/focus_manager.h                                            |  49 -------------------------------------------------
+ ui/aura/remote_root_window_host_win.cc                             |   1 -
+ ui/aura/root_window.cc                                             |   7 -------
+ ui/aura/root_window_host_win.cc                                    |   1 -
+ ui/aura/root_window_host_x11.cc                                    |   1 -
+ ui/aura/root_window_unittest.cc                                    |   2 +-
+ ui/aura/test/aura_test_helper.cc                                   |   4 ++--
+ ui/aura/test/test_cursor_client.h                                  |   1 +
+ ui/aura/test/test_focus_client.cc                                  |  70 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ ui/aura/test/test_focus_client.h                                   |  43 +++++++++++++++++++++++++++++++++++++++++++
+ ui/aura/window.cc                                                  |   2 +-
+ ui/aura/window_unittest.cc                                         |  62 --------------------------------------------------------------
+ ui/shell/minimal_shell.cc                                          |   4 ++--
+ ui/views/controls/native/native_view_host_aura.cc                  |   2 +-
+ ui/views/corewm/compound_event_filter.cc                           |   1 -
+ ui/views/corewm/focus_controller.cc                                |   9 ---------
+ ui/views/corewm/focus_controller.h                                 |   3 ---
+ ui/views/widget/desktop_aura/desktop_native_widget_aura.cc         |   2 +-
+ ui/views/widget/desktop_aura/desktop_root_window_host_win.cc       |   2 +-
+ ui/views/widget/desktop_aura/desktop_root_window_host_x11.cc       |   1 -
+ ui/views/widget/desktop_aura/x11_desktop_handler.cc                |   1 -
+ ui/views/widget/native_widget_aura.cc                              |   2 +-
+ 32 files changed, 143 insertions(+), 279 deletions(-)
+:::
+f34ff7dcb77d2dc0982e88bf8bf5b89a26ab3515
+xhwang@chromium.org
+xhwang@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Sat Apr 27 04:25:30 2013 +0000
+23eea4a444228da7971581d169bd62d851c1f4bc
+Add Widevine CDM component installer.
+This CL adds a component installer for Widevine CDM on Windows and Mac. Note that it uses a fake extension ID which will be replaced when we have the real one. Also the component is not registered in chrome_browser_main.cc yet. We need to have the real CDMs uploaded to the server to fully test and enable this feature.
+
+BUG=180260
+TEST=Tested local operations (registering plugin, remove old versions, etc) on Linux without sandbox. Will need to test against the server later.
+
+Review URL: https://chromiumcodereview.appspot.com/14192012
+
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@196939 0039d316-1c4b-4281-b951-d872f2087c98
+;;;
+ chrome/browser/component_updater/DEPS                                |   3 ++
+ chrome/browser/component_updater/widevine_cdm_component_installer.cc | 355 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ chrome/browser/component_updater/widevine_cdm_component_installer.h  |  15 ++++++++++
+ chrome/chrome_browser.gypi                                           |   2 ++
+ chrome/chrome_common.gypi                                            |   2 ++
+ chrome/common/chrome_content_client.cc                               |  21 +++++---------
+ chrome/common/chrome_paths.cc                                        |   8 ++++++
+ chrome/common/chrome_paths.h                                         |   3 +-
+ chrome/common/widevine_cdm_constants.cc                              |  21 ++++++++++++++
+ chrome/common/widevine_cdm_constants.h                               |  19 ++++++++++++
+ third_party/widevine/cdm/widevine_cdm_common.h                       |   3 ++
+ 11 files changed, 437 insertions(+), 15 deletions(-)
+:::
+720a8518ffc5e5f55d5d5e20ee49ee9d66b16f03
+xhwang@chromium.org
+xhwang@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Mon Apr 29 17:36:05 2013 +0000
+783b22dea0148ee262c89c7a69423dc26227853f
+Reland r196939 "Add Widevine CDM component installer."
+Fix since r196939: Move widevine_cdm_constants.* to chrome/common_constants.gyp.
+
+TBR=brettw@chromium.org
+BUG=180260
+
+Review URL: https://codereview.chromium.org/14430004
+
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@197071 0039d316-1c4b-4281-b951-d872f2087c98
+;;;
+ chrome/browser/component_updater/DEPS                                |   3 ++
+ chrome/browser/component_updater/widevine_cdm_component_installer.cc | 355 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ chrome/browser/component_updater/widevine_cdm_component_installer.h  |  15 ++++++++++
+ chrome/chrome_browser.gypi                                           |   2 ++
+ chrome/common/chrome_content_client.cc                               |  21 +++++---------
+ chrome/common/chrome_paths.cc                                        |   8 ++++++
+ chrome/common/chrome_paths.h                                         |   3 +-
+ chrome/common/widevine_cdm_constants.cc                              |  21 ++++++++++++++
+ chrome/common/widevine_cdm_constants.h                               |  19 ++++++++++++
+ chrome/common_constants.gyp                                          |   2 ++
+ third_party/widevine/cdm/widevine_cdm_common.h                       |   3 ++
+ 11 files changed, 437 insertions(+), 15 deletions(-)
+:::
+7060d65997d7b88b05137c70b1b509fbcafb0850
+xhwang@chromium.org
+xhwang@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Mon Apr 29 19:01:48 2013 +0000
+d10f82f6c62676297f2bb8f5908684f8ccdbaab8
+ui: Use base::MessageLoop.
+BUG=236029
+R=ben@chromium.org
+
+Review URL: https://chromiumcodereview.appspot.com/14061025
+
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@197100 0039d316-1c4b-4281-b951-d872f2087c98
+;;;
+ ui/app_list/cocoa/test/apps_grid_controller_test_helper.h        |  2 +-
+ ui/app_list/cocoa/test/apps_grid_controller_test_helper.mm       |  4 ++--
+ ui/app_list/pagination_model_unittest.cc                         | 36 ++++++++++++++++++------------------
+ ui/app_list/views/apps_grid_view_unittest.cc                     | 12 ++++--------
+ ui/app_list/views/search_result_list_view.cc                     |  2 +-
+ ui/aura/bench/bench_main.cc                                      |  6 +++---
+ ui/aura/client/dispatcher_client.h                               |  2 +-
+ ui/aura/demo/demo_main.cc                                        |  4 ++--
+ ui/aura/dispatcher_win.cc                                        |  2 +-
+ ui/aura/env.h                                                    |  4 ++--
+ ui/aura/remote_root_window_host_win.cc                           |  2 +-
+ ui/aura/root_window.cc                                           |  8 ++++----
+ ui/aura/root_window_host_win.cc                                  |  2 +-
+ ui/aura/root_window_host_x11.cc                                  |  4 ++--
+ ui/aura/root_window_host_x11.h                                   |  2 +-
+ ui/base/animation/animation_container_unittest.cc                |  6 +++---
+ ui/base/animation/animation_unittest.cc                          | 12 ++++++------
+ ui/base/animation/slide_animation_unittest.cc                    |  2 +-
+ ui/base/animation/test_animation_delegate.h                      |  4 ++--
+ ui/base/clipboard/clipboard_unittest.cc                          |  2 +-
+ ui/base/clipboard/clipboard_win.cc                               |  2 +-
+ ui/base/ime/win/tsf_bridge.cc                                    | 20 ++++++++++----------
+ ui/base/models/simple_menu_model.cc                              |  2 +-
+ ui/base/x/selection_requestor.cc                                 |  4 ++--
+ ui/base/x/x11_util.cc                                            |  7 +++----
+ ui/compositor/compositor.cc                                      |  2 +-
+ ui/compositor/layer_unittest.cc                                  |  5 ++---
+ ui/compositor/test/test_compositor_host_linux.cc                 |  2 +-
+ ui/compositor/test/test_suite.cc                                 |  2 +-
+ ui/gl/gl_context_cgl.cc                                          |  6 +++---
+ ui/message_center/views/message_bubble_base.cc                   |  2 +-
+ ui/shell_dialogs/gtk/select_file_dialog_impl_kde.cc              | 25 ++++++++++++++++---------
+ ui/shell_dialogs/select_file_dialog.cc                           |  6 +++---
+ ui/shell_dialogs/select_file_dialog_win.cc                       |  2 +-
+ ui/surface/accelerated_surface_win.cc                            |  2 +-
+ ui/views/animation/bounds_animator_unittest.cc                   |  4 ++--
+ ui/views/controls/button/button_dropdown.cc                      |  2 +-
+ ui/views/controls/menu/menu_controller.cc                        |  2 +-
+ ui/views/controls/menu/menu_controller.h                         |  2 +-
+ ui/views/controls/menu/menu_controller_aura.cc                   |  4 ++--
+ ui/views/controls/menu/menu_controller_win.cc                    |  4 ++--
+ ui/views/controls/menu/native_menu_win.cc                        |  2 +-
+ ui/views/controls/slider.cc                                      |  2 +-
+ ui/views/controls/textfield/native_textfield_views.cc            |  4 ++--
+ ui/views/examples/examples_window.cc                             |  2 +-
+ ui/views/examples/examples_window_with_content.cc                |  2 +-
+ ui/views/focus/accelerator_handler.h                             |  2 +-
+ ui/views/mouse_watcher.cc                                        | 14 +++++++-------
+ ui/views/view_unittest.cc                                        |  2 +-
+ ui/views/widget/aero_tooltip_manager.cc                          |  3 ++-
+ ui/views/widget/desktop_aura/desktop_dispatcher_client.cc        |  4 ++--
+ ui/views/widget/desktop_aura/desktop_dispatcher_client.h         |  2 +-
+ ui/views/widget/desktop_aura/desktop_drag_drop_client_aurax11.cc |  4 ++--
+ ui/views/widget/desktop_aura/desktop_root_window_host_x11.cc     |  2 +-
+ ui/views/widget/desktop_aura/desktop_root_window_host_x11.h      |  6 +++---
+ ui/views/widget/desktop_aura/x11_desktop_handler.h               |  3 +--
+ ui/views/widget/desktop_aura/x11_desktop_window_move_client.cc   |  4 ++--
+ ui/views/widget/desktop_aura/x11_desktop_window_move_client.h    |  4 ++--
+ ui/views/widget/native_widget_aura.cc                            |  2 +-
+ ui/views/widget/native_widget_aura_unittest.cc                   |  4 ++--
+ ui/views/widget/native_widget_win_unittest.cc                    |  2 +-
+ ui/views/widget/tooltip_manager_win.cc                           |  2 +-
+ ui/views/win/hwnd_message_handler.cc                             | 10 +++++-----
+ ui/views/win/hwnd_message_handler.h                              |  5 +++--
+ 64 files changed, 157 insertions(+), 155 deletions(-)
+:::
+d198186f8038fb81ec78a01515fd6922d2b1e2ce
+xhwang@chromium.org
+xhwang@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Sat May 4 04:28:13 2013 +0000
+0691f4d23f0da28b3c7cb4a449562f7d2a596509
+Copy both Widevine CDM and the adapter during component update.
+BUG=180260
+R=brettw@chromium.org, cpu@chromium.org, ddorwin@chromium.org, thestig@chromium.org
+
+Review URL: https://codereview.chromium.org/14800002
+
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@198283 0039d316-1c4b-4281-b951-d872f2087c98
+;;;
+ chrome/browser/component_updater/widevine_cdm_component_installer.cc | 49 +++++++++++++++++++++++++++----------------------
+ chrome/browser/component_updater/widevine_cdm_component_installer.h  |  8 ++++++--
+ chrome/browser/plugins/plugin_info_message_filter.cc                 |  2 +-
+ chrome/common/chrome_content_client.cc                               |  6 +++---
+ chrome/common/chrome_paths.cc                                        | 13 +++++++------
+ chrome/common/chrome_paths.h                                         |  6 +++---
+ chrome/renderer/chrome_content_renderer_client.cc                    |  2 +-
+ third_party/widevine/cdm/widevine_cdm_common.h                       | 18 ++++++++++++++----
+ 8 files changed, 62 insertions(+), 42 deletions(-)
+:::
+9d95452dc1058ce45a4c36e4c4250ee7cacec964
+xhwang@chromium.org
+xhwang@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Fri Jul 12 05:35:41 2013 +0000
+517713f9a37b3ec0638aa6995a68d420ef22e991
+Fix WidevineCDM binary name on Mac.
+widevinecdm.dylib -> libwidevinecdm.dylib
+
+BUG=180260
+TEST=none
+
+Review URL: https://chromiumcodereview.appspot.com/5754053585797120
+
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@211341 0039d316-1c4b-4281-b951-d872f2087c98
+;;;
+ third_party/widevine/cdm/widevine_cdm_common.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+:::
+365abf88e8bc2c60efb5fb192384411a751d942f
+xhwang@chromium.org
+xhwang@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Fri Jan 31 20:44:26 2014 +0000
+955e0ffb5868c9bcba238f31dffdc8b06524b799
+Disable BrowserPluginHostTest.ReloadEmbedder test.
+This test is flaky on multiple bots. See bug.
+
+TBR=danakj@chromium.org
+BUG=339904
+
+Review URL: https://codereview.chromium.org/133793010
+
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@248258 0039d316-1c4b-4281-b951-d872f2087c98
+;;;
+ content/browser/browser_plugin/browser_plugin_host_browsertest.cc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+:::
+625791699a3cb76b5b161f8cfa83b96b681f73f2
+xhwang@chromium.org
+xhwang@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Wed Apr 30 02:22:36 2014 +0000
+c47f86fa0a4063145f4e8eb47ecfe0df1f423ac0
+Encrypted Media: Add VP9 support to IsTypeSupported().
+BUG=361318
+TEST=Add VP9 to unittests.
+
+Review URL: https://codereview.chromium.org/252513005
+
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@267047 0039d316-1c4b-4281-b951-d872f2087c98
+;;;
+ chrome/browser/media/encrypted_media_istypesupported_browsertest.cc | 44 ++++++++++++++++++++++++++++++++++++++++++++
+ chrome/browser/media/encrypted_media_message_filter_android.cc      |  1 +
+ chrome/common/chrome_content_client.cc                              |  2 ++
+ chrome/renderer/media/chrome_key_systems.cc                         |  2 ++
+ content/public/common/eme_codec.h                                   |  7 ++++---
+ content/renderer/media/crypto/key_systems.cc                        | 13 +++++++++++--
+ content/renderer/media/crypto/key_systems_unittest.cc               | 44 +++++++++++++++++++++++++++++++++++++++++++-
+ third_party/widevine/cdm/widevine_cdm_common.h                      |  1 +
+ 8 files changed, 108 insertions(+), 6 deletions(-)
+:::
+194acae8093016b1f7e98d34d25dfae3bd14a8cd
+xhwang
+xhwang@chromium.org
+Wed Nov 12 14:46:33 2014 -0800
+aa5f0b393ebc4d3d122525f11e1fcd16edbf3927
+Move KeySystems to media.
+This is needed to support Encrypted Media Extensions (EME) without relying
+content.
+
+A MediaClient interface is added so that embedders (e.g. content) can inject
+embedder specific data.
+
+BUG=422730
+
+Review URL: https://codereview.chromium.org/680383002
+
+Cr-Commit-Position: refs/heads/master@{#303907}
+;;;
+ content/content_renderer.gypi                                        |   6 +-
+ content/content_tests.gypi                                           |   4 +-
+ content/renderer/media/android/webmediaplayer_android.cc             |  20 +++----
+ content/renderer/media/cdm_session_adapter.cc                        |   8 +--
+ content/renderer/media/crypto/encrypted_media_player_support_impl.cc |  24 ++++----
+ content/renderer/media/crypto/key_systems.cc                         | 650 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ content/renderer/media/crypto/key_systems.h                          |  80 -------------------------
+ content/renderer/media/crypto/key_systems_support_uma.cc             | 136 ------------------------------------------
+ content/renderer/media/crypto/key_systems_support_uma.h              |  57 ------------------
+ content/renderer/media/crypto/key_systems_unittest.cc                | 649 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ content/renderer/media/crypto/ppapi_decryptor.cc                     |   4 +-
+ content/renderer/media/crypto/proxy_media_keys.cc                    |   2 +-
+ content/renderer/media/crypto/render_cdm_factory.cc                  |   4 +-
+ content/renderer/media/render_media_client.cc                        | 103 ++++++++++++++++++++++++++++++++
+ content/renderer/media/render_media_client.h                         |  66 +++++++++++++++++++++
+ content/renderer/media/render_media_client_unittest.cc               | 140 ++++++++++++++++++++++++++++++++++++++++++++
+ content/renderer/media/webcontentdecryptionmodule_impl.cc            |   4 +-
+ content/renderer/pepper/content_decryptor_delegate.cc                |   4 +-
+ content/renderer/render_thread_impl.cc                               |   3 +
+ content/renderer/renderer_blink_platform_impl.cc                     |   8 +--
+ media/base/BUILD.gn                                                  |   8 +++
+ media/base/key_systems.cc                                            | 651 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ media/base/key_systems.h                                             |  82 ++++++++++++++++++++++++++
+ media/base/key_systems_support_uma.cc                                | 135 ++++++++++++++++++++++++++++++++++++++++++
+ media/base/key_systems_support_uma.h                                 |  57 ++++++++++++++++++
+ media/base/key_systems_unittest.cc                                   | 721 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ media/base/media_client.cc                                           |  39 +++++++++++++
+ media/base/media_client.h                                            |  72 +++++++++++++++++++++++
+ media/media.gyp                                                      |   7 +++
+ third_party/widevine/cdm/widevine_cdm_common.h                       |   3 +
+ 30 files changed, 2129 insertions(+), 1618 deletions(-)
+:::
+a9cde19aba88ab75887dc6f696e74f405c786e22
+ddorwin@chromium.org
+ddorwin@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Fri Oct 12 00:10:09 2012 +0000
+b97d349ad8f6b1da6a15ed7d6cd3b0eef930b86b
+Add the Widevine CDM to Chrome.
+This CL adds the key system and enables the media stack to find the CDM.
+
+BUG=149772
+TEST=Play content that uses this key system.
+
+
+Review URL: https://chromiumcodereview.appspot.com/11099059
+
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@161455 0039d316-1c4b-4281-b951-d872f2087c98
+;;;
+ chrome/chrome_common.gypi                       |  1 +
+ chrome/chrome_tests.gypi                        |  4 ++++
+ chrome/common/chrome_content_client.cc          | 34 ++++++++++++++++++++++++++++++++--
+ chrome/common/chrome_paths.cc                   |  9 +++++++++
+ chrome/common/chrome_paths.h                    |  2 ++
+ chrome/common_constants.gyp                     |  8 ++++++++
+ third_party/widevine/cdm/widevine_cdm_common.h  | 33 +++++++++++++++++++++++++++++++++
+ third_party/widevine/cdm/widevine_cdm_version.h |  3 ++-
+ webkit/media/crypto/key_systems.cc              | 15 ++++++++++++++-
+ webkit/media/webkit_media.gypi                  |  4 ++++
+ 10 files changed, 109 insertions(+), 4 deletions(-)
+:::
+b9e955d96fa9e579d0ed82e81b30676cedf45d3f
+ddorwin@chromium.org
+ddorwin@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Fri Mar 1 23:22:42 2013 +0000
+c8ea643250cf5d2f3baa4e0d56a41d37a76c3b7c
+Update the Widevine CDM name.
+BUG=179510
+
+Review URL: https://codereview.chromium.org/12381031
+
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@185615 0039d316-1c4b-4281-b951-d872f2087c98
+;;;
+ third_party/widevine/cdm/widevine_cdm_common.h  | 11 ++++++-----
+ third_party/widevine/cdm/widevine_cdm_version.h |  6 +++---
+ 2 files changed, 9 insertions(+), 8 deletions(-)
+:::
+ce55567f1d10a51c4f8c4a142f4c1ed3611bbb3b
+ddorwin@chromium.org
+ddorwin@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Fri May 3 21:46:20 2013 +0000
+f2853b271e698deb179e8bb4cac73b09881aaebb
+Replace component OS checks with WIDEVINE_CDM_IS_COMPONENT.
+BUG=180260
+R=thestig@chromium.org, xhwang@chromium.org
+
+Review URL: https://codereview.chromium.org/14885002
+
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@198201 0039d316-1c4b-4281-b951-d872f2087c98
+;;;
+ chrome/browser/component_updater/widevine_cdm_component_installer.cc | 12 ++++++------
+ chrome/common/chrome_content_client.cc                               |  9 +++++----
+ chrome/common/chrome_paths.cc                                        |  4 +++-
+ third_party/widevine/cdm/widevine_cdm_common.h                       |  5 +++++
+ 4 files changed, 19 insertions(+), 11 deletions(-)
+:::
+280755cad298b37cd6ead4d16337c4e1ed79f1a0
+ddorwin@chromium.org
+ddorwin@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Thu May 23 10:44:35 2013 +0000
+8e80c2889f2046e47988a0e3355300c7b49ec38a
+Conditionally build support for Pepper-based CDMs.
+Adds enable_pepper_cdms and ENABLE_PEPPER_CDMS to control building of this logic.
+Previously, it was built for all platforms, but not all platforms use Pepper.
+
+TEST=content_browsertests on platforms with and without Pepper CDM support
+
+Review URL: https://chromiumcodereview.appspot.com/15028015
+
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@201738 0039d316-1c4b-4281-b951-d872f2087c98
+;;;
+ build/common.gypi                                               |  9 +++++++++
+ chrome/browser/content_settings/content_settings_browsertest.cc | 13 +++++++++++--
+ chrome/common/chrome_content_client.cc                          |  8 +++++---
+ chrome/common/chrome_paths.cc                                   |  4 ++--
+ chrome/renderer/plugins/plugin_uma.cc                           |  2 ++
+ chrome/renderer/plugins/plugin_uma_unittest.cc                  |  4 ++++
+ content/browser/media/encrypted_media_browsertest.cc            | 44 ++++++++++++++++++++++----------------------
+ third_party/widevine/cdm/widevine_cdm.gyp                       |  2 +-
+ third_party/widevine/cdm/widevine_cdm_common.h                  |  9 +++++++--
+ webkit/media/crypto/key_systems.cc                              | 10 ++++++----
+ webkit/media/crypto/key_systems.h                               |  8 +++++---
+ webkit/media/crypto/key_systems_info.cc                         |  9 +++++----
+ webkit/media/crypto/key_systems_info.h                          | 12 ++++++++----
+ webkit/media/crypto/key_systems_unittest.cc                     | 29 +++++++++++++++++++++--------
+ webkit/media/crypto/proxy_decryptor.cc                          | 17 +++++++++++++++--
+ webkit/media/crypto/proxy_decryptor.h                           |  2 ++
+ webkit/media/webkit_media.gypi                                  | 17 ++++++++++++-----
+ 17 files changed, 137 insertions(+), 62 deletions(-)
+:::
+0f253da52ef4fdb2dde29f3cf5f8ca660e5067ea
+ddorwin@chromium.org
+ddorwin@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Tue May 28 17:49:00 2013 +0000
+ea79de87234c1865609b94cc06c0474825166f10
+Fix a type mismatch on Windows caused by r201738.
+The problem was at encrypted_media_browsertest.cc line 167, which is a call to RegisterPepperCdm(), but the right fix is to use ASCII for the constants.
+
+TBR=thestig@chromium.org
+
+Review URL: https://codereview.chromium.org/15658009
+
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@202598 0039d316-1c4b-4281-b951-d872f2087c98
+;;;
+ chrome/browser/component_updater/widevine_cdm_component_installer.cc |  8 ++++----
+ chrome/common/chrome_paths.cc                                        |  2 +-
+ third_party/widevine/cdm/widevine_cdm_common.h                       | 16 ++++++++--------
+ 3 files changed, 13 insertions(+), 13 deletions(-)
+:::
+7e693c18531d47b91b14e1f1fa989e33f4293912
+ddorwin@chromium.org
+ddorwin@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Thu Aug 29 00:33:25 2013 +0000
+79a6f99af22bb4ac65b35d1ee6825df88860b7ee
+Minor cleanup of KeySystems code.
+External Clear Key is only supported when defined(ENABLE_PEPPER_CDMS).
+
+Review URL: https://chromiumcodereview.appspot.com/23264042
+
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@220137 0039d316-1c4b-4281-b951-d872f2087c98
+;;;
+ content/renderer/media/crypto/key_systems.cc          |  6 +++---
+ content/renderer/media/crypto/key_systems_info.cc     | 18 ++++++++++++------
+ content/renderer/media/crypto/key_systems_info.h      |  8 ++++----
+ content/renderer/media/crypto/key_systems_unittest.cc | 40 +++++++++++++++++++++++++---------------
+ third_party/widevine/cdm/widevine_cdm_common.h        |  9 ++++-----
+ 5 files changed, 48 insertions(+), 33 deletions(-)
+:::
+871bdf15d35bcbc1b5976b36e0bb7d3c938fb0df
+ddorwin@chromium.org
+ddorwin@chromium.org@0039d316-1c4b-4281-b951-d872f2087c98
+Sat Oct 26 10:52:06 2013 +0000
+65668059ffba74d0bafa7ca02acc8418c7491fe4
+Extract supported codecs from CDM component manifest.
+Look for "x-cdm-codecs" in the manifest and set its value in
+WebPluginInfo::WebPluginMimeType::additional_param_* where it can be used to
+determine the types supported.
+
+The manifest is read when registering existing components in addition to new
+installs so that the manifest information is always available.
+
+Also updated the non-component path so the behavior is consistent for the
+consumer, which will be updated in a separate CL.
+
+BUG=311370
+TEST=canPlayType() with various manifest configurations
+
+Review URL: https://codereview.chromium.org/42003002
+
+git-svn-id: svn://svn.chromium.org/chrome/trunk/src@231197 0039d316-1c4b-4281-b951-d872f2087c98
+;;;
+ chrome/browser/component_updater/component_unpacker.cc               | 19 +++++++++++--------
+ chrome/browser/component_updater/component_unpacker.h                |  6 ++++++
+ chrome/browser/component_updater/default_component_installer.cc      | 29 +++++++++++++++++++++++++++--
+ chrome/browser/component_updater/default_component_installer.h       | 14 +++++++++-----
+ chrome/browser/component_updater/widevine_cdm_component_installer.cc | 60 ++++++++++++++++++++++++++++++++++++++++++++++++++++--------
+ chrome/common/chrome_content_client.cc                               | 23 +++++++++++++++++++++++
+ third_party/widevine/cdm/widevine_cdm_common.h                       | 10 ++++++++++
+ 7 files changed, 138 insertions(+), 23 deletions(-)
 
