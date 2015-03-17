@@ -11,9 +11,9 @@ class NlpQueriesAnalysis
     puts
     puts Hirb::Helpers::AutoTable.render (TechnicalWord.joins(messages: {code_review: {commit: {commit_bugs: {bug: :labels}}}}).group("technical_words.id").order("COUNT(labels.label) DESC").limit(50).select("technical_words.id",:word,"COUNT(labels.label)"))
 
-    puts "Top word-bug label pairs: "
-    puts
-    puts Hirb::Helpers::AutoTable.render (TechnicalWord.joins(messages: {code_review: {commit: {commit_bugs: {bug: :labels}}}}).group("technical_words.id","labels.label").order("COUNT(*) DESC").limit(50).select(:word,"labels.label","COUNT(*)"))
+    #puts "Top word-bug label pairs: "
+    #puts
+    #puts Hirb::Helpers::AutoTable.render (TechnicalWord.joins(messages: {code_review: {commit: {commit_bugs: {bug: :labels}}}}).group("technical_words.id","labels.label").order("COUNT(*) DESC").limit(50).select(:word,"labels.label","COUNT(*)"))
 	
     puts "Top technical words in reviews for commits associated to bugs"
     puts
