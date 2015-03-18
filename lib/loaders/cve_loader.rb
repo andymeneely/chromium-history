@@ -1,4 +1,4 @@
-# Downloads and loads the CSV files of vulnerabilities and their associated review numbers
+# Loads the CSV files of vulnerabilities and their associated review numbers
 
 require "csv"
 require "google_drive"
@@ -7,24 +7,8 @@ class CveLoader
   RESULTS_FILE = "#{Rails.configuration.datadir}/cves/cves.csv"
 
   def load_cve
-    download_csv unless Rails.env == 'development' 
     parse_cves
     copy_to_db
-  end
-  
-  # Sign into Google Docs 
-  # username and password specified in credentials.yml
-  def login
-    google_creds_yml = YAML.load_file("#{Rails.root}/config/credentials.yml")['google-docs']
-    GoogleDrive.login(google_creds_yml['user-name'], google_creds_yml['password'])
-  end
-
-  #Go out to Google Drive and download the sheet
-  def download_csv
-    File.delete(RESULTS_FILE) if File.exists?(RESULTS_FILE)
-    session = login()
-    spreadsheet = session.spreadsheet_by_key(Rails.configuration.google_spreadsheets['key'])
-    spreadsheet.export_as_file(RESULTS_FILE, 'csv', Rails.configuration.google_spreadsheets['gid'])
   end
 
   def parse_cves

@@ -47,13 +47,13 @@ gem 'pg'
 gem 'sqlite3', :platforms => [:mswin, :mingw, :ruby]
 
 # Use CoffeeScript for .js.coffee assets and views
-gem 'coffee-rails', '~> 4.0.0'
+#gem 'coffee-rails', '~> 4.0.0'
 
 # Use jquery as the JavaScript library
-gem 'jquery-rails'
+#gem 'jquery-rails'
 
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'turbolinks'
+#gem 'turbolinks'
 
 # SimpleCov tests code coverage
 gem 'simplecov', '~> 0.7.1' , :require => false, :group => :test
@@ -62,9 +62,6 @@ gem 'simplecov', '~> 0.7.1' , :require => false, :group => :test
 gem 'jbuilder', '~> 1.2'
 
 gem 'nokogiri'
-
-# For downloading our GoogleSheets data, will be deprecated by April 2015, must replace with v1.0.0 and google-client gem
-gem 'google_drive', '~> 0.3.11'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.

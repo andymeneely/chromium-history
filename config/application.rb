@@ -38,8 +38,6 @@ module ChromiumHistory
       data_yml = YAML.load_file("#{Rails.root}/config/data.yml")[Rails.env]
       Rails.configuration.datadir = data_yml['src-relative'] == "true" ? Rails.root + "/" : ""
       Rails.configuration.datadir += data_yml['dir']
-      Rails.configuration.google_spreadsheets = data_yml['google-spreadsheet-ids']
-      # For test and production we use the RAM disk
       Rails.configuration.tmpdir = "/run/shm/tmp/#{ENV['USER']}/#{Rails.env}"
       Rails.configuration.tmpdir = data_yml['tmpdir'] unless data_yml['tmpdir'].nil?
       FileUtils.mkdir_p Rails.configuration.tmpdir
