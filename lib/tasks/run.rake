@@ -113,7 +113,7 @@ namespace :run do
       x.report("Deleting duplicate reviewers") {DeveloperConsolidator.new.consolidate_reviewers}
       x.report("Loading release OWNERS") {OwnersLoader.new.load}
       x.report("Optimizing OWNERS") {ReleaseOwner.optimize}
-      x.report("Loading First Ownership"){FirstOwnershipLoader.new.load}
+      #x.report("Loading First Ownership"){FirstOwnershipLoader.new.load}
       x.report("Running PSQL ANALYZE"){ ActiveRecord::Base.connection.execute "ANALYZE" }
       vocab_loader = VocabLoader.new
       x.report('Parsing technical vocab') {vocab_loader.parse_scrape_results}
