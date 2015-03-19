@@ -1,7 +1,6 @@
 # Loads the CSV files of vulnerabilities and their associated review numbers
 
 require "csv"
-require "google_drive"
 
 class CveLoader
   RESULTS_FILE = "#{Rails.configuration.datadir}/cves/cves.csv"
