@@ -184,7 +184,7 @@ class HypothesisTests
               suppressMessages(library(lsr, warn.conflicts = FALSE, quietly=TRUE))
     EOR
     R.eval <<-EOR
-              source('~/chromium/history/lib/analysis/functions.R')
+              source('#{File.dirname(__FILE__)}/functions.R')
     EOR
     
     R.echo true, false
