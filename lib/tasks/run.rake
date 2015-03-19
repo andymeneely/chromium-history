@@ -178,6 +178,12 @@ namespace :run do
     NlpQueriesAnalysis.new.run
   end
 
+  
+  desc "Run just the logistic regression"
+  task :logit => :env do
+    HypothesisTests.new.run
+  end
+
   desc "run r data visualization"
   task :visualize => :env do
    VisualizationQueries.new.run_queries

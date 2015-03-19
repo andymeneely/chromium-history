@@ -40,6 +40,9 @@ class HypothesisTests
     # and then run
     # >>> install.packages("DBI")
     # >>> install.packages("PostgreSQL")
+    # >>> install.packages("ROCR")
+    # >>> install.packages("bestglm")
+    # >>> install.packages("lsr")
     R.eval <<-EOR
       library(DBI)
       library(RPostgreSQL)
