@@ -45,6 +45,7 @@ class VocabLoader
     'permissions',
     'pillar',
     'plaintext',
+    'policy',
     'property',
     'reliance',
     'resolution',
@@ -60,6 +61,15 @@ class VocabLoader
     'vulnerability',
     'weakness'
   ]
+
+  @@OBVIOUS_SECURITY_WORDS = %w(
+    security
+    confidentiality
+    integrity
+    availability
+    cryptography
+    crytpanalysis
+  )
 
   def initialize
     @tmp_dir = Rails.configuration.tmpdir
@@ -131,8 +141,9 @@ class VocabLoader
     message_corpus.filter
     words = message_corpus.word_intersect acm_corpus.words
 
-    #Inject currated list after filtering
+    #Inject curated list after filtering
     words += stem_words @@CWE_GLOSSARY_TERMS
+    words += stem_words @@OBVIOUS_SECURITY_WORDS
     block = lambda do |table|
       words.each do |word|
         table << [word] unless @@STEM_BLACKLIST.include? word
