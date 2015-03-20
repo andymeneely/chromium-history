@@ -122,10 +122,12 @@ class VocabLoader
 
   def load
     PsqlUtil.copy_from_file 'acm_categories', "#{@tmp_dir}/acm_categories.csv"
-    PsqlUtil.add_index 'acm_categories', 'id'
+    PsqlUtil.add_primary_key 'acm_categories'
+    PsqlUtil.execute "CREATE UNLOGGED TABLE acm_abstracts (id integer, text text)"
     PsqlUtil.copy_from_file 'acm_abstracts', "#{@tmp_dir}/acm_abstracts.csv"
     PsqlUtil.add_index 'acm_abstracts', 'id'
     PsqlUtil.add_fulltext_search_index 'acm_abstracts', 'text'
+    PsqlUtil.execute "CREATE UNLOGGED TABLE acm_abstracts_acm_categories (acm_abstract_id integer, acm_category_id integer)"
     PsqlUtil.copy_from_file 'acm_abstracts_acm_categories', "#{@tmp_dir}/acm_abstracts_acm_categories.csv"
     generate_vocab
   end
@@ -162,7 +164,20 @@ class VocabLoader
   end
 
   def reassociate_categories
+    PsqlUtil.execute "CREATE UNLOGGED TABLE acm_abstracts_technical_words (acm_abstract_id integer, technical_word_id integer)"
     reassociate 'acm_abstracts', 'text', 'acm_abstracts_technical_words'
+    sql = "INSERT INTO acm_categories_technical_words (
+            SELECT 
+              t.id AS technical_word_id,
+              aaac.acm_category_id AS acm_category_id
+            FROM technical_words t 
+            JOIN acm_abstracts_technical_words aatw
+            ON aatw.technical_word_id = t.id
+            JOIN acm_abstracts_acm_categories aaac
+            ON aaac.acm_abstract_id = aatw.acm_abstract_id
+          )"
+    PsqlUtil.execute sql
+    PsqlUtil.execute "DROP TABLE acm_abstracts; DROP TABLE acm_abstracts_acm_categories; DROP TABLE acm_abstracts_technical_words;"
   end
 
   def associate_code_review_descriptions
