@@ -181,7 +181,7 @@ class VocabLoader
   def stem_words words
     stemmed_words = []
     words.each do |word|
-      stemmed_words << PsqlUtil.execute("SELECT word FROM to_tsquery('#{word}') AS word")[0]['word']
+      stemmed_words << PsqlUtil.execute("SELECT word FROM to_tsquery('#{word}') AS word")[0]['word'].gsub("'", '')
     end
     stemmed_words
   end
