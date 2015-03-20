@@ -1,6 +1,7 @@
 class WordTrendAnalysis
   def populate
     PsqlUtil.execute "CREATE TABLE IF NOT EXISTS word_trends (slope numeric, corr numeric, count numeric, word varchar);"
+
     sql = <<-EOSQL
         WITH joined AS (
           SELECT 
@@ -9,12 +10,8 @@ class WordTrendAnalysis
             date_trunc('month', m.date) AS my
           FROM 
             technical_words t
-          JOIN
-            messages_technical_words mt
-          ON (t.id = mt.technical_word_id)
-          JOIN 
-            messages m
-          ON (m.id = mt.message_id)
+              JOIN messages_technical_words mt ON (t.id = mt.technical_word_id)
+              JOIN messages m ON (m.id = mt.message_id)
         ), devs AS (
           SELECT 
             COUNT(DISTINCT joined.sender_id) used,
@@ -34,16 +31,15 @@ class WordTrendAnalysis
           GROUP BY my
         ), word_trend AS (
           SELECT
-            regr_slope((CAST(devs.used AS numeric)/CAST(month_interval.total_dev AS numeric))*100, EXTRACT(epoch FROM devs.date_used)) AS slope,
-            corr((CAST(devs.used AS numeric)/CAST(month_interval.total_dev AS numeric))*100, EXTRACT(epoch FROM devs.date_used)) AS cor,
-            regr_count((CAST(devs.used AS numeric)/CAST(month_interval.total_dev AS numeric))*100, EXTRACT(epoch FROM devs.date_used)) AS count,
+            regr_slope( (CAST(devs.used AS numeric)/CAST(month_interval.total_dev AS numeric))*100, 
+                        EXTRACT(epoch FROM devs.date_used)) AS slope,
+            corr(       (CAST(devs.used AS numeric)/CAST(month_interval.total_dev AS numeric))*100, 
+                        EXTRACT(epoch FROM devs.date_used)) AS cor,
+            regr_count( (CAST(devs.used AS numeric)/CAST(month_interval.total_dev AS numeric))*100, 
+                        EXTRACT(epoch FROM devs.date_used)) AS count,
             devs.word
           FROM 
-            devs
-          INNER JOIN
-            month_interval
-          ON 
-            devs.date_used = month_interval.my
+            devs INNER JOIN month_interval ON devs.date_used = month_interval.my
           GROUP BY devs.word
         )
         INSERT INTO word_trends
