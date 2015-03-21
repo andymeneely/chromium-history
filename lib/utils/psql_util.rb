@@ -6,6 +6,10 @@ class PsqlUtil
   # Adds an id column and creates an auto-incremeted primary index on the column
   def self.add_auto_increment_key table_name, key_name='id'
     PsqlUtil.execute "ALTER TABLE #{table_name} ADD COLUMN #{key_name} SERIAL" 
+    PsqlUtil.add_primary_key table_name, key_name
+  end
+
+  def self.add_primary_key table_name, key_name='id'
     PsqlUtil.execute "ALTER TABLE #{table_name} ADD PRIMARY KEY (#{key_name})"
   end
 
