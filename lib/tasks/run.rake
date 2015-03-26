@@ -22,6 +22,7 @@ require 'analysis/visualization_queries'
 require 'analysis/ascii_histograms'
 require 'analysis/nlp_queries_analysis'
 require 'analysis/word_trend_analysis'
+require 'analysis/network_analysis'
 require 'stats'
 require 'nlp/corpus'
 require 'utils/psql_util'
@@ -119,10 +120,10 @@ namespace :run do
       x.report('Parsing technical vocab') {vocab_loader.parse_scrape_results}
       x.report('Generating technical vocab') {vocab_loader.load}
       puts 'Associating vocab words with '
-      x.report('messages'){vocab_loader.reassociate_messages}
-      x.report('categories'){vocab_loader.reassociate_categories}
-      x.report('code review descriptions'){vocab_loader.associate_code_review_descriptions}
-      x.report('commit messages'){vocab_loader.associate_git_log_messages}
+      x.report('  messages'){vocab_loader.reassociate_messages}
+      x.report('  categories'){vocab_loader.reassociate_categories}
+      x.report('  code review descriptions'){vocab_loader.associate_code_review_descriptions}
+      x.report('  commit messages'){vocab_loader.associate_git_log_messages}
     end
   end
   
@@ -136,6 +137,7 @@ namespace :run do
       x.report("Populating reviews_with_owner"){ParticipantAnalysis.new.populate_reviews_with_owner}
       x.report("Populating total_reviews_with_owner"){CodeReviewAnalysis.new.populate_total_reviews_with_owner}
       x.report("Populating adjacency counts"){ParticipantAnalysis.new.populate_adjacency_counts}
+      x.report("Run social network analysis"){NetworkAnalysis.new.run}
       x.report("Populating owner_familiarity_gap"){CodeReviewAnalysis.new.populate_owner_familiarity_gap}
       x.report("Populating sheriff_hours") {ParticipantAnalysis.new.populate_sheriff_hours}
       x.report("Populating total_sheriff_hours"){CodeReviewAnalysis.new.populate_total_sheriff_hours}
@@ -176,8 +178,13 @@ namespace :run do
     #VisualizationQueries.new.run_queries
     #DataVisualization.new.run
     NlpQueriesAnalysis.new.run
+    NetworkAnalysis.new.run
   end
 
+  desc "Run network analysis"
+  task :sna => :env do
+    NetworkAnalysis.new.run
+  end
   
   desc "Run just the logistic regression"
   task :logit => :env do

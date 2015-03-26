@@ -5,14 +5,17 @@
 # connect to the psql database
 
 import psycopg2
-import sys
+import sys, getopt
 import networkx as nx
 from datetime import datetime, timedelta
+
+# Get the username and db from command line
+username, db = sys.argv[1], sys.argv[2]
 
 # connection to database 
 con = None
 try:
-	con = psycopg2.connect(database='sso7159', user='sso7159')
+	con = psycopg2.connect(database=db, user=username)
 	cur = con.cursor()
 	#cur.execute('SELECT version()');
 	#ver = cur.fetchone()
@@ -43,7 +46,7 @@ while earlyBoundary < '2015-01-01 00:00:00.000000':
 		print 'Error %s' % e
 		sys.exit(1)
 	print '-------------IN TIME FRAME: %s - %s ---------\n' % (earlyBoundary, lateBoundary)
-	print G.edges(data=True)
+	#print G.edges(data=True) # disabled becuase this is SUPER verbose on chromium_real (Andy)
 	print '----------------------------------------------\n'	
 	# change boundaries and add G to array of graph
 	#molen = lateTime.
