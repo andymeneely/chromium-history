@@ -23,6 +23,7 @@ require 'analysis/ascii_histograms'
 require 'analysis/nlp_queries_analysis'
 require 'analysis/word_trend_analysis'
 require 'analysis/network_analysis'
+require 'analysis/owners_analysis'
 require 'stats'
 require 'nlp/corpus'
 require 'utils/psql_util'
@@ -114,7 +115,7 @@ namespace :run do
       x.report("Deleting duplicate reviewers") {DeveloperConsolidator.new.consolidate_reviewers}
       x.report("Loading release OWNERS") {OwnersLoader.new.load}
       x.report("Optimizing OWNERS") {ReleaseOwner.optimize}
-      #x.report("Loading First Ownership"){FirstOwnershipLoader.new.load}
+      x.report("Loading First Ownership"){FirstOwnershipLoader.new.load}
       x.report("Running PSQL ANALYZE"){ ActiveRecord::Base.connection.execute "ANALYZE" }
       vocab_loader = VocabLoader.new
       x.report('Parsing technical vocab') {vocab_loader.parse_scrape_results}
@@ -137,10 +138,10 @@ namespace :run do
       x.report("Populating reviews_with_owner"){ParticipantAnalysis.new.populate_reviews_with_owner}
       x.report("Populating total_reviews_with_owner"){CodeReviewAnalysis.new.populate_total_reviews_with_owner}
       x.report("Populating adjacency counts"){ParticipantAnalysis.new.populate_adjacency_counts}
-      x.report("Run social network analysis"){NetworkAnalysis.new.run}
       x.report("Populating owner_familiarity_gap"){CodeReviewAnalysis.new.populate_owner_familiarity_gap}
       x.report("Populating sheriff_hours") {ParticipantAnalysis.new.populate_sheriff_hours}
       x.report("Populating total_sheriff_hours"){CodeReviewAnalysis.new.populate_total_sheriff_hours}
+      x.report("Populating first ownership") {OwnersAnalysis.new.populate_first_owners}
       x.report("Populating release metrics") {ReleaseAnalysis.new.populate}
       x.report("Populating word trend metrics") {WordTrendAnalysis.new.populate}
       #puts "Here are a bunch of SQL Explains"
