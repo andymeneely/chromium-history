@@ -215,7 +215,8 @@ class ReleaseAnalysis
               AVG(EXTRACT(epoch FROM (release_owners.first_ownership_date - release_owners.first_dir_commit_date))/86400) AS avg_tto, 
               AVG(release_owners.dir_commits_to_ownership) AS avg_cto, 
               AVG(EXTRACT(epoch FROM (releases.date - release_owners.first_ownership_date))/86400) AS avg_otr, 
-              AVG(release_owners.dir_commits_to_release) AS avg_ctr 
+              AVG(release_owners.dir_commits_to_release) AS avg_ctr,
+              AVG(release_owners.ownership_distance) AS avg_odist
       FROM release_owners INNER JOIN releases ON release_owners.release = releases.name 
       GROUP BY orelease, ofilepath) 
     EOSQL
@@ -225,7 +226,8 @@ class ReleaseAnalysis
       SET avg_time_to_ownership = ownership_avgs.avg_tto, 
           avg_commits_to_ownership = ownership_avgs.avg_cto, 
           avg_ownership_time_to_release = ownership_avgs.avg_otr, 
-          avg_owner_commits_to_release  = ownership_avgs.avg_ctr 
+          avg_owner_commits_to_release  = ownership_avgs.avg_ctr,
+          avg_ownership_distance = ownership_avgs.avg_odist
       FROM ownership_avgs 
       WHERE release_filepaths.thefilepath = ownership_avgs.ofilepath AND release_filepaths.release = ownership_avgs.orelease AND release_filepaths.release = '#{release.name}'
     EOSQL
