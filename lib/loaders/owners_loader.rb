@@ -23,6 +23,7 @@ class OwnersLoader
                    directory,
                    dev.id,
                    dev.email,
+                   File.dirname(filepath).split(/\.\/|\//).count - directory.split(/\.\/|\//).count,
                    nil, # first_ownership_sha
                    nil, # first_ownership_date
                    nil, # first_dir_commit_sha
