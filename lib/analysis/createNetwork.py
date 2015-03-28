@@ -7,7 +7,9 @@
 
 import psycopg2
 import sys, getopt
+import json
 import networkx as nx
+from networkx.readwrite import json_graph
 from datetime import datetime, timedelta
 
 # Get the username and db from command line
@@ -50,6 +52,7 @@ while earlyBoundary < '2014-11-15 00:00:00.000000':
 # close the connection to the database
 if con:
 	con.close()
+grnum = 1
 for gr in graphArray:
 	# THIS IS EXTREMELY VERBOSE ON CHROMIUM_REAL, FOR DEV DATA ONLY
 	# GET LIST OF EDGES WITH THE ISSUE LISTED AS WELL
@@ -79,3 +82,10 @@ for gr in graphArray:
 		elif max_deg5 == 0:
 			max_deg5 = key
 	print "Maximum degrees for this period: %d:%d, %d:%d, %d:%d, %d:%d, %d:%d" %( max_deg1, node_deg[max_deg1], max_deg2, node_deg[max_deg2], max_deg3, node_deg[max_deg3], max_deg4, node_deg[max_deg4], max_deg5, node_deg[max_deg5])
+	
+	#make data json and dump to file
+	data = json_graph.node_link_data(gr)
+	with open('jsongraphs/data' + str(grnum) + '.json', 'w') as outfile:
+   		json.dump(data, outfile)
+	grnum += 1
+
