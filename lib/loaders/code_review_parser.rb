@@ -181,6 +181,8 @@ class CodeReviewParser
     msgs.each do |msg|
       msg['code_review_id'] = code_review_id
       msg['sender_id'] = get_dev_id(msg['sender'])
+      msg['text'].gsub!(/^\>.*$/, '')
+      msg['text'].gsub!(/https?:\/\/codereview.chromium.org\/\d+\/diff[\/\.\w]+\\n(Line \d+:|File [\/\w\.]+ \((right|left)\):)/, '')
       @msgs << ordered_array(@@MESSAGE_PROPS, msg)
       @prtp_set << msg['sender_id'] unless msg['sender_id'] == -1
       # if Contributor.contribution? msg['text']

@@ -2,9 +2,7 @@ require 'oj'
 
 class VocabLoader
 
-  @@STEM_BLACKLIST = [
-    'rightli'
-  ]
+  @@STEM_BLACKLIST = []
 
   @@CWE_GLOSSARY_TERMS = [
     'actor',
@@ -214,33 +212,15 @@ class VocabLoader
 
   def self.clean_file target_file, output_file
     file = File.open target_file, 'r'
-    new_file = VocabLoader.remove_quoted_comments file.read
-    new_file = VocabLoader.clean_comment_messages new_file
-    new_file = VocabLoader.remove_uris new_file
+    new_file = VocabLoader.remove_uris file.read
     new_file = VocabLoader.trim_whitespace new_file
     new_file = VocabLoader.remove_nonword new_file
     File.open(output_file, 'w+') { |file| file.write(new_file) }
   end
 
-  def self.clean string
-    string = VocabLoader.remove_quoted_comments string
-    string = string.gsub(/^http[^\s]*$/, '')
-    string = string.gsub(/^On.*wrote:$/, '')
-    string = VocabLoader.remove_nonword string
-    VocabLoader.trim_whitespace string
-  end
-
   def self.clean_messages string
     new_file = VocabLoader.remove_quoted_comments string
     new_file = new_file.gsub(/^On.*wrote:$/, '')
-  end
-
-  def self.clean_comment_messages string
-    string.gsub(/https?:\/\/codereview.chromium.org\/\d+\/diff[\/\.\w]+\\n(Line \d+:|File [\/\w\.]+ \((right|left)\):)/, '')
-  end
-  
-  def self.remove_quoted_comments string
-    string.gsub(/^\>.*$/, '')
   end
 
   def self.remove_uris string
