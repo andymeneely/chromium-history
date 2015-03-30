@@ -87,16 +87,16 @@ class OwnersAnalysis
     Benchmark.bm(40) do |x|
       x.report("Executing drop own_data table") {ActiveRecord::Base.connection.execute drop}
       x.report("Executing create own_data table") {ActiveRecord::Base.connection.execute create}
-      x.report("Executing drop own_data2 table") {ActiveRecord::Base.connection.execute drop2}
-      x.report("Executing create own_data2 table") {ActiveRecord::Base.connection.execute create2}
-      x.report("Executing drop own_data3 table") {ActiveRecord::Base.connection.execute drop3}
-      x.report("Executing create own_data3 table") {ActiveRecord::Base.connection.execute create3}
-      x.report("Executing drop own_data4 table") {ActiveRecord::Base.connection.execute drop4}
-      x.report("Executing create own_data4 table") {ActiveRecord::Base.connection.execute create4}
+      #x.report("Executing drop own_data2 table") {ActiveRecord::Base.connection.execute drop2}
+      #x.report("Executing create own_data2 table") {ActiveRecord::Base.connection.execute create2}
+      #x.report("Executing drop own_data3 table") {ActiveRecord::Base.connection.execute drop3}
+      #x.report("Executing create own_data3 table") {ActiveRecord::Base.connection.execute create3}
+      #x.report("Executing drop own_data4 table") {ActiveRecord::Base.connection.execute drop4}
+      #x.report("Executing create own_data4 table") {ActiveRecord::Base.connection.execute create4}
       x.report("Executing update 1st commit info, cto") {ActiveRecord::Base.connection.execute update}
-      x.report("Executing update 1st commit info, cto2") {ActiveRecord::Base.connection.execute update2}
-      x.report("Executing update_commits_to_release") {ActiveRecord::Base.connection.execute update_commits_to_release}
-      x.report("Executing update_commits_to_release2") {ActiveRecord::Base.connection.execute update_commits_to_release2}
+      #x.report("Executing update 1st commit info, cto2") {ActiveRecord::Base.connection.execute update2}
+      #x.report("Executing update_commits_to_release") {ActiveRecord::Base.connection.execute update_commits_to_release}
+      #x.report("Executing update_commits_to_release2") {ActiveRecord::Base.connection.execute update_commits_to_release2}
     end
 
   end
