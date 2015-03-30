@@ -3,6 +3,33 @@ require 'hirb'
 class NlpQueriesAnalysis
 
   def run
+
+    drop = 'DROP TABLE IF EXISTS label_word_freqs'
+    create = <<-EOSQL
+      CREATE TABLE label_word_freqs AS (
+        SELECT t.label AS label, t.word AS word, (CASE WHEN t2.freq IS NULL THEN t.freq ELSE t2.freq END) AS freq 
+	FROM (
+	      SELECT label, word, 0 as freq FROM labels CROSS JOIN technical_words) t 
+        LEFT OUTER JOIN (
+              SELECT l.label AS label, tw.word AS word, count(*) AS freq 
+              FROM labels l INNER JOIN bug_labels bl ON  bl.label_id = l.label_id 
+	                    INNER JOIN bugs b ON b.bug_id = bl.bug_id 
+			    INNER JOIN commit_bugs cb ON cb.bug_id = b.bug_id 
+			    INNER JOIN commits c ON c.commit_hash = cb.commit_hash 
+			    INNER JOIN code_reviews cr ON cr.commit_hash = c.commit_hash 
+			    INNER JOIN messages m ON m.code_review_id = cr.issue 
+			    INNER JOIN messages_technical_words mtw ON mtw.message_id = m.id 
+			    INNER JOIN technical_words tw ON tw.id = mtw.technical_word_id 
+              GROUP BY l.label, tw.word) t2 ON (t.label = t2.label AND t.word = t2.word) 
+        ORDER BY label, word, freq)
+    EOSQL
+
+
+    Benchmark.bm(40) do |x|
+      x.report("Executing drop label_word_freqs table") {ActiveRecord::Base.connection.execute drop}
+      x.report("Executing create label_word_freqs table") {ActiveRecord::Base.connection.execute create}
+    end
+=begin
     puts
     puts "_____Results from the nlp queries______"
     Hirb.enable
@@ -54,6 +81,7 @@ class NlpQueriesAnalysis
     puts "New dev usage of words from 5.0 in 19.0: #{(usage2 - usage1 - old_usage).count}"
     puts "New dev usage of words from 5.0 in 27.0: #{(usage3 - usage1 - usage2 - old_usage).count}"
     puts "New dev usage of words from 5.0 in 35.0: #{(usage4 - usage1 - usage2 - usage3 - old_usage).count}"
+=end
   end
   
 end
