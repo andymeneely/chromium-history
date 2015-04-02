@@ -178,7 +178,7 @@ namespace :run do
     HypothesisTests.new.run
     #VisualizationQueries.new.run_queries
     #DataVisualization.new.run
-    NlpQueriesAnalysis.new.run
+    #NlpQueriesAnalysis.new.run
     NetworkAnalysis.new.run
   end
 
@@ -220,7 +220,7 @@ namespace :run do
     
     desc "Running interesting nlp queries"
     task :nlp_queries => :env do
-      NlpQueriesAnalysis.new.run
+      #NlpQueriesAnalysis.new.run
     end
   end
 end
