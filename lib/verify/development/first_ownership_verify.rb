@@ -7,11 +7,11 @@ class FirstOwnershipVerify < VerifyBase
   end
   
   def verify_all_owners_have_first_commit_data
-    #assert_equal(false, ReleaseOwner.where("first_dir_commit_sha IS NULL").present?, "Some owners without first commit data recorded, blank field found")
+    assert_equal(false, ReleaseOwner.where("first_dir_commit_sha IS NULL").present?, "Some owners without first commit data recorded, blank field found")
   end
   
   def verify_all_owners_have_commits_metrics
-    #assert_equal(false, ReleaseOwner.where("dir_commits_to_ownership IS NULL OR dir_commits_to_release IS NULL").present?, "Some owners without commits to ownership data, blank field found")
+    assert_equal(false, ReleaseOwner.where("dir_commits_to_ownership IS NULL OR dir_commits_to_release IS NULL").present?, "Some owners without commits to ownership data, blank field found")
   end  
 
   def verify_consistent_data_same_owner_and_dir_sky_ui
@@ -21,11 +21,11 @@ class FirstOwnershipVerify < VerifyBase
   end
   
   def verify_correct_first_dir_commit_sha_date_match
-    #assert_equal(Commit.where(commit_hash: 'b9b1e7a4fa49c108c40536cee59ce0b2b0a09d86').take.created_at,ReleaseOwner.where(owner_email:'sky@chromium.org',directory:'ui/').take.first_dir_commit_date,"wrong date for first commit hash")
+    assert_equal(Commit.where(commit_hash: 'b9b1e7a4fa49c108c40536cee59ce0b2b0a09d86').take.created_at,ReleaseOwner.where(owner_email:'sky@chromium.org',directory:'ui/').take.first_dir_commit_date,"wrong date for first commit hash")
   end
 
   def verify_right_count__number_of_commits_to_own_ddorwin_third_party
-    #assert_equal(10,ReleaseOwner.where(owner_email:'ddorwin@chromium.org',directory:'third_party/').take.dir_commits_to_ownership,"Wrong total of commits to files in directory for ddorwin in third_party/")
+    assert_equal(10,ReleaseOwner.where(owner_email:'ddorwin@chromium.org',directory:'third_party/').take.dir_commits_to_ownership,"Wrong total of commits to files in directory for ddorwin in third_party/")
   end
 
   def verify_distinct_directory_ownerships_not_exceed_recorded_filepaths
