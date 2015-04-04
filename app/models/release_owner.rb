@@ -5,7 +5,7 @@ class ReleaseOwner < ActiveRecord::Base
   
   def self.optimize
     connection.add_index :release_owners, :filepath
-	  #connection.add_index :release_owners, :directory
+    #connection.add_index :release_owners, :directory
     #connection.add_index :release_owners, :dev_id
     connection.add_index :release_owners, [:directory, :dev_id]
     #connection.add_index :release_owners, [:release,:filepath,:directory]
