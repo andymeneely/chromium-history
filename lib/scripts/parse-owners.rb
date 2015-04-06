@@ -100,7 +100,7 @@ class ParseReleaseFilepathsOwners
     Dir.chdir currDir do
 
       #get immediate files in current directory, get relative paths if not baseDir
-      allFiles = Dir.glob("*.*")
+      allFiles = Dir.entries('.').select {|f| !File.directory? f}
       (allFiles.map! {|f| getRelativePath(f)}) if !(Dir.pwd.to_s.eql?(@srcLoc))
 
       currOwners = Array.new
