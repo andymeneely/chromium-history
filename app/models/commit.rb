@@ -14,6 +14,7 @@ class Commit < ActiveRecord::Base
     connection.add_index :commits, :commit_hash, unique: true
     connection.add_index :commits, :parent_commit_hash
     connection.add_index :commits, :author_email
+    connection.add_index :commits, :author_id
     connection.add_index :commits, :created_at
     PsqlUtil.add_fulltext_search_index 'commits', 'message'
     connection.execute 'CLUSTER commits USING index_commits_on_created_at'
