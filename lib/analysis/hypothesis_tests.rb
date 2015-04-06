@@ -186,6 +186,8 @@ class HypothesisTests
               suppressMessages(library(bestglm, warn.conflicts = FALSE, quietly=TRUE))
               suppressMessages(library(lsr, warn.conflicts = FALSE, quietly=TRUE))
     EOR
+
+    # Add the program fuctions to the run.
     R.eval <<-EOR
               source('#{File.dirname(__FILE__)}/functions.R')
     EOR
@@ -220,7 +222,7 @@ class HypothesisTests
         FROM release_filepaths")
         
 
-        # Split the data by relase
+        # Split the data in relases
         r05 <- release_filepaths_data[ which(release_filepaths_data$release == "5.0"), -c(1)]
         r11 <- release_filepaths_data[ which(release_filepaths_data$release == '11.0'),-c(1)]
         r19 <- release_filepaths_data[ which(release_filepaths_data$release == '19.0'),-c(1)]
@@ -240,9 +242,8 @@ class HypothesisTests
         release_modeling(r27,r35)
 
         cat("MODELING FOR RELEASE 35\n")
-        release_modeling(r35,r35) #TODO check if its correct to predict with same data.
+        release_modeling(r35,r35)
         
-
         rm(release_filepaths_data,r05,r11,r19,r27,r35)
     EOR
     R.echo false, false
