@@ -179,6 +179,7 @@ class CodeReviewParser
   @@MESSAGE_PROPS = [:sender, :sender_id, :text, :approval, :disapproval, :date, :code_review_id]
   def parse_messages(file, code_review_id, msgs)
     msgs.each do |msg|
+      next if msg['text'] == ''
       msg['code_review_id'] = code_review_id
       msg['sender_id'] = get_dev_id(msg['sender'])
       msg['text'].gsub!(/^\>.*$/, '')

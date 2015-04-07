@@ -19,7 +19,7 @@ class LoadCompleteVerify < VerifyBase
   end
 
   def verify_number_of_messages
-    verify_count("Messages", 155, Message.count)
+    verify_count("Messages", 148, Message.count)
   end
 
   def verify_number_of_patch_set_files
@@ -46,16 +46,16 @@ class LoadCompleteVerify < VerifyBase
     verify_count("Comments", 2, CodeReview.find_by_issue(10854242).patch_sets.find_by_patchset(6006).files.where(filepath: 'content/browser/renderer_host/backing_store_gtk.cc').first.comments.count)
   end
 
-  def verify_code_review_23444043_has_16_messages
-    helper_count_messages(23444043, 16)
+  def verify_code_review_23444043_has_15_messages
+    helper_count_messages(23444043, 15)
   end
 
   def verify_code_review_5754053585797120_has_9_messages
     helper_count_messages(5754053585797120, 9)
   end
 
-  def verify_code_review_9141024_has_2_messages
-    helper_count_messages(9141024, 2)
+  def verify_code_review_9141024_has_1_message
+    helper_count_messages(9141024, 1)
   end
 
   def verify_code_review_9141024_was_loaded
