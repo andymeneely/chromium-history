@@ -132,12 +132,9 @@ class ParseReleaseFilepathsOwners
 
       end
 
-      #send currOwners to all immediate sub-directories, so their files know who are their parents, get all childFiles in return
-      childFiles = Array.new
-      Dir.glob("*/").each {|nxtDir| childFiles += getOwnerShip(pOwners+currOwners,nxtDir )}
+      #send currOwners to all immediate sub-directories as parent owners
+      Dir.glob("*/").each {|nxtDir| getOwnerShip(pOwners+currOwners,nxtDir )}
 
-      #all files under this directory
-      allFiles += childFiles
       noPFiles = Array.new  #for files that have no parent
 
       rules.drop(index).each do |rule|
@@ -167,8 +164,8 @@ class ParseReleaseFilepathsOwners
 
     end
 
-    return (pOwners.empty?)? Array.new : allFiles
-
+	return
+	
   end
 end
 
