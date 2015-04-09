@@ -10,6 +10,7 @@ class ReleaseAnalysis
         x.report ('Populate participant metrics') {populate_participants(r)}
         x.report ('Populate owners data') {populate_owners_data(r)}
         x.report ('Populate ownership data'){populate_ownership_data(r)}
+        x.report ('Populate zeros on nulls'){zero_out_the_nulls}
       end
     end
     puts "=== Slow populations ==="
@@ -235,6 +236,27 @@ class ReleaseAnalysis
     ActiveRecord::Base.connection.execute drop
     ActiveRecord::Base.connection.execute create
     ActiveRecord::Base.connection.execute update
+  end
+
+  # Set these columns to zero if they are count-based
+  def zero_out_the_nulls
+    %w(num_owners
+       num_reviews
+       num_reviewers 
+       num_participants
+       num_security_experienced_participants
+       num_bug_security_experienced_participants
+       num_stability_experienced_participants
+       num_build_experienced_participants
+       num_test_fail_experienced_participants
+       num_compatibility_experienced_participants
+       security_adjacencys
+       avg_sheriff_hours
+       ).each do |col|
+      zero_the_nulls = "UPDATE release_filepaths SET #{col}=0 WHERE #{col} IS NULL"
+      ActiveRecord::Base.connection.execute zero_the_nulls
+    end
+
   end
 
 end
