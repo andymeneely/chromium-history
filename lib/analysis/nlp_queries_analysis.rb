@@ -3,51 +3,81 @@ require 'hirb'
 class NlpQueriesAnalysis
 
   def run
+    
+    #create table with label/tech word use frequencies, 0 initially
+    drop_label_word_freqs_table = 'DROP TABLE IF EXISTS label_word_freqs'
+    create_label_word_freqs_table = <<-EOSQL
+      CREATE TABLE label_word_freqs AS (
+        SELECT label, word, 0 as freq FROM labels CROSS JOIN technical_words
+      )
+    EOSQL
 
-    drop = 'DROP TABLE IF EXISTS label_techmsgs_freqs'
-    create = <<-EOSQL
+    #create a table with counts for technical messages by label & technical word
+    drop_label_tech_msgs_table = 'DROP TABLE IF EXISTS label_tech_msgs'
+    create_label_tech_msgs_table = <<-EOSQL
+      CREATE TABLE label_tech_msgs AS (
+        SELECT l.label AS label, tw.word AS word, count(*) AS freq
+        FROM labels l INNER JOIN bug_labels bl ON  bl.label_id = l.label_id 
+	              INNER JOIN bugs b ON b.bug_id = bl.bug_id 
+                      INNER JOIN commit_bugs cb ON cb.bug_id = b.bug_id 
+                      INNER JOIN commits c ON c.commit_hash = cb.commit_hash 
+		      INNER JOIN code_reviews cr ON cr.commit_hash = c.commit_hash
+                      INNER JOIN messages m ON m.code_review_id = cr.issue 
+                      INNER JOIN messages_technical_words mtw ON mtw.message_id = m.id 
+                      INNER JOIN technical_words tw ON tw.id = mtw.technical_word_id 
+        GROUP BY l.label, tw.word
+      )
+    EOSQL
+
+    #create a table with counts for technical reviews by label & technical word
+    drop_label_tech_reviews_table = 'DROP TABLE IF EXISTS label_tech_reviews'
+    create_label_tech_reviews_table = <<-EOSQL
+      CREATE TABLE label_tech_reviews AS (
+        SELECT l.label AS label, tw.word AS word, count(*) AS freq 
+        FROM labels l INNER JOIN bug_labels bl ON  bl.label_id = l.label_id
+                      INNER JOIN bugs b ON b.bug_id = bl.bug_id 
+                      INNER JOIN commit_bugs cb ON cb.bug_id = b.bug_id 
+                      INNER JOIN commits c ON c.commit_hash = cb.commit_hash 
+                      INNER JOIN code_reviews cr ON cr.commit_hash = c.commit_hash 
+                      INNER JOIN code_reviews_technical_words cr_tw ON cr_tw.code_review_id = cr.issue 
+                      INNER JOIN technical_words tw ON tw.id = cr_tw.technical_word_id 
+        GROUP BY l.label, tw.word
+      )
+    EOSQL
+
+    #create a table with frequencies for label/tech word use in messages
+    drop_label_techmsgs_freqs = 'DROP TABLE IF EXISTS label_techmsgs_freqs'
+    create_label_techmsgs_freqs = <<-EOSQL
       CREATE TABLE label_techmsgs_freqs AS (
         SELECT t.label AS label, t.word AS word, (CASE WHEN t2.freq IS NULL THEN t.freq ELSE t2.freq END) AS freq 
-	FROM (
-	      SELECT label, word, 0 as freq FROM labels CROSS JOIN technical_words) t 
-        LEFT OUTER JOIN (
-              SELECT l.label AS label, tw.word AS word, count(*) AS freq 
-              FROM labels l INNER JOIN bug_labels bl ON  bl.label_id = l.label_id 
-	                    INNER JOIN bugs b ON b.bug_id = bl.bug_id 
-			    INNER JOIN commit_bugs cb ON cb.bug_id = b.bug_id 
-			    INNER JOIN commits c ON c.commit_hash = cb.commit_hash 
-			    INNER JOIN code_reviews cr ON cr.commit_hash = c.commit_hash 
-			    INNER JOIN messages m ON m.code_review_id = cr.issue 
-			    INNER JOIN messages_technical_words mtw ON mtw.message_id = m.id 
-			    INNER JOIN technical_words tw ON tw.id = mtw.technical_word_id 
-              GROUP BY l.label, tw.word) t2 ON (t.label = t2.label AND t.word = t2.word) 
+	FROM label_word_freqs t LEFT OUTER JOIN label_tech_msgs t2 ON (t.label = t2.label AND t.word = t2.word) 
         ORDER BY label, word, freq)
     EOSQL
     
-    drop2 = 'DROP TABLE IF EXISTS label_techreviews_freqs'
-    create2 = <<-EOSQL
+    #create a table with frequencies for label/tech word use in reviews
+    drop_label_techrevs_freqs = 'DROP TABLE IF EXISTS label_techreviews_freqs'
+    create_label_techrevs_freqs = <<-EOSQL
       CREATE TABLE label_techreviews_freqs AS (
         SELECT t.label AS label, t.word AS word, (CASE WHEN t2.freq IS NULL THEN t.freq ELSE t2.freq END) AS freq 
-	FROM (
-	      SELECT label, word, 0 as freq FROM labels CROSS JOIN technical_words) t 
-        LEFT OUTER JOIN (
-              SELECT l.label AS label, tw.word AS word, count(*) AS freq 
-              FROM labels l INNER JOIN bug_labels bl ON  bl.label_id = l.label_id 
-	                    INNER JOIN bugs b ON b.bug_id = bl.bug_id 
-			    INNER JOIN commit_bugs cb ON cb.bug_id = b.bug_id 
-			    INNER JOIN commits c ON c.commit_hash = cb.commit_hash 
-			    INNER JOIN code_reviews cr ON cr.commit_hash = c.commit_hash 
-			    INNER JOIN code_reviews_technical_words cr_tw ON cr_tw.code_review_id = cr.issue 
-			    INNER JOIN technical_words tw ON tw.id = cr_tw.technical_word_id 
-              GROUP BY l.label, tw.word) t2 ON (t.label = t2.label AND t.word = t2.word) 
+	FROM label_word_freqs t LEFT OUTER JOIN label_tech_reviews t2 ON (t.label = t2.label AND t.word = t2.word) 
         ORDER BY label, word, freq)
     EOSQL
 
     Benchmark.bm(40) do |x|
-      x.report("Executing drop label_techmsgs_freqs table") {ActiveRecord::Base.connection.execute drop}
-      x.report("Executing create label_techmsgs_freqs table") {ActiveRecord::Base.connection.execute create}
-      x.report("Executing drop label_techreviews_freqs table") {ActiveRecord::Base.connection.execute drop2}
-      x.report("Executing create label_techreviews_freqs table") {ActiveRecord::Base.connection.execute create2}
+      x.report("Executing drop label_techmsgs_freqs table") {ActiveRecord::Base.connection.execute drop_label_word_freqs_table}
+      x.report("Executing create label_techmsgs_freqs table") {ActiveRecord::Base.connection.execute create_label_word_freqs_table}
+      
+      x.report("Executing drop label_techmsgs counts table") {ActiveRecord::Base.connection.execute drop_label_tech_msgs_table}
+      x.report("Executing create label_techmsgs counts table") {ActiveRecord::Base.connection.execute create_label_tech_msgs_table}
+      
+      x.report("Executing drop label_techrevs counts table") {ActiveRecord::Base.connection.execute drop_label_tech_reviews_table}
+      x.report("Executing create label_techrevs counts table") {ActiveRecord::Base.connection.execute create_label_tech_reviews_table}
+
+      x.report("Executing drop label_techmsgs_freqs table") {ActiveRecord::Base.connection.execute drop_label_techmsgs_freqs}
+      x.report("Executing create label_techmsgs_freqs table") {ActiveRecord::Base.connection.execute create_label_techmsgs_freqs}
+
+      x.report("Executing drop label/tech reviews_freqs table") {ActiveRecord::Base.connection.execute drop_label_techrevs_freqs}
+      x.report("Executing create label/tech reviews freqs table") {ActiveRecord::Base.connection.execute create_label_techrevs_freqs}
     end
 =begin
     puts
