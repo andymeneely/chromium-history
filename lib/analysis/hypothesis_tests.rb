@@ -36,13 +36,14 @@ class HypothesisTests
 
   def connect_to_db
     conf = Rails.configuration.database_configuration[Rails.env]
-    # To install these packages locally, run R on teh command line (literally R)
+    # To install these packages locally, run R on the command line
     # and then run
     # >>> install.packages("DBI")
     # >>> install.packages("PostgreSQL")
     # >>> install.packages("ROCR")
     # >>> install.packages("bestglm")
     # >>> install.packages("lsr")
+    # >>> install.packages("reshape2")
     R.eval <<-EOR
       library(DBI)
       library(RPostgreSQL)
