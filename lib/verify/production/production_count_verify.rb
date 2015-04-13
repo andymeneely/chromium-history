@@ -17,6 +17,36 @@ class ProductionCountVerify < VerifyBase
     assert_equal 9770692, ReleaseOwner.count
   end
 
+  def verify_commit_filepath_counts
+    assert_equal 1890851, CommitFilepath.count
+  end
+
+  def verify_participant_count
+    assert_equal 429321, Participant.count
+  end
+
+  def verify_reviewer_count
+    assert_equal 325836, Reviewer.count
+  end
+
+  def verify_bug_count
+    assert_equal 374686, Bug.count
+  end
+
+  def verify_commit_bug_count
+    assert_equal 138020, CommitBug.count
+  end
+
+  def verify_release_filepath_count
+    assert_equal 113923, ReleaseFilepath.count
+  end
+
+  def verify_adjacency_count
+    query = 'SELECT COUNT(*) FROM adjacency_list'
+    rs = ActiveRecord::Base.connection.execute query
+    assert_equal 393680, rs.getvalue(0,0).to_i
+  end
+
   def verify_dangling_bug_commits
     query = <<-EOSQL
       SELECT COUNT(DISTINCT commit_bugs.bug_id) 
