@@ -14,7 +14,7 @@ class ProductionCountVerify < VerifyBase
   end
 
   def verify_release_owner_count
-    assert_equal 13181134, ReleaseOwner.count
+    assert_equal 9770692, ReleaseOwner.count
   end
 
   def verify_dangling_bug_commits
