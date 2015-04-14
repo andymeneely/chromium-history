@@ -57,6 +57,14 @@ class ProductionCountVerify < VerifyBase
     rs = ActiveRecord::Base.connection.execute query
     assert_equal 7159, rs.getvalue(0,0).to_i, "Number of expected dangling bug commits was wrong"
   end
+
+  def verify_no_duplicate_release_owners
+    actual = ReleaseOwner.where(filepath: 'base/allocator/win_allocator.cc', 
+                              release: '35.0', 
+                              owner_email: 'ben@chromium.org', 
+                              directory: './').count
+    assert_equal 1, actual, 'Release owners is being copied multiple times'
+  end
 end
 
 

@@ -32,7 +32,7 @@ class OwnersLoader
                    nil] # dir_commits_to_release
       end
       owners.fsync
-      PsqlUtil.copy_from_file 'release_owners', "#{tmp}/parsed_owners.csv"
     end
+    PsqlUtil.copy_from_file 'release_owners', "#{tmp}/parsed_owners.csv"
   end
 end
