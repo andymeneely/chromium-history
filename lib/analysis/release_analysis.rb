@@ -24,7 +24,7 @@ class ReleaseAnalysis
             rf.perc_fast_reviews = rf.filepath.perc_fast_reviews(r.date)
             rf.avg_sheriff_hours = rf.filepath.avg_sheriff_hours(r.date)
 
-            major_minor_contributors = rf.filepath.contributor_percentage(r.data);
+            major_minor_contributors = rf.filepath.contributor_percentage(r.date);
             rf.num_major_contributors = major_minor_contributors[0].size;
             rf.num_minor_contributors = major_minor_contributors[1].size;
             rf.vulnerable = rf.filepath.vulnerable?

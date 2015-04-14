@@ -216,7 +216,7 @@ class Filepath < ActiveRecord::Base
   end
 
   # Major > 5%, Minor < 5%
-  def self.contributor_percentage(before = DateTime.new(2050,01,01))
+  def contributor_percentage(before = DateTime.new(2050,01,01))
     cfpFilepath = 'commit_filepaths.filepath'
     cAuthorID = 'commits.author_id'
     cCreatedAt = 'commits.created_at'
