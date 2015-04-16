@@ -5,12 +5,13 @@ class ReleaseAnalysis
     puts "=== Fast Populations ==="
     Release.all.each do |r|
       Benchmark.bm(40) do |x|
-        x.report ('Populate num_reviews') {populate_num_reviews(r)}
+        x.report ('Populate num_reviews')   {populate_num_reviews(r)}
+        x.report ('Populate churn')         {populate_churn(r)}
         x.report ('Populate num_reviewers') {populate_num_reviewers(r)}
-        x.report ('Populate participant metrics') {populate_participants(r)}
-        x.report ('Populate owners data') {populate_owners_data(r)}
-        x.report ('Populate ownership data'){populate_ownership_data(r)}
-        x.report ('Populate zeros on nulls'){zero_out_the_nulls}
+        x.report ('Populate participants')  {populate_participants(r)}
+        x.report ('Populate owners data')   {populate_owners_data(r)}
+        x.report ('Populate ownership')     {populate_ownership_data(r)}
+        x.report ('Zero out the nulls')     {zero_out_the_nulls}
       end
     end
     puts "=== Slow populations ==="
@@ -88,6 +89,34 @@ class ReleaseAnalysis
     ActiveRecord::Base.connection.execute index
     ActiveRecord::Base.connection.execute update
   end
+  
+  def populate_churn(release)
+    drop   = 'DROP TABLE IF EXISTS churn_counts'
+    create = <<-EOSQL
+      CREATE UNLOGGED TABLE churn_counts AS (
+        SELECT filepaths.filepath, count(*) AS num_commits, sum(total_churn) as churn
+        FROM filepaths INNER JOIN commit_filepaths ON commit_filepaths.filepath = filepaths.filepath
+                       INNER JOIN commits ON commits.commit_hash = commit_filepaths.commit_hash
+        WHERE commits.created_at BETWEEN '1970-01-01 00:00:00' AND '#{release.date}'
+        GROUP BY filepaths.filepath
+      )
+    EOSQL
+    index  = 'CREATE UNIQUE INDEX index_filepath_on_churn_counts ON churn_counts(filepath)'
+    update = <<-EOSQL
+      UPDATE release_filepaths
+        SET num_commits = churn_counts.num_commits,
+            churn       = churn_counts.churn
+        FROM churn_counts
+        WHERE release_filepaths.thefilepath = churn_counts.filepath
+              AND release_filepaths.release = '#{release.name}'
+    EOSQL
+    ActiveRecord::Base.connection.execute drop
+    ActiveRecord::Base.connection.execute create
+    ActiveRecord::Base.connection.execute index
+    ActiveRecord::Base.connection.execute update
+  end
+
+  
 
   def populate_num_reviewers(release)
     drop   = 'DROP TABLE IF EXISTS reviewer_counts'
@@ -240,7 +269,8 @@ class ReleaseAnalysis
 
   # Set these columns to zero if they are count-based
   def zero_out_the_nulls
-    %w(num_owners
+    %w(churn
+       num_owners
        num_reviews
        num_reviewers 
        num_participants

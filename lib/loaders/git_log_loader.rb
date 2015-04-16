@@ -22,7 +22,7 @@ class GitLogLoader
   include ProfilerUtil
 
   @@GIT_LOG_BUG_PROPERTIES = [:commit_hash, :bug_id]
-  @@GIT_LOG_FILE_PROPERTIES = [:commit_hash, :filepath]
+  @@GIT_LOG_FILE_PROPERTIES = [:commit_hash, :filepath, :total_churn]
   @@GIT_LOG_PROPERTIES = [:commit_hash, :parent_commit_hash, :author_email,:author_id, :bug, :created_at, :message]
 
   def load
@@ -32,7 +32,7 @@ class GitLogLoader
     # create prepared insert statments because we will be using them many times
     # the insert statments will insert the values for each git log property into the db every time it is executed
     @con.prepare('commitInsert', "INSERT INTO commits (#{@@GIT_LOG_PROPERTIES.map{|key| key.to_s}.join(', ')}) VALUES ($1, $2, $3, $4, $5, $6, $7)")
-    @con.prepare('fileInsert', "INSERT INTO commit_filepaths (#{@@GIT_LOG_FILE_PROPERTIES.map{|key| key.to_s}.join(', ')}) VALUES ($1, $2)")
+    @con.prepare('fileInsert', "INSERT INTO commit_filepaths (#{@@GIT_LOG_FILE_PROPERTIES.map{|key| key.to_s}.join(', ')}) VALUES ($1, $2, $3)")
     @con.prepare('bugInsert', "INSERT INTO commit_bugs (#{@@GIT_LOG_BUG_PROPERTIES.map{|key| key.to_s}.join(', ')}) VALUES ($1, $2)")
     get_commits(File.open("#{Rails.configuration.datadir}/chromium-gitlog.txt", "r"))
 
@@ -96,7 +96,7 @@ class GitLogLoader
   #
   def regex_process_commit(arr)
     message = ""
-    filepaths = Array.new
+    filepaths = {}
     end_message_index = 0
     hash = Hash.new
     in_files = false # Have we gotten to the file portion yet? After the ;;; delimiter
@@ -141,13 +141,15 @@ class GitLogLoader
         in_files = true
 
       elsif in_files and element.include?('|')  # stats output needs to have a pipe
-        # get the filepath and push it into the filepaths array
-        filepaths.push(element.slice(0,element.index('|')).strip)
-
+        # collect the filepath and churn count, store in the filepath hash
+        split = element.split('|')
+        filepaths[split[0].strip] = split[1].to_i
+        
       end#if
 
     end#arr.each
     hash["filepaths"] = filepaths
+    
 
     return arr, hash
 
@@ -231,8 +233,8 @@ class GitLogLoader
   # @param- Array of file paths
   #
   def create_commit_filepath(filepaths, commit_hash)
-    filepaths.each do |str_path|
-      @con.exec_prepared('fileInsert', [commit_hash,str_path])
+    filepaths.each do |str_path, churn|
+      @con.exec_prepared('fileInsert', [commit_hash,str_path, churn])
     end
   end
 
