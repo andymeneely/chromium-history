@@ -7,65 +7,58 @@ CREATE UNLOGGED TABLE developers_word_use AS (
     FROM technical_words t
     JOIN messages_technical_words mt ON (t.id = mt.technical_word_id)
     JOIN messages m ON (m.id = mt.message_id)
-  ), code_reviews_spoken_per_interval AS (
+  ), messages_spoken_per_interval AS (
     SELECT 
       joined.sender_id AS dev_id,
-      COUNT(DISTINCT joined.code_review_id) AS used_in,
+      COUNT(DISTINCT joined.id) AS used_in,
       joined.my AS inter
     FROM joined
     GROUP BY
       dev_id, inter
-  ), total_code_reviews_per_interval AS (
+  ), total_messages_per_interval AS (
     SELECT 
-      COUNT(DISTINCT c.issue) AS code_review_count,
-      p.dev_id AS dev_id,
-      date_trunc('month', c.created) AS inter
-    FROM code_reviews c
-    JOIN participants p
-    ON (p.issue = c.issue)
+      COUNT(m.id) AS message_count,
+      m.sender_id AS dev_id,
+      date_trunc('month', m.date) AS inter
+    FROM messages m
     GROUP BY 
       dev_id, inter
   ), together AS (
-    SELECT d.id, d.email, d.security_experience, c.inter, c.used_in AS used_in, t.code_review_count AS total
+    SELECT 
+      d.id, 
+      d.email, 
+      d.security_experience, 
+      m.inter, 
+      m.used_in AS used_in, 
+      t.message_count AS total
     FROM developers d 
-    JOIN code_reviews_spoken_per_interval c 
-    ON (d.id = c.dev_id) 
-    JOIN total_code_reviews_per_interval t ON (c.dev_id = t.dev_id) AND (c.inter = t.inter)
+    JOIN messages_spoken_per_interval m 
+    ON (d.id = m.dev_id)
+    JOIN total_messages_per_interval t 
+    ON (m.dev_id = t.dev_id) AND (m.inter = t.inter)
   ), pre AS (
     SELECT 
       id,
-      email,
-      regr_slope((CAST(used_in AS numeric)/CAST(total AS numeric))*100, 
-        EXTRACT(epoch FROM inter)) AS pct_words_used_slope,
-      corr((CAST(used_in AS numeric)/CAST(total AS numeric))*100, 
-        EXTRACT(epoch FROM inter)) AS pct_words_used_corr,
-      regr_count((CAST(used_in AS numeric)/CAST(total AS numeric))*100, 
-        EXTRACT(epoch FROM inter)) AS pct_words_used_count
+      AVG(CAST(used_in AS numeric)/CAST(total AS numeric)*100) AS pct_words_used_avg,
+      COUNT(inter) AS intervals
     FROM together
     WHERE inter < security_experience
-    GROUP BY id, email
+    GROUP BY id
   ), post AS (
     SELECT 
       id,
-      regr_slope((CAST(used_in AS numeric)/CAST(total AS numeric))*100, 
-        EXTRACT(epoch FROM inter)) AS pct_words_used_slope,
-      corr((CAST(used_in AS numeric)/CAST(total AS numeric))*100, 
-        EXTRACT(epoch FROM inter)) AS pct_words_used_corr,
-      regr_count((CAST(used_in AS numeric)/CAST(total AS numeric))*100, 
-        EXTRACT(epoch FROM inter)) AS pct_words_used_count
+      AVG(CAST(used_in AS numeric)/CAST(total AS numeric)*100) AS pct_words_used_avg,
+      COUNT(inter) AS intervals
     FROM together 
     WHERE inter > security_experience
     GROUP BY id
   )
   SELECT
     pr.id, 
-    pr.email, 
-    pr.pct_words_used_slope AS pre_slope,
-    pr.pct_words_used_corr AS pre_corr,
-    pr.pct_words_used_count AS pre_count,
-    po.pct_words_used_slope AS post_slope,
-    po.pct_words_used_corr AS post_corr,
-    po.pct_words_used_count AS post_count
+    pr.pct_words_used_avg AS pre_pct_used_avg,
+    pr.intervals AS pre_intervals,
+    po.pct_words_used_avg AS post_pct_used_avg,
+    po.intervals AS post_intervals
   FROM pre pr 
   JOIN post po 
   USING (id)
