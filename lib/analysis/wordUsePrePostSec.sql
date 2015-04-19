@@ -60,7 +60,7 @@ CREATE UNLOGGED TABLE developers_word_use AS (
     po.pct_words_used_avg AS post_pct_used_avg,
     po.intervals AS post_intervals
   FROM pre pr 
-  JOIN post po 
+  LEFT OUTER JOIN post po 
   USING (id)
   ORDER BY id
 );
