@@ -68,3 +68,7 @@ Gemfile.lock
 /node_modules/*
 *.pyc
 npm-debug.log
+
+# Ignore R stuff
+.RData
+.Rhistory

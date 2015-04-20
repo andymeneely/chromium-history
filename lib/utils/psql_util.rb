@@ -44,6 +44,10 @@ class PsqlUtil
     table.fsync
   end
 
+  def self.execute_file sql_file
+    ActiveRecord::Base.connection.execute IO.read(sql_file)
+  end
+
   # Convenience function
   def self.execute sql
     ActiveRecord::Base.connection.execute sql

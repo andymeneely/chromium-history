@@ -117,6 +117,7 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.integer "lines_deleted_self"
     t.integer "lines_deleted_other"
     t.integer "num_authors_affected"
+    t.integer "total_churn"
   end
 
   create_table "commits", id: false, force: true do |t|

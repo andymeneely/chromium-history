@@ -15,6 +15,7 @@ class CodeReviewParser
         @contrb_set = Set.new
         @revs_dict = Hash.new
 
+        @prtp_set << owner_id  # review owners are participants too, even if they don't send messages
         parse_reviewers(cobj, owner_id)
 
         cobj['patchsets'].each do |pid|

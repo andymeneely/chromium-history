@@ -22,5 +22,12 @@ class CommitAssociationVerify < VerifyBase
      dev_id = Developer.where(email: 'phajdan.jr@chromium.org').pluck(:id).first
      assert_equal dev_id, Commit.where(commit_hash: '1bcf224fd40b497997827af5f04b0628e648700f').pluck(:author_id).first
   end
+
+  def verify_total_churn_parsed
+    cf = CommitFilepath.find_by(commit_hash: '2d376985bf55713a5cd4a3c8b953629b0ddbde13',
+                                filepath:    'content/renderer/render_widget.cc')
+    assert_equal 13, cf.total_churn
+  end
+
 end
 

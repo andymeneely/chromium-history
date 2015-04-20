@@ -54,6 +54,13 @@ class ReleaseVerify < VerifyBase
     #assert_equal(3, rf.security_adjacencys)
     assert_equal(true, (rf.avg_sheriff_hours - 0.0).abs < 0.01)
     assert_equal(true, (rf.perc_fast_reviews - 1.0).abs < 0.01)
+    assert_equal(33, rf.churn)
+  end
+
+  def verify_zero_counts
+    rf = ReleaseFilepath.find_by(thefilepath: 'net/http/http_response_headers_unittest.cc',
+                                 release:     '11.0')
+    assert_equal(0, rf.churn)
   end
 end
 

@@ -49,4 +49,8 @@ class WordTrendAnalysis
       EOSQL
     PsqlUtil.execute sql
   end
+
+  def pre_vs_post_sec_exp
+    PsqlUtil.execute_file Rails.root.join 'lib', 'analysis', 'wordUsePrePostSec.sql'
+  end
 end

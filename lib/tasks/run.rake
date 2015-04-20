@@ -144,6 +144,7 @@ namespace :run do
       x.report("Populating first ownership") {OwnersAnalysis.new.populate_first_owners}
       x.report("Populating release metrics") {ReleaseAnalysis.new.populate}
       x.report("Populating word trend metrics") {WordTrendAnalysis.new.populate}
+      x.report("Populating dev word use metrics") {WordTrendAnalysis.new.pre_vs_post_sec_exp}
       #puts "Here are a bunch of SQL Explains"
       #Filepath.print_sql_explains
     end

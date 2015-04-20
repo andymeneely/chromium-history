@@ -207,7 +207,7 @@ class Filepath < ActiveRecord::Base
     Filepath.joins(commit_filepaths: [commit: [commit_bugs: [bug: :labels]]])
   end
 
-  # # Commits made on a filepath by the given date
+  # Commits made on a filepath by the given date
   def self.commits(before = DateTime.new(2050,01,01))
         CommitFilepath.joins(:commit)\
         .where('commitFilepath.filepath' => filepath, \
@@ -215,18 +215,35 @@ class Filepath < ActiveRecord::Base
         .select('commit_filepaths.filepath, commits.author_id)')
   end
 
-  def self.major_contributors(before = DateTime.new(2050,01,01))
-    # self.contributor('> 5%')
-  end
+  # Major > 5%, Minor < 5%
+  def contributor_percentage(before = DateTime.new(2050,01,01))
+    cfpFilepath = 'commit_filepaths.filepath'
+    cAuthorID = 'commits.author_id'
+    cCreatedAt = 'commits.created_at'
+    cfpc = CommitFilepath.joins(:commit) \
+    .select(cfpFilepath+ ',' +cAuthorID+ ',' +cCreatedAt) \
+    .where(cfpFilepath => filepath, \
+           cCreatedAt => DateTime.new(1970, 01, 01)..before)
 
-  def self.minor_contributors(before = DateTime.new(2050,01,01))
-    # self.contributor('< 5%')
-  end
+    # denom
+    totalCommits = cfpc.count(cfpFilepath)
 
-  # Reusable contributor percentage method
-  def self.contributor(percentage, before)
-     # num = 0.0; denom = self.commits(before)
-     
+    # number of commits
+    totalCommiters = cfpc.distinct.count(cAuthorID)
+
+    # commits
+    userCommits = cfpc.count(:all, :group => :author_id)
+
+    max = []
+    min = []
+
+    userCommits.each do |aID, commits|
+      percentage = (commits / totalCommits)
+      arr = (percentage >= 0.05) ? max : min
+      arr << aID
+    end
+
+    return max, min;
   end
 
   @@EXPLAINS = {}
@@ -238,3 +255,6 @@ class Filepath < ActiveRecord::Base
     end
   end
 end
+
+
+# ash/accelerators/accelerator_controller.cc
