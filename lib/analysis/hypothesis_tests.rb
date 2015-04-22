@@ -39,7 +39,7 @@ class HypothesisTests
     # To install these packages locally, run R on the command line
     # and then run
     # >>> install.packages("DBI")
-    # >>> install.packages("PostgreSQL")
+    # >>> install.packages("RPostgreSQL")
     # >>> install.packages("ROCR")
     # >>> install.packages("bestglm")
     # >>> install.packages("lsr")
@@ -226,6 +226,12 @@ class HypothesisTests
           num_post_bugs,
           num_pre_vulnerabilities,
           num_post_vulnerabilities,
+          avg_security_experienced_participants,
+          avg_bug_security_experienced_participants,
+          avg_stability_experienced_participants,
+          avg_build_experienced_participants,
+          avg_test_fail_experienced_participants,
+          avg_compatibility_experienced_participants,
           was_buggy,
           becomes_buggy,
           was_vulnerable,
@@ -234,7 +240,7 @@ class HypothesisTests
         
 
         # Split the data in relases
-        r05 <- release_filepaths_data[ which(release_filepaths_data$release == "5.0"), -c(1)]
+        r05 <- release_filepaths_data[ which(release_filepaths_data$release == '5.0'), -c(1)]
         r11 <- release_filepaths_data[ which(release_filepaths_data$release == '11.0'),-c(1)]
         r19 <- release_filepaths_data[ which(release_filepaths_data$release == '19.0'),-c(1)]
         r27 <- release_filepaths_data[ which(release_filepaths_data$release == '27.0'),-c(1)]
