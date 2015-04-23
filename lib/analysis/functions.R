@@ -88,13 +88,13 @@ release_modeling <- function(release,release.next){
 
   
   # Normalize and center data, added one to the values to be able to calculate log to zero. log(1)=0
-  release = cbind(as.data.frame(log(release[,c(1:13)] + 1)), 
+  release = cbind(as.data.frame(log(release[,c(1:19)] + 1)), 
             becomes_vulnerable = release$becomes_vulnerable,
             was_buggy = release$was_buggy,
             becomes_buggy = release$becomes_buggy,
             was_vulnerable = release$was_vulnerable)
 
-  release.next = cbind(as.data.frame(log(release.next[,c(1:13)] + 1)), 
+  release.next = cbind(as.data.frame(log(release.next[,c(1:19)] + 1)), 
             becomes_vulnerable = release.next$becomes_vulnerable,
             was_buggy = release.next$was_buggy,
             becomes_buggy = release.next$becomes_buggy,
@@ -105,9 +105,6 @@ release_modeling <- function(release,release.next){
                   data = release, family = "binomial")
 
   fit_control <- glm(formula = becomes_vulnerable ~ sloc, 
-                  data = release, family = "binomial")
-
-  fit_all <- glm (formula= becomes_vulnerable ~ ., 
                   data = release, family = "binomial")
 
   fit_bugs <- glm (formula= becomes_vulnerable ~ sloc + num_pre_bugs, 
@@ -135,15 +132,34 @@ release_modeling <- function(release,release.next){
   fit_bug_to_bug <- glm(formula = becomes_buggy ~ sloc + was_buggy, 
                   data = release, family = "binomial")
 
-  
-  #best_fit_AIC <- bestglm(release,family=binomial,IC = "AIC")
+  # Experience Based Models
+  fit_security_experienced <- glm (formula= becomes_vulnerable ~ sloc + avg_security_experienced_participants, 
+                        data = release, family = "binomial")
+
+  fit_bug_security_experienced <- glm (formula= becomes_vulnerable ~ sloc + avg_bug_security_experienced_participants, 
+                        data = release, family = "binomial")
+
+  fit_stability_experienced <- glm (formula= becomes_vulnerable ~ sloc + avg_stability_experienced_participants, 
+                        data = release, family = "binomial")
+
+  fit_build_experienced <- glm (formula= becomes_vulnerable ~ sloc + avg_build_experienced_participants, 
+                        data = release, family = "binomial") 
+
+  fit_test_fail_experienced <- glm (formula= becomes_vulnerable ~ sloc + avg_test_fail_experienced_participants, 
+                        data = release, family = "binomial") 
+
+  fit_compatibility_experienced <- glm (formula= becomes_vulnerable ~ sloc + avg_compatibility_experienced_participants, 
+                        data = release, family = "binomial") 
 
   # Display Results:
   cat("\nRelease Summary\n")
   print(summary(release))
 
-  cat("\nSpearman's Correlation\n")
+  cat("\nSpearman's Correlation for bug metrics\n")
   print(cor(release[,c(5:11)],method="spearman"))
+
+  cat("\nSpearman's Correlation for experience metrics\n")
+  print(cor(release[,c(14:19)],method="spearman", use = "complete"))
 
   release_v <- release[ which(release$becomes_vulnerable == TRUE), ]
   release_n <- release[ which(release$becomes_vulnerable == FALSE), ]
@@ -159,6 +175,8 @@ release_modeling <- function(release,release.next){
   print(cbind(median_v = median(release_v$sloc, na.rm=TRUE),median_n = median(release_n$sloc, na.rm=TRUE)))
   print(cbind(mean_v = mean(release_v$sloc, na.rm=TRUE),mean_n = mean(release_n$sloc, na.rm=TRUE)))
   
+  # For bug metrics
+  cat("\nFor bug metrics:\n")
   print(wilcox.test(release_v$num_pre_bugs, release_n$num_pre_bugs, alternative="greater"))
   print(cbind(median_v = median(release_v$num_pre_bugs, na.rm=TRUE),median_n = median(release_n$num_pre_bugs, na.rm=TRUE)))
   print(cbind(mean_v = mean(release_v$num_pre_bugs, na.rm=TRUE),mean_n = mean(release_n$num_pre_bugs, na.rm=TRUE)))
@@ -191,7 +209,33 @@ release_modeling <- function(release,release.next){
   print(cbind(median_v = median(release_v$num_pre_build_bugs, na.rm=TRUE),median_n = median(release_n$num_pre_build_bugs, na.rm=TRUE)))
   print(cbind(mean_v = mean(release_v$num_pre_build_bugs, na.rm=TRUE),mean_n = mean(release_n$num_pre_build_bugs, na.rm=TRUE)))
 
-  cat("\nCohensD:\n")
+  # For experience metrics
+  cat("\nFor experience metrics:\n")
+  print(wilcox.test(release_v$avg_security_experienced_participants, release_n$avg_security_experienced_participants, alternative="greater"))
+  print(cbind(median_v = median(release_v$avg_security_experienced_participants, na.rm=TRUE),median_n = median(release_n$avg_security_experienced_participants, na.rm=TRUE)))
+  print(cbind(mean_v = mean(release_v$avg_security_experienced_participants, na.rm=TRUE),mean_n = mean(release_n$avg_security_experienced_participants, na.rm=TRUE)))
+
+  print(wilcox.test(release_v$avg_bug_security_experienced_participants, release_n$avg_bug_security_experienced_participants, alternative="greater"))
+  print(cbind(median_v = median(release_v$avg_bug_security_experienced_participants, na.rm=TRUE),median_n = median(release_n$avg_bug_security_experienced_participants, na.rm=TRUE)))
+  print(cbind(mean_v = mean(release_v$avg_bug_security_experienced_participants, na.rm=TRUE),mean_n = mean(release_n$avg_bug_security_experienced_participants, na.rm=TRUE)))
+
+  print(wilcox.test(release_v$avg_stability_experienced_participants, release_n$avg_stability_experienced_participants, alternative="greater"))
+  print(cbind(median_v = median(release_v$avg_stability_experienced_participants, na.rm=TRUE),median_n = median(release_n$avg_stability_experienced_participants, na.rm=TRUE)))
+  print(cbind(mean_v = mean(release_v$avg_stability_experienced_participants, na.rm=TRUE),mean_n = mean(release_n$avg_stability_experienced_participants, na.rm=TRUE)))
+
+  print(wilcox.test(release_v$avg_build_experienced_participants, release_n$avg_build_experienced_participants, alternative="greater"))
+  print(cbind(median_v = median(release_v$avg_build_experienced_participants, na.rm=TRUE),median_n = median(release_n$avg_build_experienced_participants, na.rm=TRUE)))
+  print(cbind(mean_v = mean(release_v$avg_build_experienced_participants, na.rm=TRUE),mean_n = mean(release_n$avg_build_experienced_participants, na.rm=TRUE)))
+
+  print(wilcox.test(release_v$avg_test_fail_experienced_participants, release_n$avg_test_fail_experienced_participants, alternative="greater"))
+  print(cbind(median_v = median(release_v$avg_test_fail_experienced_participants, na.rm=TRUE),median_n = median(release_n$avg_test_fail_experienced_participants, na.rm=TRUE)))
+  print(cbind(mean_v = mean(release_v$avg_test_fail_experienced_participants, na.rm=TRUE),mean_n = mean(release_n$avg_test_fail_experienced_participants, na.rm=TRUE)))
+
+  print(wilcox.test(release_v$avg_compatibility_experienced_participants, release_n$avg_compatibility_experienced_participants, alternative="greater"))
+  print(cbind(median_v = median(release_v$avg_compatibility_experienced_participants, na.rm=TRUE),median_n = median(release_n$avg_compatibility_experienced_participants, na.rm=TRUE)))
+  print(cbind(mean_v = mean(release_v$avg_compatibility_experienced_participants, na.rm=TRUE),mean_n = mean(release_n$avg_compatibility_experienced_participants, na.rm=TRUE)))
+
+  cat("\nCohensD for Bug metrics:\n")
   print(cbind(
     sloc = cohensD(release_v$sloc, release_n$sloc), 
     bugs = cohensD(release_v$num_pre_bugs, release_n$num_pre_bugs),
@@ -201,15 +245,24 @@ release_modeling <- function(release,release.next){
     security_bugs = cohensD(release_v$num_pre_security_bugs, release_n$num_pre_security_bugs),
     tests_fails_bugs = cohensD(release_v$num_pre_tests_fails_bugs, release_n$num_pre_tests_fails_bugs),
     stability_crash_bugs = cohensD(release_v$num_pre_stability_crash_bugs, release_n$num_pre_stability_crash_bugs),
-    build_bugs = cohensD(release_v$num_pre_build_bugs, release_n$num_pre_build_bugs)))
+    build_bugs = cohensD(release_v$num_pre_build_bugs, release_n$num_pre_build_bugs)
+  ))
+
+  cat("\nCohensD for Experience metrics:\n")
+  print(cbind(
+    avg_security_experienced_participants = cohensD(release_v$avg_security_experienced_participants, release_n$avg_security_experienced_participants), 
+    avg_bug_security_experienced_participants = cohensD(release_v$avg_bug_security_experienced_participants, release_n$avg_bug_security_experienced_participants), 
+    avg_stability_experienced_participants = cohensD(release_v$avg_stability_experienced_participants, release_n$avg_stability_experienced_participants), 
+    avg_build_experienced_participants = cohensD(release_v$avg_build_experienced_participants, release_n$avg_build_experienced_participants), 
+    avg_test_fail_experienced_participants = cohensD(release_v$avg_test_fail_experienced_participants, release_n$avg_test_fail_experienced_participants), 
+    avg_compatibility_experienced_participants = cohensD(release_v$avg_compatibility_experienced_participants, release_n$avg_compatibility_experienced_participants)
+  ))
     
   cat("\n# Summary Control Models\n")
   cat("fit_null\n")
   print(summary(fit_null))
   cat("fit_control\n")
   print(summary(fit_control))
-  cat("fit_all\n")
-  print(summary(fit_all))
   cat("fit_bugs\n")
   print(summary(fit_bugs))
 
@@ -223,8 +276,6 @@ release_modeling <- function(release,release.next){
   print(summary(fit_stability))
   cat("fit_build\n")
   print(summary(fit_build))
-  #cat("best_fit_AIC\n")
-  #print(summary(best_fit_AIC$BestModel))
 
   cat("\n")
   cat("# Summary History Models\n")
@@ -235,14 +286,26 @@ release_modeling <- function(release,release.next){
   cat("fit_bug_to_bug\n")            
   print(summary(fit_bug_to_bug))
 
+  cat("\n")
+  cat("# Summary Experience Models\n")
+  cat("fit_security_experienced\n")
+  print(summary(fit_security_experienced))
+  cat("fit_bug_security_experienced\n")  
+  print(summary(fit_bug_security_experienced))
+  cat("fit_stability_experienced\n")            
+  print(summary(fit_stability_experienced))
+  cat("fit_build_experienced\n")            
+  print(summary(fit_build_experienced))
+  cat("fit_test_fail_experienced\n")            
+  print(summary(fit_test_fail_experienced))
+  cat("fit_compatibility_experienced\n")            
+  print(summary(fit_compatibility_experienced))
 
   cat("\n")
   cat("# D^2 Analysys\n")
   cat("Control\n")
   cat("fit_control\n")
   print(Dsquared(model = fit_control))
-  cat("For fit_all\n")
-  print(Dsquared(model = fit_all))
   cat("For fit_bugs\n")
   print(Dsquared(model = fit_bugs))
 
@@ -256,8 +319,6 @@ release_modeling <- function(release,release.next){
   print(Dsquared(model = fit_stability))
   cat("For fit_build\n")
   print(Dsquared(model = fit_build))
-  #cat("For best_fit_AIC\n")
-  #rint(Dsquared(model = best_fit_AIC$BestModel))
 
   cat("\n")
   cat("# Summary History Models\n")
@@ -268,16 +329,29 @@ release_modeling <- function(release,release.next){
   cat("fit_bug_to_bug\n")            
   print(Dsquared(model = fit_bug_to_bug))
 
+
+  cat("\n")
+  cat("# Summary Experience Models\n")
+  cat("fit_security_experienced\n")
+  print(Dsquared(model = fit_security_experienced))
+  cat("fit_bug_security_experienced\n")  
+  print(Dsquared(model = fit_bug_security_experienced))
+  cat("fit_stability_experienced\n")            
+  print(Dsquared(model = fit_stability_experienced))
+  cat("fit_build_experienced\n")            
+  print(Dsquared(model = fit_build_experienced))
+  cat("fit_test_fail_experienced\n")            
+  print(Dsquared(model = fit_test_fail_experienced))
+  cat("fit_compatibility_experienced\n")            
+  print(Dsquared(model = fit_compatibility_experienced))
+
   cat("\n")
   cat("# Prediction Analysis\n")
   cat("Control\n")
   cat("For fit_control\n")
   print(prediction_analysis(fit_control,release.next))
-  cat("For fit_all\n")
-  print(prediction_analysis(fit_all,release.next))
   cat("For fit_bugs\n")
   print(prediction_analysis(fit_bugs,release.next))
-
 
   cat("\n")
   cat("# Categories\n")
@@ -289,8 +363,6 @@ release_modeling <- function(release,release.next){
   print(prediction_analysis(fit_stability,release.next))
   cat("For fit_build\n")
   print(prediction_analysis(fit_build,release.next))
-  #cat("For best_fit_AIC\n")
-  #print(prediction_analysis(best_fit_AIC$BestModel,release.next))
 
   cat("\n")
   cat("# Summary History Models\n")
@@ -300,6 +372,21 @@ release_modeling <- function(release,release.next){
   print(prediction_analysis(fit_bug_to_vuln,release.next))
   cat("fit_bug_to_bug\n")            
   print(prediction_analysis(fit_bug_to_bug,release.next))
+
+  cat("\n")
+  cat("# Summary Experience Models\n")
+  cat("fit_security_experienced\n")
+  print(prediction_analysis(fit_security_experienced,release.next))
+  cat("fit_bug_security_experienced\n")  
+  print(prediction_analysis(fit_bug_security_experienced,release.next))
+  cat("fit_stability_experienced\n")            
+  print(prediction_analysis(fit_stability_experienced,release.next))
+  cat("fit_build_experienced\n")            
+  print(prediction_analysis(fit_build_experienced,release.next))
+  cat("fit_test_fail_experienced\n")            
+  print(prediction_analysis(fit_test_fail_experienced,release.next))
+  cat("fit_compatibility_experienced\n")            
+  print(prediction_analysis(fit_compatibility_experienced,release.next))
 
   options(warn=0)
 }
