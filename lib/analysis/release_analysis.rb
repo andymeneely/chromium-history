@@ -89,6 +89,47 @@ class ReleaseAnalysis
     ActiveRecord::Base.connection.execute index
     ActiveRecord::Base.connection.execute update
   end
+
+  def populate_major_minor_contributors(release)
+    c           = 'commits'
+    f           = 'filepaths'
+    cf          = 'commit_filepaths'
+    cAuthorID   = c+  '.author_id'
+    cCreatedAt  = c+  '.created_at'
+    cHash       = c+  '.commit_hash'
+    fFilepaths  = f+  '.filepath'
+    cfFilepaths = cf+ '.filepath'
+    cfHash      = cf+ '.commit_hash'
+    rName       = release.name
+
+    # totalCommits   = SELECT COUNT(cfFilepaths) FROM cf INNER JOIN c ON cHash = cfHash 
+    # totalCommiters = SELECT DISTINCT COUNT(DISTINCT cAuthorID) FROM cf INNER JOIN c ON c.cHash = cfHash
+    # userCommits    = SELECT COUNT(*) AS count_all, author_id AS author_id FROM cf INNER JOIN c ON cHash = cfHash GROUP BY author_id
+
+    drop   = 'DROP TABLE IF EXISTS major_minor_counts'
+    create = <<-EOSQL
+      CREATE UNLOGGED TABLE major_minor_counts AS (
+        SELECT filepaths.filepath, count(*) AS num_code_reviews
+        FROM filepaths INNER JOIN commit_filepaths ON commit_filepaths.filepath = filepaths.filepath
+                       INNER JOIN commits ON commits.commit_hash = commit_filepaths.commit_hash
+                       INNER JOIN code_reviews ON code_reviews.commit_hash = commits.commit_hash
+        WHERE code_reviews.created BETWEEN '1970-01-01 00:00:00' AND '#{release.date}'
+        GROUP BY filepaths.filepath
+      )
+    EOSQL
+    index  = 'CREATE UNIQUE INDEX index_filepath_on_code_review_counts ON major_minor_counts(filepath)'
+    update = <<-EOSQL
+      UPDATE release_filepaths
+        SET num_reviews = major_minor_counts.num_code_reviews
+        FROM major_minor_counts
+        WHERE release_filepaths.thefilepath = major_minor_counts.filepath
+              AND release_filepaths.release = '#{release.name}'
+    EOSQL
+    ActiveRecord::Base.connection.execute drop
+    ActiveRecord::Base.connection.execute create
+    ActiveRecord::Base.connection.execute index
+    ActiveRecord::Base.connection.execute update
+  end
   
   def populate_churn(release)
     drop   = 'DROP TABLE IF EXISTS churn_counts'
@@ -115,8 +156,6 @@ class ReleaseAnalysis
     ActiveRecord::Base.connection.execute index
     ActiveRecord::Base.connection.execute update
   end
-
-  
 
   def populate_num_reviewers(release)
     drop   = 'DROP TABLE IF EXISTS reviewer_counts'

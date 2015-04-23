@@ -5,6 +5,7 @@ class Commit < ActiveRecord::Base
   has_many :code_reviews, primary_key: "commit_hash", foreign_key: "commit_hash"
   belongs_to :developer, primary_key: "id", foreign_key: "author_id"
   has_and_belongs_to_many :technical_words
+  has_many :filepath, through: :commit_filepaths
 
   def reviewers
     Commit.joins(code_reviews: :reviewers).where(commit_hash: commit_hash)
@@ -19,5 +20,4 @@ class Commit < ActiveRecord::Base
     PsqlUtil.add_fulltext_search_index 'commits', 'message'
     connection.execute 'CLUSTER commits USING index_commits_on_created_at'
   end
-
 end

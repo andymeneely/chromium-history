@@ -215,35 +215,47 @@ class Filepath < ActiveRecord::Base
         .select('commit_filepaths.filepath, commits.author_id)')
   end
 
-  # Major > 5%, Minor < 5%
+  # perc = 5%
+  # Major >= perc, Minor < perc
   def contributor_percentage(before = DateTime.new(2050,01,01))
-    cfpFilepath = 'commit_filepaths.filepath'
-    cAuthorID = 'commits.author_id'
-    cCreatedAt = 'commits.created_at'
-    cfpc = CommitFilepath.joins(:commit) \
-    .select(cfpFilepath+ ',' +cAuthorID+ ',' +cCreatedAt) \
-    .where(cfpFilepath => filepath, \
-           cCreatedAt => DateTime.new(1970, 01, 01)..before)
+    # puts "#{@filepath.commits}" 
+    max        = []
+    min        = []
+    perc       = 0.25# 0.0625 #0.05
+    sep        = ','
+    c          = 'commits'
+    cf         = 'commit_filepaths' 
+    cAuthorID  = c+  '.author_id'
+    cCreatedAt = c+  '.created_at'
+    cfFilepath = cf+ '.filepath'
+    cfpc       = CommitFilepath.joins(:commit) \
+      .select(cfFilepath+sep+cAuthorID+sep+cCreatedAt) \
+      .where(cfFilepath => filepath, \
+        cCreatedAt => DateTime.new(1970, 01, 01)..before)
 
-    # denom
-    totalCommits = cfpc.count(cfpFilepath)
 
     # number of commits
-    totalCommiters = cfpc.distinct.count(cAuthorID)
+    commiters = cfpc.distinct.count(cAuthorID)
+
+    # denom
+    totalCommits = cfpc.count.to_f
 
     # commits
-    userCommits = cfpc.count(:all, :group => :author_id)
+    userCommits = cfpc.group(cAuthorID).count
+    # cfpc.count(:all, :group => :author_id)
 
-    max = []
-    min = []
+    userCommits.each { |id, c|
+      p = (c.to_f / totalCommits)
+      percentage = p > perc
+      puts "DevID: #{id}\n Number of Commits: #{c}\n NumCommits/Total: #{p}\n IsMajor: #{percentage}\n Filepath: #{filepath}"
+      if percentage
+        max << id
+      else
+        min << id
+      end
+    }
 
-    userCommits.each do |aID, commits|
-      percentage = (commits / totalCommits)
-      arr = (percentage >= 0.05) ? max : min
-      arr << aID
-    end
-
-    return max, min;
+    return max, min
   end
 
   @@EXPLAINS = {}
