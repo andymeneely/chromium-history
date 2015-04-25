@@ -29,10 +29,15 @@ ActiveRecord::Schema.define(version: 20140512131450) do
   create_table "adjacency_list", force: true do |t|
     t.integer  "dev1_id"
     t.integer  "dev2_id"
+    t.integer  "owner_id"
     t.integer  "issue",       limit: 8
     t.datetime "review_date"
     t.boolean  "dev1_sec_exp"
     t.boolean  "dev2_sec_exp"
+    t.integer  "dev1_sher_hrs"
+    t.integer  "dev2_sher_hrs"
+    t.boolean  "dev1_bugsec_exp"
+    t.boolean  "dev2_bugsec_exp"
   end
 
   create_table "blocks", id: false, force: true do |t|

@@ -17,13 +17,19 @@ class ParticipantAnalysis
   
   def populate_adjacency_list
     insert=<<-EOSQL
-      INSERT INTO adjacency_list(dev1_id, dev2_id, issue, review_date, dev1_sec_exp, dev2_sec_exp)
+      INSERT INTO adjacency_list(dev1_id, dev2_id,owner_id, issue, review_date, dev1_sec_exp, dev2_sec_exp,
+				 dev1_sher_hrs, dev2_sher_hrs, dev1_bugsec_exp,dev2_bugsec_exp)
         SELECT p1.dev_id, 
-               p2.dev_id, 
+               p2.dev_id,
+               p1.owner_id, 
                p1.issue, 
                p1.review_date,
                p1.security_experienced,
-               p2.security_experienced
+               p2.security_experienced,
+	       p1.sheriff_hours,
+	       p2.sheriff_hours,
+               p1.bug_security_experienced,
+	       p2.bug_security_experienced
         FROM participants p1 INNER JOIN participants p2 
              ON ( p1.issue = p2.issue
                   AND p1.dev_id < p2.dev_id )
