@@ -247,7 +247,7 @@ class Filepath < ActiveRecord::Base
     userCommits.each { |id, c|
       p = (c.to_f / totalCommits)
       percentage = p > perc
-      puts "DevID: #{id}\n Number of Commits: #{c}\n NumCommits/Total: #{p}\n IsMajor: #{percentage}\n Filepath: #{filepath}"
+      # puts "DevID: #{id}\n Number of Commits: #{c}\n NumCommits/Total: #{p}\n IsMajor: #{percentage}\n Filepath: #{filepath}"
       if percentage
         max << id
       else
