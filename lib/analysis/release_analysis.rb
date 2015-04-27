@@ -109,10 +109,10 @@ class ReleaseAnalysis
     drop   = 'DROP TABLE IF EXISTS major_minor_counts'
     create = <<-EOSQL
       CREATE UNLOGGED TABLE major_minor_counts AS (
-        SELECT filepaths.filepath, count(*) AS num_code_reviews
-        FROM filepaths INNER JOIN commit_filepaths ON commit_filepaths.filepath = filepaths.filepath
-                       INNER JOIN commits ON commits.commit_hash = commit_filepaths.commit_hash
-                       INNER JOIN code_reviews ON code_reviews.commit_hash = commits.commit_hash
+        SELECT #{fFilepaths}, count(*) AS num_code_reviews
+        FROM #{f} INNER JOIN #{cf} ON #{cfFilepaths} = #{fFilepaths}
+                       INNER JOIN #{c} ON #{cHash} = #{cfHash}
+                       INNER JOIN code_reviews ON code_reviews.commit_hash = #{cHash}
         WHERE code_reviews.created BETWEEN '1970-01-01 00:00:00' AND '#{release.date}'
         GROUP BY filepaths.filepath
       )
