@@ -14,7 +14,7 @@ class ProductionCountVerify < VerifyBase
   end
 
   def verify_release_owner_count
-    assert_equal 9770692, ReleaseOwner.count
+    assert_equal 3069645, ReleaseOwner.count
   end
 
   def verify_commit_filepath_counts
@@ -22,7 +22,7 @@ class ProductionCountVerify < VerifyBase
   end
 
   def verify_participant_count
-    assert_equal 429321, Participant.count
+    assert_equal 487259, Participant.count
   end
 
   def verify_reviewer_count
@@ -44,7 +44,7 @@ class ProductionCountVerify < VerifyBase
   def verify_adjacency_count
     query = 'SELECT COUNT(*) FROM adjacency_list'
     rs = ActiveRecord::Base.connection.execute query
-    assert_equal 393680, rs.getvalue(0,0).to_i
+    assert_equal 440244, rs.getvalue(0,0).to_i
   end
 
   def verify_dangling_bug_commits
