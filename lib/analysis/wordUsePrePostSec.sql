@@ -36,6 +36,7 @@ CREATE UNLOGGED TABLE developers_word_use AS (
     ON (d.id = m.dev_id)
     JOIN total_messages_per_interval t 
     ON (m.dev_id = t.dev_id) AND (m.inter = t.inter)
+    WHERE security_experience <= current_date()
   ), pre AS (
     SELECT 
       id,
@@ -54,7 +55,7 @@ CREATE UNLOGGED TABLE developers_word_use AS (
     GROUP BY id
   )
   SELECT
-    pr.id, 
+    pr.id AS dev_id, 
     pr.pct_words_used_avg AS pre_pct_used_avg,
     pr.intervals AS pre_intervals,
     po.pct_words_used_avg AS post_pct_used_avg,
