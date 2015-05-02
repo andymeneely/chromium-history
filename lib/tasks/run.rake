@@ -24,6 +24,7 @@ require 'analysis/nlp_queries_analysis'
 require 'analysis/word_trend_analysis'
 require 'analysis/network_analysis'
 require 'analysis/owners_analysis'
+require 'analysis/feedback_analysis'
 require 'stats'
 require 'nlp/corpus'
 require 'utils/psql_util'
@@ -141,6 +142,7 @@ namespace :run do
       x.report("Populating adjacency counts"){ParticipantAnalysis.new.populate_adjacency_counts}
       x.report("Populating owner_familiarity_gap"){CodeReviewAnalysis.new.populate_owner_familiarity_gap}
       x.report("Populating total_sheriff_hours"){CodeReviewAnalysis.new.populate_total_sheriff_hours}
+      x.report("Populating top label tech words"){NlpQueriesAnalysis.new.run}
       x.report("Populating first ownership") {OwnersAnalysis.new.populate_first_owners}
       x.report("Populating release metrics") {ReleaseAnalysis.new.populate}
       x.report("Populating word trend metrics") {WordTrendAnalysis.new.populate}
@@ -179,7 +181,7 @@ namespace :run do
     HypothesisTests.new.run
     #VisualizationQueries.new.run_queries
     #DataVisualization.new.run
-    NlpQueriesAnalysis.new.run
+    FeedbackAnalysis.new.run
     NetworkAnalysis.new.run
   end
 
@@ -206,6 +208,11 @@ namespace :run do
   task :hist => :env do
    ASCIIHistograms.new.run
    puts "ASCII Histograms created at #{Time.now}"
+  end
+
+  desc "Run Feedback analysis tests"
+  task :analyze_feedback => :env do
+    FeedbackAnalysis.new.run
   end
 
   namespace :nlp do
