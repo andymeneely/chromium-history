@@ -11,6 +11,7 @@ class ReleaseAnalysis
         x.report ('Populate participants')  {populate_participants(r)}
         x.report ('Populate owners data')   {populate_owners_data(r)}
         x.report ('Populate ownership')     {populate_ownership_data(r)}
+	x.report ('Populate tech word use') {populate_tech_word_use(r)}
         x.report ('Zero out the nulls')     {zero_out_the_nulls}
       end
     end
@@ -306,6 +307,83 @@ class ReleaseAnalysis
     ActiveRecord::Base.connection.execute update
   end
 
+  def populate_tech_word_use(release)
+  
+    #create tables with tech word use counts by release date
+    drop_msg_twuses = 'DROP TABLE IF EXISTS msg_twuses'
+    create_msg_twuses = <<-EOSQL
+      CREATE UNLOGGED TABLE msg_twuses AS
+        (SELECT rf.filepath AS fp,l.label AS label,stmw.label_id AS label_id, COUNT(*) AS twrds FROM filepaths rf INNER JOIN commit_filepaths cf ON (cf.filepath = rf.filepath)
+                                                                                                      INNER JOIN code_reviews cr ON (cr.commit_hash = cf.commit_hash AND cr.created < '#{release.date}')
+                                                                                                      INNER JOIN messages m ON (m.code_review_id = cr.issue)
+                                                                                                      INNER JOIN messages_technical_words mtw ON (mtw.message_id = m.id)
+                                                                                                      INNER JOIN top_msg_words stmw ON (stmw.word_id = mtw.technical_word_id)
+                                                                                                      INNER JOIN labels l ON (l.label_id = stmw.label_id)
+         GROUP BY rf.filepath,l.label,stmw.label_id)
+    EOSQL
+	
+    drop_rev_twuses = 'DROP TABLE IF EXISTS rev_twuses'
+    create_rev_twuses = <<-EOSQL
+      CREATE UNLOGGED TABLE rev_twuses AS
+        (SELECT rf.filepath AS fp,l.label AS label,stmw.label_id AS label_id, COUNT(*) AS twrds FROM filepaths rf INNER JOIN commit_filepaths cf ON (cf.filepath = rf.filepath)
+                                                                                                      INNER JOIN code_reviews cr ON (cr.commit_hash = cf.commit_hash AND cr.created < '#{release.date}')
+                                                                                                      INNER JOIN code_reviews_technical_words crtw ON (crtw.code_review_id = cr.issue)
+                                                                                                      INNER JOIN top_rev_words stmw ON (stmw.word_id = crtw.technical_word_id)
+												      INNER JOIN labels l ON (l.label_id = stmw.label_id)
+         GROUP BY rf.filepath,l.label,stmw.label_id)
+    EOSQL
+	
+    #create table with bug counts by label after release date
+    drop_label_rf_bugcnts = 'DROP TABLE IF EXISTS label_rf_bugcnts'
+    create_label_rf_bugcnts = <<-EOSQL
+      CREATE UNLOGGED TABLE label_rf_bugcnts AS
+        (SELECT rf.filepath AS fp,l.label AS label,bl.label_id AS label_id, COUNT(DISTINCT bl.bug_id) AS totbugs FROM filepaths rf INNER JOIN commit_filepaths cf ON (cf.filepath = rf.filepath)
+	                                                                                                               INNER JOIN commits c ON (c.commit_hash = cf.commit_hash AND c.created_at > '#{release.date}')
+                                                                                                                       INNER JOIN commit_bugs cb ON (cb.commit_hash = c.commit_hash)
+                                                                                                                       INNER JOIN bug_labels bl ON (bl.bug_id = cb.bug_id)
+														       INNER JOIN labels l ON (l.label_id = bl.label_id)
+         GROUP BY rf.filepath,l.label,bl.label_id)
+    EOSQL
+	
+    #Get the tech use and bug counts
+    ActiveRecord::Base.connection.execute drop_msg_twuses
+    ActiveRecord::Base.connection.execute create_msg_twuses
+	
+    ActiveRecord::Base.connection.execute drop_rev_twuses
+    ActiveRecord::Base.connection.execute create_rev_twuses
+	
+    ActiveRecord::Base.connection.execute drop_label_rf_bugcnts
+    ActiveRecord::Base.connection.execute create_label_rf_bugcnts
+	
+    #bug_types of interest and associated bug and tech word use counts
+    bug_types = { 'type-bug-regression' => ['num_future_regression_bugs','num_regression_word_used'],
+                  'type-compat' => ['num_future_compat_bugs','num_compat_word_used'],
+                  'type-bug-security' => ['num_future_security_bugs','num_security_word_used'],
+                  'stability-crash' => ['num_future_stabil_crash_bugs','num_stabil_crash_word_used'],
+                  'stability-memory-addresssanitizer' => ['num_future_stabil_mem_address_bugs','num_stabil_mem_address_word_used']}
+	
+    bug_types.each do |type, cols|
+      
+      #update rf table with either the metrics per message, or per review
+      update_rf_bugcounts = <<-EOSQL
+        UPDATE release_filepaths
+        SET
+        #{cols[0]} = lrb.totbugs FROM label_rf_bugcnts lrb WHERE release_filepaths.thefilepath = lrb.fp AND lrb.label = '#{type}' AND release_filepaths.release = '#{release.name}'
+      EOSQL
+	
+      update_rf_twuses = <<-EOSQL
+        UPDATE release_filepaths
+        SET
+        #{cols[1]} = rt.twrds FROM rev_twuses rt WHERE release_filepaths.thefilepath = rt.fp AND rt.label = '#{type}' AND release_filepaths.release = '#{release.name}'
+      EOSQL
+	
+      #update cols for bug type
+      ActiveRecord::Base.connection.execute update_rf_bugcounts
+      ActiveRecord::Base.connection.execute update_rf_twuses
+    end
+  end
+
+
   # Set these columns to zero if they are count-based
   def zero_out_the_nulls
     %w(churn
@@ -321,6 +399,16 @@ class ReleaseAnalysis
        num_compatibility_experienced_participants
        security_adjacencys
        avg_sheriff_hours
+       num_future_regression_bugs
+       num_future_compat_bugs
+       num_future_security_bugs
+       num_future_stabil_crash_bugs
+       num_future_stabil_mem_address_bugs
+       num_regression_word_used
+       num_compat_word_used
+       num_security_word_used
+       num_stabil_crash_word_used
+       num_stabil_mem_address_word_used
        ).each do |col|
       zero_the_nulls = "UPDATE release_filepaths SET #{col}=0 WHERE #{col} IS NULL"
       ActiveRecord::Base.connection.execute zero_the_nulls
