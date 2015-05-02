@@ -36,7 +36,7 @@ CREATE UNLOGGED TABLE developers_word_use AS (
     ON (d.id = m.dev_id)
     JOIN total_messages_per_interval t 
     ON (m.dev_id = t.dev_id) AND (m.inter = t.inter)
-    WHERE security_experience <= current_date()
+    WHERE security_experience <= current_date
   ), pre AS (
     SELECT 
       id,
