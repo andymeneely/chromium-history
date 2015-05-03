@@ -140,13 +140,13 @@ class VocabLoader
     acm_corpus.filter
     message_corpus.filter
     words = message_corpus.word_intersect acm_corpus.words
-
+    words = words.map {|word| [word, true]}
     #Inject curated list after filtering
-    words += stem_words @@CWE_GLOSSARY_TERMS
-    words += stem_words @@OBVIOUS_SECURITY_WORDS
+    words += stem_words(@@CWE_GLOSSARY_TERMS).map {|word| [word, false]}
+    words += stem_words(@@OBVIOUS_SECURITY_WORDS).map {|word| [word, false]}
     block = lambda do |table|
       words.each do |word|
-        table << [word] unless @@STEM_BLACKLIST.include? word
+        table << word
       end
     end
     vocab_file = "#{@tmp_dir}/vocab.csv"
@@ -205,7 +205,7 @@ class VocabLoader
   def stem_words words
     stemmed_words = []
     words.each do |word|
-      stemmed_words << PsqlUtil.execute("SELECT word FROM to_tsquery('#{word}') AS word")[0]['word'].gsub("'", '')
+      stemmed_words << PsqlUtil.execute("SELECT ts_lexize('english_stem', '#{word}')")[0]['ts_lexize'].gsub(/\{|\}/, '')
     end
     stemmed_words
   end
