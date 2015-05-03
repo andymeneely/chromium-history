@@ -12,6 +12,6 @@ for line in raw:
   for sent in nltk.sent_tokenize(clean):
     tokens += nltk.word_tokenize(sent)
 
-porter = nltk.PorterStemmer()
-word_set = set(porter.stem(w) for w in tokens if w.isalpha())
+snowball = nltk.SnowballStemmer("english")
+word_set = set(snowball.stem(w) for w in tokens if w.isalpha())
 print(json.dumps(list(word_set)))

@@ -58,23 +58,14 @@ class Corpus
   end
 
   def word_diff other
-    set_a = clean_vocab words()
-    set_b = clean_vocab other
+    set_a = Set.new words()
+    set_b = Set.new other
     set_a - set_b
   end
 
   def word_intersect other
-    set_a = clean_vocab words()
-    set_b = clean_vocab other
+    set_a = Set.new words()
+    set_b = Set.new other
     set_a & set_b
-  end
-
-  # Turns a word list into a downcased set
-  def clean_vocab wordlist
-    result = Set.new
-    wordlist.each do |word|
-      result.add word.downcase
-    end
-    result
   end
 end 
