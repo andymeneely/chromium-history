@@ -11,7 +11,10 @@ opts = Trollop::options do
 
 The first ownership script takes in a text file of commit hashes (separated by new lines) for commits that have modified any OWNERS file. 
 
-Produces a CSV including developer email, directory of OWNERS file, and commit hash for when the developer was first added to the OWNERS file.
+***To Get the commit hashes use CommitFilepath.where("filepath LIKE '%/OWNERS' ").pluck(:commit_hash).uniq. You can also use git log:
+git log --pretty=format:%H --all -- *OWNERS* at Chromium src directory. Save all output to some txt file***
+
+This script produces a CSV including developer email, directory of OWNERS file, and commit hash for when the developer was first added to the OWNERS file.
 
 Usage: 
   ruby #{File.basename(__FILE__)} [options]
