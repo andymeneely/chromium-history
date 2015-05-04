@@ -322,6 +322,7 @@ ActiveRecord::Schema.define(version: 20140512131450) do
 
   create_table "technical_words", id: false, force: true do |t|
     t.string "word"
+    t.boolean "organic"
   end
 
 end
