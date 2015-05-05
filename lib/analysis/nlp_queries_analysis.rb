@@ -31,6 +31,7 @@ class NlpQueriesAnalysis
     # >>> install.packages("bestglm")
     # >>> install.packages("lsr")
     # >>> install.packages("reshape2")
+    # >>> install.packages("NLP")
     # >>> install.packages("tm")
     #
     # If tm doesn't not install due to issues with R version, download old package archive
@@ -45,6 +46,7 @@ class NlpQueriesAnalysis
       library(RPostgreSQL)
       library(reshape2)
       library(slam)
+      library(NLP)
       library(tm)
       drv <- dbDriver("PostgreSQL")
       con <- dbConnect(drv, 
