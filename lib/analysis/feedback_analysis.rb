@@ -21,6 +21,7 @@ class FeedbackAnalysis
     # >>> install.packages("ROCR")
     # >>> install.packages("bestglm")
     # >>> install.packages("lsr")
+    R.echo false,false
     R.eval <<-EOR
       library(DBI)
       library(RPostgreSQL)
@@ -33,6 +34,7 @@ class FeedbackAnalysis
   end
 
   def close_db
+    R.echo false, false
     R.eval <<-EOR
       dbDisconnect(con)
       dbUnloadDriver(drv)
@@ -41,7 +43,7 @@ class FeedbackAnalysis
 
   def r_modeling
     begin 
-
+    R.echo false,false
     # Set up libraries
     R.eval <<-EOR
               suppressMessages(library(ROCR, warn.conflicts = FALSE, quietly=TRUE))
@@ -49,7 +51,7 @@ class FeedbackAnalysis
               suppressMessages(library(lsr, warn.conflicts = FALSE, quietly=TRUE))
     EOR
 
-    R.echo true, false
+    R.echo false, false
 	
     #Add Modeling functions
     R.eval <<-EOR
@@ -165,7 +167,8 @@ class FeedbackAnalysis
 	options(warn=0)
       }
     EOR
-	
+
+    R.echo false, false
     #execute the modeling function on each release
     R.eval <<-EOR
       #Increase console width

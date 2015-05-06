@@ -41,6 +41,7 @@ class NlpQueriesAnalysis
     # In teminal type: wget "replace with a source url from archives". Downloads archive to current dir
     # Open R and run:
     # >>> install.packages(path_to_downloaded_src_archive, repos=NULL, type="source")
+    R.echo false,false
     R.eval <<-EOR
       library(DBI)
       library(RPostgreSQL)
@@ -57,6 +58,7 @@ class NlpQueriesAnalysis
   end
 
   def close_db
+    R.echo false,false
     R.eval <<-EOR
       dbDisconnect(con)
       dbUnloadDriver(drv)
@@ -64,6 +66,7 @@ class NlpQueriesAnalysis
   end
   
   def technical_messages_vs_buglabels
+    R.echo false,false
     R.eval <<-EOR
       #get the frequency data from tables in the db
       msgfreqdata <- dbReadTable(con,'labtechmsgfreqs')
@@ -93,6 +96,7 @@ class NlpQueriesAnalysis
   end
   
   def technical_reviews_vs_buglabels
+    R.echo false,false
     R.eval <<-EOR
       #get the frequency data from tables in the db
       revfreqdata <- dbReadTable(con,'labtechrevfreqs')
