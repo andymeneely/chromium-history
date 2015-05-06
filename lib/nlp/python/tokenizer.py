@@ -13,5 +13,8 @@ for line in raw:
     tokens += nltk.word_tokenize(sent)
 
 snowball = nltk.SnowballStemmer("english")
-word_set = set(snowball.stem(w) for w in tokens if w.isalpha())
-print(json.dumps(list(word_set)))
+stem_lookup = {}
+for w in tokens: 
+  if w.isalpha():
+    stem_lookup[snowball.stem(w)] = w
+print(json.dumps(stem_lookup))

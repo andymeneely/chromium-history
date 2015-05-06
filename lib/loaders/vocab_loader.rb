@@ -137,13 +137,14 @@ class VocabLoader
     File.unlink raw
     acm_corpus = Corpus.new "#{@data_dir}/acm/raw_acm.txt"
     message_corpus = Corpus.new "#{@tmp_dir}/messages.txt"
-    acm_corpus.filter
-    message_corpus.filter
+    acm_corpus.filter!
+    message_corpus.filter!
     words = message_corpus.word_intersect acm_corpus.words
-    words = words.map {|word| [word, true]}
+    words = words.each.map {|stem| [stem, true, acm_corpus.stem_lookup[stem]]}
+
     #Inject curated list after filtering
-    words += stem_words(@@CWE_GLOSSARY_TERMS).map {|word| [word, false]}
-    words += stem_words(@@OBVIOUS_SECURITY_WORDS).map {|word| [word, false]}
+    words += stem_words(@@CWE_GLOSSARY_TERMS).each_with_index.map {|word, index| [word, false, @@CWE_GLOSSARY_TERMS[index]]}
+    words += stem_words(@@OBVIOUS_SECURITY_WORDS).each_with_index.map {|word, index| [word, false, @@OBVIOUS_SECURITY_WORDS[index]]}
     block = lambda do |table|
       words.each do |word|
         table << word

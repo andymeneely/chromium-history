@@ -25,9 +25,12 @@ class Corpus
     'all' # tag for using all categories
   ]
 
+  attr_reader :stem_lookup
+  
   def initialize raw
     @raw_file = raw
     @words = nil
+    @stem_lookup = nil
     @tmp_dir = Rails.configuration.tmpdir
   end
 
@@ -38,8 +41,8 @@ class Corpus
     else
       path = Rails.root.join 'lib', 'nlp', 'python', 'tokenizer.py'
       res = `python #{path} #{@raw_file}`
-      @words = Oj.load(res)
-      return @words
+      @stem_lookup = Oj.load(res)
+      return @words = @stem_lookup.keys
     end
   end
 
@@ -54,7 +57,11 @@ class Corpus
     res = nil
     res = `python #{path} #{category} #{file_path}`
     File.unlink file_path
-    @words = Oj.load(res)
+    Oj.load(res)
+  end
+
+  def filter! category=Rails.configuration.brown_category
+    @words = filter category
   end
 
   def word_diff other
