@@ -55,6 +55,14 @@ class FeedbackAnalysis
     R.eval <<-EOR
       release_modeling <- function(release){
         options(warn=-1)
+        
+        # Do the analysis only for files with bugs and sloc
+        release <- subset(release, (release$num_future_regression_bugs !=0 |
+                              release$num_future_compat_bugs !=0 |
+                              release$num_future_security_bugs !=0 |
+                              release$num_future_stabil_crash_bugs !=0 |
+                              release$num_future_stabil_mem_address_bugs != 0)
+                            & release$sloc > 0)
 
         # Normalize and center data, added 2 to the values to allow for positive responses, necessary for Gamma...tbd
 	release = cbind(as.data.frame(log(release[,c(1:11)] + 2)))
@@ -79,6 +87,12 @@ class FeedbackAnalysis
 	fit_stab_crash_words <- glm(formula = num_future_stabil_crash_bugs ~ sloc + num_stabil_crash_word_used, data = release, family = Gamma)
 	fit_stab_mem_words <- glm(formula = num_future_stabil_mem_address_bugs ~ sloc + num_stabil_mem_address_word_used, data = release, family = Gamma)
 
+	fit_reg_words_no_sloc <- glm(formula = num_future_regression_bugs ~ num_regression_word_used, data = release, family = Gamma)
+	fit_comp_words_no_sloc <- glm(formula = num_future_compat_bugs ~ num_compat_word_used, data = release, family = Gamma)
+	fit_sec_words_no_sloc <- glm(formula = num_future_security_bugs ~ num_security_word_used, data = release, family = Gamma)
+	fit_stab_crash_words_no_sloc <- glm(formula = num_future_stabil_crash_bugs ~ num_stabil_crash_word_used, data = release, family = Gamma)
+	fit_stab_mem_words_no_sloc <- glm(formula = num_future_stabil_mem_address_bugs ~ num_stabil_mem_address_word_used, data = release, family = Gamma)
+
 	# Display Results:
 	cat("\nRelease Summary\n")
 	print(summary(release))
@@ -97,7 +111,6 @@ class FeedbackAnalysis
 	  
 	cat("\nSpearman's Correlation for stability_mem words and bugs\n")
 	print(cor(release[,c(6,11)],method="spearman"))
-
 	  
 	cat("\n# Summary for regression models\n")
 	cat("fit_null_reg\n")
@@ -106,6 +119,8 @@ class FeedbackAnalysis
 	print(summary(fit_control_reg))
 	cat("fit_reg_words\n")
 	print(summary(fit_reg_words))
+	cat("fit_reg_words_no_sloc\n")
+	print(summary(fit_reg_words_no_sloc))
 	  
 	cat("\n# Summary for compatibility models\n")
 	cat("fit_null_comp\n")
@@ -114,7 +129,9 @@ class FeedbackAnalysis
 	print(summary(fit_control_comp))
 	cat("fit_comp_words\n")
 	print(summary(fit_comp_words))
-	  
+	cat("fit_comp_words_no_sloc\n")
+	print(summary(fit_comp_words_no_sloc))
+
 	cat("\n# Summary for security models\n")
 	cat("fit_null_sec\n")
 	print(summary(fit_null_sec))
@@ -122,6 +139,8 @@ class FeedbackAnalysis
 	print(summary(fit_control_sec))
 	cat("fit_sec_words\n")
 	print(summary(fit_sec_words))
+	cat("fit_sec_words_no_sloc\n")
+	print(summary(fit_sec_words_no_sloc))
 	  
 	cat("\n# Summary for stability_crash models\n")
 	cat("fit_null_stab_crash\n")
@@ -130,6 +149,8 @@ class FeedbackAnalysis
 	print(summary(fit_control_stab_crash))
 	cat("fit_stab_crash_words\n")
 	print(summary(fit_stab_crash_words))
+	cat("fit_stab_crash_words_no_sloc\n")
+	print(summary(fit_stab_crash_words_no_sloc))
 	  
 	cat("\n# Summary for stability_mem models\n")
 	cat("fit_null_stab_mem\n")
@@ -138,6 +159,8 @@ class FeedbackAnalysis
 	print(summary(fit_control_stab_mem))
 	cat("fit_stab_mem_words\n")
 	print(summary(fit_stab_mem_words))
+	cat("fit_stab_mem_words_no_sloc\n")
+	print(summary(fit_stab_mem_words_no_sloc))
 
 	options(warn=0)
       }
