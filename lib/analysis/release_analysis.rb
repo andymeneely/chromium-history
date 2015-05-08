@@ -317,7 +317,7 @@ class ReleaseAnalysis
 	        l.label AS label,
 		stmw.label_id AS label_id,
 		COUNT(*) AS twrds FROM filepaths rf INNER JOIN commit_filepaths cf ON (cf.filepath = rf.filepath)
-		                                    INNER JOIN code_reviews cr ON (cr.commit_hash = cf.commit_hash AND cr.created < '#{release.date}')
+		                                    INNER JOIN code_reviews cr ON (cr.commit_hash = cf.commit_hash AND cr.created < timestamp '#{release.date}')
 						    LEFT JOIN commit_bugs cb ON (cb.commit_hash = cr.commit_hash)
 						    INNER JOIN messages m ON (m.code_review_id = cr.issue)
 						    INNER JOIN messages_technical_words mtw ON (mtw.message_id = m.id)
@@ -339,7 +339,7 @@ class ReleaseAnalysis
 	        l.label AS label,
 		stmw.label_id AS label_id,
 		COUNT(*) AS twrds FROM filepaths rf INNER JOIN commit_filepaths cf ON (cf.filepath = rf.filepath)
-		                                    INNER JOIN code_reviews cr ON (cr.commit_hash = cf.commit_hash AND cr.created < '#{release.date}')
+		                                    INNER JOIN code_reviews cr ON (cr.commit_hash = cf.commit_hash AND cr.created < timestamp '#{release.date}')
 						    LEFT JOIN commit_bugs cb ON (cb.commit_hash = cr.commit_hash)
 						    INNER JOIN code_reviews_technical_words crtw ON (crtw.code_review_id = cr.issue)
 						    INNER JOIN top_rev_words stmw ON (stmw.word_id = crtw.technical_word_id)
@@ -361,7 +361,7 @@ class ReleaseAnalysis
 	        l.label AS label,
 		bl.label_id AS label_id,
 		COUNT(DISTINCT bl.bug_id) AS totbugs FROM filepaths rf INNER JOIN commit_filepaths cf ON (cf.filepath = rf.filepath)
-	                                                               INNER JOIN commits c ON (c.commit_hash = cf.commit_hash AND c.created_at > '#{release.date}')
+	                                                               INNER JOIN commits c ON (c.commit_hash = cf.commit_hash AND c.created_at BETWEEN date '#{release.date}' AND date '#{release.date}' + interval '1 year')
                                                                        INNER JOIN commit_bugs cb ON (cb.commit_hash = c.commit_hash)
                                                                        INNER JOIN bug_labels bl ON (bl.bug_id = cb.bug_id)
                                                                        INNER JOIN labels l ON (l.label_id = bl.label_id AND l.label IN ('type-bug-regression',
