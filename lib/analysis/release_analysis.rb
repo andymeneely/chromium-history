@@ -318,7 +318,6 @@ class ReleaseAnalysis
 		stmw.label_id AS label_id,
 		COUNT(*) AS twrds FROM filepaths rf INNER JOIN commit_filepaths cf ON (cf.filepath = rf.filepath)
 		                                    INNER JOIN code_reviews cr ON (cr.commit_hash = cf.commit_hash AND cr.created < timestamp '#{release.date}')
-						    LEFT JOIN commit_bugs cb ON (cb.commit_hash = cr.commit_hash)
 						    INNER JOIN messages m ON (m.code_review_id = cr.issue)
 						    INNER JOIN messages_technical_words mtw ON (mtw.message_id = m.id)
 						    INNER JOIN top_msg_words stmw ON (stmw.word_id = mtw.technical_word_id)
@@ -327,7 +326,7 @@ class ReleaseAnalysis
 														       'type-bug-security',
 														       'stability-crash',
 														       'stability-memory-addresssanitizer'))
-         WHERE cb.commit_hash IS NULL GROUP BY rf.filepath,l.label,stmw.label_id)
+         GROUP BY rf.filepath,l.label,stmw.label_id)
     EOSQL
 
     index_msg_twuses = 'CREATE UNIQUE INDEX index_fp_label_on_msg_twuses ON msg_twuses(fp,label)'
@@ -340,7 +339,6 @@ class ReleaseAnalysis
 		stmw.label_id AS label_id,
 		COUNT(*) AS twrds FROM filepaths rf INNER JOIN commit_filepaths cf ON (cf.filepath = rf.filepath)
 		                                    INNER JOIN code_reviews cr ON (cr.commit_hash = cf.commit_hash AND cr.created < timestamp '#{release.date}')
-						    LEFT JOIN commit_bugs cb ON (cb.commit_hash = cr.commit_hash)
 						    INNER JOIN code_reviews_technical_words crtw ON (crtw.code_review_id = cr.issue)
 						    INNER JOIN top_rev_words stmw ON (stmw.word_id = crtw.technical_word_id)
 						    INNER JOIN labels l ON (l.label_id = stmw.label_id AND l.label IN ('type-bug-regression',
@@ -348,7 +346,7 @@ class ReleaseAnalysis
 														       'type-bug-security',
 														       'stability-crash',
 														       'stability-memory-addresssanitizer'))
-         WHERE cb.commit_hash IS NULL GROUP BY rf.filepath,l.label,stmw.label_id)
+         GROUP BY rf.filepath,l.label,stmw.label_id)
     EOSQL
 
     index_rev_twuses = 'CREATE UNIQUE INDEX index_fp_label_on_rev_twuses ON rev_twuses(fp,label)'
@@ -361,7 +359,7 @@ class ReleaseAnalysis
 	        l.label AS label,
 		bl.label_id AS label_id,
 		COUNT(DISTINCT bl.bug_id) AS totbugs FROM filepaths rf INNER JOIN commit_filepaths cf ON (cf.filepath = rf.filepath)
-	                                                               INNER JOIN commits c ON (c.commit_hash = cf.commit_hash AND c.created_at BETWEEN date '#{release.date}' AND date '#{release.date}' + interval '1 year')
+	                                                               INNER JOIN commits c ON (c.commit_hash = cf.commit_hash AND c.created_at > timestamp '#{release.date}')
                                                                        INNER JOIN commit_bugs cb ON (cb.commit_hash = c.commit_hash)
                                                                        INNER JOIN bug_labels bl ON (bl.bug_id = cb.bug_id)
                                                                        INNER JOIN labels l ON (l.label_id = bl.label_id AND l.label IN ('type-bug-regression',
@@ -406,7 +404,7 @@ class ReleaseAnalysis
       update_rf_twuses = <<-EOSQL
         UPDATE release_filepaths
         SET
-        #{cols[1]} = rt.twrds FROM rev_twuses rt WHERE release_filepaths.thefilepath = rt.fp AND rt.label = '#{type}' AND release_filepaths.release = '#{release.name}'
+        #{cols[1]} = rt.twrds FROM msg_twuses rt WHERE release_filepaths.thefilepath = rt.fp AND rt.label = '#{type}' AND release_filepaths.release = '#{release.name}'
       EOSQL
 	
       #update cols for bug type
