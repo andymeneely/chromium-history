@@ -320,7 +320,7 @@ class ReleaseAnalysis
 		                                    INNER JOIN code_reviews cr ON (cr.commit_hash = cf.commit_hash AND cr.created < timestamp '#{release.date}')
 						    INNER JOIN messages m ON (m.code_review_id = cr.issue)
 						    INNER JOIN messages_technical_words mtw ON (mtw.message_id = m.id)
-						    INNER JOIN top_msg_words stmw ON (stmw.word_id = mtw.technical_word_id)
+						    INNER JOIN top_rev_words stmw ON (stmw.word_id = mtw.technical_word_id)
 						    INNER JOIN labels l ON (l.label_id = stmw.label_id AND l.label IN ('type-bug-regression',
 						                                                                       'type-compat',
 														       'type-bug-security',
