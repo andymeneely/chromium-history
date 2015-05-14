@@ -156,6 +156,18 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.datetime "compatibility_experience", default: '2050-01-01 00:00:00'
   end
 
+  create_table "developer_snapshots", force: true do |t|
+    t.string   "dev_id"
+    t.integer  "degree"
+    t.integer  "centrality"
+    t.integer  "shriff_hrs"
+    t.boolean  "sec_exp"
+    t.boolean  "bugsec_exp"
+    t.integer  "own_count"
+    t.datetime "start_date"
+    t.datetime "end_date"
+  end
+
   create_table "filepaths", id: false, force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
