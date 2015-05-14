@@ -11,6 +11,7 @@ import psycopg2
 import sys, getopt
 import json
 import networkx as nx
+import os
 from networkx.readwrite import json_graph
 from datetime import datetime, timedelta
 from collections import OrderedDict
@@ -59,9 +60,12 @@ while earlyBoundary < '2014-11-06 00:00:00.000000':
 # for each graph, let's categorize developers by their degree and begin
 # some analysis
 grnum = 0
+dirname = "graph_degree_files" 
 for gr in graphArray:
 	# what is done in this loop will be written to an appropriate file for each graph
-	theFile = open( "../../../../graph_degree_files/graph" +str(grnum)+ ".txt" , 'w' )
+	if not os.path.exists("../../../../"+dirname):
+    		os.makedirs("../../../../"+dirname)
+	theFile = open( "../../../../"+dirname+"/graph" +str(grnum)+ ".csv" , 'w' )
 	theFile.write( "Graph: " +gr.graph["begin"]+ ", " +gr.graph["end"]+ "\n" )
 
 	# return a dictionary for each node's degree and closeness centrality
@@ -77,7 +81,7 @@ for gr in graphArray:
 	#print "\nFor graph #" + str(grnum) + " IN TIME FRAME: " + gr.graph["begin"] + " UNTIL " + gr.graph["end"]
 
 	# column names for the data we will write to the file
-	theFile.write("dev_id, degree, centrality, shriff_hrs, sec_exp, bugsec_exp, own_count\n") 
+	theFile.write("dev_id, degree, centrality, shriff_hrs, sec_exp, bugsec_exp, own_count, start_date, end_date\n") 
 	for dev in sorted_deg:
 		# we store degree and centrality as an attribute to the node 	
 		gr.node[dev]["degree"] = sorted_deg[dev]
@@ -103,7 +107,7 @@ for gr in graphArray:
 		gr.node[dev]["shr_hrs"] = hrs_count	
 		# at this point we have everything we need stored as an attribute
 		# to each developer node, now we write to the file with this dev's info
-		theFile.write(str(dev)+","+str(gr.node[dev]["degree"])+","+str(gr.node[dev]["centrality"])+","+str(gr.node[dev]["shr_hrs"])+","+str(gr.node[dev]["sec_exp"])+","+str(gr.node[dev]["bugsec_exp"])+","+str(gr.node[dev]["own_count"])+"\n")
+		theFile.write(str(dev)+","+str(gr.node[dev]["degree"])+","+str(gr.node[dev]["centrality"])+","+str(gr.node[dev]["shr_hrs"])+","+str(gr.node[dev]["sec_exp"])+","+str(gr.node[dev]["bugsec_exp"])+","+str(gr.node[dev]["own_count"])+","+str(gr.graph["begin"])+","+str(gr.graph["end"])+"\n")
 		# print to screen to check values
 		#print "dev_id:%d, dev_deg:%d, centrality:%f, sher_hrs:%d, sec_exp:%s, bugsec_exp:%s, own_count:%d" %(dev, gr.node[dev]["degree"],gr.node[dev]["centrality"], gr.node[dev]["shr_hrs"], gr.node[dev]["sec_exp"], gr.node[dev]["bugsec_exp"], gr.node[dev]["own_count"])
 	grnum = grnum + 1	
