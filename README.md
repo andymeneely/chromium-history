@@ -5,6 +5,8 @@ Scripts and build system for analysis of Chromium History.
 
 http://se.rit.edu/~archeology
 
+**NOTE:** The following instructions use indirectly use the shell scripts inside the setup folder. These were made for the Vagrant target box which is Ubuntu 12.04 (Precise64). These install scripts will work on the production box without much alteration, but production is one Ubuntu version ahead at 14.04(Trusty64). 
+
 Setup Instructions
 ==================
 

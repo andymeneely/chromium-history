@@ -167,9 +167,9 @@ class VocabLoader
     reassociate 'acm_abstracts', 'text', 'acm_abstracts_technical_words'
     sql = "INSERT INTO acm_categories_technical_words (
             SELECT 
-              t.id AS technical_word_id,
-              aaac.acm_category_id AS acm_category_id
-            FROM technical_words t 
+              aaac.acm_category_id AS acm_category_id,
+              t.id AS technical_word_id
+            FROM technical_words t
             JOIN acm_abstracts_technical_words aatw
             ON aatw.technical_word_id = t.id
             JOIN acm_abstracts_acm_categories aaac
