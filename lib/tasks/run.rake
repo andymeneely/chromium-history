@@ -142,7 +142,7 @@ namespace :run do
       x.report("Populating adjacency counts"){ParticipantAnalysis.new.populate_adjacency_counts}
       x.report("Populating owner_familiarity_gap"){CodeReviewAnalysis.new.populate_owner_familiarity_gap}
       x.report("Populating total_sheriff_hours"){CodeReviewAnalysis.new.populate_total_sheriff_hours}
-      x.report("Populating top label tech words"){NlpQueriesAnalysis.new.run}
+      #x.report("Populating top label tech words"){NlpQueriesAnalysis.new.run}
       x.report("Populating first ownership") {OwnersAnalysis.new.populate_first_owners}
       x.report("Populating release metrics") {ReleaseAnalysis.new.populate}
       x.report("Populating word trend metrics") {WordTrendAnalysis.new.populate}
@@ -181,7 +181,7 @@ namespace :run do
     HypothesisTests.new.run
     #VisualizationQueries.new.run_queries
     #DataVisualization.new.run
-    FeedbackAnalysis.new.run
+    #FeedbackAnalysis.new.run
     NetworkAnalysis.new.run
   end
 
