@@ -101,6 +101,9 @@ class VocabLoader
       abstracts << [aI, page['results']['abstracts']]
       aI += 1
     end
+    
+    linker.uniq!
+
     PsqlUtil.create_upload_file "#{@tmp_dir}/acm_categories.csv" do |table|
       categories.each do |category, index|
         table << [index, category]
