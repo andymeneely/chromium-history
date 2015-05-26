@@ -22,6 +22,7 @@ class NlpQueriesAnalysis
   end
   
   def connect_db
+    begin
     conf = Rails.configuration.database_configuration[Rails.env]
     #To install these packages locally, run R on the command line
     # and then run
@@ -55,6 +56,9 @@ class NlpQueriesAnalysis
                        password="#{conf['password']}", 
                        dbname="#{conf['database']}")
     EOR
+    rescue
+      puts "Error in connect_db set up"
+    end
   end
 
   def close_db
@@ -66,6 +70,7 @@ class NlpQueriesAnalysis
   end
   
   def technical_messages_vs_buglabels
+    begin
     R.echo false,false
     R.eval <<-EOR
       #get the frequency data from tables in the db
@@ -93,9 +98,13 @@ class NlpQueriesAnalysis
       names(label_msg_top_words) <- tolower(names(label_msg_top_words))
       dbWriteTable(con,'label_msg_top_words',label_msg_top_words,row.names=FALSE,overwrite=TRUE)
     EOR
+    rescue
+      puts "Error in analysis technical_messages vs buglabels"
+    end
   end
   
   def technical_reviews_vs_buglabels
+    begin
     R.echo false,false
     R.eval <<-EOR
       #get the frequency data from tables in the db
@@ -123,6 +132,9 @@ class NlpQueriesAnalysis
       names(label_rev_top_words) <- tolower(names(label_rev_top_words))
       dbWriteTable(con,'label_rev_top_words',label_rev_top_words,row.names=FALSE,overwrite=TRUE)
     EOR
+    rescue
+      puts "Error in analysis technical_reviews vs buglabels"
+    end
   end
   
   def create_freq_tables
