@@ -11,7 +11,7 @@ class ReleaseAnalysis
         x.report ('Populate participants')  {populate_participants(r)}
         x.report ('Populate owners data')   {populate_owners_data(r)}
         x.report ('Populate ownership')     {populate_ownership_data(r)}
-	x.report ('Populate tech word use') {populate_tech_word_use(r)}
+	#x.report ('Populate tech word use') {populate_tech_word_use(r)}
         x.report ('Zero out the nulls')     {zero_out_the_nulls}
       end
     end
