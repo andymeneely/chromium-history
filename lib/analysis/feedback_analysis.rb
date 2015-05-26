@@ -21,6 +21,8 @@ class FeedbackAnalysis
     # >>> install.packages("ROCR")
     # >>> install.packages("bestglm")
     # >>> install.packages("lsr")
+    # >>> install.packages("stats")
+    # >>> install.packages("BaylorEdPsych")
     R.echo false,false
     R.eval <<-EOR
       library(DBI)
@@ -49,9 +51,11 @@ class FeedbackAnalysis
               suppressMessages(library(ROCR, warn.conflicts = FALSE, quietly=TRUE))
               suppressMessages(library(bestglm, warn.conflicts = FALSE, quietly=TRUE))
               suppressMessages(library(lsr, warn.conflicts = FALSE, quietly=TRUE))
+	      suppressMessages(library(stats,warn.conflicts = FALSE, quietly=TRUE))
+	      suppressMessages(library(BaylorEdPsych,warn.conflicts = FALSE,quietly=TRUE))
     EOR
 
-    R.echo false, false
+    R.echo true, false
 	
     #Add Modeling functions
     R.eval <<-EOR
@@ -84,10 +88,24 @@ class FeedbackAnalysis
 	fit_control_stab_mem <- glm(formula = num_future_stabil_mem_address_bugs ~ sloc, data = release, family = Gamma)
 	  
 	fit_reg_words <- glm(formula = num_future_regression_bugs ~ sloc + num_regression_word_used, data = release, family = Gamma)
+	reg_words_glmfit1 <- as.numeric(1-(exp(logLik(fit_null_reg))/exp(logLik(fit_reg_words)))^(2/nrow(release)))
+	reg_words_glmfit2 <- PseudoR2(fit_reg_words)
+
 	fit_comp_words <- glm(formula = num_future_compat_bugs ~ sloc + num_compat_word_used, data = release, family = Gamma)
+	comp_words_glmfit1 <- as.numeric(1-(exp(logLik(fit_null_comp))/exp(logLik(fit_comp_words)))^(2/nrow(release)))
+	comp_words_glmfit2 <- PseudoR2(fit_comp_words)
+
 	fit_sec_words <- glm(formula = num_future_security_bugs ~ sloc + num_security_word_used, data = release, family = Gamma)
+	sec_words_glmfit1 <- as.numeric(1-(exp(logLik(fit_null_sec))/exp(logLik(fit_sec_words)))^(2/nrow(release)))
+	sec_words_glmfit2 <- PseudoR2(fit_sec_words)
+
 	fit_stab_crash_words <- glm(formula = num_future_stabil_crash_bugs ~ sloc + num_stabil_crash_word_used, data = release, family = Gamma)
+	stab_crash_words_glmfit1 <- as.numeric(1-(exp(logLik(fit_null_stab_crash))/exp(logLik(fit_stab_crash_words)))^(2/nrow(release)))
+	stab_crash_words_glmfit2 <- PseudoR2(fit_stab_crash_words)
+
 	fit_stab_mem_words <- glm(formula = num_future_stabil_mem_address_bugs ~ sloc + num_stabil_mem_address_word_used, data = release, family = Gamma)
+	stab_mem_words_glmfit1 <- as.numeric(1-(exp(logLik(fit_null_stab_mem))/exp(logLik(fit_stab_mem_words)))^(2/nrow(release)))
+	stab_mem_words_glmfit2 <- PseudoR2(fit_stab_mem_words)
 
 	fit_reg_words_no_sloc <- glm(formula = num_future_regression_bugs ~ num_regression_word_used, data = release, family = Gamma)
 	fit_comp_words_no_sloc <- glm(formula = num_future_compat_bugs ~ num_compat_word_used, data = release, family = Gamma)
@@ -123,6 +141,10 @@ class FeedbackAnalysis
 	print(summary(fit_reg_words))
 	cat("fit_reg_words_no_sloc\n")
 	print(summary(fit_reg_words_no_sloc))
+	cat("Generalized Determination Coefficient\n")
+	print(reg_words_glmfit1)
+	print("")
+	print(reg_words_glmfit2)
 	  
 	cat("\n# Summary for compatibility models\n")
 	cat("fit_null_comp\n")
@@ -133,6 +155,10 @@ class FeedbackAnalysis
 	print(summary(fit_comp_words))
 	cat("fit_comp_words_no_sloc\n")
 	print(summary(fit_comp_words_no_sloc))
+	cat("Generalized Determination Coefficient\n")
+	print(comp_words_glmfit1)
+	print("")
+	print(comp_words_glmfit2)
 
 	cat("\n# Summary for security models\n")
 	cat("fit_null_sec\n")
@@ -143,6 +169,10 @@ class FeedbackAnalysis
 	print(summary(fit_sec_words))
 	cat("fit_sec_words_no_sloc\n")
 	print(summary(fit_sec_words_no_sloc))
+	cat("Generalized Determination Coefficient\n")
+	print(sec_words_glmfit1)
+	print("")
+	print(sec_words_glmfit2)
 	  
 	cat("\n# Summary for stability_crash models\n")
 	cat("fit_null_stab_crash\n")
@@ -153,6 +183,10 @@ class FeedbackAnalysis
 	print(summary(fit_stab_crash_words))
 	cat("fit_stab_crash_words_no_sloc\n")
 	print(summary(fit_stab_crash_words_no_sloc))
+	cat("Generalized Determination Coefficient\n")
+	print(stab_crash_words_glmfit1)
+	print("")
+	print(stab_crash_words_glmfit2)
 	  
 	cat("\n# Summary for stability_mem models\n")
 	cat("fit_null_stab_mem\n")
@@ -163,16 +197,71 @@ class FeedbackAnalysis
 	print(summary(fit_stab_mem_words))
 	cat("fit_stab_mem_words_no_sloc\n")
 	print(summary(fit_stab_mem_words_no_sloc))
+	cat("Generalized Determination Coefficient\n")
+	print(stab_mem_words_glmfit1)
+	print("")
+	print(stab_mem_words_glmfit2)
 
 	options(warn=0)
       }
     EOR
 
-    R.echo false, false
+    R.echo true, false
     #execute the modeling function on each release
     R.eval <<-EOR
       #Increase console width
       options("width"=250)
+      
+      #Get data for total tw use in reviews vs tot bugs
+      #overall_rev_twuse <- dbReadTable(con,"rev_overall_tw_bugs")
+
+      #Separate data per label type
+      #reg <- overall_rev_twuse[ which(overall_rev_twuse$label == "type-bug-regression"),-c(1,2)]
+      #comp <- overall_rev_twuse[ which(overall_rev_twuse$label == "type-compat"),-c(1,2)]
+      #sec <- overall_rev_twuse[ which(overall_rev_twuse$label == "type-bug-security"),-c(1,2)]
+      #stab_c <- overall_rev_twuse[ which(overall_rev_twuse$label == "stability-crash"),-c(1,2)]
+      #stab_m <- overall_rev_twuse[ which(overall_rev_twuse$label == "stability-memory-addresssanitizer"),-c(1,2)]
+
+      #Get data for total tw use in reviews not fixing any data vs tot bugs
+      #nonfix_rev_twuse <- dbReadTable(con,"rev_nonfix_tw_bugs")
+
+      #Separate data per label type
+      #reg_n <- overall_rev_twuse[ which(nonfix_rev_twuse$label == "type-bug-regression"),-c(1,2)]
+      #comp_n <- overall_rev_twuse[ which(nonfix_rev_twuse$label == "type-compat"),-c(1,2)]
+      #sec_n <- overall_rev_twuse[ which(nonfix_rev_twuse$label == "type-bug-security"),-c(1,2)]
+      #stab_cn <- overall_rev_twuse[ which(nonfix_rev_twuse$label == "stability-crash"),-c(1,2)]
+      #stab_mn <- overall_rev_twuse[ which(nonfix_rev_twuse$label == "stability-memory-addresssanitizer"),-c(1,2)]
+      
+      #cat("\nOverall Spearman's Correlation for Regression\n")
+      #print(cor(reg[,c(2,1)],method="spearman"))
+
+      #cat("\nOverall Spearman's Correlation for Compatibility\n")
+      #print(cor(comp[,c(2,1)],method="spearman"))
+      
+      #cat("\nOverall Spearman's Correlation for Security\n")
+      #print(cor(sec[,c(2,1)],method="spearman"))
+      
+      #cat("\nOverall Spearman's Correlation for Stability Crash\n")
+      #print(cor(stab_c[,c(2,1)],method="spearman"))
+
+      #cat("\nOverall Spearman's Correlation for Stability Mem Addr\n")
+      #print(cor(stab_m[,c(2,1)],method="spearman"))
+
+      #cat("\nNonFix Spearman's Correlation for Regression\n")
+      #print(cor(reg_n[,c(2,1)],method="spearman"))
+
+      #cat("\nNonFix Spearman's Correlation for Compatibility\n")
+      #print(cor(comp_n[,c(2,1)],method="spearman"))
+
+      #cat("\nNonFix Spearman's Correlation for Security\n")
+      #print(cor(sec_n[,c(2,1)],method="spearman"))
+
+      #cat("\nNonFix Spearman's Correlation for Stability Crash\n")
+      #print(cor(stab_cn[,c(2,1)],method="spearman"))
+      
+      #cat("\nNonFix Spearman's Correlation for Stability Mem Addr\n")
+      #print(cor(stab_mn[,c(2,1)],method="spearman"))
+      
       release_filepaths_data <- dbGetQuery(con, "
         SELECT 
           release,
@@ -188,7 +277,7 @@ class FeedbackAnalysis
 	      num_future_stabil_crash_bugs,
 	      num_future_stabil_mem_address_bugs
         FROM release_filepaths")
-        
+                
         # Split the data in relases
         r05 <- release_filepaths_data[ which(release_filepaths_data$release == "5.0"), -c(1)]
         r11 <- release_filepaths_data[ which(release_filepaths_data$release == '11.0'),-c(1)]
