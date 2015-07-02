@@ -1,4 +1,4 @@
-i# This script requiers the following R packages: "ROCR" , "bestglm" and "lsr"
+# This script requiers the following R packages: "ROCR" , "bestglm" and "lsr"
 require 'rinruby'
 require 'utils/rinruby_util'
 
@@ -35,32 +35,34 @@ class ExperienceAnalysis
 
   def load_release_filepaths
     R.eval <<-EOR
-      release_filepaths <- dbGetQuery(con, "SELECT
-                                              release,
-                                              sloc,
-                                              churn,
-                                              num_participants,
-                                              num_owners,
-                                              perc_three_more_reviewers,
-                                              perc_fast_reviews,
-                                              avg_sheriff_hours,
-                                              avg_time_to_ownership,
-                                              avg_commits_to_ownership,
-                                              avg_ownership_distance,
-                                              num_security_experienced_participants,
-                                              num_bug_security_experienced_participants,
-                                              num_build_experienced_participants,
-                                              num_test_fail_experienced_participants,
-                                              num_compatibility_experienced_participants,
-                                              num_security_experienced_participants / (num_participants + 1) AS perc_security_experienced_participants,
-                                              num_bug_security_experienced_participants / (num_participants + 1) AS perc_bug_security_experienced_participants,
-                                              num_build_experienced_participants / (num_participants + 1) AS perc_build_experienced_participants,
-                                              num_test_fail_experienced_participants / (num_participants + 1) AS perc_test_fail_experienced_participants,
-                                              num_compatibility_experienced_participants / (num_participants + 1) AS perc_compatibility_experienced_participants,
-                                              was_vulnerable,
-                                              becomes_vulnerable
-                                            FROM release_filepaths
-                                            WHERE SLOC > 0")
+      release_filepaths <- dbGetQuery(con,
+      "SELECT
+        release,
+        sloc,
+        churn,
+
+        perc_fast_reviews,
+        perc_three_more_reviewers,
+
+        avg_sheriff_hours,
+
+        num_owners,
+        avg_time_to_ownership,
+        avg_commits_to_ownership,
+        avg_ownership_distance,
+
+        num_participants,
+
+        num_security_experienced_participants / num_participants AS perc_security_experienced_participants,
+        num_bug_security_experienced_participants / num_participants AS perc_bug_security_experienced_participants,
+        num_build_experienced_participants / num_participants AS perc_build_experienced_participants,
+        num_test_fail_experienced_participants / num_participants AS perc_test_fail_experienced_participants,
+        num_compatibility_experienced_participants / num_participants AS perc_compatibility_experienced_participants,
+
+        becomes_vulnerable
+      FROM release_filepaths
+      WHERE SLOC > 0
+        AND num_participants > 0")
     EOR
   end
 
@@ -72,11 +74,14 @@ class ExperienceAnalysis
       lapply(release_filepaths, function(x) cbind(summary(x)))
       cat("------------------")
 
+      cat("-----------------------\n")
       cat("-------Spearman--------\n")
-      spearman_results <- cor(release_filepaths[,sapply(release_filepaths, is.numeric)], method="spearman")
+      cat("-----------------------\n")
+      spearman_results <- cor(release_filepaths[,sapply(release_filepaths, is.numeric)], method="spearman", use="pairwise.complete.obs")
       print(spearman_results)
       cat("------------------")
     EOR
+    # R.prompt # use only for debugging
     R.echo false, false
   end
 end

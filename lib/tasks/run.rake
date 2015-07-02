@@ -24,7 +24,7 @@ require 'analysis/nlp_queries_analysis'
 require 'analysis/word_trend_analysis'
 require 'analysis/network_analysis'
 require 'analysis/owners_analysis'
-require 'analysis/feedback_analysis'
+require 'analysis/experience_analysis'
 require 'stats'
 require 'nlp/corpus'
 require 'utils/psql_util'
@@ -135,14 +135,13 @@ namespace :run do
       x.report("Populating dev experience dates"){CodeReviewAnalysis.new.populate_experience_labels}
       x.report("Populating security_experienced"){CodeReviewAnalysis.new.populate_experience_cve}
       x.report("Populating participant bug experience"){ParticipantAnalysis.new.populate_bug_related_experience}
-      x.report("Populating sheriff_hours") {ParticipantAnalysis.new.populate_sheriff_hours}
       x.report("Populating adjacency list") {ParticipantAnalysis.new.populate_adjacency_list}
       x.report("Populating reviews_with_owner"){ParticipantAnalysis.new.populate_reviews_with_owner}
       x.report("Populating total_reviews_with_owner"){CodeReviewAnalysis.new.populate_total_reviews_with_owner}
       x.report("Populating adjacency counts"){ParticipantAnalysis.new.populate_adjacency_counts}
       x.report("Populating owner_familiarity_gap"){CodeReviewAnalysis.new.populate_owner_familiarity_gap}
+      x.report("Populating sheriff_hours") {ParticipantAnalysis.new.populate_sheriff_hours}
       x.report("Populating total_sheriff_hours"){CodeReviewAnalysis.new.populate_total_sheriff_hours}
-      #x.report("Populating top label tech words"){NlpQueriesAnalysis.new.run}
       x.report("Populating first ownership") {OwnersAnalysis.new.populate_first_owners}
       x.report("Populating release metrics") {ReleaseAnalysis.new.populate}
       x.report("Populating word trend metrics") {WordTrendAnalysis.new.populate}
@@ -181,8 +180,9 @@ namespace :run do
     HypothesisTests.new.run
     #VisualizationQueries.new.run_queries
     #DataVisualization.new.run
-    #FeedbackAnalysis.new.run
+    NlpQueriesAnalysis.new.run
     NetworkAnalysis.new.run
+    ExperienceAnalysis.new.run
   end
 
   desc "Run network analysis"
@@ -193,6 +193,11 @@ namespace :run do
   desc "Run just the logistic regression"
   task :logit => :env do
     HypothesisTests.new.run
+  end
+
+  desc "Run experience analysis"
+  task :exp => :env do
+    ExperienceAnalysis.new.run
   end
 
   desc "run r data visualization"
@@ -208,11 +213,6 @@ namespace :run do
   task :hist => :env do
    ASCIIHistograms.new.run
    puts "ASCII Histograms created at #{Time.now}"
-  end
-
-  desc "Run Feedback analysis tests"
-  task :analyze_feedback => :env do
-    FeedbackAnalysis.new.run
   end
 
   namespace :nlp do
