@@ -8,7 +8,7 @@ class ExperienceAnalysis
   def initialize
     R.echo false, false
     R.eval <<-EOR
-      options("width"=80) # For more readable output (when output is on)
+      options("width"=120)
     EOR
   end
 
@@ -26,10 +26,10 @@ class ExperienceAnalysis
   # Set up libraries, including our own custom script
   def set_up_libraries
     R.eval <<-EOR
-              suppressMessages(library(ROCR, warn.conflicts = FALSE, quietly=TRUE))
-              suppressMessages(library(bestglm, warn.conflicts = FALSE, quietly=TRUE))
-              suppressMessages(library(lsr, warn.conflicts = FALSE, quietly=TRUE))
-              source('#{File.dirname(__FILE__)}/experience_functions.R')
+      suppressMessages(library(ROCR, warn.conflicts = FALSE, quietly=TRUE))
+      suppressMessages(library(bestglm, warn.conflicts = FALSE, quietly=TRUE))
+      suppressMessages(library(lsr, warn.conflicts = FALSE, quietly=TRUE))
+      source('#{File.dirname(__FILE__)}/experience_functions.R')
     EOR
   end
 
@@ -59,12 +59,6 @@ class ExperienceAnalysis
         num_test_fail_experienced_participants / num_participants AS perc_test_fail_experienced_participants,
         num_compatibility_experienced_participants / num_participants AS perc_compatibility_experienced_participants,
 
-        CASE WHEN num_security_experienced_participants > 0 THEN 1 ELSE 0 END AS any_security_experienced_participants,
-        CASE WHEN num_bug_security_experienced_participants > 0 THEN 1 ELSE 0 END AS any_bug_security_experienced_participants,
-        CASE WHEN num_build_experienced_participants > 0 THEN 1 ELSE 0 END AS any_build_experienced_participants,
-        CASE WHEN num_test_fail_experienced_participants > 0 THEN 1 ELSE 0 END AS any_test_fail_experienced_participants,
-        CASE WHEN num_compatibility_experienced_participants > 0 THEN 1 ELSE 0 END AS any_compatibility_experienced_participants,
-
         becomes_vulnerable
       FROM release_filepaths
       WHERE SLOC > 0
@@ -73,6 +67,7 @@ class ExperienceAnalysis
   end
 
   def association(title, column, criteria)
+    R.echo false, false
     begin
     R.eval <<-EOR
       vulnerable <- release_filepaths$#{column}[release_filepaths$#{criteria}=="TRUE"]
@@ -115,8 +110,6 @@ class ExperienceAnalysis
   end
 
   def run_associations
-    association 'SLOC', 'sloc','becomes_vulnerable'
-
     association 'sloc', 'sloc', 'becomes_vulnerable'
     association 'churn', 'churn', 'becomes_vulnerable'
 
@@ -136,19 +129,41 @@ class ExperienceAnalysis
     association 'perc_build_experienced_participants', 'perc_build_experienced_participants', 'becomes_vulnerable'
     association 'perc_test_fail_experienced_participants', 'perc_test_fail_experienced_participants', 'becomes_vulnerable'
     association 'perc_compatibility_experienced_participants', 'perc_compatibility_experienced_participants', 'becomes_vulnerable'
+  end
 
-    association 'any_security_experienced_participants', 'any_security_experienced_participants', 'becomes_vulnerable '
-    association 'any_bug_security_experienced_participants', 'any_bug_security_experienced_participants', 'becomes_vulnerable '
-    association 'any_build_experienced_participants', 'any_build_experienced_participants', 'becomes_vulnerable '
-    association 'any_test_fail_experienced_participants', 'any_test_fail_experienced_participants', 'becomes_vulnerable '
-    association 'any_compatibility_experienced_participants', 'any_compatibility_experienced_participants', 'becomes_vulnerable '
+  def run_predictions
+    R.echo true, false
+    R.eval <<-EOR
+        # Split the data in releases
+        r05 <- release_filepaths[ which(release_filepaths$release == "5.0"), -c(1)]
+        r11 <- release_filepaths[ which(release_filepaths$release == '11.0'),-c(1)]
+        r19 <- release_filepaths[ which(release_filepaths$release == '19.0'),-c(1)]
+        r27 <- release_filepaths[ which(release_filepaths$release == '27.0'),-c(1)]
+        r35 <- release_filepaths[ which(release_filepaths$release == '35.0'),-c(1)]
+
+        cat("\n\n==== MODELING FOR RELEASE 05 ====\n")
+        release_modeling(r05,r11)
+
+        cat("\n\n==== MODELING FOR RELEASE 11 ====\n")
+        release_modeling(r11,r19)
+
+        cat("\n\n==== MODELING FOR RELEASE 19 ====\n")
+        release_modeling(r19,r27)
+
+        cat("\n\n==== MODELING FOR RELEASE 27 ====\n")
+        release_modeling(r27,r35)
+
+        cat("\n\n==== MODELING FOR RELEASE 35 ====\n")
+        release_modeling(r35,r35)
+
+        rm(r05,r11,r19,r27,r35)
+    EOR
   end
 
   def full_analysis
     # R.echo true, false # pretty verbose. Useful for debugging rinruby
-    R.echo false, false
+    R.echo true, false
     R.eval <<-EOR
-
       cat("-----Summary------")
       lapply(release_filepaths, function(x) cbind(summary(x)))
       cat("------------------")
@@ -163,8 +178,8 @@ class ExperienceAnalysis
       cat("-------MWW--------\n")
       cat("------------------\n")
     EOR
-    R.echo false, false
-    run_associations
-    # R.prompt # use only for debugging
+    # run_associations
+    run_predictions
+    R.prompt # use only for debugging
   end
 end
