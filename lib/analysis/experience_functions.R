@@ -42,13 +42,20 @@ release_modeling <- function(release,release.next){
   fit_control <- glm(formula = becomes_vulnerable ~ sloc,
                   data = release, family = "binomial")
 
-  fit_all <- glm (formula= becomes_vulnerable ~ sloc
-                    + perc_fast_reviews + perc_three_more_reviewers
-                    + avg_sheriff_hours
-                    + num_owners + avg_time_to_ownership + avg_ownership_distance
-                    + num_participants
-                    + perc_security_experienced_participants + perc_bug_security_experienced_participants + perc_build_experienced_participants + perc_test_fail_experienced_participants + perc_compatibility_experienced_participants,
+  fit_experience <- glm(formula = becomes_vulnerable ~ sloc
+                        + num_participants
+                        + avg_sheriff_hours
+                        + perc_security_experienced_participants + perc_bug_security_experienced_participants + perc_build_experienced_participants + perc_test_fail_experienced_participants + perc_compatibility_experienced_participants,
+                        data = release, family = "binomial")
+
+  fit_bystander <- glm(formula = becomes_vulnerable ~ sloc
+                        + perc_fast_reviews + perc_three_more_reviewers,
                   data = release, family = "binomial")
+
+  fit_ownership <- glm (formula= becomes_vulnerable ~ sloc
+                    + num_owners + avg_time_to_ownership + avg_ownership_distance,
+                  data = release, family = "binomial")
+
   fit_one_per <- glm (formula= becomes_vulnerable ~ sloc
                     + perc_fast_reviews
                     + avg_sheriff_hours
@@ -57,30 +64,13 @@ release_modeling <- function(release,release.next){
                     + perc_security_experienced_participants,
                   data = release, family = "binomial")
 
-  # fit_bugs <- glm (formula= becomes_vulnerable ~ sloc + num_pre_bugs,
-  #                 data = release, family = "binomial")
-
-  # Category Based Models
-  # fit_features <- glm (formula= becomes_vulnerable ~ sloc + num_pre_features,
-  #                      data = release, family = "binomial")
-
-  # fit_security <- glm (formula= becomes_vulnerable ~ sloc + num_pre_security_bugs,
-  #                      data = release, family = "binomial")
-
-  # fit_stability <- glm (formula= becomes_vulnerable ~ sloc + num_pre_stability_crash_bugs
-  #                       + num_pre_compatibility_bugs + num_pre_regression_bugs,
-  #                       data = release, family = "binomial")
-
-  # fit_build <- glm (formula= becomes_vulnerable ~ sloc + num_pre_build_bugs + num_pre_tests_fails_bugs,
-  #                       data = release, family = "binomial")
-
-  #history models
-  # fit_vuln_to_vuln <- glm(formula = becomes_vulnerable ~ sloc + was_vulnerable,
-  #                 data = release, family = "binomial")
-  # fit_bug_to_vuln <- glm(formula = becomes_vulnerable ~ sloc + was_buggy,
-  #                 data = release, family = "binomial")
-  # fit_bug_to_bug <- glm(formula = becomes_buggy ~ sloc + was_buggy,
-  #                 data = release, family = "binomial")
+  fit_all <- glm (formula= becomes_vulnerable ~ sloc
+                    + perc_fast_reviews + perc_three_more_reviewers
+                    + avg_sheriff_hours
+                    + num_owners + avg_time_to_ownership + avg_ownership_distance
+                    + num_participants
+                    + perc_security_experienced_participants + perc_bug_security_experienced_participants + perc_build_experienced_participants + perc_test_fail_experienced_participants + perc_compatibility_experienced_participants,
+                  data = release, family = "binomial")
 
 
   #best_fit_AIC <- bestglm(release,family=binomial,IC = "AIC")
@@ -106,35 +96,16 @@ release_modeling <- function(release,release.next){
   print(summary(fit_null))
   cat("fit_control\n")
   print(summary(fit_control))
-  cat("fit_all\n")
-  print(summary(fit_all))
+  cat("fit_experience\n")
+  print(summary(fit_experience))
+  cat("fit_bystander\n")
+  print(summary(fit_bystander))
+  cat("fit_ownership\n")
+  print(summary(fit_ownership))
   cat("fit_one_per\n")
   print(summary(fit_one_per ))
-  # cat("fit_bugs\n")
-  # print(summary(fit_bugs))
-
-  # cat("\n")
-  # cat("# Summary\n")
-  # cat("fit_security\n")
-  # print(summary(fit_security))
-  # cat("fit_features\n")
-  # print(summary(fit_features))
-  # cat("fit_stability\n")
-  # print(summary(fit_stability))
-  # cat("fit_build\n")
-  # print(summary(fit_build))
-  #cat("best_fit_AIC\n")
-  #print(summary(best_fit_AIC$BestModel))
-
-  # cat("\n")
-  # cat("# Summary History Models\n")
-  # cat("fit_vuln_to_vuln\n")
-  # print(summary(fit_vuln_to_vuln))
-  # cat("fit_bug_to_vuln\n")
-  # print(summary(fit_bug_to_vuln))
-  # cat("fit_bug_to_bug\n")
-  # print(summary(fit_bug_to_bug))
-
+  cat("fit_all\n")
+  print(summary(fit_all))
 
   # cat("\n")
   # cat("# D^2 Analysys\n")
@@ -170,48 +141,29 @@ release_modeling <- function(release,release.next){
 
   cat("\n")
   cat("# AIC Improvements\n")
-
-  aics <- data.frame( "name" = character(), "aic" = integer(), "%changed" = integer(), stringsAsFactors=FALSE )
-  aics[ nrow(aics) + 1, ] <- c( "fit_control", extractAIC(fit_control)[2])
-  aics[ nrow(aics) + 1, ] <- c( "fit_one_per", extractAIC(fit_one_per)[2], extractAIC(fit_one_per)[2] / extractAIC(fit_control)[2])
-  aics[ nrow(aics) + 1, ] <- c( "fit_all", extractAIC(fit_all)[2], extractAIC(all)[2] / extractAIC(fit_one_per)[2])
-  # aics <- aics[, change:= c(NA, aic / aic[.I - 1]) ]
+  aics <- data.frame( "name" = character(), "aic" = integer(), "PercOfControl" = integer(), stringsAsFactors=FALSE )
+  aics[ nrow(aics) + 1, ] <- c( "fit_control", extractAIC(fit_control)[2], extractAIC(fit_control)[2] )
+  aics[ nrow(aics) + 1, ] <- c( "fit_experience", extractAIC(fit_experience)[2], extractAIC(fit_experience)[2] / extractAIC(fit_control)[2])
+  aics[ nrow(aics) + 1, ] <- c( "fit_bystander",  extractAIC(fit_bystander)[2],  extractAIC(fit_bystander)[2] / extractAIC(fit_control)[2])
+  aics[ nrow(aics) + 1, ] <- c( "fit_ownership",  extractAIC(fit_ownership)[2],  extractAIC(fit_ownership)[2] / extractAIC(fit_control)[2])
+  aics[ nrow(aics) + 1, ] <- c( "fit_one_per", extractAIC(fit_one_per)[2],       extractAIC(fit_one_per)[2] / extractAIC(fit_control)[2])
+  aics[ nrow(aics) + 1, ] <- c( "fit_all",     extractAIC(fit_all)[2],           extractAIC(fit_all)[2] / extractAIC(fit_control)[2] )
   print(aics)
 
   cat("\n")
   cat("# Prediction Analysis\n")
   cat("For fit_control\n")
   print(prediction_analysis(fit_control,release.next))
-  cat("For fit_all\n")
-  print(prediction_analysis(fit_all,release.next))
+  cat("For fit_experience\n")
+  print(prediction_analysis(fit_experience,release.next))
+  cat("For fit_bystander\n")
+  print(prediction_analysis(fit_bystander,release.next))
+  cat("For fit_ownership\n")
+  print(prediction_analysis(fit_ownership,release.next))
   cat("For fit_one_per\n")
   print(prediction_analysis(fit_one_per,release.next))
-
-  # cat("For fit_bugs\n")
-  # print(prediction_analysis(fit_bugs,release.next))
-
-
-  # cat("\n")
-  # cat("# Categories\n")
-  # cat("For fit_security\n")
-  # print(prediction_analysis(fit_security,release.next))
-  # cat("For fit_features\n")
-  # print(prediction_analysis(fit_features,release.next))
-  # cat("For fit_stability\n")
-  # print(prediction_analysis(fit_stability,release.next))
-  # cat("For fit_build\n")
-  # print(prediction_analysis(fit_build,release.next))
-  # #cat("For best_fit_AIC\n")
-  # #print(prediction_analysis(best_fit_AIC$BestModel,release.next))
-
-  # cat("\n")
-  # cat("# Summary History Models\n")
-  # cat("fit_vuln_to_vuln\n")
-  # print(prediction_analysis(fit_vuln_to_vuln,release.next))
-  # cat("fit_bug_to_vuln\n")
-  # print(prediction_analysis(fit_bug_to_vuln,release.next))
-  # cat("fit_bug_to_bug\n")
-  # print(prediction_analysis(fit_bug_to_bug,release.next))
+  cat("For fit_all\n")
+  print(prediction_analysis(fit_all,release.next))
 
   options(warn=0)
 }

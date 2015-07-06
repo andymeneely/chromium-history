@@ -8,7 +8,7 @@ class ExperienceAnalysis
   def initialize
     R.echo false, false
     R.eval <<-EOR
-      options("width"=120)
+      options("width"=250)
     EOR
   end
 
@@ -29,6 +29,7 @@ class ExperienceAnalysis
       suppressMessages(library(ROCR, warn.conflicts = FALSE, quietly=TRUE))
       suppressMessages(library(bestglm, warn.conflicts = FALSE, quietly=TRUE))
       suppressMessages(library(lsr, warn.conflicts = FALSE, quietly=TRUE))
+      suppressMessages(library(FactoMineR, warn.conflicts = FALSE, quietly=TRUE))
       source('#{File.dirname(__FILE__)}/experience_functions.R')
     EOR
   end
@@ -175,11 +176,17 @@ class ExperienceAnalysis
       print(spearman_results)
 
       cat("------------------\n")
+      cat("-------PCA--------\n")
+      cat("------------------\n")
+      pca <- PCA(release_filepaths[,sapply(release_filepaths, is.numeric)], graph = FALSE)
+      print(pca$eig)
+      print(pca$var$coord)
+
+      cat("------------------\n")
       cat("-------MWW--------\n")
       cat("------------------\n")
     EOR
     # run_associations
     run_predictions
-    R.prompt # use only for debugging
   end
 end
