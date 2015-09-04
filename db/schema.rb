@@ -143,7 +143,8 @@ ActiveRecord::Schema.define(version: 20140512131450) do
   end
 
   create_table "cvenums", id: false, force: true do |t|
-    t.string "cve"
+    t.string  "cve"
+    t.decimal "bounty"
   end
 
   create_table "developers", force: true do |t|

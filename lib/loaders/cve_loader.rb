@@ -16,11 +16,12 @@ class CveLoader
     table = CSV.open "#{tmp}/cvenums.csv", 'w+'
     link = CSV.open "#{tmp}/code_reviews_cvenums.csv", 'w+'
     CSV.foreach(RESULTS_FILE, :headers => true) do | row |
-      cve = row[0]
-      issues = row[1].scan(/\d+/) #Mutliple code review ids split by non-numeric chars
+      cve = row[0].to_s.strip
+      bounty = row[1].to_s.gsub(/[,$]/,'').to_f #strip comma & dollar, defaults to zero if empty
+      issues = row[2].scan(/\d+/) #Mutliple code review ids split by non-numeric chars
       $stderr.puts "ERROR: CVE entry occurred twice: #{cve}" unless uniqueCve.add? cve
       $stderr.puts "ERROR: CVE #{cve} has no issues" if issues.empty?
-      table << [cve]
+      table << [cve, bounty]
       issues.each do |issue| 
         link << [cve, issue]
       end
