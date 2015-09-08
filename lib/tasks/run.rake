@@ -25,6 +25,7 @@ require 'analysis/word_trend_analysis'
 require 'analysis/network_analysis'
 require 'analysis/owners_analysis'
 require 'analysis/experience_analysis'
+require 'analysis/rank_by_vuln'
 require 'stats'
 require 'nlp/corpus'
 require 'utils/psql_util'
@@ -183,6 +184,7 @@ namespace :run do
     NlpQueriesAnalysis.new.run
     NetworkAnalysis.new.run
     ExperienceAnalysis.new.run
+    RankByVuln.new.run
   end
 
   desc "Run network analysis"
@@ -213,6 +215,11 @@ namespace :run do
   task :hist => :env do
    ASCIIHistograms.new.run
    puts "ASCII Histograms created at #{Time.now}"
+  end
+
+  desc "Perform rank-by-vulnerability analysis"
+  task :rank => :env do
+    RankByVuln.new.run
   end
 
   namespace :nlp do

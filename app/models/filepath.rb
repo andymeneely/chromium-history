@@ -21,6 +21,10 @@ class Filepath < ActiveRecord::Base
     cves(dates).any?
   end
 
+  def bounty(dates=@@OPEN_DATES)
+    cves(dates).select('cvenums.bounty').pluck(:bounty).sum.to_f
+  end
+
   def cves(dates=@@OPEN_DATES)
     @@EXPLAINS[:cves] ||= Filepath.joins(commit_filepaths: [commit: [code_reviews: :cvenums]])\
       .where(filepath: filepath, \

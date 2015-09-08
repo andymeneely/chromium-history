@@ -13,7 +13,10 @@ class CveVerify < VerifyBase
   def verify_bounties
     assert_equal 1337, Cvenum.find_by(cve: 'CVE-2008-6994').bounty.to_i
     assert_equal 0, Cvenum.find_by(cve: 'CVE-2009-0411').bounty.to_i
+  end
 
+  def verify_file_bounties
+    assert_equal 1337, Filepath.find_by(filepath: 'ui/surface/transport_dib_linux.cc').bounty.to_i
   end
   
 end
