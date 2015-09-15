@@ -2,8 +2,9 @@
 # -*- coding: utf-8 -*-
 
 # Samantha Oxley & Kayla Davis
-# connect to the psql database, create a list of graph objects
-# generates attributes for the graphs and outputs to a bunch of files
+# connect to the psql database, create a list of graph objects each 2 month intervals
+# generates attributes for the graph's nodes (developers) and edges (collaborations)
+# outputs these graphs to files in a folder "graph_degree_files" outside of chromium folder
 # ARGUMENTS: [username] [database name]
 
 from  math import sqrt
@@ -31,7 +32,7 @@ except psycopg2.DatabaseError, e:
 graphArray = []		
 earlyBoundary = '2008-09-01 00:00:00.000000'
 earlyTime = datetime.strptime( earlyBoundary, "%Y-%m-%d %H:%M:%S.%f")
-lateBoundary = '2008-12-01 00:00:00.000000'
+lateBoundary = '2008-11-01 00:00:00.000000'
 lateTime = datetime.strptime( lateBoundary, "%Y-%m-%d %H:%M:%S.%f")
 
 while earlyBoundary < '2014-11-06 00:00:00.000000':
@@ -52,14 +53,14 @@ while earlyBoundary < '2014-11-06 00:00:00.000000':
 	except psycopg2.DatabaseError, e:
 		print 'Error %s' % e
 		sys.exit(1)
-	# change boundaries and add G to array of graph
+	# change/iterate boundaries and add G to array of graph
 	earlyTime = lateTime
 	lateTime += timedelta(days=61)
 	earlyBoundary = earlyTime.strftime("%Y-%m-%d %H:%M:%S.%f")
 	lateBoundary = lateTime.strftime("%Y-%m-%d %H:%M:%S.%f")
 	graphArray.append(G)
 # for each graph, let's categorize developers by their degree and begin
-# some analysis
+# to gather other useful information about them
 grnum = 0
 dirname = "graph_degree_files" 
 for gr in graphArray:
@@ -71,22 +72,20 @@ for gr in graphArray:
 
 	# return a dictionary for each node's degree and closeness centrality
 	node_deg = gr.degree()
-	centrality = nx.closeness_centrality(gr)
+	closeness = nx.closeness_centrality(gr)
+	betweenness = nx.betweenness_centrality(gr)
 	num_nodes = len(node_deg)
-	# skip if this graph has no nodes for some reason
 	if num_nodes == 0:
 		continue
-	# move the node degree items into an ascending list of degrees for quartile ranges
+	# move the node degree items into an ascending list of degree values
 	sorted_deg = OrderedDict( sorted( node_deg.items(), key=lambda(k,v):(v,k) ) )	
-	# print to screen if you want to see what's up in real time
-	#print "\nFor graph #" + str(grnum) + " IN TIME FRAME: " + gr.graph["begin"] + " UNTIL " + gr.graph["end"]
-
 	# column names for the data we will write to the file
-	theFile.write("dev_id, degree, centrality, shriff_hrs, sec_exp, bugsec_exp, own_count, start_date, end_date\n") 
+	theFile.write("dev_id, degree, own_count, closeness, betweenness, shriff_hrs, sec_exp, bugsec_exp, start_date, end_date\n") 
 	for dev in sorted_deg:
 		# we store degree and centrality as an attribute to the node 	
 		gr.node[dev]["degree"] = sorted_deg[dev]
-		gr.node[dev]["centrality"] = round( centrality[dev], 4)
+		gr.node[dev]["closeness"] = round( closeness[dev], 4)
+		gr.node[dev]["betweenness"] = round( betweenness[dev], 8)
 		owner_count = 0
 		hrs_count = 0
 		unique_issues = []
@@ -98,20 +97,18 @@ for gr in graphArray:
 			unique_issues.append(edge[2]["issue"])
 			if dev == edge[2]["issue_owner"]:
 				owner_count = owner_count + 1
-			gr.node[dev]["own_count"] = owner_count
+		gr.node[dev]["own_count"] = owner_count
 		# query for the developer's sheriff hours IN THIS TIME PERIOD
-		qry_shr_hrs = "SELECT * FROM sheriff_rotations WHERE dev_id =" + str(dev) + "AND start >= '" +str(gr.graph["begin"])+ "' AND start < '" + str(gr.graph["end"]) + "'"
+		qry_shr_hrs = "SELECT dev_id, start, duration FROM sheriff_rotations WHERE dev_id =" + str(dev) + "AND start >= '" +str(gr.graph["begin"])+ "' AND start < '" + str(gr.graph["end"]) + "'"
 		cur.execute(qry_shr_hrs) 
 		hrs_count = 0
 		for row in cur:
-			hrs_count = hrs_count + row[3]
-		gr.node[dev]["shr_hrs"] = hrs_count	
-		# at this point we have everything we need stored as an attribute
+			hrs_count = hrs_count + row[2]
+		gr.node[dev]["shr_hrs"] = hrs_count
 		# to each developer node, now we write to the file with this dev's info
-		theFile.write(str(dev)+","+str(gr.node[dev]["degree"])+","+str(gr.node[dev]["centrality"])+","+str(gr.node[dev]["shr_hrs"])+","+str(gr.node[dev]["sec_exp"])+","+str(gr.node[dev]["bugsec_exp"])+","+str(gr.node[dev]["own_count"])+","+str(gr.graph["begin"])+","+str(gr.graph["end"])+"\n")
-		# print to screen to check values
-		#print "dev_id:%d, dev_deg:%d, centrality:%f, sher_hrs:%d, sec_exp:%s, bugsec_exp:%s, own_count:%d" %(dev, gr.node[dev]["degree"],gr.node[dev]["centrality"], gr.node[dev]["shr_hrs"], gr.node[dev]["sec_exp"], gr.node[dev]["bugsec_exp"], gr.node[dev]["own_count"])
-
+		theFile.write(str(dev)+", "+str(gr.node[dev]["degree"])+","+str(gr.node[dev]["own_count"])+", "+str(gr.node[dev]["closeness"])+", ")
+		theFile.write(str("%.8f" % gr.node[dev]["betweenness"]))
+		theFile.write(", "+str(gr.node[dev]["shr_hrs"])+", "+str(gr.node[dev]["sec_exp"])+", "+str(gr.node[dev]["bugsec_exp"])+"\n")
 	grnum = grnum + 1	
 # Close all connections and files
 if con:
