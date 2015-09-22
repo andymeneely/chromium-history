@@ -38,6 +38,7 @@ class RankByVuln
   def summary_stats
     puts "Number of CVEs with bounty: #{Cvenum.where('bounty > 0').count}"
     puts "Avg of bounty (non-zero): $#{Cvenum.where('bounty > 0').average(:bounty)}"
+    puts "Max bounty: $#{Cvenum.maximum(:bounty).to_f}"
     puts "Number of release-filepaths with a bounty: #{ReleaseFilepath.where('bounty > 0').count}"
     puts "Total number of bugs on bounty files: #{ReleaseFilepath.where('bounty > 0').sum(:num_pre_bugs)}"
     puts "Total number of bugs: #{ReleaseFilepath.sum(:num_pre_bugs)}"
