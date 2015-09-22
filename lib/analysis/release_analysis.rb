@@ -50,6 +50,7 @@ class ReleaseAnalysis
             rf.was_buggy = rf.num_pre_bugs > 0
             rf.was_vulnerable = rf.filepath.vulnerable?(dates)
             rf.bounty = rf.filepath.bounty(dates)
+            rf.cvss_base = rf.filepath.cvss_base(dates)
 
             #post_ metrics
             reach_date = r.date + effect_reach

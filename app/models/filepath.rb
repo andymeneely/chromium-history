@@ -24,6 +24,12 @@ class Filepath < ActiveRecord::Base
   def bounty(dates=@@OPEN_DATES)
     cves(dates).select('cvenums.bounty').pluck(:bounty).sum.to_f
   end
+  
+  def cvss_base(dates=@@OPEN_DATES)
+    #scores = cves(dates).select('cvenums.cvss_base').pluck(:cvss_base)
+    #scores.inject{ |sum, el| sum + el }.to_f / scores.size
+    cves(dates).average(:cvss_base)
+  end
 
   def cves(dates=@@OPEN_DATES)
     @@EXPLAINS[:cves] ||= Filepath.joins(commit_filepaths: [commit: [code_reviews: :cvenums]])\

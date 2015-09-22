@@ -58,6 +58,7 @@ class RankByVuln
         SLOC,
         num_pre_bugs,
         bounty,
+        cvss_base,
         becomes_vulnerable
       FROM release_filepaths
       WHERE SLOC > 0
