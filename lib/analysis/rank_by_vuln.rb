@@ -72,16 +72,23 @@ class RankByVuln
     puts"-----------------------"
     # R.echo true, false # pretty verbose. Useful for debugging rinruby
     R.eval <<-EOR
-      spearman_results <- cor(with_bounties$num_pre_bugs, with_bounties$bounty, method="spearman", use="pairwise.complete.obs")
+      spearman_bounty_results <- cor(with_bounties$num_pre_bugs, with_bounties$bounty, method="spearman", use="pairwise.complete.obs")
+      spearman_cvss_results   <- cor(with_bounties$num_pre_bugs, with_bounties$cvss_base, method="spearman", use="pairwise.complete.obs")
     EOR
-    puts "Overall spearman: #{R.pull("spearman_results")} (n=#{R.pull("length(with_bounties$bounty)")})"
+    puts <<-EOS
+      Overall spearman: 
+        bounty vs. bugs: #{R.pull("spearman_bounty_results")} (n=#{R.pull("length(with_bounties$bounty)")})
+        cvss   vs. bugs: #{R.pull("spearman_cvss_results")} (n=#{R.pull("length(with_bounties$cvss)")})
+    EOS
     Release.order(:date).each do |r|
       R.eval <<-EOR
-        bugs   <- with_bounties$num_pre_bugs[with_bounties$release=="#{r.name}"]
-        bounty <- with_bounties$bounty[with_bounties$release=="#{r.name}"]
-        spearman_results <- cor(bugs, bounty, method="spearman", use="pairwise.complete.obs")
+        bugs      <- with_bounties$num_pre_bugs[with_bounties$release=="#{r.name}"]
+        bounty    <- with_bounties$bounty[with_bounties$release=="#{r.name}"]
+        cvss_base <- with_bounties$cvss_base[with_bounties$release=="#{r.name}"]
+        spearman_bounty_results <- cor(bugs, bounty, method="spearman", use="pairwise.complete.obs")
+        spearman_cvss_results <- cor(bugs, cvss_base, method="spearman", use="pairwise.complete.obs")
       EOR
-      puts "RELEASE #{r.name}: #{R.pull("spearman_results")} (n=#{R.pull("length(bounty)")})"
+      #puts "RELEASE #{r.name} *** Bounty: #{R.pull("spearman_bounty_results")} (n=#{R.pull("length(bounty)")}) *** CVSS #{R.pull("spearman_cvss_results")} (n=#{R.pull("length(cvss)")}) ***"
     end
 
   end
