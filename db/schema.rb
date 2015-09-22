@@ -158,13 +158,14 @@ ActiveRecord::Schema.define(version: 20140512131450) do
   end
 
   create_table "developer_snapshots", force: true do |t|
-    t.string   "dev_id"
+    t.integer  "dev_id"
     t.integer  "degree"
-    t.integer  "centrality"
-    t.integer  "shriff_hrs"
+    t.integer  "own_count"
+    t.decimal  "closeness"
+    t.decimal  "betweenness"
+    t.integer  "sheriff_hrs"
     t.boolean  "sec_exp"
     t.boolean  "bugsec_exp"
-    t.integer  "own_count"
     t.datetime "start_date"
     t.datetime "end_date"
   end
