@@ -64,12 +64,6 @@ while earlyBoundary < '2014-11-06 00:00:00.000000':
 grnum = 0
 dirname = "graph_degree_files" 
 for gr in graphArray:
-	# what is done in this loop will be written to an appropriate file for each graph
-	if not os.path.exists("../../../../"+dirname):
-    		os.makedirs("../../../../"+dirname)
-	theFile = open( "../../../../"+dirname+"/graph" +str(grnum)+ ".csv" , 'w' )
-	theFile.write( "Graph: " +gr.graph["begin"]+ ", " +gr.graph["end"]+ "\n" )
-
 	# return a dictionary for each node's degree and closeness centrality
 	node_deg = gr.degree()
 	closeness = nx.closeness_centrality(gr)
@@ -79,8 +73,6 @@ for gr in graphArray:
 		continue
 	# move the node degree items into an ascending list of degree values
 	sorted_deg = OrderedDict( sorted( node_deg.items(), key=lambda(k,v):(v,k) ) )	
-	# column names for the data we will write to the file
-	theFile.write("dev_id, degree, own_count, closeness, betweenness, shriff_hrs, sec_exp, bugsec_exp, start_date, end_date\n") 
 	for dev in sorted_deg:
 		# we store degree and centrality as an attribute to the node 	
 		gr.node[dev]["degree"] = sorted_deg[dev]
@@ -105,13 +97,12 @@ for gr in graphArray:
 		for row in cur:
 			hrs_count = hrs_count + row[2]
 		gr.node[dev]["shr_hrs"] = hrs_count
-		# to each developer node, now we write to the file with this dev's info
-		theFile.write(str(dev)+", "+str(gr.node[dev]["degree"])+","+str(gr.node[dev]["own_count"])+", "+str(gr.node[dev]["closeness"])+", ")
-		theFile.write(str("%.8f" % gr.node[dev]["betweenness"]))
-		theFile.write(", "+str(gr.node[dev]["shr_hrs"])+", "+str(gr.node[dev]["sec_exp"])+", "+str(gr.node[dev]["bugsec_exp"])+"\n")
+		# this should be writing into the database... 
+		cur.execute("INSERT INTO developer_snapshots( dev_id, degree, own_count, closeness,betweenness, sheriff_hrs, sec_exp, bugsec_exp, start_date, end_date) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (dev, gr.node[dev]["degree"], gr.node[dev]["own_count"], gr.node[dev]["closeness"],gr.node[dev]["betweenness"], gr.node[dev]["shr_hrs"], gr.node[dev]["sec_exp"],gr.node[dev]["bugsec_exp"], gr.graph["begin"], gr.graph["end"]) )
+	con.commit()
 	grnum = grnum + 1	
 # Close all connections and files
 if con:
 	con.close()
-if theFile:
-	theFile.close()
+#if theFile:
+#	theFile.close()
