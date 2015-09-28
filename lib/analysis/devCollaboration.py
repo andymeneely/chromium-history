@@ -23,7 +23,7 @@ def main():
 	con = None
 	data = est_database(con)
 	arr = create_graph(data.cursor())
-	dev_graph(arr,data.cursor())
+	dev_graph(arr,data.cursor(),data)
 
 def est_database(con):
 	# Get the username and db from command line
@@ -73,7 +73,7 @@ def create_graph(cur):
 		graphArray.append(G)
 	return graphArray
 
-def dev_graph(graphArray,cur):
+def dev_graph(graphArray,cur,con):
 	# for each graph, let's categorize developers by their degree and begin
 	# to gather other useful information about them
 	grnum = 0
@@ -117,14 +117,14 @@ def dev_graph(graphArray,cur):
 			cur.execute("INSERT INTO developer_snapshots( dev_id, degree, own_count, closeness,betweenness, sheriff_hrs, sec_exp, bugsec_exp, start_date, end_date) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (dev, gr.node[dev]["degree"], gr.node[dev]["own_count"], gr.node[dev]["closeness"],gr.node[dev]["betweenness"], gr.node[dev]["shr_hrs"], gr.node[dev]["sec_exp"],gr.node[dev]["bugsec_exp"], gr.graph["begin"], gr.graph["end"]) )
 		con.commit()
 		grnum = grnum + 1
-		closing(con,theFile)
+	closing(con) # ,theFile)
 
-def closing(con,theFile):	
+def closing(con): # ,theFile):	
 	# Close all connections and files
 	if con:
 		con.close()
-	if theFile:
-		theFile.close()
+	# if theFile:
+		# theFile.close()
 
 if __name__ == "__main__":
 	main()
