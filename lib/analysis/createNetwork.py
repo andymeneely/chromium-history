@@ -63,6 +63,7 @@ while earlyBoundary < '2014-11-06 00:00:00.000000':
 # to gather other useful information about them
 grnum = 0
 dirname = "graph_degree_files" 
+# cur.execute("delete from developer_snapshots")
 for gr in graphArray:
 	# return a dictionary for each node's degree and closeness centrality
 	node_deg = gr.degree()
