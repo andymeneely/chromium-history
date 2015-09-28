@@ -83,7 +83,8 @@ def dev_graph(graphArray,cur):
 		# return a dictionary for each node's degree and closeness centrality
 		node_deg = gr.degree()
 		closeness = nx.closeness_centrality(gr)
-		betweenness = nx.betweenness_centrality(gr)_deg)
+		betweenness = nx.betweenness_centrality(gr)
+		num_nodes = len(node_deg)
 		if num_nodes == 0:
 			continue
 		# move the node degree items into an ascending list of degree values
