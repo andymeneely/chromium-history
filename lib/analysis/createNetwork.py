@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-
+# hello
 # Samantha Oxley & Kayla Davis
 # connect to the psql database, create a list of graph objects each 2 month intervals
 # generates attributes for the graph's nodes (developers) and edges (collaborations)
