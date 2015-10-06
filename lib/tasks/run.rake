@@ -1,4 +1,4 @@
-# custom Rakefile tasks for loading and analyzing the data
+# Our super custom Rakefile tasks for loading and analyzing the data
 require 'loaders/bug_parser.rb'
 require 'loaders/code_review_parser'
 require 'loaders/code_review_loader'
