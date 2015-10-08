@@ -148,6 +148,8 @@ namespace :run do
       x.report("Populating release metrics") {ReleaseAnalysis.new.populate}
       x.report("Populating word trend metrics") {WordTrendAnalysis.new.populate}
       x.report("Populating dev word use metrics") {WordTrendAnalysis.new.pre_vs_post_sec_exp}
+      x.report("Populating sna metrics") {NetworkAnalysis.new.run}
+
       #puts "Here are a bunch of SQL Explains"
       #Filepath.print_sql_explains
     end
@@ -183,7 +185,6 @@ namespace :run do
     #VisualizationQueries.new.run_queries
     #DataVisualization.new.run
     NlpQueriesAnalysis.new.run
-    NetworkAnalysis.new.run
     ExperienceAnalysis.new.run
     RankByVuln.new.run
   end
