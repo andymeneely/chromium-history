@@ -67,8 +67,6 @@ def create_graph_array(cur):
 		except psycopg2.DatabaseError, e:
 			print 'Error %s' % e
 			sys.exit(1)
-		if num_nodes == 0:
-			continue
 		# move the node degree items into an ascending list of degree values
 		for dev in nx.nodes(thisGraph):
 			# query for the developer's sheriff hours IN THIS TIME PERIOD
@@ -86,30 +84,30 @@ def create_graph_array(cur):
 		graphArray.append(thisGraph)
 	return graphArray
 
-def graph_extrapolation( graphArray ):
-	
-	node_deg = gr.degree()
-	closeness = nx.closeness_centrality(gr)
-	betweenness = nx.betweenness_centrality(gr)
-	
-	sorted_deg = OrderedDict( sorted( node_deg.items(), key=lambda(k,v):(v,k) ) )	
-	for dev in sorted_deg:
-		# we store degree and centrality as an attribute to the node 	
-		thisGraph.node[dev]["degree"] = sorted_deg[dev]
-		thisGraph.node[dev]["closeness"] = round( closeness[dev], 4)
-		thisGraph.node[dev]["betweenness"] = round( betweenness[dev], 8)
-		owner_count = 0
-		hrs_count = 0
-		unique_issues = []
-		# for each unique issue on this dev, how many of them does 
-		# this developer own?
-		for edge in list(thisGraph.edges_iter(dev, data=True)):
-			if edge[2]["issue"] in unique_issues:
-				continue
-			unique_issues.append(edge[2]["issue"])
-			if dev == edge[2]["issue_owner"]:
-				owner_count = owner_count + 1
-		thisGraph.node[dev]["own_count"] = owner_count
+def graph_extrapolate( graphArray ):
+	for graph in graphArray:	
+		node_deg = graph.degree()
+		closeness = nx.closeness_centrality(graph)
+		betweenness = nx.betweenness_centrality(graph)
+		
+		sorted_deg = OrderedDict( sorted( node_deg.items(), key=lambda(k,v):(v,k) ) )	
+		for dev in sorted_deg:
+			# we store degree and centrality as an attribute to the node 	
+			graph.node[dev]["degree"] = sorted_deg[dev]
+			graph.node[dev]["closeness"] = round( closeness[dev], 4)
+			graph.node[dev]["betweenness"] = round( betweenness[dev], 8)
+			owner_count = 0
+			hrs_count = 0
+			unique_issues = []
+			# for each unique issue on this dev, how many of them does 
+			# this developer own?
+			for edge in list(graph.edges_iter(dev, data=True)):
+				if edge[2]["issue"] in unique_issues:
+					continue
+				unique_issues.append(edge[2]["issue"])
+				if dev == edge[2]["issue_owner"]:
+					owner_count = owner_count + 1
+			graph.node[dev]["own_count"] = owner_count
 
 def dev_graph(gr, cur, con ):
 	# for each graph, let's categorize developers by their degree and begin
