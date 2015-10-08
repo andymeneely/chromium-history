@@ -47,7 +47,10 @@ class RankByVuln
     Release.order(:date).each do |r|
       puts " File-bounty for Release #{r.name}: $#{ReleaseFilepath.where(release: r.name).sum(:bounty).to_f}"
     end
-
+    puts "Avg CVSS score: #{ReleaseFilepath.average(:cvss_base)}"
+    Release.order(:date).each do |r|
+      puts " Avg CVSS for Release #{r.name}: #{ReleaseFilepath.where(release: r.name).average(:cvss_base)}"
+    end
   end
 
   def load_release_filepaths
@@ -72,13 +75,15 @@ class RankByVuln
     puts"-----------------------"
     # R.echo true, false # pretty verbose. Useful for debugging rinruby
     R.eval <<-EOR
-      spearman_bounty_results <- cor(with_bounties$num_pre_bugs, with_bounties$bounty, method="spearman", use="pairwise.complete.obs")
-      spearman_cvss_results   <- cor(with_bounties$num_pre_bugs, with_bounties$cvss_base, method="spearman", use="pairwise.complete.obs")
+      spearman_bounty_results      <- cor(with_bounties$num_pre_bugs, with_bounties$bounty, method="spearman", use="pairwise.complete.obs")
+      spearman_cvss_results        <- cor(with_bounties$num_pre_bugs, with_bounties$cvss_base, method="spearman", use="pairwise.complete.obs")
+      spearman_cvss_bounty_results <- cor(with_bounties$bounty, with_bounties$cvss_base, method="spearman", use="pairwise.complete.obs")
     EOR
     puts <<-EOS
       Overall spearman: 
         bounty vs. bugs: #{R.pull("spearman_bounty_results")} (n=#{R.pull("length(with_bounties$bounty)")})
         cvss   vs. bugs: #{R.pull("spearman_cvss_results")} (n=#{R.pull("length(with_bounties$cvss)")})
+        cvss vs. bounty: #{R.pull("spearman_cvss_bounty_results")} (n=#{R.pull("length(with_bounties$bounty)")})
     EOS
     Release.order(:date).each do |r|
       R.eval <<-EOR
@@ -88,7 +93,7 @@ class RankByVuln
         spearman_bounty_results <- cor(bugs, bounty, method="spearman", use="pairwise.complete.obs")
         spearman_cvss_results <- cor(bugs, cvss_base, method="spearman", use="pairwise.complete.obs")
       EOR
-      #puts "RELEASE #{r.name} *** Bounty: #{R.pull("spearman_bounty_results")} (n=#{R.pull("length(bounty)")}) *** CVSS #{R.pull("spearman_cvss_results")} (n=#{R.pull("length(cvss)")}) ***"
+      puts "        release #{r.name} *** Bounty: #{R.pull("spearman_bounty_results")} (n=#{R.pull("length(bounty)")}) *** CVSS #{R.pull("spearman_cvss_results")} ***"
     end
 
   end
