@@ -62,6 +62,7 @@ class RankByVuln
         num_pre_bugs,
         bounty,
         cvss_base,
+        cvss_base_max,
         becomes_vulnerable
       FROM release_filepaths
       WHERE SLOC > 0
@@ -77,23 +78,27 @@ class RankByVuln
     R.eval <<-EOR
       spearman_bounty_results      <- cor(with_bounties$num_pre_bugs, with_bounties$bounty, method="spearman", use="pairwise.complete.obs")
       spearman_cvss_results        <- cor(with_bounties$num_pre_bugs, with_bounties$cvss_base, method="spearman", use="pairwise.complete.obs")
+      spearman_cvss_max_results    <- cor(with_bounties$num_pre_bugs, with_bounties$cvss_base_max, method="spearman", use="pairwise.complete.obs")
       spearman_cvss_bounty_results <- cor(with_bounties$bounty, with_bounties$cvss_base, method="spearman", use="pairwise.complete.obs")
     EOR
     puts <<-EOS
       Overall spearman: 
-        bounty vs. bugs: #{R.pull("spearman_bounty_results")} (n=#{R.pull("length(with_bounties$bounty)")})
-        cvss   vs. bugs: #{R.pull("spearman_cvss_results")} (n=#{R.pull("length(with_bounties$cvss)")})
-        cvss vs. bounty: #{R.pull("spearman_cvss_bounty_results")} (n=#{R.pull("length(with_bounties$bounty)")})
+        bounty vs. bugs:   #{R.pull("spearman_bounty_results")} (n=#{R.pull("length(with_bounties$bounty)")})
+        cvss   vs. bugs:   #{R.pull("spearman_cvss_results")} (n=#{R.pull("length(with_bounties$cvss)")})
+        cvss_max vs. bugs: #{R.pull("spearman_cvss_max_results")} (n=#{R.pull("length(with_bounties$cvss)")})
+        cvss vs. bounty:   #{R.pull("spearman_cvss_bounty_results")} (n=#{R.pull("length(with_bounties$bounty)")})
     EOS
     Release.order(:date).each do |r|
       R.eval <<-EOR
         bugs      <- with_bounties$num_pre_bugs[with_bounties$release=="#{r.name}"]
         bounty    <- with_bounties$bounty[with_bounties$release=="#{r.name}"]
         cvss_base <- with_bounties$cvss_base[with_bounties$release=="#{r.name}"]
+        cvss_base_max <- with_bounties$cvss_base_max[with_bounties$release=="#{r.name}"]
         spearman_bounty_results <- cor(bugs, bounty, method="spearman", use="pairwise.complete.obs")
-        spearman_cvss_results <- cor(bugs, cvss_base, method="spearman", use="pairwise.complete.obs")
+        spearman_cvss_results   <- cor(bugs, cvss_base, method="spearman", use="pairwise.complete.obs")
+        spearman_cvss_max_results   <- cor(bugs, cvss_base_max, method="spearman", use="pairwise.complete.obs")
       EOR
-      puts "        release #{r.name} *** Bounty: #{R.pull("spearman_bounty_results")} (n=#{R.pull("length(bounty)")}) *** CVSS #{R.pull("spearman_cvss_results")} ***"
+      puts "        release #{r.name} *** Bounty: #{R.pull("spearman_bounty_results")} (n=#{R.pull("length(bounty)")}) *** CVSS avg: #{R.pull("spearman_cvss_results")}, max: #{R.pull("spearman_cvss_max_results")}***"
     end
 
   end
