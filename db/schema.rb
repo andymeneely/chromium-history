@@ -280,6 +280,7 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.boolean "vulnerable"
     t.decimal "bounty"
     t.decimal "cvss_base"
+    t.decimal "cvss_base_max"
     t.integer "num_vulnerabilities"
     t.integer "num_pre_bugs"
     t.integer "num_pre_features"

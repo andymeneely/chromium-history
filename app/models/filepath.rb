@@ -30,6 +30,12 @@ class Filepath < ActiveRecord::Base
     #scores.inject{ |sum, el| sum + el }.to_f / scores.size
     cves(dates).average(:cvss_base)
   end
+  
+  def cvss_base_max(dates=@@OPEN_DATES)
+    #scores = cves(dates).select('cvenums.cvss_base').pluck(:cvss_base)
+    #scores.inject{ |sum, el| sum + el }.to_f / scores.size
+    cves(dates).maximum(:cvss_base)
+  end
 
   def cves(dates=@@OPEN_DATES)
     @@EXPLAINS[:cves] ||= Filepath.joins(commit_filepaths: [commit: [code_reviews: :cvenums]])\

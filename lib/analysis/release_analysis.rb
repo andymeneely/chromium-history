@@ -51,6 +51,7 @@ class ReleaseAnalysis
             rf.was_vulnerable = rf.filepath.vulnerable?(dates)
             rf.bounty = rf.filepath.bounty(dates)
             rf.cvss_base = rf.filepath.cvss_base(dates)
+            rf.cvss_base_max = rf.filepath.cvss_base_max(dates)
 
             #post_ metrics
             reach_date = r.date + effect_reach
