@@ -39,8 +39,8 @@ else
 	OUTCOME="Verifies failed"
     fi ;
     rake run:stats run:results 1>>$LOG 2>>$LOG #Still change to real if errors in error log
-    psql axmvse -c" SELECT pg_terminate_backend(pg_stat_activity.procpid) FROM pg_stat_activity WHERE pg_stat_activity.datname = 'chromium_real_inbuild' AND procpid <> pg_backend_pid()"
-    psql axmvse -c" SELECT pg_terminate_backend(pg_stat_activity.procpid) FROM pg_stat_activity WHERE pg_stat_activity.datname = 'chromium_real' AND procpid <> pg_backend_pid()"
+    psql axmvse -c" SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = 'chromium_real_inbuild' AND pid <> pg_backend_pid()"
+    psql axmvse -c" SELECT pg_terminate_backend(pg_stat_activity.pid) FROM pg_stat_activity WHERE pg_stat_activity.datname = 'chromium_real' AND pid <> pg_backend_pid()"
     psql axmvse -c "DROP DATABASE chromium_real" 1>>$LOG 2>>$ERR
     psql axmvse -c "ALTER DATABASE chromium_real_inbuild RENAME TO chromium_real" 1>>$LOG 2>>$ERR
 fi ; 
