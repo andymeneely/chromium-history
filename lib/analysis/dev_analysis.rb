@@ -27,7 +27,13 @@ class DevAnalysis
 	def load_snapshots
 		R.eval <<-EOR
 			dev_snap <- dbGetQuery( con,
-			"SELECT * FROM developer_snapshots")
+			"SELECT 
+			dev_id, degree, 
+			closeness, betweenness,
+			sheriff_hrs,
+			sec_exp, bugsec_exp,
+			start_date, end_date 
+			FROM developer_snapshots")
 		EOR
 	end
 	
@@ -36,10 +42,16 @@ class DevAnalysis
 		puts "--------Spearman-------"
 		puts "-----------------------"
 		R.eval <<-EOR
-			spearman_deg_sher <- cor(dev_snap$sheriff_hours, dev_snap$degree, method="spearman")
+			spearman_deg_sher <- cor(dev_snap$sheriff_hrs, dev_snap$degree, method="spearman")
+			spearman_close_sher <- cor(dev_snap$sheriff_hrs, dev_snap$closeness, method="spearman")
+			spearman_bet_sher <- cor(dev_snap$sheriff_hrs, dev_snap$betweenness, method="spearman")
+
 		EOR
 		puts <<-EOS
-			degree vs sheriff hours: #{R.pull("spearman_deg_sher")} (n=#{R.pull("length(dev_snap$degree")})
+			degree vs sheriff hours: #{R.pull("spearman_deg_sher")} 
+			closeness vs sheriff hours: #{R.pull("spearman_close_sher")} 
+			betweenness vs sheriff hours: #{R.pull("spearman_bet_sher")} 
+
 		EOS
 	end
 
