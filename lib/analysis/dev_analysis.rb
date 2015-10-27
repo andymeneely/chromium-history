@@ -22,6 +22,7 @@ class DevAnalysis
 			load_snapshots
 			full_analysis
 		end
+    R.eval 'save.image()'
 	end
 
 	def load_snapshots
