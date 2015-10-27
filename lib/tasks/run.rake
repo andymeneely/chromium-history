@@ -18,6 +18,7 @@ require 'analysis/participant_analysis'
 require 'analysis/hypothesis_tests'
 require 'analysis/code_review_analysis'
 require 'analysis/data_visualization'
+require 'analysis/dev_analysis'
 require 'analysis/visualization_queries'
 require 'analysis/ascii_histograms'
 require 'analysis/nlp_queries_analysis'
@@ -84,7 +85,7 @@ namespace :run do
   
   desc "Parse, load, optimize, and consolidate"
   task :slurp => [:environment,"db:reset"] do
-    Benchmark.bm(40) do |x|
+    Benchmark.bm(36) do |x|
       x.report("Parsing JSON Code Reviews") {CodeReviewParser.new.parse}
       x.report("Loading Code Review CSVs") {CodeReviewLoader.new.copy_parsed_tables}
       x.report("Optimizing Code Reviews et al.") do
@@ -187,6 +188,12 @@ namespace :run do
     NlpQueriesAnalysis.new.run
     ExperienceAnalysis.new.run
     RankByVuln.new.run
+    DevAnalysis.new.run
+  end
+
+  desc 'Run dev analysis statistics'
+  task :dev => :env do
+    DevAnalysis.new.run
   end
 
   desc "Run network analysis"
