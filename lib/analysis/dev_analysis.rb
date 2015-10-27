@@ -38,21 +38,31 @@ class DevAnalysis
 	end
 	
 	def full_analysis
-		puts "-----------------------"
-		puts "--------Spearman-------"
-		puts "-----------------------"
+		puts "---------------------------------------------"
+		puts "----Spearman on deg/closeness/betweenness----"
+		puts "---------------------------------------------"
 		R.eval <<-EOR
 			spearman_deg_sher <- cor(dev_snap$sheriff_hrs, dev_snap$degree, method="spearman")
 			spearman_close_sher <- cor(dev_snap$sheriff_hrs, dev_snap$closeness, method="spearman")
 			spearman_bet_sher <- cor(dev_snap$sheriff_hrs, dev_snap$betweenness, method="spearman")
-
+			spearman_close_bet <- cor(dev_snap$closeness, dev_snap$betweenness, method="spearman")
+			spearman_close_deg <- cor(dev_snap$closeness, dev_snap$degree, method="spearman")
+			spearman_bet_deg <- cor(dev_snap$betweenness, dev_snap$degree, method="spearman")
 		EOR
+		puts <<-EOS
+			closeness vs betweenness: #{R.pull("spearman_close_bet")} 
+			closeness vs degree: #{R.pull("spearman_close_deg")} 
+			betweenness vs degree: #{R.pull("spearman_bet_deg")} 
+		EOS
+		puts "---------------------------------------------"
+		puts "----Spearman on sheriff_hrs VS things--------"
+		puts "---------------------------------------------"
 		puts <<-EOS
 			degree vs sheriff hours: #{R.pull("spearman_deg_sher")} 
 			closeness vs sheriff hours: #{R.pull("spearman_close_sher")} 
 			betweenness vs sheriff hours: #{R.pull("spearman_bet_sher")} 
-
 		EOS
+		
 	end
 
 end
