@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # Samantha Oxley & Kayla Davis
+# Refactored by: Kayla Nussbaum
 # connect to the psql database, create a list of graph objects each 2 month intervals
 # generates attributes for the graph's nodes (developers) and edges (collaborations)
 # outputs these graphs to files in a folder "graph_degree_files" outside of chromium folder
