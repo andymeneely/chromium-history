@@ -27,9 +27,7 @@ class DevAnalysis
 
   def set_up_libraries
     R.eval <<-EOR
-      suppressMessages(library(ROCR, warn.conflicts = FALSE, quietly=TRUE))
-      suppressMessages(library(bestglm, warn.conflicts = FALSE, quietly=TRUE))
-      suppressMessages(library(lsr, warn.conflicts = FALSE, quietly=TRUE))
+      suppressMessages(library(RPostgreSQL, warn.conflicts = FALSE, quietly=TRUE))
     EOR
   end
 
