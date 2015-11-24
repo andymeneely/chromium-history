@@ -17,13 +17,21 @@ class DevAnalysis
 		puts "\n====================="
 		puts "=== Correlations? ==="
 		puts "\n====================="
-		
+	  set_up_libraries	
 		connect_to_db do
 			load_snapshots
 			full_analysis
 		end
     R.eval 'save.image()'
 	end
+
+  def set_up_libraries
+    R.eval <<-EOR
+      suppressMessages(library(ROCR, warn.conflicts = FALSE, quietly=TRUE))
+      suppressMessages(library(bestglm, warn.conflicts = FALSE, quietly=TRUE))
+      suppressMessages(library(lsr, warn.conflicts = FALSE, quietly=TRUE))
+    EOR
+  end
 
 	def load_snapshots
 		R.eval <<-EOR
