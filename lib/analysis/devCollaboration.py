@@ -50,7 +50,7 @@ def create_graph_array(cur):
 	graphArray = []		
 	earlyBoundary = '2008-09-01 00:00:00.000000'
 	earlyTime = datetime.strptime( earlyBoundary, "%Y-%m-%d %H:%M:%S.%f")
-	lateBoundary = '2008-11-01 00:00:00.000000'
+	lateBoundary = '2009-11-06 00:00:00.000000'
 	lateTime = datetime.strptime( lateBoundary, "%Y-%m-%d %H:%M:%S.%f")
 
 	while earlyBoundary < '2014-11-06 00:00:00.000000':
@@ -74,19 +74,22 @@ def create_graph_array(cur):
 		except psycopg2.DatabaseError, e:
 			print 'Error %s' % e
 			sys.exit(1)
-		qry_mv = "SELECT DISTINCT ON(code_reviews_cvenums.cvenum_id, code_reviews.issue, patch_sets.code_review_id, participants.dev_id) "
-		qry_mv = qry_mv + "code_reviews_cvenums.cvenum_id, code_reviews.issue, commits.created_at, patch_sets.code_review_id, patch_sets.created, patch_sets.composite_patch_set_id, participants.dev_id, commit_filepaths.filepath "
+		qry_mv = "SELECT DISTINCT ON(code_reviews_cvenums.cvenum_id, code_reviews.issue, missed_code_reviews.issue, participants.dev_id) "
+		qry_mv = qry_mv + "code_reviews_cvenums.cvenum_id, code_reviews.issue, fix_commits.created_at, missed_code_reviews.issue, missed_commits.created_at, participants.dev_id, missed_commit_filepaths.filepath "
 		qry_mv = qry_mv + "FROM code_reviews INNER JOIN code_reviews_cvenums ON code_reviews.issue = code_reviews_cvenums.code_review_id "
-		qry_mv = qry_mv + "INNER JOIN commits ON code_reviews.commit_hash = commits.commit_hash "
-		qry_mv = qry_mv + "INNER JOIN commit_filepaths ON commits.commit_hash = commit_filepaths.commit_hash "
-		qry_mv = qry_mv + "INNER JOIN patch_set_files ON patch_set_files.filepath = commit_filepaths.filepath "
-		qry_mv = qry_mv + "INNER JOIN patch_sets ON patch_sets.composite_patch_set_id = patch_set_files.composite_patch_set_id AND patch_sets.code_review_id != code_reviews.issue AND patch_sets.created > (commits.created_at - interval '1 year') AND patch_sets.created < commits.created_at "
-		qry_mv = qry_mv + "INNER JOIN participants ON participants.issue = patch_sets.code_review_id "
-		qry_mv = qry_mv + "ORDER BY code_reviews_cvenums.cvenum_id, code_reviews.issue, patch_sets.code_review_id, participants.dev_id, patch_sets.composite_patch_set_id ASC;"
+		qry_mv = qry_mv + "INNER JOIN commits AS fix_commits ON code_reviews.commit_hash = fix_commits.commit_hash "
+		qry_mv = qry_mv + "INNER JOIN commit_filepaths AS fix_commit_filepaths  ON fix_commits.commit_hash = fix_commit_filepaths.commit_hash "
+		qry_mv = qry_mv + "INNER JOIN commit_filepaths AS missed_commit_filepaths ON missed_commit_filepaths.filepath = fix_commit_filepaths.filepath "
+		qry_mv = qry_mv + "INNER JOIN commits AS missed_commits ON missed_commits.commit_hash = missed_commit_filepaths.commit_hash AND missed_commits.created_at >= (fix_commits.created_at - interval '1 year') AND missed_commits.created_at < fix_commits.created_at "
+		qry_mv = qry_mv + "INNER JOIN code_reviews AS missed_code_reviews ON missed_code_reviews.commit_hash = missed_commits.commit_hash "
+		qry_mv = qry_mv + "INNER JOIN participants ON participants.issue = missed_code_reviews.issue "
+		qry_mv = qry_mv + "ORDER BY code_reviews_cvenums.cvenum_id, code_reviews.issue, missed_code_reviews.issue, participants.dev_id;"
 		cur.execute(qry_mv)
 		# make a data structure to hold a count of the rows that have a certain dev_id
 		for row in cur:
-			thisGraph.node[row[7]]["missed_vuln"] = thisGraph.node[row[7]]["missed_vuln"] + 1;
+			if thisGraph.has_node(row[6]):
+				thisGraph.node[row[6]]["missed_vuln"] = int(thisGraph.node[row[6]]["missed_vuln"]) + 1
+				print("graph node says: ", thisGraph.node[row[6]]["missed_vuln"], " for dev: ", row[6])
 			
 		# move the node degree items into an ascending list of degree values
 		for dev in nx.nodes(thisGraph):
@@ -101,7 +104,7 @@ def create_graph_array(cur):
 			thisGraph.node[dev]["shr_hrs"] = hrs_count			
 		# change/iterate boundaries and add G to array of graph
 		earlyTime = lateTime
-		lateTime += timedelta(days=61)
+		lateTime += timedelta(days=364)
 		earlyBoundary = earlyTime.strftime("%Y-%m-%d %H:%M:%S.%f")
 		lateBoundary = lateTime.strftime("%Y-%m-%d %H:%M:%S.%f")
 		graphArray.append(thisGraph)
