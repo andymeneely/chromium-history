@@ -171,6 +171,8 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.decimal  "closeness"
     t.decimal  "betweenness"
     t.integer  "sheriff_hrs"
+    t.integer  "missed_vuln"
+    t.integer  "has_sheriff_hrs"
     t.boolean  "sec_exp"
     t.boolean  "bugsec_exp"
     t.datetime "start_date"

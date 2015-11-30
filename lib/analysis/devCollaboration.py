@@ -67,11 +67,27 @@ def create_graph_array(cur):
 				# add atrributes for whether or not this developer is experienced
 				thisGraph.node[row[1]]["sec_exp"] = row[6]
 				thisGraph.node[row[1]]["bugsec_exp"] = row[10]
+				thisGraph.node[row[1]]["missed_vuln"] = 0
 				thisGraph.node[row[2]]["sec_exp"] = row[7]
 				thisGraph.node[row[2]]["bugsec_exp"] = row[11]
+				thisGraph.node[row[2]]["missed_vuln"] = 0
 		except psycopg2.DatabaseError, e:
 			print 'Error %s' % e
 			sys.exit(1)
+		qry_mv = "SELECT DISTINCT ON(code_reviews_cvenums.cvenum_id, code_reviews.issue, patch_sets.code_review_id, participants.dev_id) "
+		qry_mv = qry_mv + "code_reviews_cvenums.cvenum_id, code_reviews.issue, commits.created_at, patch_sets.code_review_id, patch_sets.created, patch_sets.composite_patch_set_id, participants.dev_id, commit_filepaths.filepath "
+		qry_mv = qry_mv + "FROM code_reviews INNER JOIN code_reviews_cvenums ON code_reviews.issue = code_reviews_cvenums.code_review_id "
+		qry_mv = qry_mv + "INNER JOIN commits ON code_reviews.commit_hash = commits.commit_hash "
+		qry_mv = qry_mv + "INNER JOIN commit_filepaths ON commits.commit_hash = commit_filepaths.commit_hash "
+		qry_mv = qry_mv + "INNER JOIN patch_set_files ON patch_set_files.filepath = commit_filepaths.filepath "
+		qry_mv = qry_mv + "INNER JOIN patch_sets ON patch_sets.composite_patch_set_id = patch_set_files.composite_patch_set_id AND patch_sets.code_review_id != code_reviews.issue AND patch_sets.created > (commits.created_at - interval '1 year') AND patch_sets.created < commits.created_at "
+		qry_mv = qry_mv + "INNER JOIN participants ON participants.issue = patch_sets.code_review_id "
+		qry_mv = qry_mv + "ORDER BY code_reviews_cvenums.cvenum_id, code_reviews.issue, patch_sets.code_review_id, participants.dev_id, patch_sets.composite_patch_set_id ASC;"
+		cur.execute(qry_mv)
+		# make a data structure to hold a count of the rows that have a certain dev_id
+		for row in cur:
+			thisGraph.node[row[7]]["missed_vuln"] = thisGraph.node[row[7]]["missed_vuln"] + 1;
+			
 		# move the node degree items into an ascending list of degree values
 		for dev in nx.nodes(thisGraph):
 			# query for the developer's sheriff hours IN THIS TIME PERIOD
@@ -127,7 +143,7 @@ def dev_graph(graphArray, cur, con ):
 			if(gr.node[dev]["shr_hrs"] != 0):
 				has_hours = 1
 			# this should be writing into the database... 
-			cur.execute("INSERT INTO developer_snapshots( dev_id, degree, own_count, closeness,betweenness, sheriff_hrs, has_sheriff_hrs, sec_exp, bugsec_exp, start_date, end_date) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (dev, gr.node[dev]["degree"], gr.node[dev]["own_count"], gr.node[dev]["closeness"],gr.node[dev]["betweenness"], gr.node[dev]["shr_hrs"], has_hours, gr.node[dev]["sec_exp"],gr.node[dev]["bugsec_exp"], gr.graph["begin"], gr.graph["end"]) )
+			cur.execute("INSERT INTO developer_snapshots( dev_id, degree, own_count, closeness, betweenness, sheriff_hrs, missed_vuln, has_sheriff_hrs, sec_exp, bugsec_exp, start_date, end_date) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (dev, gr.node[dev]["degree"], gr.node[dev]["own_count"], gr.node[dev]["closeness"],gr.node[dev]["betweenness"], gr.node[dev]["shr_hrs"], gr.node[dev]["missed_vuln"], has_hours, gr.node[dev]["sec_exp"],gr.node[dev]["bugsec_exp"], gr.graph["begin"], gr.graph["end"]) )
 		con.commit()
 	closing(con) 
 
