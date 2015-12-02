@@ -99,10 +99,16 @@ class DevAnalysis
 		puts "-Wilcoxon p-values on sheriff_hrs VS deg/closeness/betweenness--"
 		puts "----------------------------------------------------------------"
 		puts <<-EOS
-			degree vs sheriff hours p-value: #{R.pull("wil_deg_sher$p.value")} 
+			degree vs sheriff hours p-value: #{R.pull("wil_deg_sher$p.value")}
+        median with sheriff_hrs: #{R.pull("median(dev_snap$degree[dev_snap$has_sheriff_hrs==1])")}
+        median w/o sheriff_hrs: #{R.pull("median(dev_snap$degree[dev_snap$has_sheriff_hrs==0])")}
 			closeness vs sheriff hours p-value: #{R.pull("wil_close_sher$p.value")} 
+        median with sheriff_hrs: #{R.pull("median(dev_snap$closeness[dev_snap$has_sheriff_hrs==1])")}
+        median w/o sheriff_hrs: #{R.pull("median(dev_snap$closeness[dev_snap$has_sheriff_hrs==0])")}
 			betweeness vs sheriff hours p-value: #{R.pull("wil_bet_sher$p.value")} 
-		
+        median with sheriff_hrs: #{R.pull("median(dev_snap$betweenness[dev_snap$has_sheriff_hrs==1])")}
+        median w/o sheriff_hrs: #{R.pull("median(dev_snap$betweenness[dev_snap$has_sheriff_hrs==0])")}
+    		
 		EOS
 
 	end
