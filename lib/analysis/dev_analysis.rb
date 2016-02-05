@@ -41,6 +41,7 @@ class DevAnalysis
 			own_count,
 			closeness, betweenness,
 			sheriff_hrs, has_sheriff_hrs,
+			missed_vuln, 
 			sec_exp, bugsec_exp,
 			start_date, end_date 
 			FROM developer_snapshots")
@@ -72,6 +73,11 @@ class DevAnalysis
 			spearman_close_sher <- cor(dev_snap$sheriff_hrs, dev_snap$closeness, method="spearman")
 			spearman_bet_sher <- cor(dev_snap$sheriff_hrs, dev_snap$betweenness, method="spearman")
 			
+			spearman_vuln_deg <- cor(dev_snap$missed_vuln, dev_snap$degree, method="spearman")
+			spearman_vuln_sher <- cor(dev_snap$missed_vuln, dev_snap$sheriff_hrs, method="spearman")
+			spearman_vuln_close <- cor(dev_snap$missed_vuln, dev_snap$closeness, method="spearman")
+			spearman_vuln_bet <- cor(dev_snap$missed_vuln, dev_snap$betweenness, method="spearman")
+
 			op <- options(warn = (-1)) 	
 			wil_deg_sher <- wilcox.test(dev_snap$degree ~ dev_snap$has_sheriff_hrs, paired=FALSE)
 			wil_close_sher <- wilcox.test(dev_snap$closeness ~ dev_snap$has_sheriff_hrs, paired=FALSE)
@@ -94,6 +100,15 @@ class DevAnalysis
 			degree vs sheriff hours: #{R.pull("spearman_deg_sher")} 
 			closeness vs sheriff hours: #{R.pull("spearman_close_sher")} 
 			betweenness vs sheriff hours: #{R.pull("spearman_bet_sher")} 
+		EOS
+		puts "----------------------------------------------------------------"
+		puts "--Spearman on missed vulnerabilities VS shrf_hrs/deg/close/bet--"
+		puts "----------------------------------------------------------------"
+		puts <<-EOS
+			missed vuln vs degree: #{R.pull("spearman_vuln_deg")}
+			missed vuln vs sheriff hours: #{R.pull("spearman_vuln_sher")} 
+			missed vuln vs closeness: #{R.pull("spearman_vuln_close")} 
+			missed vuln vs betweenness: #{R.pull("spearman_vuln_bet")} 
 		EOS
 		puts "----------------------------------------------------------------"
 		puts "-Wilcoxon p-values on sheriff_hrs VS deg/closeness/betweenness--"
