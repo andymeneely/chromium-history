@@ -83,14 +83,13 @@ def create_graph_array(cur):
 		qry_mv = qry_mv + "INNER JOIN commits AS missed_commits ON missed_commits.commit_hash = missed_commit_filepaths.commit_hash AND missed_commits.created_at >= (fix_commits.created_at - interval '1 year') AND missed_commits.created_at < fix_commits.created_at "
 		qry_mv = qry_mv + "INNER JOIN code_reviews AS missed_code_reviews ON missed_code_reviews.commit_hash = missed_commits.commit_hash "
 		qry_mv = qry_mv + "INNER JOIN participants ON participants.issue = missed_code_reviews.issue "
+		qry_mv = qry_mv + "WHERE missed_code_reviews.created >= '" + earlyBoundary+ "' AND missed_code_reviews.created < '" + lateBoundary + "' "
 		qry_mv = qry_mv + "ORDER BY code_reviews_cvenums.cvenum_id, code_reviews.issue, missed_code_reviews.issue, participants.dev_id"
 		cur.execute(qry_mv)
 		# make a data structure to hold a count of the rows that have a certain dev_id
-		#for row in cur:
-		#	if thisGraph.has_node(row[6]):
-		#		thisGraph.node[row[6]]["missed_vuln"] = int(thisGraph.node[row[6]]["missed_vuln"]) + 1
-		#		print("graph node says: ", thisGraph.node[row[6]]["missed_vuln"], " for dev: ", row[6], " .. ",thisGraph.node[row[6]])
-		print(" query for missed reviews: ", qry_mv)	
+		for row in cur:
+			if thisGraph.has_node(row[5]):
+				thisGraph.node[row[5]]["missed_vuln"] = int(thisGraph.node[row[5]]["missed_vuln"]) + 1
 		# move the node degree items into an ascending list of degree values
 		for dev in nx.nodes(thisGraph):
 			# query for the developer's sheriff hours IN THIS TIME PERIOD
