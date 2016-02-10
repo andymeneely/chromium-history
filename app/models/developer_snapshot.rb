@@ -7,8 +7,9 @@ class DeveloperSnapshot < ActiveRecord::Base
 		connection.add_index :developer_snapshots, :closeness
 		connection.add_index :developer_snapshots, :betweenness
 		connection.add_index :developer_snapshots, :sheriff_hrs
+		connection.add_index :developer_snapshots, :has_sheriff_hrs		
 		connection.add_index :developer_snapshots, :missed_vuln
-		connection.add_index :developer_snapshots, :has_sheriff_hrs
+		connection.add_index :developer_snapshots, :perc_missed_vuln
 		connection.add_index :developer_snapshots, :sec_exp
 		connection.add_index :developer_snapshots, :bugsec_exp
 		connection.add_index :developer_snapshots, :start_date
