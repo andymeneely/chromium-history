@@ -74,22 +74,30 @@ def create_graph_array(cur):
 		except psycopg2.DatabaseError, e:
 			print 'Error %s' % e
 			sys.exit(1)
-		qry_mv = "SELECT DISTINCT ON(code_reviews_cvenums.cvenum_id, code_reviews.issue, missed_code_reviews.issue, participants.dev_id) "
-		qry_mv = qry_mv + "code_reviews_cvenums.cvenum_id, code_reviews.issue, fix_commits.created_at, missed_code_reviews.issue, missed_commits.created_at, participants.dev_id, missed_commit_filepaths.filepath "
-		qry_mv = qry_mv + "FROM code_reviews INNER JOIN code_reviews_cvenums ON code_reviews.issue = code_reviews_cvenums.code_review_id "
-		qry_mv = qry_mv + "INNER JOIN commits AS fix_commits ON code_reviews.commit_hash = fix_commits.commit_hash "
-		qry_mv = qry_mv + "INNER JOIN commit_filepaths AS fix_commit_filepaths  ON fix_commits.commit_hash = fix_commit_filepaths.commit_hash "
-		qry_mv = qry_mv + "INNER JOIN commit_filepaths AS missed_commit_filepaths ON missed_commit_filepaths.filepath = fix_commit_filepaths.filepath "
-		qry_mv = qry_mv + "INNER JOIN commits AS missed_commits ON missed_commits.commit_hash = missed_commit_filepaths.commit_hash AND missed_commits.created_at >= (fix_commits.created_at - interval '1 year') AND missed_commits.created_at < fix_commits.created_at "
-		qry_mv = qry_mv + "INNER JOIN code_reviews AS missed_code_reviews ON missed_code_reviews.commit_hash = missed_commits.commit_hash "
-		qry_mv = qry_mv + "INNER JOIN participants ON participants.issue = missed_code_reviews.issue "
-		qry_mv = qry_mv + "WHERE missed_code_reviews.created >= '" + earlyBoundary+ "' AND missed_code_reviews.created < '" + lateBoundary + "' "
-		qry_mv = qry_mv + "ORDER BY code_reviews_cvenums.cvenum_id, code_reviews.issue, missed_code_reviews.issue, participants.dev_id"
+		#qry_mv = "SELECT DISTINCT ON(code_reviews_cvenums.cvenum_id, code_reviews.issue, missed_code_reviews.issue, participants.dev_id) "
+		#qry_mv = qry_mv + "code_reviews_cvenums.cvenum_id, code_reviews.issue, fix_commits.created_at, missed_code_reviews.issue, missed_commits.created_at, participants.dev_id, missed_commit_filepaths.filepath "
+		#qry_mv = qry_mv + "FROM code_reviews INNER JOIN code_reviews_cvenums ON code_reviews.issue = code_reviews_cvenums.code_review_id "
+		#qry_mv = qry_mv + "INNER JOIN commits AS fix_commits ON code_reviews.commit_hash = fix_commits.commit_hash "
+		#qry_mv = qry_mv + "INNER JOIN commit_filepaths AS fix_commit_filepaths  ON fix_commits.commit_hash = fix_commit_filepaths.commit_hash "
+		#qry_mv = qry_mv + "INNER JOIN commit_filepaths AS missed_commit_filepaths ON missed_commit_filepaths.filepath = fix_commit_filepaths.filepath "
+		#qry_mv = qry_mv + "INNER JOIN commits AS missed_commits ON missed_commits.commit_hash = missed_commit_filepaths.commit_hash AND missed_commits.created_at >= (fix_commits.created_at - interval '1 year') AND missed_commits.created_at < fix_commits.created_at "
+		#qry_mv = qry_mv + "INNER JOIN code_reviews AS missed_code_reviews ON missed_code_reviews.commit_hash = missed_commits.commit_hash "
+		#qry_mv = qry_mv + "INNER JOIN participants ON participants.issue = missed_code_reviews.issue "
+		#qry_mv = qry_mv + "WHERE missed_code_reviews.created >= '" + earlyBoundary+ "' AND missed_code_reviews.created < '" + lateBoundary + "' "
+		#qry_mv = qry_mv + "ORDER BY code_reviews_cvenums.cvenum_id, code_reviews.issue, missed_code_reviews.issue, participants.dev_id"
+		
+		qry_mv = "SELECT cvenum_id, issue, owner_id, created, commits.commit_hash, author_id, created_at FROM "
+		qry_mv = qry_mv + "code_reviews INNER JOIN code_reviews_cvenums ON code_reviews.issue = code_reviews_cvenums.code_review_id "
+		qry_mv = qry_mv + "INNER JOIN commits ON commits.commit_hash = code_reviews.commit_hash "
+		qry_mv = qry_mv + "WHERE created >= '" + earlyBoundary + "' AND created < '" + lateBoundary + "' "
+		qry_mv = qry_mv + "ORDER BY cvenum_id, issue desc"
 		cur.execute(qry_mv)
 		# make a data structure to hold a count of the rows that have a certain dev_id
 		for row in cur:
-			if thisGraph.has_node(row[5]):
-				thisGraph.node[row[5]]["missed_vuln"] = int(thisGraph.node[row[5]]["missed_vuln"]) + 1
+			#print( str(row[3]) + " " + str(row[2]))
+			if thisGraph.has_node(row[2]):
+				print("dev " + str(row[2]) + "missed a vulnerability" )
+				thisGraph.node[row[2]]["missed_vuln"] = int(thisGraph.node[row[2]]["missed_vuln"]) + 1
 		# move the node degree items into an ascending list of degree values
 		for dev in nx.nodes(thisGraph):
 			# query for the developer's sheriff hours IN THIS TIME PERIOD
