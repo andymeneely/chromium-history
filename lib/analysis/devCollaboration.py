@@ -116,9 +116,8 @@ def create_graph_array(cur):
 
 
 		# COUNT FIX REVIEW OWNERSHIPS
-		qry_mv = "SELECT cvenum_id, issue, owner_id, created, commits.commit_hash, author_id, created_at FROM "
+		qry_mv = "SELECT cvenum_id, issue, owner_id, created FROM "
 		qry_mv = qry_mv + "code_reviews INNER JOIN code_reviews_cvenums ON code_reviews.issue = code_reviews_cvenums.code_review_id "
-		qry_mv = qry_mv + "INNER JOIN commits ON commits.commit_hash = code_reviews.commit_hash "
 		qry_mv = qry_mv + "WHERE created >= '" + earlyBoundary + "' AND created < '" + lateBoundary + "' "
 		qry_mv = qry_mv + "ORDER BY cvenum_id, issue desc"	
 		cur.execute(qry_mv)
@@ -192,7 +191,7 @@ def dev_graph(graphArray, cur, con ):
 			if(gr.node[dev]["shr_hrs"] != 0):
 				has_hours = 1
 			# this should be writing into the database... 
-			cur.execute("INSERT INTO developer_snapshots( dev_id, degree, own_count, closeness, betweenness, sheriff_hrs, has_sheriff_hrs, vuln_misses_1yr, vuln_misses_6mo, vuln_fixes_owned, vuln_fixes, perc_missed_vuln, sec_exp, bugsec_exp, start_date, end_date) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (dev, gr.node[dev]["degree"], gr.node[dev]["own_count"], gr.node[dev]["closeness"],gr.node[dev]["betweenness"], gr.node[dev]["shr_hrs"], has_hours, gr.node[dev]["missed_vuln"], gr.node[dev]["missed_vuln_6mo"], gr.node[dev]["fixed_vuln_own"], gr.node[dev]["fixed_vuln"], 0.0, gr.node[dev]["sec_exp"],gr.node[dev]["bugsec_exp"], gr.graph["begin"], gr.graph["end"]) )
+			cur.execute("INSERT INTO developer_snapshots( dev_id, degree, own_count, closeness, betweenness, sheriff_hrs, has_sheriff_hrs, vuln_misses_1yr, vuln_misses_6mo, vuln_fixes_owned, vuln_fixes, perc_missed_vuln, sec_exp, bugsec_exp, start_date, end_date) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (dev, gr.node[dev]["degree"], gr.node[dev]["own_count"], gr.node[dev]["closeness"],gr.node[dev]["betweenness"], gr.node[dev]["shr_hrs"], has_hours, gr.node[dev]["missed_vuln"], gr.node[dev]["missed_vuln_6mo"], gr.node[dev]["fixed_vuln_own"], gr.node[dev]["fixed_vuln"], 0.0, gr.node[dev]["sec_exp"],gr.node[dev]["bugsec_exp"], gr.graph["begin"], gr.graph["end"]) )
 		con.commit()
 	closing(con) 
 
