@@ -191,7 +191,7 @@ def dev_graph(graphArray, cur, con ):
 			if(gr.node[dev]["shr_hrs"] != 0):
 				has_hours = 1
 			# this should be writing into the database... 
-			cur.execute("INSERT INTO developer_snapshots( dev_id, degree, own_count, closeness, betweenness, sheriff_hrs, has_sheriff_hrs, vuln_misses_1yr, vuln_misses_6mo, vuln_fixes_owned, vuln_fixes, perc_missed_vuln, sec_exp, bugsec_exp, start_date, end_date) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (dev, gr.node[dev]["degree"], gr.node[dev]["own_count"], gr.node[dev]["closeness"],gr.node[dev]["betweenness"], gr.node[dev]["shr_hrs"], has_hours, gr.node[dev]["missed_vuln"], gr.node[dev]["missed_vuln_6mo"], gr.node[dev]["fixed_vuln_own"], gr.node[dev]["fixed_vuln"], 0.0, gr.node[dev]["sec_exp"],gr.node[dev]["bugsec_exp"], gr.graph["begin"], gr.graph["end"]) )
+			cur.execute("INSERT INTO developer_snapshots( dev_id, degree, own_count, closeness, betweenness, sheriff_hrs, has_sheriff_hrs, vuln_misses_1yr, vuln_misses_6mo, vuln_fixes_owned, vuln_fixes, perc_missed_vuln, sec_exp, bugsec_exp, start_date, end_date) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (dev, gr.node[dev]["degree"], gr.node[dev]["own_count"], gr.node[dev]["closeness"],gr.node[dev]["betweenness"], gr.node[dev]["shr_hrs"], has_hours, gr.node[dev]["missed_vuln"], gr.node[dev]["missed_vuln_6mo"], gr.node[dev]["fixed_vuln_own"], gr.node[dev]["fixed_vuln"], 0.0, gr.node[dev]["sec_exp"],gr.node[dev]["bugsec_exp"], gr.graph["begin"], gr.graph["end"]) )
 		con.commit()
 	closing(con) 
 
