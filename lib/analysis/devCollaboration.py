@@ -122,8 +122,8 @@ def create_graph_array(cur):
 		qry_mv = qry_mv + "ORDER BY cvenum_id, issue desc"	
 		cur.execute(qry_mv)
 		for row in cur:
-			if thisGraph.has_node(row[3]):
-				thisGraph.node[row[3]]["fixed_vuln_own"] = int(thisGraph.node[row[3]]["fixed_vuln_own"]) + 1	
+			if thisGraph.has_node(row[2]):
+				thisGraph.node[row[2]]["fixed_vuln_own"] = int(thisGraph.node[row[2]]["fixed_vuln_own"]) + 1	
 
 		# COUNT PARTICIPATIONS ON THESE COMMITS
 		qry_mv = "SELECT cvenum_id, code_reviews.issue, code_reviews.owner_id, dev_id, created, review_date FROM "
@@ -133,8 +133,8 @@ def create_graph_array(cur):
 		qry_mv = qry_mv + "ORDER BY cvenum_id, issue desc"	
 		cur.execute(qry_mv)
 		for row in cur:
-			if thisGraph.has_node(row[4]):
-				thisGraph.node[row[4]]["fixed_vuln"] = int(thisGraph.node[row[4]]["fixed_vuln"]) + 1
+			if thisGraph.has_node(row[3]):
+				thisGraph.node[row[3]]["fixed_vuln"] = int(thisGraph.node[row[3]]["fixed_vuln"]) + 1
 		
 		# COUNT SHERIFF HOURS
 		for dev in nx.nodes(thisGraph):
@@ -190,8 +190,12 @@ def dev_graph(graphArray, cur, con ):
 			has_hours = 0
 			if(gr.node[dev]["shr_hrs"] != 0):
 				has_hours = 1
+			perc_vuln = 0.000
+			if(gr.node[dev]["missed_vuln"] != 0):
+				perc_vuln = gr.node[dev]["missed_vuln"]/gr.node[dev]["degree"]
+
 			# this should be writing into the database... 
-			cur.execute("INSERT INTO developer_snapshots( dev_id, degree, own_count, closeness, betweenness, sheriff_hrs, has_sheriff_hrs, vuln_misses_1yr, vuln_misses_6mo, vuln_fixes_owned, vuln_fixes, perc_missed_vuln, sec_exp, bugsec_exp, start_date, end_date) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (dev, gr.node[dev]["degree"], gr.node[dev]["own_count"], gr.node[dev]["closeness"],gr.node[dev]["betweenness"], gr.node[dev]["shr_hrs"], has_hours, gr.node[dev]["missed_vuln"], gr.node[dev]["missed_vuln_6mo"], gr.node[dev]["fixed_vuln_own"], gr.node[dev]["fixed_vuln"], 0.0, gr.node[dev]["sec_exp"],gr.node[dev]["bugsec_exp"], gr.graph["begin"], gr.graph["end"]) )
+			cur.execute("INSERT INTO developer_snapshots( dev_id, degree, own_count, closeness, betweenness, sheriff_hrs, has_sheriff_hrs, vuln_misses_1yr, vuln_misses_6mo, vuln_fixes_owned, vuln_fixes, perc_missed_vuln, sec_exp, bugsec_exp, start_date, end_date) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (dev, gr.node[dev]["degree"], gr.node[dev]["own_count"], gr.node[dev]["closeness"],gr.node[dev]["betweenness"], gr.node[dev]["shr_hrs"], has_hours, gr.node[dev]["missed_vuln"], gr.node[dev]["missed_vuln_6mo"], gr.node[dev]["fixed_vuln_own"], gr.node[dev]["fixed_vuln"], perc_vuln, gr.node[dev]["sec_exp"],gr.node[dev]["bugsec_exp"], gr.graph["begin"], gr.graph["end"]) )
 		con.commit()
 	closing(con) 
 
