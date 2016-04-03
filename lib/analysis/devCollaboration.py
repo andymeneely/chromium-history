@@ -81,7 +81,7 @@ def create_graph_array(cur):
 			print 'Error %s' % e
 			sys.exit(1)
 
-		qry_mv = "SELECT DISTINCT ON(code_reviews_cvenums.cvenum_id, missed_code_reviews.issue, participants.dev_id) "
+		qry_mv = "SELECT DISTINCT ON(missed_code_reviews.issue, participants.dev_id) "
 		qry_mv = qry_mv + "code_reviews_cvenums.cvenum_id, code_reviews.issue, fix_commits.created_at, missed_code_reviews.issue, missed_commits.created_at, participants.dev_id, missed_commit_filepaths.filepath "
 		qry_mv = qry_mv + "FROM code_reviews INNER JOIN code_reviews_cvenums ON code_reviews.issue = code_reviews_cvenums.code_review_id "
 		qry_mv = qry_mv + "INNER JOIN commits AS fix_commits ON code_reviews.commit_hash = fix_commits.commit_hash "
@@ -91,14 +91,14 @@ def create_graph_array(cur):
 		qry_mv = qry_mv + "INNER JOIN code_reviews AS missed_code_reviews ON missed_code_reviews.commit_hash = missed_commits.commit_hash "
 		qry_mv = qry_mv + "INNER JOIN participants ON participants.issue = missed_code_reviews.issue "
 		qry_mv = qry_mv + "WHERE missed_code_reviews.created >= '" + earlyBoundary+ "' AND missed_code_reviews.created < '" + lateBoundary + "' "
-		qry_mv = qry_mv + "ORDER BY code_reviews_cvenums.cvenum_id, missed_code_reviews.issue, participants.dev_id"
+		qry_mv = qry_mv + "ORDER BY missed_code_reviews.issue, participants.dev_id"
 		
 		cur.execute(qry_mv)
 		for row in cur:
 			if thisGraph.has_node(row[5]):
 				thisGraph.node[row[5]]["missed_vuln_6mo"] = int(thisGraph.node[row[5]]["missed_vuln_6mo"]) + 1
 		# COUNT ONLY WITHIN 6 MONTHS
-		qry_mv = "SELECT DISTINCT ON(code_reviews_cvenums.cvenum_id, missed_code_reviews.issue, participants.dev_id) "
+		qry_mv = "SELECT DISTINCT ON(missed_code_reviews.issue, participants.dev_id) "
 		qry_mv = qry_mv + "code_reviews_cvenums.cvenum_id, code_reviews.issue, fix_commits.created_at, missed_code_reviews.issue, missed_commits.created_at, participants.dev_id, missed_commit_filepaths.filepath "
 		qry_mv = qry_mv + "FROM code_reviews INNER JOIN code_reviews_cvenums ON code_reviews.issue = code_reviews_cvenums.code_review_id "
 		qry_mv = qry_mv + "INNER JOIN commits AS fix_commits ON code_reviews.commit_hash = fix_commits.commit_hash "
@@ -108,7 +108,7 @@ def create_graph_array(cur):
 		qry_mv = qry_mv + "INNER JOIN code_reviews AS missed_code_reviews ON missed_code_reviews.commit_hash = missed_commits.commit_hash "
 		qry_mv = qry_mv + "INNER JOIN participants ON participants.issue = missed_code_reviews.issue "
 		qry_mv = qry_mv + "WHERE missed_code_reviews.created >= '" + earlyBoundary+ "' AND missed_code_reviews.created < '" + lateBoundary + "' "
-		qry_mv = qry_mv + "ORDER BY code_reviews_cvenums.cvenum_id, missed_code_reviews.issue, participants.dev_id"
+		qry_mv = qry_mv + "ORDER BY missed_code_reviews.issue, participants.dev_id"
 		
 		cur.execute(qry_mv)
 		for row in cur:
@@ -203,10 +203,10 @@ def dev_graph(graphArray, cur, con ):
 				has_hours = 1
 			perc_vuln = 0.000
 			if(gr.node[dev]["missed_vuln"] != 0):
-				perc_vuln = gr.node[dev]["missed_vuln"]/gr.node[dev]["num_participations"]
+				perc_vuln = round( (float(gr.node[dev]["missed_vuln"])/gr.node[dev]["num_participations"]) , 4)
 
 			# this should be writing into the database... 
-			cur.execute("INSERT INTO developer_snapshots( dev_id, degree, own_count, closeness, betweenness, sheriff_hrs, has_sheriff_hrs, vuln_misses_1yr, vuln_misses_6mo, vuln_fixes_owned, vuln_fixes, perc_missed_vuln, sec_exp, bugsec_exp, start_date, end_date) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (dev, gr.node[dev]["degree"], gr.node[dev]["own_count"], gr.node[dev]["closeness"],gr.node[dev]["betweenness"], gr.node[dev]["shr_hrs"], has_hours, gr.node[dev]["missed_vuln"], gr.node[dev]["missed_vuln_6mo"], gr.node[dev]["fixed_vuln_own"], gr.node[dev]["fixed_vuln"], perc_vuln, gr.node[dev]["sec_exp"],gr.node[dev]["bugsec_exp"], gr.graph["begin"], gr.graph["end"]) )
+			cur.execute("INSERT INTO developer_snapshots( dev_id, degree, participations, own_count, closeness, betweenness, sheriff_hrs, has_sheriff_hrs, vuln_misses_1yr, vuln_misses_6mo, vuln_fixes_owned, vuln_fixes, perc_missed_vuln, sec_exp, bugsec_exp, start_date, end_date) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (dev, gr.node[dev]["degree"], gr.node[dev]["num_participations"], gr.node[dev]["own_count"], gr.node[dev]["closeness"],gr.node[dev]["betweenness"], gr.node[dev]["shr_hrs"], has_hours, gr.node[dev]["missed_vuln"], gr.node[dev]["missed_vuln_6mo"], gr.node[dev]["fixed_vuln_own"], gr.node[dev]["fixed_vuln"], perc_vuln, gr.node[dev]["sec_exp"],gr.node[dev]["bugsec_exp"], gr.graph["begin"], gr.graph["end"]) )
 		con.commit()
 	closing(con) 
 

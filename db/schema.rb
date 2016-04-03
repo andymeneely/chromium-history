@@ -167,6 +167,7 @@ ActiveRecord::Schema.define(version: 20140512131450) do
   create_table "developer_snapshots", force: true do |t|
     t.integer  "dev_id"
     t.integer  "degree"
+    t.integer  "participations"
     t.integer  "own_count"
     t.decimal  "closeness"
     t.decimal  "betweenness"
