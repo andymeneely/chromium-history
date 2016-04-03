@@ -27,6 +27,7 @@ def main():
 	curs = conn.cursor()
 	dateStart = input("Start Date (yyyy-mm-dd 00:00:00.000000): ")
 	dateEnd = input("End Date (yyyy-mm-dd 00:00:00.000000): ")
+	closeCon(conn)
 
 
 def viewCentrality(dateStart, dateEnd, curs):
@@ -44,6 +45,15 @@ def viewBetweenness(dateStart, dateEnd, curs):
 			AND ORDER BY sheriff_hrs desc "
 	curs.execute(central)
 	
+
+def devInvestigate(dateStart, dateEnd, curs):
+	dev = input("Dev ID: ")
+	correlations = " SELECT * FROM developer_snapshots 
+				WHERE dev_id = " +dev+ "
+				"
+	curs.execute(correlations)
+
+
 
 
 """
