@@ -1,4 +1,8 @@
+# Includes
+source("includes.R")
+
 # Define the functions
+
 Dsquared <-function(obs = NULL, pred = NULL, model = NULL, adjust = FALSE) {
   # version 1.3 (3 Jan 2015)
   
@@ -389,4 +393,244 @@ release_modeling <- function(release,release.next){
   print(prediction_analysis(fit_compatibility_experienced,release.next))
 
   options(warn=0)
+}
+
+model.overall <- function(dataset, switch, k, n){
+  # Data Transformation
+
+  # Remove files where there were no bugs of any kind, or if it had no SLOC
+  # i.e. The subset must have at least on bug of ANY kind, and SLOC > 0
+  dataset <- subset(
+    dataset, (
+      dataset$num_pre_features !=0 |
+      dataset$num_pre_compatibility_bugs !=0 |
+      dataset$num_pre_regression_bugs !=0 |
+      dataset$num_pre_security_bugs !=0 |
+      dataset$num_pre_tests_fails_bugs != 0 |
+      dataset$num_pre_stability_crash_bugs != 0 |
+      dataset$num_pre_build_bugs != 0 |
+      dataset$becomes_vulnerable != FALSE
+    ) & dataset$sloc > 0
+  )
+
+  # Normalize and center data, added one to the values to be able to calculate
+  # log to zero. log(1)=0
+  dataset = cbind(
+    as.data.frame(log(dataset[,c(2:20)] + 1)),
+    release = dataset$release,
+    was_buggy = dataset$was_buggy,
+    becomes_buggy = dataset$becomes_buggy,
+    was_vulnerable = dataset$was_vulnerable,
+    becomes_vulnerable = dataset$becomes_vulnerable
+  )
+
+  # Logistic Regression Modeling
+
+  # Control
+  fit.formula = formula(becomes_vulnerable ~ release + sloc)
+  ### Model Summary
+  fit.control <- build.model(fit.formula, dataset)
+  ### Model Performance
+  fit.control.performance <- run.kfolds(fit.formula, dataset, switch, k, n)
+
+  cat("############################\n")
+  cat("CONTROL\n")
+  cat("############################\n")
+  cat("##########  SUMMARY\n")
+  print(summary(fit.control))
+  cat("##########  PERFORMANCE\n")
+  print(data.frame(fit.control.performance))
+  cat("##########  DEVIANCE\n")
+  print(Dsquared(model = fit.control))
+  cat("\n#################################################\n")
+
+  model.bugs.overall(dataset, switch, k, n)
+  model.experience.overall(dataset, switch, k, n)
+}
+
+model.bugs.overall <- function(dataset, switch, k, n){
+  # Logistic Regression Modeling
+
+  # Bugs
+  fit.formula = formula(
+    becomes_vulnerable ~ release + sloc + num_pre_bugs
+  )
+  fit.bugs <- build.model(fit.formula, dataset)
+  fit.bugs.performance <- run.kfolds(fit.formula, dataset, switch, k, n)
+
+  ## Bugs: Build and Test Failure
+  fit.formula = formula(
+    becomes_vulnerable ~ release + sloc + num_pre_build_bugs +
+    num_pre_tests_fails_bugs
+  )
+  fit.build <- build.model(fit.formula, dataset)
+  fit.build.performance <- run.kfolds(fit.formula, dataset, switch, k, n)
+
+  ## Bugs: Features
+  fit.formula <- formula(
+    becomes_vulnerable ~ release + sloc + num_pre_features
+  )
+  fit.features <- build.model(fit.formula, dataset)
+  fit.features.performance <- run.kfolds(fit.formula, dataset, switch, k, n)
+
+  ## Bugs: Security
+  fit.formula <- formula(
+    becomes_vulnerable ~ release + sloc + num_pre_security_bugs
+  )
+  fit.security <- build.model(fit.formula, dataset)
+  fit.security.performance <- run.kfolds(fit.formula, dataset, switch, k, n)
+
+  ## Bugs: Stability
+  fit.formula <- formula(
+    becomes_vulnerable ~ release + sloc + num_pre_stability_crash_bugs +
+    num_pre_compatibility_bugs + num_pre_regression_bugs
+  )
+  fit.stability <- build.model(fit.formula, dataset)
+  fit.stability.performance <- run.kfolds(fit.formula, dataset, switch, k, n)
+
+  cat("############################\n")
+  cat("BUG MODELS\n")
+  cat("############################\n")
+  cat("##########  SUMMARY\n")
+  print.summary(fit.bugs)
+  cat("##########  PERFORMANCE\n")
+  print(data.frame(fit.bugs.performance))
+  cat("##########  DEVIANCE\n")
+  print(Dsquared(model = fit.bugs))
+  cat("\n#################################################\n")
+
+  cat("##########  SUMMARY\n")
+  print.summary(fit.build)
+  cat("##########  PERFORMANCE\n")
+  print(data.frame(fit.build.performance))
+  cat("##########  DEVIANCE\n")
+  print(Dsquared(model = fit.build))
+  cat("\n#################################################\n")
+
+  cat("##########  SUMMARY\n")
+  print.summary(fit.features)
+  cat("##########  PERFORMANCE\n")
+  print(data.frame(fit.features.performance))
+  cat("##########  DEVIANCE\n")
+  print(Dsquared(model = fit.features))
+  cat("\n#################################################\n")
+
+  cat("##########  SUMMARY\n")
+  print.summary(fit.security)
+  cat("##########  PERFORMANCE\n")
+  print(data.frame(fit.security.performance))
+  cat("##########  DEVIANCE\n")
+  print(Dsquared(model = fit.security))
+  cat("\n#################################################\n")
+
+  cat("##########  SUMMARY\n")
+  print.summary(fit.stability)
+  cat("##########  PERFORMANCE\n")
+  print(data.frame(fit.stability.performance))
+  cat("##########  DEVIANCE\n")
+  print(Dsquared(model = fit.stability))
+}
+
+model.experience.overall <- function(dataset, switch, k, n){
+  # Logistic Regression Modeling
+
+  ## Build Experience
+  fit.formula <- formula(
+    becomes_vulnerable ~ release + sloc + avg_build_experienced_participants
+  )
+  fit.build <- build.model(fit.formula, dataset)
+  fit.build.performance <- run.kfolds(fit.formula, dataset, switch, k, n)
+
+  ## Compatibility Experience
+  fit.formula = formula(
+    becomes_vulnerable ~ release + sloc +
+    avg_compatibility_experienced_participants
+  )
+  fit.compatibility <- build.model(fit.formula, dataset)
+  fit.compatibility.performance <- run.kfolds(
+    fit.formula, dataset, switch, k, n
+  )
+
+  ## Security Experience
+  fit.formula <- formula(
+    becomes_vulnerable ~ release + sloc +
+    avg_security_experienced_participants
+  )
+  fit.security <- build.model(fit.formula, dataset)
+  fit.security.performance <- run.kfolds(fit.formula, dataset, switch, k, n)
+
+  ## Security Bug Experience
+  fit.formula <- formula(
+    becomes_vulnerable ~ release + sloc +
+    avg_bug_security_experienced_participants
+  )
+  fit.securitybug <- build.model(fit.formula, dataset)
+  fit.securitybug.performance <- run.kfolds(fit.formula, dataset, switch, k, n)
+
+  ## Test Failure Experience
+  fit.formula <- formula(
+    becomes_vulnerable ~ release + sloc +
+    avg_test_fail_experienced_participants
+  )
+  fit.testfail <- build.model(formula = fit.formula, dataset)
+  fit.testfail.performance <- run.kfolds(fit.formula, dataset, switch, k, n)
+
+  ## Stability Experience
+  fit.formula <- formula(
+    becomes_vulnerable ~ release + sloc +
+    avg_stability_experienced_participants
+  )
+  fit.stability <- build.model(formula = fit.formula, dataset)
+  fit.stability.performance <- run.kfolds(fit.formula, dataset, switch, k, n)
+
+  cat("############################\n")
+  cat("EXPERIENCE MODELS\n")
+  cat("############################\n")
+  cat("##########  SUMMARY\n")
+  print.summary(fit.build)
+  cat("##########  PERFORMANCE\n")
+  print(data.frame(fit.build.performance))
+  cat("##########  DEVIANCE\n")
+  print(Dsquared(model = fit.build))
+  cat("\n#################################################\n")
+
+  cat("##########  SUMMARY\n")
+  print.summary(fit.compatibility)
+  cat("##########  PERFORMANCE\n")
+  print(data.frame(fit.compatibility.performance))
+  cat("##########  DEVIANCE\n")
+  print(Dsquared(model = fit.compatibility))
+  cat("\n#################################################\n")
+
+  cat("##########  SUMMARY\n")
+  print.summary(fit.security)
+  cat("##########  PERFORMANCE\n")
+  print(data.frame(fit.security.performance))
+  cat("##########  DEVIANCE\n")
+  print(Dsquared(model = fit.security))
+  cat("\n#################################################\n")
+
+  cat("##########  SUMMARY\n")
+  print.summary(fit.securitybug)
+  cat("##########  PERFORMANCE\n")
+  print(data.frame(fit.securitybug.performance))
+  cat("##########  DEVIANCE\n")
+  print(Dsquared(model = fit.securitybug))
+  cat("\n#################################################\n")
+
+  cat("##########  SUMMARY\n")
+  print.summary(fit.testfail)
+  cat("##########  PERFORMANCE\n")
+  print(data.frame(fit.testfail.performance))
+  cat("##########  DEVIANCE\n")
+  print(Dsquared(model = fit.testfail))
+  cat("\n#################################################\n")
+
+  cat("##########  SUMMARY\n")
+  print.summary(fit.stability)
+  cat("##########  PERFORMANCE\n")
+  print(data.frame(fit.stability.performance))
+  cat("##########  DEVIANCE\n")
+  print(Dsquared(model = fit.stability))
+  cat("\n#################################################\n")
 }

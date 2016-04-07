@@ -200,6 +200,7 @@ class HypothesisTests
 
     # Add the program fuctions to the run.
     R.eval <<-EOR
+              setwd('#{File.dirname(__FILE__)}')
               source('#{File.dirname(__FILE__)}/functions.R')
     EOR
     
@@ -260,6 +261,11 @@ class HypothesisTests
 
         cat("MODELING FOR RELEASE 35\n")
         release_modeling(r35,r35)
+
+        cat("MODELING WITH as.factor(release)\n")
+        model.overall(
+          release_filepaths_data, switch = "becomes_vulnerable", k = 10, n = 10
+        )
         
         rm(release_filepaths_data,r05,r11,r19,r27,r35)
     EOR
