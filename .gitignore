@@ -72,3 +72,6 @@ npm-debug.log
 # Ignore R stuff
 .RData
 .Rhistory
+
+# Files that could potentially contain sensitive information
+lib/analysis/db.settings.R

@@ -1,0 +1,8 @@
+db.settings <- list(
+  "default" = list(
+    "provider" = "PostgreSQL",
+    "host" = "localhost", port = 5432,
+    "user" = "", "password" = "",
+    "dbname" = ""
+  )
+)
