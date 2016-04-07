@@ -26,7 +26,9 @@ plot.theme <-
     axis.text.y = element_text(size = 10),
     axis.title.y = element_text(face = "bold", margin = margin(0,15,0,5)),
     strip.text.x = element_text(size = 10, face = "bold"),
-    legend.position = "bottom"
+    legend.position = "bottom",
+    legend.title = element_text(size = 9, face = "bold"),
+    legend.text = element_text(size = 9)
   )
 
 ###################################################################################
@@ -71,20 +73,22 @@ dbDisconnect(db.connection)
 
 ### Reference
 #### Export Resolution: 400 x 460
-ggplot(dataset, aes(x = becomes_vulnerable, y = num_pre_bugs)) +
-  geom_boxplot(
-    aes(fill = factor(becomes_vulnerable, levels = c(TRUE, FALSE)))
-  ) +
-  scale_y_log10() +
+ggplot(dataset, aes(num_pre_bugs, fill = becomes_vulnerable)) +
+  geom_density(alpha = 0.3) +
+  scale_x_log10() +
   scale_fill_manual(
-    values=c("#bfbfbf", "#ffffff"), name="Vulnerable",
-    labels=c("TRUE" = "Yes", "FALSE" = "No")
+    values = c("TRUE" = "#636363", "FALSE" = "#f0f0f0"),
+    labels = c("TRUE" = "Yes", "FALSE" = "No"),
+    name = "Vulnerable"
   ) +
-  labs(title = NULL, x = NULL, y = "Num. of Pre-release Bugs (Log Scale)") +
-  plot.theme +
-  theme(axis.text.x = element_blank())
+  labs(
+    title = NULL,
+    x = "Num. of Pre-release Bugs (Log Scale)", y = "Density"
+  ) +
+  plot.theme
 
-### Prepare Plotting Data Set
+### Categories
+#### Prepare Plotting Data Set
 COLUMN.LABELS <- list(
   "num_pre_build_bugs" = "Num. of Pre-release Build Bugs",
   "num_pre_compatibility_bugs" = "Num. of Pre-release Compatibility Bugs",
@@ -108,22 +112,19 @@ for(index in 1:length(COLUMN.LABELS)){
   )
 }
 
-### Export Resolution: 380 x 820
-ggplot(plot.source, aes(x = becomes_vulnerable, y = value)) +
-  geom_boxplot(
-    aes(fill = factor(becomes_vulnerable, levels = c(TRUE, FALSE)))
-  ) +
-  scale_x_discrete(
-    breaks = c(TRUE, FALSE), labels = c("TRUE" = "Yes", "FALSE" = "No")
-  ) +
-  scale_y_log10() +
+#### Export Resolution: 380 x 820
+ggplot(plot.source, aes(value, fill = becomes_vulnerable)) +
+  geom_density(alpha = 0.3) +
+  scale_x_log10() +
   scale_fill_manual(
-    values=c("#bfbfbf", "#ffffff"), name="Vulnerable",
-    labels=c("TRUE" = "Yes", "FALSE" = "No")
+    values = c("TRUE" = "#636363", "FALSE" = "#f0f0f0"),
+    labels = c("TRUE" = "Yes", "FALSE" = "No"),
+    name = "Vulnerable"
   ) +
   facet_wrap(~ label, ncol = 1, scales = "free_y") +
   labs(
-    title = "Bug Category Metrics", x = NULL, y = "Metric Value (Log Scale)"
+    title = "Bug Category Metrics",
+    x = "Metric Value (Log Scale)", y = "Density"
   ) +
   plot.theme +
   theme(axis.text.x = element_blank())
@@ -138,8 +139,6 @@ COLUMN.LABELS <- list(
     "% of Build Experienced Reviewers",
   "avg_compatibility_experienced_participants" =
     "% of Compatibility Experienced Reviewers",
-  "avg_security_experienced_participants" =
-    "% of Security Experienced Reviewers",
   "avg_bug_security_experienced_participants" =
     "% of Security Bug Experienced Reviewers",
   "avg_stability_experienced_participants" =
@@ -162,22 +161,19 @@ for(index in 1:length(COLUMN.LABELS)){
 }
 
 ### Export Resolution: 380 x 820
-ggplot(plot.source, aes(x = becomes_vulnerable, y = value)) +
-  geom_boxplot(
-    aes(fill = factor(becomes_vulnerable, levels = c(TRUE, FALSE)))
-  ) +
-  scale_x_discrete(
-    breaks = c(TRUE, FALSE), labels = c("TRUE" = "Yes", "FALSE" = "No")
-  ) +
-  scale_y_continuous(labels = scales::percent) +
+ggplot(plot.source, aes(value, fill = becomes_vulnerable)) +
+  geom_density(alpha = 0.3) +
   scale_fill_manual(
-    values=c("#bfbfbf", "#ffffff"), name="Vulnerable",
-    labels=c("TRUE" = "Yes", "FALSE" = "No")
+    values = c("TRUE" = "#636363", "FALSE" = "#f0f0f0"),
+    labels = c("TRUE" = "Yes", "FALSE" = "No"),
+    name = "Vulnerable"
   ) +
+  scale_x_continuous(labels = scales::percent) +
   facet_wrap(~ label, ncol = 1, scales = "free_y") +
-  labs(title = "Review Experience Metrics", x = NULL, y = "Metric Value") +
-  plot.theme +
-  theme(axis.text.x = element_blank())
+  labs(
+    title = "Review Experience Metrics", x = "Metric Value", y = "Density"
+  ) +
+  plot.theme
 
 ###################################################################################
 ## Lift Curves
@@ -227,11 +223,11 @@ for(release in unique(dataset$release)){
   )
 }
 
-# Export Resolution: 
+# Export Resolution: 380 x 820
 ggplot(plot.source, aes(x = file.percent, y = vuln.percent)) +
   geom_line(size = 1) +
-  facet_wrap(~ label, ncol = 1, scales = "free") +
   scale_x_continuous(labels = scales::percent, breaks = seq(0, 1.0, by = 0.1)) +
   scale_y_continuous(labels = scales::percent) +
-  labs(main = "Lift Curves", x = "% Files", y = "% Vulnerable Files") +
+  facet_wrap(~ label, ncol = 1, scales = "fixed") +
+  labs(main = "Lift Curves", x = "% Files", y = "% Vulnerable Files Found") +
   plot.theme
