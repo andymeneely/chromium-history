@@ -3,6 +3,7 @@ class DeveloperSnapshot < ActiveRecord::Base
 	def self.optimize
 		connection.add_index :developer_snapshots, :dev_id
 		connection.add_index :developer_snapshots, :degree
+		connection.add_index :developer_shapshots, :participations
 		connection.add_index :developer_snapshots, :own_count
 		connection.add_index :developer_snapshots, :closeness
 		connection.add_index :developer_snapshots, :betweenness

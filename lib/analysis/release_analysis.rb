@@ -232,17 +232,17 @@ class ReleaseAnalysis
       UPDATE release_filepaths
         SET num_participants = participant_counts.num_participants,
             num_security_experienced_participants = participant_counts.num_security_experienced_participants,
-            avg_security_experienced_participants = participant_counts.num_security_experienced_participants / participant_counts.num_participants,
+            avg_security_experienced_participants = participant_counts.num_security_experienced_participants::float / participant_counts.num_participants,
             num_bug_security_experienced_participants = participant_counts.num_bug_security_experienced_participants,
-            avg_bug_security_experienced_participants = participant_counts.num_bug_security_experienced_participants / participant_counts.num_participants,
+            avg_bug_security_experienced_participants = participant_counts.num_bug_security_experienced_participants::float / participant_counts.num_participants,
             num_stability_experienced_participants = participant_counts.num_stability_experienced_participants,
-            avg_stability_experienced_participants = participant_counts.num_stability_experienced_participants / participant_counts.num_participants,
+            avg_stability_experienced_participants = participant_counts.num_stability_experienced_participants::float / participant_counts.num_participants,
             num_build_experienced_participants = participant_counts.num_build_experienced_participants,
-            avg_build_experienced_participants = participant_counts.num_build_experienced_participants / participant_counts.num_participants,
+            avg_build_experienced_participants = participant_counts.num_build_experienced_participants::float / participant_counts.num_participants,
             num_test_fail_experienced_participants = participant_counts.num_test_fail_experienced_participants,
-            avg_test_fail_experienced_participants = participant_counts.num_test_fail_experienced_participants / participant_counts.num_participants,
+            avg_test_fail_experienced_participants = participant_counts.num_test_fail_experienced_participants::float / participant_counts.num_participants,
             num_compatibility_experienced_participants = participant_counts.num_compatibility_experienced_participants,
-            avg_compatibility_experienced_participants = participant_counts.num_compatibility_experienced_participants / participant_counts.num_participants,
+            avg_compatibility_experienced_participants = participant_counts.num_compatibility_experienced_participants::float / participant_counts.num_participants,
             security_adjacencys = participant_counts.security_adjacencys
         FROM participant_counts
         WHERE release_filepaths.thefilepath = participant_counts.filepath
