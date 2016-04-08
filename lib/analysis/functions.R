@@ -70,91 +70,9 @@ release_modeling <- function(release,release.next){
 
   # Remove files where there were no bugs of any kind, or if it had no SLOC
   # i.e. The subset must have at least on bug of ANY kind, and SLOC > 0
-  release <- subset(release, (release$num_pre_features !=0 |
-                              release$num_pre_compatibility_bugs !=0 | 
-                              release$num_pre_regression_bugs !=0 | 
-                              release$num_pre_security_bugs !=0 | 
-                              release$num_pre_tests_fails_bugs != 0 | 
-                              release$num_pre_stability_crash_bugs != 0 |
-                              release$num_pre_build_bugs != 0 | 
-                              release$becomes_vulnerable != FALSE) 
-                            & release$sloc > 0)
-
-  release.next <- subset(release.next, (release.next$num_pre_features !=0 |
-                                        release.next$num_pre_compatibility_bugs !=0 | 
-                                        release.next$num_pre_regression_bugs !=0 | 
-                                        release.next$num_pre_security_bugs !=0 | 
-                                        release.next$num_pre_tests_fails_bugs != 0 | 
-                                        release.next$num_pre_stability_crash_bugs != 0 |
-                                        release.next$num_pre_build_bugs != 0 | 
-                                        release.next$becomes_vulnerable != FALSE) 
-                                      & release.next$sloc > 0)
-
+  release <- filter.dataset(release)
+  release.next <- filter.dataset(release.next)
   
-  # Normalize and center data, added one to the values to be able to calculate log to zero. log(1)=0
-  release = cbind(as.data.frame(log(release[,c(1:19)] + 1)), 
-            becomes_vulnerable = release$becomes_vulnerable,
-            was_buggy = release$was_buggy,
-            becomes_buggy = release$becomes_buggy,
-            was_vulnerable = release$was_vulnerable)
-
-  release.next = cbind(as.data.frame(log(release.next[,c(1:19)] + 1)), 
-            becomes_vulnerable = release.next$becomes_vulnerable,
-            was_buggy = release.next$was_buggy,
-            becomes_buggy = release.next$becomes_buggy,
-            was_vulnerable = release.next$was_vulnerable)
-  # Modeling (forward selection)
-  # Individual Models
-  fit_null <- glm(formula = becomes_vulnerable ~ 1, 
-                  data = release, family = "binomial")
-
-  fit_control <- glm(formula = becomes_vulnerable ~ sloc, 
-                  data = release, family = "binomial")
-
-  fit_bugs <- glm (formula= becomes_vulnerable ~ sloc + num_pre_bugs, 
-                  data = release, family = "binomial")
-
-  # Category Based Models
-  fit_features <- glm (formula= becomes_vulnerable ~ sloc + num_pre_features, 
-                       data = release, family = "binomial")
-
-  fit_security <- glm (formula= becomes_vulnerable ~ sloc + num_pre_security_bugs, 
-                       data = release, family = "binomial")
-
-  fit_stability <- glm (formula= becomes_vulnerable ~ sloc + num_pre_stability_crash_bugs 
-                        + num_pre_compatibility_bugs + num_pre_regression_bugs, 
-                        data = release, family = "binomial")
-
-  fit_build <- glm (formula= becomes_vulnerable ~ sloc + num_pre_build_bugs + num_pre_tests_fails_bugs, 
-                        data = release, family = "binomial")     
-
-  #history models
-  fit_vuln_to_vuln <- glm(formula = becomes_vulnerable ~ sloc + was_vulnerable, 
-                  data = release, family = "binomial")
-  fit_bug_to_vuln <- glm(formula = becomes_vulnerable ~ sloc + was_buggy, 
-                  data = release, family = "binomial")
-  fit_bug_to_bug <- glm(formula = becomes_buggy ~ sloc + was_buggy, 
-                  data = release, family = "binomial")
-
-  # Experience Based Models
-  fit_security_experienced <- glm (formula= becomes_vulnerable ~ sloc + avg_security_experienced_participants, 
-                        data = release, family = "binomial")
-
-  fit_bug_security_experienced <- glm (formula= becomes_vulnerable ~ sloc + avg_bug_security_experienced_participants, 
-                        data = release, family = "binomial")
-
-  fit_stability_experienced <- glm (formula= becomes_vulnerable ~ sloc + avg_stability_experienced_participants, 
-                        data = release, family = "binomial")
-
-  fit_build_experienced <- glm (formula= becomes_vulnerable ~ sloc + avg_build_experienced_participants, 
-                        data = release, family = "binomial") 
-
-  fit_test_fail_experienced <- glm (formula= becomes_vulnerable ~ sloc + avg_test_fail_experienced_participants, 
-                        data = release, family = "binomial") 
-
-  fit_compatibility_experienced <- glm (formula= becomes_vulnerable ~ sloc + avg_compatibility_experienced_participants, 
-                        data = release, family = "binomial") 
-
   # Display Results:
   cat("\nRelease Summary\n")
   print(summary(release))
@@ -261,6 +179,63 @@ release_modeling <- function(release,release.next){
     avg_test_fail_experienced_participants = cohensD(release_v$avg_test_fail_experienced_participants, release_n$avg_test_fail_experienced_participants), 
     avg_compatibility_experienced_participants = cohensD(release_v$avg_compatibility_experienced_participants, release_n$avg_compatibility_experienced_participants)
   ))
+
+  # Normalize and center data, added one to the values to be able to calculate log to zero. log(1)=0
+  release <- transform.dataset(release)
+  release.next <- transform.dataset(release.next)
+
+  # Modeling (forward selection)
+  # Individual Models
+  fit_null <- glm(formula = becomes_vulnerable ~ 1,
+                  data = release, family = "binomial")
+
+  fit_control <- glm(formula = becomes_vulnerable ~ sloc,
+                  data = release, family = "binomial")
+
+  fit_bugs <- glm (formula= becomes_vulnerable ~ sloc + num_pre_bugs,
+                  data = release, family = "binomial")
+
+  # Category Based Models
+  fit_features <- glm (formula= becomes_vulnerable ~ sloc + num_pre_features,
+                       data = release, family = "binomial")
+
+  fit_security <- glm (formula= becomes_vulnerable ~ sloc + num_pre_security_bugs,
+                       data = release, family = "binomial")
+
+  fit_stability <- glm (formula= becomes_vulnerable ~ sloc + num_pre_stability_crash_bugs
+                        + num_pre_compatibility_bugs + num_pre_regression_bugs,
+                        data = release, family = "binomial")
+
+  fit_build <- glm (formula= becomes_vulnerable ~ sloc + num_pre_build_bugs + num_pre_tests_fails_bugs,
+                        data = release, family = "binomial")
+
+  #history models
+  fit_vuln_to_vuln <- glm(formula = becomes_vulnerable ~ sloc + was_vulnerable,
+                  data = release, family = "binomial")
+  fit_bug_to_vuln <- glm(formula = becomes_vulnerable ~ sloc + was_buggy,
+                  data = release, family = "binomial")
+  fit_bug_to_bug <- glm(formula = becomes_buggy ~ sloc + was_buggy,
+                  data = release, family = "binomial")
+
+  # Experience Based Models
+  fit_security_experienced <- glm (formula= becomes_vulnerable ~ sloc + avg_security_experienced_participants,
+                        data = release, family = "binomial")
+
+  fit_bug_security_experienced <- glm (formula= becomes_vulnerable ~ sloc + avg_bug_security_experienced_participants,
+                        data = release, family = "binomial")
+
+  fit_stability_experienced <- glm (formula= becomes_vulnerable ~ sloc + avg_stability_experienced_participants,
+                        data = release, family = "binomial")
+
+  fit_build_experienced <- glm (formula= becomes_vulnerable ~ sloc + avg_build_experienced_participants,
+                        data = release, family = "binomial")
+
+  fit_test_fail_experienced <- glm (formula= becomes_vulnerable ~ sloc + avg_test_fail_experienced_participants,
+                        data = release, family = "binomial")
+
+  fit_compatibility_experienced <- glm (formula= becomes_vulnerable ~ sloc + avg_compatibility_experienced_participants,
+                        data = release, family = "binomial")
+
     
   cat("\n# Summary Control Models\n")
   cat("fit_null\n")
@@ -397,32 +372,8 @@ release_modeling <- function(release,release.next){
 
 model.overall <- function(dataset, switch, k, n){
   # Data Transformation
-
-  # Remove files where there were no bugs of any kind, or if it had no SLOC
-  # i.e. The subset must have at least on bug of ANY kind, and SLOC > 0
-  dataset <- subset(
-    dataset, (
-      dataset$num_pre_features !=0 |
-      dataset$num_pre_compatibility_bugs !=0 |
-      dataset$num_pre_regression_bugs !=0 |
-      dataset$num_pre_security_bugs !=0 |
-      dataset$num_pre_tests_fails_bugs != 0 |
-      dataset$num_pre_stability_crash_bugs != 0 |
-      dataset$num_pre_build_bugs != 0 |
-      dataset$becomes_vulnerable != FALSE
-    ) & dataset$sloc > 0
-  )
-
-  # Normalize and center data, added one to the values to be able to calculate
-  # log to zero. log(1)=0
-  dataset = cbind(
-    as.data.frame(log(dataset[,c(2:20)] + 1)),
-    release = dataset$release,
-    was_buggy = dataset$was_buggy,
-    becomes_buggy = dataset$becomes_buggy,
-    was_vulnerable = dataset$was_vulnerable,
-    becomes_vulnerable = dataset$becomes_vulnerable
-  )
+  dataset <- filter.dataset(dataset)
+  dataset <- transform.dataset(dataset)
 
   # Logistic Regression Modeling
 
