@@ -39,7 +39,7 @@ db.get.data <- function(connection, query){
   return(dbGetQuery(connection, query))
 }
 
-build.model <- function(formula, dataset)
+build.model <- function(formula, dataset){
   model <- glm(formula = formula, data = dataset, family = "binomial")
   return(model)
 }
@@ -145,4 +145,29 @@ run.kfolds <- function(formula, dataset, switch, k, n){
   }
 
   return(aggregate.performance(performance))
+}
+
+filter.dataset <- function(dataset){
+  dataset <- subset(dataset,
+    (
+      dataset$num_pre_features !=0 |
+      dataset$num_pre_compatibility_bugs !=0 |
+      dataset$num_pre_regression_bugs !=0 |
+      dataset$num_pre_security_bugs !=0 |
+      dataset$num_pre_tests_fails_bugs != 0 |
+      dataset$num_pre_stability_crash_bugs != 0 |
+      dataset$num_pre_build_bugs != 0 |
+      dataset$becomes_vulnerable != FALSE
+    ) & dataset$sloc > 0
+  )
+  return(dataset)
+}
+
+transform.dataset <- function(dataset){
+  numeric.columns <- sapply(dataset, is.numeric)
+  dataset <- cbind(
+    log(dataset[, numeric.columns] + 1),
+    dataset[,!numeric.columns]
+  )
+  return(dataset)
 }
