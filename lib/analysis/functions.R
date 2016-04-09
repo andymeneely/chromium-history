@@ -78,7 +78,7 @@ release_modeling <- function(release,release.next){
   print(summary(release))
 
   cat("\nSpearman's Correlation for bug metrics\n")
-  print(cor(release[,c(5:11)],method="spearman"))
+  print(round(cor(release[, c(4:11)], method = "spearman"), 4))
 
   cat("\nSpearman's Correlation for experience metrics\n")
   print(cor(release[,c(14:19)],method="spearman", use = "complete"))
@@ -157,6 +157,13 @@ release_modeling <- function(release,release.next){
   print(cbind(median_v = median(release_v$avg_compatibility_experienced_participants, na.rm=TRUE),median_n = median(release_n$avg_compatibility_experienced_participants, na.rm=TRUE)))
   print(cbind(mean_v = mean(release_v$avg_compatibility_experienced_participants, na.rm=TRUE),mean_n = mean(release_n$avg_compatibility_experienced_participants, na.rm=TRUE)))
 
+  # Normalize and center data, added one to the values to be able to calculate log to zero. log(1)=0
+  release <- transform.dataset(release)
+  release.next <- transform.dataset(release.next)
+
+  release_v <- release[which(release$becomes_vulnerable == TRUE),]
+  release_n <- release[which(release$becomes_vulnerable == FALSE),]
+
   cat("\nCohensD for Bug metrics:\n")
   print(cbind(
     sloc = cohensD(release_v$sloc, release_n$sloc), 
@@ -179,10 +186,6 @@ release_modeling <- function(release,release.next){
     avg_test_fail_experienced_participants = cohensD(release_v$avg_test_fail_experienced_participants, release_n$avg_test_fail_experienced_participants), 
     avg_compatibility_experienced_participants = cohensD(release_v$avg_compatibility_experienced_participants, release_n$avg_compatibility_experienced_participants)
   ))
-
-  # Normalize and center data, added one to the values to be able to calculate log to zero. log(1)=0
-  release <- transform.dataset(release)
-  release.next <- transform.dataset(release.next)
 
   # Modeling (forward selection)
   # Individual Models
