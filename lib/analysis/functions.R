@@ -262,7 +262,7 @@ analyze.experience <- function(release, release.next){
   print(summary(release))
 
   cat("\nSpearman's Correlation for experience metrics\n")
-  print(cor(release[,c(14:19)],method="spearman", use = "complete"))
+  print(round(cor(release[,c(14:19)],method="spearman", use = "complete"), 4))
 
   release_v <- release[ which(release$becomes_vulnerable == TRUE), ]
   release_n <- release[ which(release$becomes_vulnerable == FALSE), ]
@@ -408,7 +408,7 @@ model.bugs.overall <- function(dataset, switch, k, n){
   cat("    ############################\n")
   cat("        CORRELATION\n")
   cat("    ############################\n")
-  print(round(cor(dataset[,c(4:11)], method = "spearman"), 4))
+  print(round(cor(dataset[,c(5:12)], method = "spearman"), 4))
 
   # Split Populations
   vuln <- dataset[which(dataset$becomes_vulnerable == TRUE),]
@@ -581,7 +581,7 @@ model.experience.overall <- function(dataset, switch, k, n){
   cat("        CORRELATION\n")
   cat("    ############################\n")
   print(
-    round(cor(dataset[,c(14:19)], method = "spearman", use = "complete"), 4)
+    round(cor(dataset[,c(15:20)], method = "spearman", use = "complete"), 4)
   )
 
   # Split Populations
