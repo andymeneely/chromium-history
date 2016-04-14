@@ -439,11 +439,80 @@ model.overall <- function(dataset, switch, k, n){
 }
 
 model.bugs.overall <- function(dataset, switch, k, n){
-  # Data Filtering and Tranformation
+  cat("############################\n")
+  cat("    BUGS\n")
+  cat("############################\n")
   dataset <- filter.dataset(dataset, filter.type = "bug")
+
+  cat("    ############################\n")
+  cat("        DATA SUMMARY\n")
+  cat("    ############################\n")
+  print(summary(dataset))
+
+  cat("    ############################\n")
+  cat("        CORRELATION\n")
+  cat("    ############################\n")
+  print(round(cor(dataset[,c(4:11)], method = "spearman"), 4))
+
+  # Split Populations
+  vuln <- dataset[which(dataset$becomes_vulnerable == TRUE),]
+  neut <- dataset[which(dataset$becomes_vulnerable == FALSE),]
+
+  cat("    ############################\n")
+  cat("        VULNERABLE POPULATION\n")
+  cat("    ############################\n")
+  print(
+    cbind(
+      Total = length(dataset[,1]),
+      Neutral = length(neut[,1]),
+      Vulnerable = length(vuln[,1]),
+      Percentage = (length(vuln[,1]) / length(neut[,1])) * 100
+    )
+  )
+
+  cat("    ############################\n")
+  cat("        MANN WHITNEY WILCOXON\n")
+  cat("    ############################\n")
+  run.wilcox(vuln, neut, "sloc")
+  run.wilcox(vuln, neut, "num_pre_bugs")
+  run.wilcox(vuln, neut, "num_pre_features")
+  run.wilcox(vuln, neut, "num_pre_compatibility_bugs")
+  run.wilcox(vuln, neut, "num_pre_regression_bugs")
+  run.wilcox(vuln, neut, "num_pre_security_bugs")
+  run.wilcox(vuln, neut, "num_pre_tests_fails_bugs")
+  run.wilcox(vuln, neut, "num_pre_stability_crash_bugs")
+  run.wilcox(vuln, neut, "num_pre_build_bugs")
+
   dataset <- transform.dataset(dataset)
 
-  # Logistic Regression Modeling
+  cat("    ############################\n")
+  cat("        COHEN'S D\n")
+  cat("    ############################\n")
+  print(cbind(
+    sloc = cohensD(vuln$sloc, neut$sloc),
+    bugs = cohensD(vuln$num_pre_bugs, neut$num_pre_bugs),
+    features = cohensD(vuln$num_pre_features, neut$num_pre_features),
+    compatibility_bugs = cohensD(
+      vuln$num_pre_compatibility_bugs, neut$num_pre_compatibility_bugs
+    ),
+    regression_bugs = cohensD(
+      vuln$num_pre_regression_bugs, neut$num_pre_regression_bugs
+    ),
+    security_bugs = cohensD(
+      vuln$num_pre_security_bugs, neut$num_pre_security_bugs
+    ),
+    tests_fails_bugs = cohensD(
+      vuln$num_pre_tests_fails_bugs, neut$num_pre_tests_fails_bugs
+    ),
+    stability_crash_bugs = cohensD(
+      vuln$num_pre_stability_crash_bugs, neut$num_pre_stability_crash_bugs
+    ),
+    build_bugs = cohensD(vuln$num_pre_build_bugs, neut$num_pre_build_bugs)
+  ))
+
+  cat("    ############################\n")
+  cat("        LOGISTIC REGRESSION\n")
+  cat("    ############################\n")
 
   # Control
   fit.formula = formula(becomes_vulnerable ~ release + sloc)
@@ -489,9 +558,7 @@ model.bugs.overall <- function(dataset, switch, k, n){
   fit.stability <- build.model(fit.formula, dataset)
   fit.stability.performance <- run.kfolds(fit.formula, dataset, switch, k, n)
 
-  cat("############################\n")
-  cat("CONTROL\n")
-  cat("############################\n")
+  cat("##########  CONTROL\n\n")
 
   cat("##########  SUMMARY\n")
   print(summary(fit.control))
@@ -501,9 +568,7 @@ model.bugs.overall <- function(dataset, switch, k, n){
   print(Dsquared(model = fit.control))
   cat("\n#################################################\n")
 
-  cat("############################\n")
-  cat("BUG MODELS\n")
-  cat("############################\n")
+  cat("##########  BUG MODELS\n\n")
 
   cat("##########  SUMMARY\n")
   print.summary(fit.bugs)
@@ -546,10 +611,84 @@ model.bugs.overall <- function(dataset, switch, k, n){
 }
 
 model.experience.overall <- function(dataset, switch, k, n){
-  # Data Filtering
+  cat("############################\n")
+  cat("    EXPERIENCE\n")
+  cat("############################\n")
   dataset <- filter.dataset(dataset, filter.type = "experience")
 
-  # Logistic Regression Modeling
+  cat("    ############################\n")
+  cat("        DATA SUMMARY\n")
+  cat("    ############################\n")
+  print(summary(dataset))
+
+  cat("    ############################\n")
+  cat("        CORRELATION\n")
+  cat("    ############################\n")
+  print(
+    round(cor(dataset[,c(14:19)], method = "spearman", use = "complete"), 4)
+  )
+
+  # Split Populations
+  vuln <- dataset[which(dataset$becomes_vulnerable == TRUE),]
+  neut <- dataset[which(dataset$becomes_vulnerable == FALSE),]
+
+  cat("    ############################\n")
+  cat("        VULNERABLE POPULATION\n")
+  cat("    ############################\n")
+  print(
+    cbind(
+      Total = length(dataset[,1]),
+      Neutral = length(neut[,1]),
+      Vulnerable = length(vuln[,1]),
+      Percentage = (length(vuln[,1]) / length(neut[,1])) * 100
+    )
+  )
+
+  cat("    ############################\n")
+  cat("        MANN WHITNEY WILCOXON\n")
+  cat("    ############################\n")
+  run.wilcox(vuln, neut, "sloc")
+  run.wilcox(vuln, neut, "avg_security_experienced_participants")
+  run.wilcox(vuln, neut, "avg_bug_security_experienced_participants")
+  run.wilcox(vuln, neut, "avg_stability_experienced_participants")
+  run.wilcox(vuln, neut, "avg_build_experienced_participants")
+  run.wilcox(vuln, neut, "avg_test_fail_experienced_participants")
+  run.wilcox(vuln, neut, "avg_compatibility_experienced_participants")
+
+  cat("    ############################\n")
+  cat("        COHEN'S D\n")
+  cat("    ############################\n")
+  print(cbind(
+    sloc = cohensD(vuln$sloc, neut$sloc),
+    avg_security_experienced_participants = cohensD(
+      vuln$avg_security_experienced_participants,
+      neut$avg_security_experienced_participants
+    ),
+    avg_bug_security_experienced_participants = cohensD(
+      vuln$avg_bug_security_experienced_participants,
+      neut$avg_bug_security_experienced_participants
+    ),
+    avg_stability_experienced_participants = cohensD(
+      vuln$avg_stability_experienced_participants,
+      neut$avg_stability_experienced_participants
+    ),
+    avg_build_experienced_participants = cohensD(
+      vuln$avg_build_experienced_participants,
+      neut$avg_build_experienced_participants
+    ),
+    avg_test_fail_experienced_participants = cohensD(
+      vuln$avg_test_fail_experienced_participants,
+      neut$avg_test_fail_experienced_participants
+    ),
+    avg_compatibility_experienced_participants = cohensD(
+      vuln$avg_compatibility_experienced_participants,
+      neut$avg_compatibility_experienced_participants
+    )
+  ))
+
+  cat("    ############################\n")
+  cat("        LOGISTIC REGRESSION\n")
+  cat("    ############################\n")
 
   # Control
   fit.formula = formula(becomes_vulnerable ~ release + sloc)
@@ -607,9 +746,7 @@ model.experience.overall <- function(dataset, switch, k, n){
   fit.stability <- build.model(formula = fit.formula, dataset)
   fit.stability.performance <- run.kfolds(fit.formula, dataset, switch, k, n)
 
-  cat("############################\n")
-  cat("CONTROL\n")
-  cat("############################\n")
+  cat("##########  CONTROL\n\n")
 
   cat("##########  SUMMARY\n")
   print(summary(fit.control))
@@ -619,9 +756,7 @@ model.experience.overall <- function(dataset, switch, k, n){
   print(Dsquared(model = fit.control))
   cat("\n#################################################\n")
 
-  cat("############################\n")
-  cat("EXPERIENCE MODELS\n")
-  cat("############################\n")
+  cat("##########  EXPERIENCE MODELS\n\n")
 
   cat("##########  SUMMARY\n")
   print.summary(fit.build)

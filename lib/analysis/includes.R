@@ -39,6 +39,27 @@ db.get.data <- function(connection, query){
   return(dbGetQuery(connection, query))
 }
 
+run.wilcox <- function(vulnerable, neutral, metric){
+  cat(paste("Metric: ", metric, "\n"))
+
+  vuln <- vulnerable[[metric]]
+  neut <- neutral[[metric]]
+
+  print(wilcox.test(vuln, neut))
+  print(
+    cbind(
+      vuln.median = median(vuln, na.rm=TRUE),
+      neut.median = median(neut, na.rm=TRUE)
+    )
+  )
+  print(
+    cbind(
+      vuln.mean = mean(vuln, na.rm=TRUE),
+      neut.mean = mean(neut, na.rm=TRUE)
+    )
+  )
+}
+
 build.model <- function(formula, dataset){
   model <- glm(formula = formula, data = dataset, family = "binomial")
   return(model)
