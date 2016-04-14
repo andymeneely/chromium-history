@@ -94,43 +94,18 @@ analyze.bugs <- function(release, release.next){
               Percentage = (length(release_v[,1])/length(release_n[,1]))*100))
 
   cat("\nWilcoxon:\n")
-  print(wilcox.test(release_v$sloc, release_n$sloc, alternative="greater"))
-  print(cbind(median_v = median(release_v$sloc, na.rm=TRUE),median_n = median(release_n$sloc, na.rm=TRUE)))
-  print(cbind(mean_v = mean(release_v$sloc, na.rm=TRUE),mean_n = mean(release_n$sloc, na.rm=TRUE)))
+  run.wilcox(release_v, release_n, "sloc")
 
   # For bug metrics
   cat("\nFor bug metrics:\n")
-  print(wilcox.test(release_v$num_pre_bugs, release_n$num_pre_bugs, alternative="greater"))
-  print(cbind(median_v = median(release_v$num_pre_bugs, na.rm=TRUE),median_n = median(release_n$num_pre_bugs, na.rm=TRUE)))
-  print(cbind(mean_v = mean(release_v$num_pre_bugs, na.rm=TRUE),mean_n = mean(release_n$num_pre_bugs, na.rm=TRUE)))
-
-  print(wilcox.test(release_v$num_pre_features, release_n$num_pre_features, alternative="greater"))
-  print(cbind(median_v = median(release_v$num_pre_features, na.rm=TRUE),median_n = median(release_n$num_pre_features, na.rm=TRUE)))
-  print(cbind(mean_v = mean(release_v$num_pre_features, na.rm=TRUE),mean_n = mean(release_n$num_pre_features, na.rm=TRUE)))
-
-  print(wilcox.test(release_v$num_pre_compatibility_bugs, release_n$num_pre_compatibility_bugs, alternative="greater"))
-  print(cbind(median_v = median(release_v$num_pre_compatibility_bugs, na.rm=TRUE),median_n = median(release_n$num_pre_compatibility_bugs, na.rm=TRUE)))
-  print(cbind(mean_v = mean(release_v$num_pre_compatibility_bugs, na.rm=TRUE),mean_n = mean(release_n$num_pre_compatibility_bugs, na.rm=TRUE)))
-
-  print(wilcox.test(release_v$num_pre_regression_bugs, release_n$num_pre_regression_bugs, alternative="greater"))
-  print(cbind(median_v = median(release_v$num_pre_regression_bugs, na.rm=TRUE),median_n = median(release_n$num_pre_regression_bugs, na.rm=TRUE)))
-  print(cbind(mean_v = mean(release_v$num_pre_regression_bugs, na.rm=TRUE),mean_n = mean(release_n$num_pre_regression_bugs, na.rm=TRUE)))
-
-  print(wilcox.test(release_v$num_pre_security_bugs, release_n$num_pre_security_bugs, alternative="greater"))
-  print(cbind(median_v = median(release_v$num_pre_security_bugs, na.rm=TRUE),median_n = median(release_n$num_pre_security_bugs, na.rm=TRUE)))
-  print(cbind(mean_v = mean(release_v$num_pre_security_bugs, na.rm=TRUE),mean_n = mean(release_n$num_pre_security_bugs, na.rm=TRUE)))
-
-  print(wilcox.test(release_v$num_pre_tests_fails_bugs, release_n$num_pre_tests_fails_bugs, alternative="greater"))
-  print(cbind(median_v = median(release_v$num_pre_tests_fails_bugs, na.rm=TRUE),median_n = median(release_n$num_pre_tests_fails_bugs, na.rm=TRUE)))
-  print(cbind(mean_v = mean(release_v$num_pre_tests_fails_bugs, na.rm=TRUE),mean_n = mean(release_n$num_pre_tests_fails_bugs, na.rm=TRUE)))
-
-  print(wilcox.test(release_v$num_pre_stability_crash_bugs, release_n$num_pre_stability_crash_bugs, alternative="greater"))
-  print(cbind(median_v = median(release_v$num_pre_stability_crash_bugs, na.rm=TRUE),median_n = median(release_n$num_pre_stability_crash_bugs, na.rm=TRUE)))
-  print(cbind(mean_v = mean(release_v$num_pre_stability_crash_bugs, na.rm=TRUE),mean_n = mean(release_n$num_pre_stability_crash_bugs, na.rm=TRUE)))
-
-  print(wilcox.test(release_v$num_pre_build_bugs, release_n$num_pre_build_bugs, alternative="greater"))
-  print(cbind(median_v = median(release_v$num_pre_build_bugs, na.rm=TRUE),median_n = median(release_n$num_pre_build_bugs, na.rm=TRUE)))
-  print(cbind(mean_v = mean(release_v$num_pre_build_bugs, na.rm=TRUE),mean_n = mean(release_n$num_pre_build_bugs, na.rm=TRUE)))
+  run.wilcox(release_v, release_n, "num_pre_bugs")
+  run.wilcox(release_v, release_n, "num_pre_features")
+  run.wilcox(release_v, release_n, "num_pre_compatibility_bugs")
+  run.wilcox(release_v, release_n, "num_pre_regression_bugs")
+  run.wilcox(release_v, release_n, "num_pre_security_bugs")
+  run.wilcox(release_v, release_n, "num_pre_tests_fails_bugs")
+  run.wilcox(release_v, release_n, "num_pre_stability_crash_bugs")
+  run.wilcox(release_v, release_n, "num_pre_build_bugs")
 
   # Normalize and center data, added one to the values to be able to calculate log to zero. log(1)=0
   release <- transform.dataset(release)
@@ -299,35 +274,16 @@ analyze.experience <- function(release, release.next){
               Percentage = (length(release_v[,1])/length(release_n[,1]))*100))
 
   cat("\nWilcoxon:\n")
-  print(wilcox.test(release_v$sloc, release_n$sloc, alternative="greater"))
-  print(cbind(median_v = median(release_v$sloc, na.rm=TRUE),median_n = median(release_n$sloc, na.rm=TRUE)))
-  print(cbind(mean_v = mean(release_v$sloc, na.rm=TRUE),mean_n = mean(release_n$sloc, na.rm=TRUE)))
+  run.wilcox(release_v, release_n, "sloc")
 
   # For experience metrics
   cat("\nFor experience metrics:\n")
-  print(wilcox.test(release_v$avg_security_experienced_participants, release_n$avg_security_experienced_participants, alternative="greater"))
-  print(cbind(median_v = median(release_v$avg_security_experienced_participants, na.rm=TRUE),median_n = median(release_n$avg_security_experienced_participants, na.rm=TRUE)))
-  print(cbind(mean_v = mean(release_v$avg_security_experienced_participants, na.rm=TRUE),mean_n = mean(release_n$avg_security_experienced_participants, na.rm=TRUE)))
-
-  print(wilcox.test(release_v$avg_bug_security_experienced_participants, release_n$avg_bug_security_experienced_participants, alternative="greater"))
-  print(cbind(median_v = median(release_v$avg_bug_security_experienced_participants, na.rm=TRUE),median_n = median(release_n$avg_bug_security_experienced_participants, na.rm=TRUE)))
-  print(cbind(mean_v = mean(release_v$avg_bug_security_experienced_participants, na.rm=TRUE),mean_n = mean(release_n$avg_bug_security_experienced_participants, na.rm=TRUE)))
-
-  print(wilcox.test(release_v$avg_stability_experienced_participants, release_n$avg_stability_experienced_participants, alternative="greater"))
-  print(cbind(median_v = median(release_v$avg_stability_experienced_participants, na.rm=TRUE),median_n = median(release_n$avg_stability_experienced_participants, na.rm=TRUE)))
-  print(cbind(mean_v = mean(release_v$avg_stability_experienced_participants, na.rm=TRUE),mean_n = mean(release_n$avg_stability_experienced_participants, na.rm=TRUE)))
-
-  print(wilcox.test(release_v$avg_build_experienced_participants, release_n$avg_build_experienced_participants, alternative="greater"))
-  print(cbind(median_v = median(release_v$avg_build_experienced_participants, na.rm=TRUE),median_n = median(release_n$avg_build_experienced_participants, na.rm=TRUE)))
-  print(cbind(mean_v = mean(release_v$avg_build_experienced_participants, na.rm=TRUE),mean_n = mean(release_n$avg_build_experienced_participants, na.rm=TRUE)))
-
-  print(wilcox.test(release_v$avg_test_fail_experienced_participants, release_n$avg_test_fail_experienced_participants, alternative="greater"))
-  print(cbind(median_v = median(release_v$avg_test_fail_experienced_participants, na.rm=TRUE),median_n = median(release_n$avg_test_fail_experienced_participants, na.rm=TRUE)))
-  print(cbind(mean_v = mean(release_v$avg_test_fail_experienced_participants, na.rm=TRUE),mean_n = mean(release_n$avg_test_fail_experienced_participants, na.rm=TRUE)))
-
-  print(wilcox.test(release_v$avg_compatibility_experienced_participants, release_n$avg_compatibility_experienced_participants, alternative="greater"))
-  print(cbind(median_v = median(release_v$avg_compatibility_experienced_participants, na.rm=TRUE),median_n = median(release_n$avg_compatibility_experienced_participants, na.rm=TRUE)))
-  print(cbind(mean_v = mean(release_v$avg_compatibility_experienced_participants, na.rm=TRUE),mean_n = mean(release_n$avg_compatibility_experienced_participants, na.rm=TRUE)))
+  run.wilcox(release_v, release_n, "avg_security_experienced_participants")
+  run.wilcox(release_v, release_n, "avg_bug_security_experienced_participants")
+  run.wilcox(release_v, release_n, "avg_stability_experienced_participants")
+  run.wilcox(release_v, release_n, "avg_build_experienced_participants")
+  run.wilcox(release_v, release_n, "avg_test_fail_experienced_participants")
+  run.wilcox(release_v, release_n, "avg_compatibility_experienced_participants")
 
   cat("\nCohensD for Experience metrics:\n")
   print(cbind(
