@@ -13,7 +13,7 @@ class DeveloperSnapshot < ActiveRecord::Base
 		connection.add_index :developer_snapshots, :vuln_misses_6mo
 		connection.add_index :developer_snapshots, :vuln_fixes_owned
 		connection.add_index :developer_snapshots, :vuln_fixes
-		connection.add_index :developer_snapshots, :perc_missed_vuln
+		connection.add_index :developer_snapshots, :perc_vuln_misses
 
 		connection.add_index :developer_snapshots, :sec_exp
 		connection.add_index :developer_snapshots, :bugsec_exp
