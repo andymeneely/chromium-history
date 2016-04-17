@@ -175,9 +175,9 @@ class CodeReviewParser
   end #load comments method
 
   #param file = the json file we're working with   DO WE EVEN NEED THIS HERE?
-  #      codereview = code reivew model object
+  #      codereview = code review model object
   #      msg = the messages sent out (about the review in general as opposed to a specific patch set)
-  @@MESSAGE_PROPS = [:sender, :sender_id, :text, :approval, :disapproval, :date, :code_review_id]
+  @@MESSAGE_PROPS = [:sender, :sender_id, :text, :approval, :disapproval, :date, :code_review_id, :controversy]
   def parse_messages(file, code_review_id, msgs)
     msgs.each do |msg|
       next if msg['text'] == ''
@@ -185,6 +185,12 @@ class CodeReviewParser
       msg['sender_id'] = get_dev_id(msg['sender'])
       msg['text'].gsub!(/^\>.*$/, '')
       msg['text'].gsub!(/^https?:\/\/codereview.chromium.org\/\d+\/diff[\/\.\w#]+\n(Line \d+:|File [\/\w\.]+ \((right|left)\):)/, '')
+      #msg['controversy'] = 0
+      if @msgs != nil
+        msg['controversy'] = 0.0
+      else
+        msg['controversy'] = determineTimeControversy(msg['date'])
+      end
       @msgs << ordered_array(@@MESSAGE_PROPS, msg)
       @prtp_set << msg['sender_id'] unless msg['sender_id'] == -1
       # if Contributor.contribution? msg['text']
@@ -208,4 +214,10 @@ class CodeReviewParser
     end
   end
 
+  #Determine the controversiality of each message based on the time of the message before it
+  def determineTimeControversy(msg_date)
+    dateDiff = (@msgs[-1].to_f / msg_date.to_f)
+    dateDiff = 1 - dateDiff
+    return dateDiff
+  end
 end#class

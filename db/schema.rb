@@ -203,6 +203,7 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.boolean  "disapproval"
     t.datetime "date"
     t.integer  "code_review_id", limit: 8
+    t.decimal  "controversy"
   end
 
   create_table "messages_technical_words", id: false, force: true do |t|
