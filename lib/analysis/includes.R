@@ -39,6 +39,27 @@ db.get.data <- function(connection, query){
   return(dbGetQuery(connection, query))
 }
 
+run.wilcox <- function(vulnerable, neutral, metric){
+  cat(paste("Metric: ", metric, "\n"))
+
+  vuln <- vulnerable[[metric]]
+  neut <- neutral[[metric]]
+
+  print(wilcox.test(vuln, neut))
+  print(
+    cbind(
+      vuln.median = median(vuln, na.rm=TRUE),
+      neut.median = median(neut, na.rm=TRUE)
+    )
+  )
+  print(
+    cbind(
+      vuln.mean = mean(vuln, na.rm=TRUE),
+      neut.mean = mean(neut, na.rm=TRUE)
+    )
+  )
+}
+
 build.model <- function(formula, dataset){
   model <- glm(formula = formula, data = dataset, family = "binomial")
   return(model)
@@ -147,19 +168,26 @@ run.kfolds <- function(formula, dataset, switch, k, n){
   return(aggregate.performance(performance))
 }
 
-filter.dataset <- function(dataset){
-  dataset <- subset(dataset,
-    (
-      dataset$num_pre_features !=0 |
-      dataset$num_pre_compatibility_bugs !=0 |
-      dataset$num_pre_regression_bugs !=0 |
-      dataset$num_pre_security_bugs !=0 |
-      dataset$num_pre_tests_fails_bugs != 0 |
-      dataset$num_pre_stability_crash_bugs != 0 |
-      dataset$num_pre_build_bugs != 0 |
-      dataset$becomes_vulnerable != FALSE
-    ) & dataset$sloc > 0
-  )
+filter.dataset <- function(dataset, filter.type){
+  if(filter.type == "bug"){
+    dataset <- subset(dataset,
+      (
+        dataset$num_pre_features !=0 |
+        dataset$num_pre_compatibility_bugs !=0 |
+        dataset$num_pre_regression_bugs !=0 |
+        dataset$num_pre_security_bugs !=0 |
+        dataset$num_pre_tests_fails_bugs != 0 |
+        dataset$num_pre_stability_crash_bugs != 0 |
+        dataset$num_pre_build_bugs != 0 |
+        dataset$becomes_vulnerable != FALSE
+      ) & dataset$sloc > 0
+    )
+  } else if(filter.type == "experience"){
+    dataset <- subset(dataset, dataset$sloc > 0 & dataset$num_participants > 0)
+  } else {
+    warning("Unknown filter: ", filter.type, ". Data set unaltered.")
+  }
+
   return(dataset)
 }
 

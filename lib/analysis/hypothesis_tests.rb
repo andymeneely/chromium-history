@@ -14,12 +14,12 @@ class HypothesisTests
       #puts "===== FOR RELEASE #{release.name} ====="
       #puts "="*80
       #query_db(release.name)
-      
+
       #puts "-"*80
       #puts "----- BUG ASSOCIATION FOR RELEASE #{release.name} -----"
       #puts "-"*80
       #bug_association_tests
-      
+
       #puts "-"*80
       #puts "----- VULNERABILITY ASSOCIATION FOR RELEASE #{release.name} -----"
       #puts "-"*80
@@ -48,13 +48,13 @@ class HypothesisTests
       library(DBI)
       library(RPostgreSQL)
       drv <- dbDriver("PostgreSQL")
-      con <- dbConnect(drv, 
-                       user="#{conf['username']}", 
-                       password="#{conf['password']}", 
+      con <- dbConnect(drv,
+                       user="#{conf['username']}",
+                       password="#{conf['password']}",
                        dbname="#{conf['database']}")
     EOR
   end
-  
+
   def query_db(release)
     R.eval <<-EOR
       data <- dbGetQuery(con, "SELECT * FROM release_filepaths WHERE release='#{release}'")
@@ -63,7 +63,7 @@ class HypothesisTests
 
   def query_db_all
     R.eval <<-EOR
-      
+
     EOR
   end
 
@@ -93,7 +93,7 @@ class HypothesisTests
     association '% Reviews over 200 LOC/hour','perc_fast_reviews','becomes_buggy'
     association '% Reviews with a Potentially-Overlooked Patchset', 'perc_overlooked_patchsets','becomes_buggy'
     association 'Average Sheriff Hours','avg_sheriff_hours','becomes_buggy'
-    
+
     association 'Pre Bugs / Future Bugs','num_pre_bugs','becomes_buggy'
     association 'Pre Feature Bugs / Future Bugs','num_pre_features','becomes_buggy'
     association 'Pre Compatibility Bugs / Future Bugs','num_pre_compatibility_bugs','becomes_buggy'
@@ -103,7 +103,7 @@ class HypothesisTests
     association 'Pre Stability Crash Bugs / Future Bugs','num_pre_stability_crash_bugs','becomes_buggy'
     association 'Pre Build Bugs / Future Bugs','num_pre_build_bugs','becomes_buggy'
   end
-  
+
   def vulnerability_association_tests
     association 'SLOC', 'sloc','vulnerable'
     association 'Number of Reviews', 'num_reviews','vulnerable'
@@ -122,7 +122,7 @@ class HypothesisTests
     association '% Reviews over 200 LOC/hour','perc_fast_reviews','vulnerable'
     association '% Reviews with a Potentially-Overlooked Patchset', 'perc_overlooked_patchsets','vulnerable'
     association 'Average Sheriff Hours','avg_sheriff_hours','vulnerable'
-    
+
     association 'Pre Bugs / Future Vulnerability','num_pre_bugs','becomes_vulnerable'
     association 'Pre Feature Bugs / Future Vulnerability','num_pre_features','becomes_vulnerable'
     association 'Pre Compatibility Bugs / Future Vulnerability','num_pre_compatibility_bugs','becomes_vulnerable'
@@ -145,7 +145,7 @@ class HypothesisTests
       vulnerable_per_sloc <- vulnerable_per_sloc[is.finite(vulnerable_per_sloc)] #remove /0
       neutral_per_sloc <- neutral/data$sloc[data$#{criteria}=="FALSE"]
       neutral_per_sloc <- neutral_per_sloc[is.finite(neutral_per_sloc)] #remove /0
-      
+
       # MWW tests
       op <- options(warn = (-1)) # suppress warnings
       wt <- wilcox.test(vulnerable, neutral)
@@ -158,9 +158,9 @@ class HypothesisTests
       thresh <- (median_vps + median_nps) / 2
       a <- vulnerable_per_sloc
       b <- neutral_per_sloc
-      p_over_thresh <- length(a[a >thresh])/length(b[b >thresh]) 
-      p_under_thresh <- length(a[a<=thresh])/length(b[b<=thresh]) 
-      risk_factor <- p_over_thresh / p_under_thresh 
+      p_over_thresh <- length(a[a >thresh])/length(b[b >thresh])
+      p_under_thresh <- length(a[a<=thresh])/length(b[b<=thresh])
+      risk_factor <- p_over_thresh / p_under_thresh
       if ( is.finite(risk_factor) && risk_factor < 1.0 )
         risk_factor <- 1/risk_factor
       end
@@ -183,13 +183,13 @@ class HypothesisTests
     puts "    risk factor: #{R.pull('risk_factor')}"
     R.eval "rm(vulnerable, vulnerable_per_sloc, neutral,neutral_per_sloc, wt,wt_per_sloc,a,b)"
     puts "\n"
-    rescue 
+    rescue
       puts "ERROR running association test for #{title}, #{column}"
     end
   end
 
   def r_modeling
-    begin 
+    begin
 
     # Set up libraries
     R.eval <<-EOR
@@ -203,11 +203,11 @@ class HypothesisTests
               setwd('#{File.dirname(__FILE__)}')
               source('#{File.dirname(__FILE__)}/functions.R')
     EOR
-    
+
     R.echo true, false
     #execute the functions on each release
     R.eval <<-EOR
-        
+
         #Increase console width
         options("width"=250)
 
@@ -236,9 +236,10 @@ class HypothesisTests
           was_buggy,
           becomes_buggy,
           was_vulnerable,
-          becomes_vulnerable
+          becomes_vulnerable,
+          num_participants
         FROM release_filepaths")
-        
+
 
         # Split the data in relases
         r05 <- release_filepaths_data[ which(release_filepaths_data$release == '5.0'), -c(1)]
@@ -266,12 +267,12 @@ class HypothesisTests
         model.overall(
           release_filepaths_data, switch = "becomes_vulnerable", k = 10, n = 10
         )
-        
+
         rm(release_filepaths_data,r05,r11,r19,r27,r35)
     EOR
     R.echo false, false
     puts "\n"
-    rescue 
+    rescue
       puts "ERROR running glm model test for Release #{title}"
     end
   end
