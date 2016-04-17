@@ -43,7 +43,7 @@ class DevAnalysis
 			sheriff_hrs, has_sheriff_hrs,
 			vuln_misses_1yr, vuln_misses_6mo,
 			vuln_fixes_owned, vuln_fixes,
-			perc_missed_vuln, 
+			perc_vuln_misses, 
 			sec_exp, bugsec_exp,
 			start_date, end_date 
 			FROM developer_snapshots")
@@ -98,10 +98,10 @@ class DevAnalysis
 			spearman_vulnF_close <- cor(dev_snap$vuln_fixes, dev_snap$closeness, method="spearman")
 			spearman_vulnF_bet <- cor(dev_snap$vuln_fixes, dev_snap$betweenness, method="spearman")
 
-			spearman_percVM_deg <- cor(dev_snap$perc_missed_vuln, dev_snap$degree, method="spearman")
-			spearman_percVM_sher <- cor(dev_snap$perc_missed_vuln, dev_snap$sheriff_hrs, method="spearman")
-			spearman_percVM_close <- cor(dev_snap$perc_missed_vuln, dev_snap$closeness, method="spearman")
-			spearman_percVM_bet <- cor(dev_snap$perc_missed_vuln, dev_snap$betweenness, method="spearman")
+			spearman_percVM_deg <- cor(dev_snap$perc_vuln_misses, dev_snap$degree, method="spearman")
+			spearman_percVM_sher <- cor(dev_snap$perc_vuln_misses, dev_snap$sheriff_hrs, method="spearman")
+			spearman_percVM_close <- cor(dev_snap$perc_vuln_misses, dev_snap$closeness, method="spearman")
+			spearman_percVM_bet <- cor(dev_snap$perc_vuln_misses, dev_snap$betweenness, method="spearman")
 
 			op <- options(warn = (-1)) 	
 			wil_deg_sher <- wilcox.test(dev_snap$degree ~ dev_snap$has_sheriff_hrs, paired=FALSE)

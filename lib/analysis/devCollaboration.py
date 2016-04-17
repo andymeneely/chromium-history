@@ -67,16 +67,16 @@ def create_graph_array(cur):
 				# add atrributes for whether or not this developer is experienced
 				thisGraph.node[row[1]]["sec_exp"] = row[6]
 				thisGraph.node[row[1]]["bugsec_exp"] = row[10]
-				thisGraph.node[row[1]]["missed_vuln"] = 0
-				thisGraph.node[row[1]]["missed_vuln_6mo"] = 0
-				thisGraph.node[row[1]]["fixed_vuln_own"] = 0
-				thisGraph.node[row[1]]["fixed_vuln"] = 0
+				thisGraph.node[row[1]]["vuln_misses_1yr"] = 0
+				thisGraph.node[row[1]]["vuln_misses_6mo"] = 0
+				thisGraph.node[row[1]]["vuln_fixes_owned"] = 0
+				thisGraph.node[row[1]]["vuln_fixes"] = 0
 				thisGraph.node[row[2]]["sec_exp"] = row[7]
 				thisGraph.node[row[2]]["bugsec_exp"] = row[11]
-				thisGraph.node[row[2]]["missed_vuln"] = 0
-				thisGraph.node[row[2]]["missed_vuln_6mo"] = 0
-				thisGraph.node[row[2]]["fixed_vuln_own"] = 0
-				thisGraph.node[row[2]]["fixed_vuln"] = 0
+				thisGraph.node[row[2]]["vuln_misses_1yr"] = 0
+				thisGraph.node[row[2]]["vuln_misses_6mo"] = 0
+				thisGraph.node[row[2]]["vuln_fixes_owned"] = 0
+				thisGraph.node[row[2]]["vuln_fixes"] = 0
 		except psycopg2.DatabaseError, e:
 			print 'Error %s' % e
 			sys.exit(1)
@@ -96,7 +96,7 @@ def create_graph_array(cur):
 		cur.execute(qry_mv)
 		for row in cur:
 			if thisGraph.has_node(row[5]):
-				thisGraph.node[row[5]]["missed_vuln_6mo"] = int(thisGraph.node[row[5]]["missed_vuln_6mo"]) + 1
+				thisGraph.node[row[5]]["vuln_misses_6mo"] = int(thisGraph.node[row[5]]["vuln_misses_6mo"]) + 1
 		# COUNT ONLY WITHIN 6 MONTHS
 		qry_mv = "SELECT DISTINCT ON(missed_code_reviews.issue, participants.dev_id) "
 		qry_mv = qry_mv + "code_reviews_cvenums.cvenum_id, code_reviews.issue, fix_commits.created_at, missed_code_reviews.issue, missed_commits.created_at, participants.dev_id, missed_commit_filepaths.filepath "
@@ -113,7 +113,7 @@ def create_graph_array(cur):
 		cur.execute(qry_mv)
 		for row in cur:
 			if thisGraph.has_node(row[5]):
-				thisGraph.node[row[5]]["missed_vuln"] = int(thisGraph.node[row[5]]["missed_vuln"]) + 1
+				thisGraph.node[row[5]]["vuln_misses_1yr"] = int(thisGraph.node[row[5]]["vuln_misses_1yr"]) + 1
 
 		# COUNT FIX REVIEW OWNERSHIPS
 		qry_mv = "SELECT cvenum_id, issue, owner_id, created FROM "
@@ -123,7 +123,7 @@ def create_graph_array(cur):
 		cur.execute(qry_mv)
 		for row in cur:
 			if thisGraph.has_node(row[2]):
-				thisGraph.node[row[2]]["fixed_vuln_own"] = int(thisGraph.node[row[2]]["fixed_vuln_own"]) + 1	
+				thisGraph.node[row[2]]["vuln_fixes_owned"] = int(thisGraph.node[row[2]]["vuln_fixes_owned"]) + 1	
 
 		# COUNT PARTICIPATIONS ON THESE COMMITS
 		qry_mv = "SELECT cvenum_id, code_reviews.issue, code_reviews.owner_id, dev_id, created, review_date FROM "
@@ -134,7 +134,7 @@ def create_graph_array(cur):
 		cur.execute(qry_mv)
 		for row in cur:
 			if thisGraph.has_node(row[3]):
-				thisGraph.node[row[3]]["fixed_vuln"] = int(thisGraph.node[row[3]]["fixed_vuln"]) + 1
+				thisGraph.node[row[3]]["vuln_fixes"] = int(thisGraph.node[row[3]]["vuln_fixes"]) + 1
 		
 		# COUNT SHERIFF HOURS
 		for dev in nx.nodes(thisGraph):
@@ -202,11 +202,11 @@ def dev_graph(graphArray, cur, con ):
 			if(gr.node[dev]["shr_hrs"] != 0):
 				has_hours = 1
 			perc_vuln = 0.000
-			if(gr.node[dev]["missed_vuln"] != 0):
-				perc_vuln = round( (float(gr.node[dev]["missed_vuln"])/gr.node[dev]["num_participations"]) , 4)
+			if(gr.node[dev]["num_participations"] != 0):
+				perc_vuln = round( (float(gr.node[dev]["vuln_misses_1yr"])/gr.node[dev]["num_participations"]) , 4)
 
 			# this should be writing into the database... 
-			cur.execute("INSERT INTO developer_snapshots( dev_id, degree, participations, own_count, closeness, betweenness, sheriff_hrs, has_sheriff_hrs, vuln_misses_1yr, vuln_misses_6mo, vuln_fixes_owned, vuln_fixes, perc_missed_vuln, sec_exp, bugsec_exp, start_date, end_date) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (dev, gr.node[dev]["degree"], gr.node[dev]["num_participations"], gr.node[dev]["own_count"], gr.node[dev]["closeness"],gr.node[dev]["betweenness"], gr.node[dev]["shr_hrs"], has_hours, gr.node[dev]["missed_vuln"], gr.node[dev]["missed_vuln_6mo"], gr.node[dev]["fixed_vuln_own"], gr.node[dev]["fixed_vuln"], perc_vuln, gr.node[dev]["sec_exp"],gr.node[dev]["bugsec_exp"], gr.graph["begin"], gr.graph["end"]) )
+			cur.execute("INSERT INTO developer_snapshots( dev_id, degree, participations, own_count, closeness, betweenness, sheriff_hrs, has_sheriff_hrs, vuln_misses_1yr, vuln_misses_6mo, vuln_fixes_owned, vuln_fixes, perc_vuln_misses, sec_exp, bugsec_exp, start_date, end_date) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (dev, gr.node[dev]["degree"], gr.node[dev]["num_participations"], gr.node[dev]["own_count"], gr.node[dev]["closeness"],gr.node[dev]["betweenness"], gr.node[dev]["shr_hrs"], has_hours, gr.node[dev]["vuln_misses_1yr"], gr.node[dev]["vuln_misses_6mo"], gr.node[dev]["vuln_fixes_owned"], gr.node[dev]["vuln_fixes"], perc_vuln, gr.node[dev]["sec_exp"],gr.node[dev]["bugsec_exp"], gr.graph["begin"], gr.graph["end"]) )
 		con.commit()
 	closing(con) 
 

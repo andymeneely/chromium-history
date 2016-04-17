@@ -177,7 +177,7 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.integer  "vuln_misses_6mo"
     t.integer  "vuln_fixes_owned"
     t.integer  "vuln_fixes"
-    t.decimal  "perc_missed_vuln"
+    t.decimal  "perc_vuln_misses"
     t.boolean  "sec_exp"
     t.boolean  "bugsec_exp"
     t.datetime "start_date"
