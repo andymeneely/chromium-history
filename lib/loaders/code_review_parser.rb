@@ -216,8 +216,28 @@ class CodeReviewParser
 
   #Determine the controversiality of each message based on the time of the message before it
   def determineTimeControversy(msg_date)
-    dateDiff = (@msgs[-1].to_f / msg_date.to_f)
+    dateDiff = (@msgs[-1]['date'].to_f / msg_date.to_f)
     dateDiff = 1 - dateDiff
+    dateDiff = 100 * dateDiff
     return dateDiff
+  end
+
+  def determineSenderControversy(senderID)
+    totalControversy = 0.0
+    aveControversy = 0.0
+    @msgs.each do |msg|
+      if msg['sender_id'] == senderID
+        #sender has been in this conversation
+	totalControversy = totalControversy + 1
+      else if totalControversy == 0
+	aveControversy = aveControversy + msg['controversy']
+      end
+    end
+
+    if totalControversy == 0
+      return (aveControversy.to_f/@msgs.length)
+    else
+      return totalControversy
+    end
   end
 end#class
