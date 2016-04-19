@@ -222,6 +222,7 @@ class CodeReviewParser
     return dateDiff
   end
 
+=begin
   def determineSenderControversy(senderID)
     totalControversy = 0.0
     aveControversy = 0.0
@@ -239,5 +240,6 @@ class CodeReviewParser
     else
       return totalControversy
     end
-  end
+  end 
+=end
 end#class
