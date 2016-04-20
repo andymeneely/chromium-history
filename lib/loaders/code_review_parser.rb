@@ -189,7 +189,7 @@ class CodeReviewParser
       if @msgs != nil
         msg['controversy'] = 0.0
       else
-        msg['controversy'] = determineTimeControversy(msg['date'])
+        msg['controversy'] = determineTimeControversy(msg['date']) + determineSenderControversy(msg['sender_id'])
       end
       @msgs << ordered_array(@@MESSAGE_PROPS, msg)
       @prtp_set << msg['sender_id'] unless msg['sender_id'] == -1
@@ -216,21 +216,33 @@ class CodeReviewParser
 
   #Determine the controversiality of each message based on the time of the message before it
   def determineTimeControversy(msg_date)
-    dateDiff = (@msgs[-1]['date'].to_f / msg_date.to_f)
-    dateDiff = 1 - dateDiff
-    dateDiff = 100 * dateDiff
+	#TODO "Tear" using the initial date of the code review
+    reviewDate = @msgs[0]['date'].strftime("%Q").to_f
+
+    lastMsgDate = @msgs[-1]['date'].strftime("%Q").to_f - reviewDate
+    newMsgDate = msg_date.strftime("%Q").to_f - reviewDate
+
+    dateDiff = (lastMsgDate / newMsgDate)
+    dateDiff = 1.0 - dateDiff
+    dateDiff = 100.0 * dateDiff
     return dateDiff
   end
 
 =begin
   def determineSenderControversy(senderID)
+
+	computes the controversy with respect to the sender of a message. If the sender has not 
+	been in the conversation up to this point, return the average controversy of every 
+	message up to this point, otherwise, return the total number of messages the sender has
+	had up to this point
+
     totalControversy = 0.0
     aveControversy = 0.0
     @msgs.each do |msg|
       if msg['sender_id'] == senderID
         #sender has been in this conversation
 	totalControversy = totalControversy + 1
-      else if totalControversy == 0
+      elsif totalControversy == 0
 	aveControversy = aveControversy + msg['controversy']
       end
     end
