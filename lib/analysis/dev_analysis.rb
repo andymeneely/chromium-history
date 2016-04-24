@@ -181,7 +181,7 @@ class DevAnalysis
 			closeness vs sheriff hours p-value: #{R.pull("wil_close_sher$p.value")} 
         median with sheriff_hrs: #{R.pull("median(dev_snap$closeness[dev_snap$has_sheriff_hrs==1])")}
         median w/o sheriff_hrs: #{R.pull("median(dev_snap$closeness[dev_snap$has_sheriff_hrs==0])")}
-			betweeness vs sheriff hours p-value: #{R.pull("wil_bet_sher$p.value")} 
+			betweenness vs sheriff hours p-value: #{R.pull("wil_bet_sher$p.value")} 
         median with sheriff_hrs: #{R.pull("median(dev_snap$betweenness[dev_snap$has_sheriff_hrs==1])")}
         median w/o sheriff_hrs: #{R.pull("median(dev_snap$betweenness[dev_snap$has_sheriff_hrs==0])")}
     		
