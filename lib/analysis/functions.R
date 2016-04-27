@@ -441,6 +441,10 @@ model.bugs.overall <- function(dataset, switch, k, n){
 
   dataset <- transform.dataset(dataset)
 
+  # Update Split Populations
+  vuln <- dataset[which(dataset$becomes_vulnerable == TRUE),]
+  neut <- dataset[which(dataset$becomes_vulnerable == FALSE),]
+
   cat("    ############################\n")
   cat("        COHEN'S D\n")
   cat("    ############################\n")
