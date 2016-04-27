@@ -179,23 +179,30 @@ class CodeReviewParser
   #      msg = the messages sent out (about the review in general as opposed to a specific patch set)
   @@MESSAGE_PROPS = [:sender, :sender_id, :text, :approval, :disapproval, :date, :code_review_id, :controversy]
   def parse_messages(file, code_review_id, msgs)
+    fst = 0
+    strtMsg = nil
+    prevMsg = nil
     msgs.each do |msg|
       next if msg['text'] == ''
       msg['code_review_id'] = code_review_id
       msg['sender_id'] = get_dev_id(msg['sender'])
       msg['text'].gsub!(/^\>.*$/, '')
       msg['text'].gsub!(/^https?:\/\/codereview.chromium.org\/\d+\/diff[\/\.\w#]+\n(Line \d+:|File [\/\w\.]+ \((right|left)\):)/, '')
+      #puts type(@msgs)
       #msg['controversy'] = 0
-      if @msgs != nil
+      if fst  == 0
         msg['controversy'] = 0.0
+        strtMsg = msg
       else
-        msg['controversy'] = determineTimeControversy(msg['date']) + determineSenderControversy(msg['sender_id'])
+      	msg['controversy'] = determineTimeControversy(strtMsg['date'], prevMsg['date'], msg['date'])# + determineSenderControversy(msg['sender_id'])
       end
       @msgs << ordered_array(@@MESSAGE_PROPS, msg)
       @prtp_set << msg['sender_id'] unless msg['sender_id'] == -1
+      fst = 1
       # if Contributor.contribution? msg['text']
       #   @contrb_set << msg['sender_id'] unless msg['sender_id'] == -1
       # end
+      prevMsg=msg
     end #message loop
   end #load messages method
 
@@ -215,12 +222,10 @@ class CodeReviewParser
   end
 
   #Determine the controversiality of each message based on the time of the message before it
-  def determineTimeControversy(msg_date)
-	#TODO "Tear" using the initial date of the code review
-    reviewDate = @msgs[0]['date'].strftime("%Q").to_f
-
-    lastMsgDate = @msgs[-1]['date'].strftime("%Q").to_f - reviewDate
-    newMsgDate = msg_date.strftime("%Q").to_f - reviewDate
+  def determineTimeControversy(startDate, prevDate, currDate)
+    reviewDate = startDate.to_datetime.strftime("%Q").to_f
+    lastMsgDate = prevDate.to_datetime.strftime("%Q").to_f - reviewDate
+    newMsgDate = currDate.to_datetime.strftime("%Q").to_f - reviewDate
 
     dateDiff = (lastMsgDate / newMsgDate)
     dateDiff = 1.0 - dateDiff
