@@ -1,6 +1,9 @@
 init.libraries <- function(){
   suppressPackageStartupMessages(library("DBI"))
   suppressPackageStartupMessages(library("ggplot2"))
+  suppressPackageStartupMessages(library("grid"))
+  suppressPackageStartupMessages(library("gridExtra"))
+  suppressPackageStartupMessages(library("reshape2"))
 }
 
 get.db.connection <- function(db.settings){
@@ -28,6 +31,7 @@ db.connect <- function(provider, host, port, user, password, dbname){
     dbDriver(provider),
     host = host, port = port, user = user, password = password, dbname = dbname
   )
+
   return(connection)
 }
 
@@ -147,7 +151,7 @@ split.kfolds <- function(folds, testing.fold){
       testing <- folds[[index]]
       next
     }
-    training <- rbind(training, folds[[index]]) 
+    training <- rbind(training, folds[[index]])
   }
   return(list("training" = training, "testing" = testing))
 }
