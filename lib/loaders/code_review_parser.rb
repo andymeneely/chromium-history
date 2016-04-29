@@ -40,7 +40,10 @@ class CodeReviewParser
                  nil, # for total_reviews_with_owner
                  nil, # for owner_familiarity_gap
                  nil, # for total_sheriff_hours
-                 nil] # for cursory
+                 nil, # for cursory
+                 nil, # for churn
+                 FALSE, # for vuln_missed
+                 0]   # for vuln_misses
 
         @prtp_set.each {|p| @prtps << [p,
                                        owner_id,

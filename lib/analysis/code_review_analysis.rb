@@ -1,3 +1,4 @@
+require 'date'
 class CodeReviewAnalysis
 
   def populate_total_reviews_with_owner
@@ -21,7 +22,15 @@ class CodeReviewAnalysis
       review.update(total_sheriff_hours: review.participants.sum(:sheriff_hours))
     end
   end
-
+  def populate_churn
+    CodeReview.find_each do |review|
+      sum = 0
+      review.patch_sets.each do |set|
+        sum = set.patch_set_files.sum(:num_added) + set.patch_set_files.sum(:num_removed)
+      end
+      review.update(churn: sum)
+    end
+  end
   @@bug_experience_metrics = [
     {:field => 'bug_security_experience', :label => 'type-bug-security'},
     {:field => 'stability_experience', :label => 'stability-crash'},
