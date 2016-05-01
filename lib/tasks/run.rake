@@ -17,6 +17,7 @@ require 'analysis/release_analysis'
 require 'analysis/participant_analysis'
 require 'analysis/hypothesis_tests'
 require 'analysis/code_review_analysis'
+require 'analysis/cr_analysis_results'
 require 'analysis/data_visualization'
 require 'analysis/dev_analysis'
 require 'analysis/visualization_queries'
@@ -196,6 +197,11 @@ namespace :run do
   desc 'Run dev analysis statistics'
   task :dev => :env do
     DevAnalysis.new.run
+  end
+
+  desc 'Run Code Review Analysis'
+  task :cra => :env do
+    CRAnalysisResults.new.run
   end
 
   desc "Run network analysis"
