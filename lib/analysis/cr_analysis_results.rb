@@ -18,7 +18,7 @@ class CRAnalysisResults
 		puts "-------------CODE REVIEW ANAYSIS: vulnerabilities--------------"
 		puts "---------------------------------------------------------------"
 		set_up_libraries
-		connet_to_db do
+		connect_to_db do
 			load_codeReviews
 			full_analysis
 
@@ -99,7 +99,7 @@ class CRAnalysisResults
 		puts "------Spearman on owner familiarity gap VS sheriff-hours/churn--------"
 		puts "----------------------------------------------------------------------"
 		puts <<-EOS
-			owner familiarity gap vs sheriff hours: #{(R.pull("spearman_oFamGap_sher")}
+			owner familiarity gap vs sheriff hours: #{R.pull("spearman_oFamGap_sher")}
 			owner familiarity gap vs churn: #{R.pull("spearman_oFamGap_churn")}
 		EOS
 
@@ -130,9 +130,8 @@ class CRAnalysisResults
 			vuln misses vs owner familiarity gap: #{R.pull("spearman_vMisses_oFamGap")}
 			vuln misses vs sheriff hours: #{R.pull("spearman_vMisses_sher")}
 			vuln misses vs churn: #{R.pull("spearman_vMisses_churn")}
-		EOS	
-
-	end
-		
+		EOS
+	
+	end		
 
 end
