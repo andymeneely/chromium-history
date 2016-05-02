@@ -38,8 +38,12 @@ def populate_cr_vuln_misses( data ):
 			issue = row[0]
 			earlyTime = row[1]
 			lateTime = earlyTime + timedelta(days=365)
-			earlyBoundary = datetime.strptime( str(earlyTime) ,"%Y-%m-%d %H:%M:%S.%f" )
-			lateBoundary = 	datetime.strptime( str(lateTime) , "%Y-%m-%d %H:%M:%S.%f" )
+			try:
+				earlyBoundary = datetime.strptime( str(earlyTime) ,"%Y-%m-%d %H:%M:%S.%f" )
+				lateBoundary = 	datetime.strptime( str(lateTime) , "%Y-%m-%d %H:%M:%S.%f" )
+			except ValueError:
+				earlyBoundary = datetime.strptime( str(earlyTime) ,"%Y-%m-%d %H:%M:%S" )
+				lateBoundary = 	datetime.strptime( str(lateTime) , "%Y-%m-%d %H:%M:%S" )
 			
 			qry = "SELECT DISTINCT ON( cur_psf.filepath ) "
 			qry = qry + "cur_cr.issue, cur_ps.composite_patch_set_id, cur_psf.filepath, vuln_cr.issue, "
