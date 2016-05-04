@@ -41,7 +41,7 @@ class CRAnalysisResults
 			total_reviews_with_owner,
 			owner_familiarity_gap,
 			total_sheriff_hours,
-			churn")
+			churn FROM code_reviews")
 		EOR
 	end
 
@@ -61,12 +61,6 @@ class CRAnalysisResults
 			spearman_oFamGap_churn <- cor(code_revs$owner_familiarity_gap, code_revs$churn, method="spearman")
 			
 			spearman_sher_churn <- cor(code_revs$total_sheriff_hours, code_revs$churn, method="spearman")
-
-			spearman_vMissed_nonPR <- cor(code_revs$vuln_missed, code_revs$non_participating_revs, method="spearman")
-			spearman_vMissed_tRevs <- cor(code_revs$vuln_missed, code_revs$total_reviews_with_owner, method="spearman")
-			spearman_vMissed_oFamGap <- cor(code_revs$vuln_missed, code_revs$owner_familiarity_gap, method="spearman")
-			spearman_vMissed_sher <- cor(code_revs$vuln_missed, code_revs$total_sheriff_hours, method="spearman")
-			spearman_vMissed_churn <- cor(code_revs$vuln_missed, code_revs$churn, method="spearman")
 
 			spearman_vMisses_nonPR <- cor(code_revs$vuln_misses, code_revs$non_participating_revs, method="spearman")
 			spearman_vMisses_tRevs <- cor(code_revs$vuln_misses, code_revs$total_reviews_with_owner, method="spearman")
@@ -110,17 +104,6 @@ class CRAnalysisResults
 			sheriff hours vs churn: #{R.pull("spearman_sher_churn")}
 		EOS
 		
-		puts "----------------------------------------------------------------------"
-		puts "---Spearman on vuln missed VS non-partRevs/totRevs/OwnGap/sher/churn--"
-		puts "----------------------------------------------------------------------"
-		puts <<-EOS
-			vuln missed vs non-participating reviews: #{R.pull("spearman_vMissed_nonPR")}
-			vuln missed vs total reviews with owners: #{R.pull("spearman_vMissed_tRevs")}
-			vuln missed vs owner familiarity gap: #{R.pull("spearman_vMissed_oFamGap")}
-			vuln missed vs sheriff hours: #{R.pull("spearman_vMissed_sher")}
-			vuln missed vs churn: #{R.pull("spearman_vMissed_churn")}
-		EOS
-
 		puts "----------------------------------------------------------------------"
 		puts "---Spearman on vuln misses VS non-partRevs/totRevs/OwnGap/sher/churn--"
 		puts "----------------------------------------------------------------------"
