@@ -36,12 +36,13 @@ class CRAnalysisResults
 		R.eval <<-EOR
 			code_revs <- dbGetQuery( con,
 			"SELECT
-			vuln_missed, vuln_misses
 			non_participating_revs,
 			total_reviews_with_owner,
 			owner_familiarity_gap,
 			total_sheriff_hours,
-			churn FROM code_reviews")
+			churn,
+			vuln_misses
+			FROM code_reviews")
 		EOR
 	end
 
@@ -64,7 +65,7 @@ class CRAnalysisResults
 
 			spearman_vMisses_nonPR <- cor(code_revs$vuln_misses, code_revs$non_participating_revs, method="spearman")
 			spearman_vMisses_tRevs <- cor(code_revs$vuln_misses, code_revs$total_reviews_with_owner, method="spearman")
-			spearman_vMisses_oFamGap <- cor(code_revs$vuln_misses, code_revs$owner_familiarilty_gap, method="spearman")
+			spearman_vMisses_oFamGap <- cor(code_revs$vuln_misses, code_revs$owner_familiarity_gap, method="spearman")
 			spearman_vMisses_sher <- cor(code_revs$vuln_misses, code_revs$total_sheriff_hours, method="spearman")
 			spearman_vMisses_churn <- cor(code_revs$vuln_misses, code_revs$churn, method="spearman")
 		EOR
