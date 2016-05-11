@@ -86,6 +86,9 @@ ActiveRecord::Schema.define(version: 20140512131450) do
     t.integer  "owner_familiarity_gap"
     t.integer  "total_sheriff_hours"
     t.boolean  "cursory"
+    t.integer  "churn"
+    t.boolean  "vuln_missed"
+    t.integer  "vuln_misses"
   end
 
   create_table "code_reviews_cvenums", id: false, force: true do |t|

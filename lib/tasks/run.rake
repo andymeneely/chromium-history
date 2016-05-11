@@ -17,6 +17,7 @@ require 'analysis/release_analysis'
 require 'analysis/participant_analysis'
 require 'analysis/hypothesis_tests'
 require 'analysis/code_review_analysis'
+require 'analysis/cr_analysis_results'
 require 'analysis/data_visualization'
 require 'analysis/dev_analysis'
 require 'analysis/visualization_queries'
@@ -146,12 +147,13 @@ namespace :run do
       x.report("Populating owner_familiarity_gap"){CodeReviewAnalysis.new.populate_owner_familiarity_gap}
       x.report("Populating sheriff_hours") {ParticipantAnalysis.new.populate_sheriff_hours}
       x.report("Populating total_sheriff_hours"){CodeReviewAnalysis.new.populate_total_sheriff_hours}
+      x.report("Populating churn"){CodeReviewAnalysis.new.populate_churn}
       x.report("Populating first ownership") {OwnersAnalysis.new.populate_first_owners}
       x.report("Populating release metrics") {ReleaseAnalysis.new.populate}
       x.report("Populating word trend metrics") {WordTrendAnalysis.new.populate}
       x.report("Populating dev word use metrics") {WordTrendAnalysis.new.pre_vs_post_sec_exp}
       x.report("Populating sna metrics") {NetworkAnalysis.new.run}
-
+      x.report("Populating cra results") {CRAnalysisResults.new.run}
       #puts "Here are a bunch of SQL Explains"
       #Filepath.print_sql_explains
     end
@@ -195,6 +197,11 @@ namespace :run do
   desc 'Run dev analysis statistics'
   task :dev => :env do
     DevAnalysis.new.run
+  end
+
+  desc 'Run Code Review Analysis'
+  task :cra => :env do
+    CRAnalysisResults.new.run
   end
 
   desc "Run network analysis"

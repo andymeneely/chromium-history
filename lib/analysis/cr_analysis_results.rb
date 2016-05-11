@@ -18,7 +18,7 @@ class CRAnalysisResults
 		puts "-------------CODE REVIEW ANAYSIS: vulnerabilities--------------"
 		puts "---------------------------------------------------------------"
 		set_up_libraries
-		connet_to_db do
+		connect_to_db do
 			load_codeReviews
 			full_analysis
 
@@ -36,12 +36,13 @@ class CRAnalysisResults
 		R.eval <<-EOR
 			code_revs <- dbGetQuery( con,
 			"SELECT
-			vuln_missed, vuln_misses
 			non_participating_revs,
 			total_reviews_with_owner,
 			owner_familiarity_gap,
 			total_sheriff_hours,
-			churn")
+			churn,
+			vuln_misses
+			FROM code_reviews")
 		EOR
 	end
 
@@ -62,15 +63,9 @@ class CRAnalysisResults
 			
 			spearman_sher_churn <- cor(code_revs$total_sheriff_hours, code_revs$churn, method="spearman")
 
-			spearman_vMissed_nonPR <- cor(code_revs$vuln_missed, code_revs$non_participating_revs, method="spearman")
-			spearman_vMissed_tRevs <- cor(code_revs$vuln_missed, code_revs$total_reviews_with_owner, method="spearman")
-			spearman_vMissed_oFamGap <- cor(code_revs$vuln_missed, code_revs$owner_familiarity_gap, method="spearman")
-			spearman_vMissed_sher <- cor(code_revs$vuln_missed, code_revs$total_sheriff_hours, method="spearman")
-			spearman_vMissed_churn <- cor(code_revs$vuln_missed, code_revs$churn, method="spearman")
-
 			spearman_vMisses_nonPR <- cor(code_revs$vuln_misses, code_revs$non_participating_revs, method="spearman")
 			spearman_vMisses_tRevs <- cor(code_revs$vuln_misses, code_revs$total_reviews_with_owner, method="spearman")
-			spearman_vMisses_oFamGap <- cor(code_revs$vuln_misses, code_revs$owner_familiarilty_gap, method="spearman")
+			spearman_vMisses_oFamGap <- cor(code_revs$vuln_misses, code_revs$owner_familiarity_gap, method="spearman")
 			spearman_vMisses_sher <- cor(code_revs$vuln_misses, code_revs$total_sheriff_hours, method="spearman")
 			spearman_vMisses_churn <- cor(code_revs$vuln_misses, code_revs$churn, method="spearman")
 		EOR
@@ -99,7 +94,7 @@ class CRAnalysisResults
 		puts "------Spearman on owner familiarity gap VS sheriff-hours/churn--------"
 		puts "----------------------------------------------------------------------"
 		puts <<-EOS
-			owner familiarity gap vs sheriff hours: #{(R.pull("spearman_oFamGap_sher")}
+			owner familiarity gap vs sheriff hours: #{R.pull("spearman_oFamGap_sher")}
 			owner familiarity gap vs churn: #{R.pull("spearman_oFamGap_churn")}
 		EOS
 
@@ -111,17 +106,6 @@ class CRAnalysisResults
 		EOS
 		
 		puts "----------------------------------------------------------------------"
-		puts "---Spearman on vuln missed VS non-partRevs/totRevs/OwnGap/sher/churn--"
-		puts "----------------------------------------------------------------------"
-		puts <<-EOS
-			vuln missed vs non-participating reviews: #{R.pull("spearman_vMissed_nonPR")}
-			vuln missed vs total reviews with owners: #{R.pull("spearman_vMissed_tRevs")}
-			vuln missed vs owner familiarity gap: #{R.pull("spearman_vMissed_oFamGap")}
-			vuln missed vs sheriff hours: #{R.pull("spearman_vMissed_sher")}
-			vuln missed vs churn: #{R.pull("spearman_vMissed_churn")}
-		EOS
-
-		puts "----------------------------------------------------------------------"
 		puts "---Spearman on vuln misses VS non-partRevs/totRevs/OwnGap/sher/churn--"
 		puts "----------------------------------------------------------------------"
 		puts <<-EOS
@@ -130,9 +114,8 @@ class CRAnalysisResults
 			vuln misses vs owner familiarity gap: #{R.pull("spearman_vMisses_oFamGap")}
 			vuln misses vs sheriff hours: #{R.pull("spearman_vMisses_sher")}
 			vuln misses vs churn: #{R.pull("spearman_vMisses_churn")}
-		EOS	
-
-	end
-		
+		EOS
+	
+	end		
 
 end
