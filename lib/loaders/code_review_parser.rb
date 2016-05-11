@@ -206,10 +206,10 @@ class CodeReviewParser
       # if Contributor.contribution? msg['text']
       #   @contrb_set << msg['sender_id'] unless msg['sender_id'] == -1
       # end
-      #prevMsg=msg
-      #totalControversy = totalControversy + msg['controversy'].to_f
+      prevMsg=msg
+      totalControversy = totalControversy + msg['controversy'].to_f
     end #message loop
-    #aveControversy = totalControversy.to_f / fst.to_f
+    aveControversy = totalControversy.to_f / fst.to_f
   end #load messages method
 
   # Given our in-memory @dev_db cache, let's now just dump it to a csv
