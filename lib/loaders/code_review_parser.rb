@@ -177,11 +177,12 @@ class CodeReviewParser
   #param file = the json file we're working with   DO WE EVEN NEED THIS HERE?
   #      codereview = code review model object
   #      msg = the messages sent out (about the review in general as opposed to a specific patch set)
-  @@MESSAGE_PROPS = [:sender, :sender_id, :text, :approval, :disapproval, :date, :code_review_id, :controversy]
+  @@MESSAGE_PROPS = [:sender, :sender_id, :text, :approval, :disapproval, :date, :code_review_id, :recency]
   def parse_messages(file, code_review_id, msgs)
     fst = 0
     strtMsg = nil
     prevMsg = nil
+    totalControversy = 0
     msgs.each do |msg|
       next if msg['text'] == ''
       msg['code_review_id'] = code_review_id
@@ -191,19 +192,21 @@ class CodeReviewParser
       #puts type(@msgs)
       #msg['controversy'] = 0
       if fst  == 0
-        msg['controversy'] = 0.0
+        msg['recency'] = 0.0
         strtMsg = msg
       else
-      	msg['controversy'] = determineTimeControversy(strtMsg['date'], prevMsg['date'], msg['date'])# + determineSenderControversy(msg['sender_id'])
+      	msg['recency'] = determineRecency(strtMsg['date'], prevMsg['date'], msg['date'])# + determineSenderControversy(msg['sender_id'])
       end
       @msgs << ordered_array(@@MESSAGE_PROPS, msg)
       @prtp_set << msg['sender_id'] unless msg['sender_id'] == -1
-      fst = 1
+      fst = fst + 1
       # if Contributor.contribution? msg['text']
       #   @contrb_set << msg['sender_id'] unless msg['sender_id'] == -1
       # end
-      prevMsg=msg
+      #prevMsg=msg
+      #totalControversy = totalControversy + msg['controversy'].to_f
     end #message loop
+    #aveControversy = totalControversy.to_f / fst.to_f
   end #load messages method
 
   # Given our in-memory @dev_db cache, let's now just dump it to a csv
@@ -222,10 +225,16 @@ class CodeReviewParser
   end
 
   #Determine the controversiality of each message based on the time of the message before it
-  def determineTimeControversy(startDate, prevDate, currDate)
-    reviewDate = startDate.to_datetime.strftime("%Q").to_f
-    lastMsgDate = prevDate.to_datetime.strftime("%Q").to_f - reviewDate
-    newMsgDate = currDate.to_datetime.strftime("%Q").to_f - reviewDate
+  def determineRecency(startDate, prevDate, currDate)
+    puts "prevDate"+prevDate+" currDate"+currDate
+    if startDate.eql? prevDate
+      lastMsgDate = prevDate.to_datetime.strftime("%Q").to_f
+      newMsgDate = currDate.to_datetime.strftime("%Q").to_f - lastMsgDate
+    else
+      reviewDate = startDate.to_datetime.strftime("%Q").to_f
+      lastMsgDate = prevDate.to_datetime.strftime("%Q").to_f - reviewDate
+      newMsgDate = currDate.to_datetime.strftime("%Q").to_f - reviewDate
+    end
 
     dateDiff = (lastMsgDate / newMsgDate)
     dateDiff = 1.0 - dateDiff
