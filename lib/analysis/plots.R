@@ -79,10 +79,12 @@ plot.dataset <- filter.dataset(dataset, filter.type = "bug")
 #####################
 
 ### Base
-#### Export Resolution: 400 x 460
-ggplot(plot.dataset, aes(sloc, fill = becomes_vulnerable)) +
-  geom_density(alpha = 0.3) +
-  scale_x_log10() +
+#### Export Resolution: 400 x 380
+ggplot(plot.dataset, aes(x = becomes_vulnerable, y = sloc)) +
+  geom_violin(aes(fill = becomes_vulnerable), alpha = 0.3) +
+  geom_boxplot(width = 0.07, outlier.size = 1) +
+  scale_x_discrete(breaks = c("TRUE", "FALSE"), labels = c("Yes", "No")) +
+  scale_y_log10() +
   scale_fill_manual(
     values = c("TRUE" = "#636363", "FALSE" = "#f0f0f0"),
     labels = c("TRUE" = "Yes", "FALSE" = "No"),
@@ -90,15 +92,18 @@ ggplot(plot.dataset, aes(sloc, fill = becomes_vulnerable)) +
   ) +
   labs(
     title = "Distribution of SLOC",
-    x = "Metric Value (Log Scale)", y = "Density"
+    x = "Vulnerable", y = "Metric Value (Log Scale)"
   ) +
-  plot.theme
+  plot.theme +
+  theme(legend.position = "none")
 
 ### Reference
-#### Export Resolution: 400 x 460
-ggplot(plot.dataset, aes(num_pre_bugs, fill = becomes_vulnerable)) +
-  geom_density(alpha = 0.3) +
-  scale_x_log10() +
+#### Export Resolution: 400 x 380
+ggplot(plot.dataset, aes(x = becomes_vulnerable, y = num_pre_bugs)) +
+  geom_violin(aes(fill = becomes_vulnerable), alpha = 0.3) +
+  geom_boxplot(width = 0.07, outlier.size = 1) +
+  scale_x_discrete(breaks = c("TRUE", "FALSE"), labels = c("Yes", "No")) +
+  scale_y_log10() +
   scale_fill_manual(
     values = c("TRUE" = "#636363", "FALSE" = "#f0f0f0"),
     labels = c("TRUE" = "Yes", "FALSE" = "No"),
@@ -106,10 +111,14 @@ ggplot(plot.dataset, aes(num_pre_bugs, fill = becomes_vulnerable)) +
   ) +
   labs(
     title = "Distribution of num-pre-bugs",
-    x = "Metric Value (Log Scale)", y = "Density"
+    x = "Vulnerable", y = "Metric Value (Log Scale)"
   ) +
-  plot.theme
+  plot.theme +
+  theme(legend.position = "none")
 
+
+### Categories
+#### Prepare Plotting Data Set
 ### Categories
 #### Prepare Plotting Data Set
 COLUMN.LABELS <- list(
@@ -142,18 +151,20 @@ for(index in 1:length(COLUMN.LABELS)){
   if(index == rowone.numplots){
     # First Row of Density Plots
     plots[[1]] <- ggplotGrob(
-      ggplot(plot.source, aes(value, fill = becomes_vulnerable)) +
-        geom_density(alpha = 0.3) +
-        scale_x_log10() +
+      ggplot(plot.source, aes(x = becomes_vulnerable, y = value)) +
+        geom_violin(aes(fill = becomes_vulnerable), alpha = 0.3) +
+        geom_boxplot(width = 0.07, outlier.size = 1) +
+        scale_x_discrete(breaks = c("TRUE", "FALSE"), labels = c("Yes", "No")) +
+        scale_y_log10() +
         scale_fill_manual(
           values = c("TRUE" = "#636363", "FALSE" = "#f0f0f0"),
           labels = c("TRUE" = "Yes", "FALSE" = "No"),
           name = "Vulnerable"
         ) +
-        facet_wrap(~ label, nrow = 1, scales = "free_y") +
+        facet_wrap(~ label, nrow = 1, scales = "free_x") +
         labs(
           title = "Distribution of Pre-release Bug Category Metrics",
-          x = "", y = "Density"
+          x = "", y = "Metric Value (Log Scale)"
         ) +
         plot.theme +
         theme(
@@ -168,24 +179,26 @@ for(index in 1:length(COLUMN.LABELS)){
 
 # First Row of Density Plots
 plots[[2]] <- ggplotGrob(
-  ggplot(plot.source, aes(value, fill = becomes_vulnerable)) +
-    geom_density(alpha = 0.3) +
-    scale_x_log10() +
+  ggplot(plot.source, aes(x = becomes_vulnerable, y = value)) +
+    geom_violin(aes(fill = becomes_vulnerable), alpha = 0.3) +
+    geom_boxplot(width = 0.07, outlier.size = 1) +
+    scale_x_discrete(breaks = c("TRUE", "FALSE"), labels = c("Yes", "No")) +
+    scale_y_log10() +
     scale_fill_manual(
       values = c("TRUE" = "#636363", "FALSE" = "#f0f0f0"),
       labels = c("TRUE" = "Yes", "FALSE" = "No"),
       name = "Vulnerable"
     ) +
-    facet_wrap(~ label, nrow = 1, scales = "free_y") +
+    facet_wrap(~ label, nrow = 1, scales = "free_x") +
     labs(
       title = NULL,
-      x = "Metric Value (Log Scale)", y = "Density"
+      x = "Vulnerable", y = "Metric Value (Log Scale)"
     ) +
     plot.theme +
     theme(plot.margin = unit(c(0,5.5,0,5.5), "pt"))
 )
 
-#### Export Resolution: 1250 x 640
+#### Export Resolution: 1250 x 760
 ng = nullGrob()
 plot.grid <- grid.arrange(
   arrangeGrob(plots[[1]], nrow = 1),
@@ -226,21 +239,24 @@ for(index in 1:length(COLUMN.LABELS)){
   )
 }
 
-### Export Resolution: 1250 x 400
-ggplot(plot.source, aes(value, fill = becomes_vulnerable)) +
-  geom_density(alpha = 0.3) +
+### Export Resolution: 1024 x 380
+ggplot(plot.source, aes(x = becomes_vulnerable, y = value)) +
+  geom_violin(aes(fill = becomes_vulnerable), alpha = 0.3) +
+  geom_boxplot(width = 0.07, outlier.size = 1) +
+  scale_x_discrete(breaks = c("TRUE", "FALSE"), labels = c("Yes", "No")) +
+  scale_y_continuous(labels = scales::percent) +
   scale_fill_manual(
     values = c("TRUE" = "#636363", "FALSE" = "#f0f0f0"),
     labels = c("TRUE" = "Yes", "FALSE" = "No"),
     name = "Vulnerable"
   ) +
-  scale_x_continuous(labels = scales::percent) +
-  facet_wrap(~ label, nrow = 1, scales = "free_y") +
+  facet_wrap(~ label, nrow = 1, scales = "free_x") +
   labs(
     title = "Distribution of Review Experience Metrics",
-    x = "Metric Value", y = "Density"
-  ) +
-  plot.theme
+    x = "Vulnerable", y = "Metric Value"
+  )+
+  plot.theme +
+  theme(legend.position = "none")
 
 #####################
 ### Correlation Plots
