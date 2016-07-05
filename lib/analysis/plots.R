@@ -79,7 +79,7 @@ plot.dataset <- filter.dataset(dataset, filter.type = "bug")
 #####################
 
 ### Base
-#### Export Resolution: 400 x 380
+#### Export Resolution: 400 x 460
 ggplot(plot.dataset, aes(x = becomes_vulnerable, y = sloc)) +
   geom_violin(aes(fill = becomes_vulnerable), alpha = 0.3) +
   geom_boxplot(width = 0.07, outlier.size = 1) +
@@ -98,7 +98,7 @@ ggplot(plot.dataset, aes(x = becomes_vulnerable, y = sloc)) +
   theme(legend.position = "none")
 
 ### Reference
-#### Export Resolution: 400 x 380
+#### Export Resolution: 400 x 460
 ggplot(plot.dataset, aes(x = becomes_vulnerable, y = num_pre_bugs)) +
   geom_violin(aes(fill = becomes_vulnerable), alpha = 0.3) +
   geom_boxplot(width = 0.07, outlier.size = 1) +
@@ -119,8 +119,6 @@ ggplot(plot.dataset, aes(x = becomes_vulnerable, y = num_pre_bugs)) +
 
 ### Categories
 #### Prepare Plotting Data Set
-### Categories
-#### Prepare Plotting Data Set
 COLUMN.LABELS <- list(
   "num_pre_build_bugs" = "num-pre-build-bugs",
   "num_pre_compatibility_bugs" = "num-pre-comptability-bugs",
@@ -133,9 +131,10 @@ COLUMN.LABELS <- list(
 plot.source <- data.frame()
 plots <- list()
 plot.index <- 1
-rowone.numplots <- 4
+row.index <- 1
+row.numplots <- 3
 for(index in 1:length(COLUMN.LABELS)){
-  cat(COLUMN.LABELS[[index]], "\n")
+  cat("[Row ", row.index, "] ", COLUMN.LABELS[[index]], "\n", sep = "")
   plot.source <- rbind(
     plot.source,
     data.frame(
@@ -148,9 +147,8 @@ for(index in 1:length(COLUMN.LABELS)){
     )
   )
 
-  if(index == rowone.numplots){
-    # First Row of Density Plots
-    plots[[1]] <- ggplotGrob(
+  if(index %% row.numplots == 0){
+    plots[[row.index]] <- ggplotGrob(
       ggplot(plot.source, aes(x = becomes_vulnerable, y = value)) +
         geom_violin(aes(fill = becomes_vulnerable), alpha = 0.3) +
         geom_boxplot(width = 0.07, outlier.size = 1) +
@@ -161,24 +159,24 @@ for(index in 1:length(COLUMN.LABELS)){
           labels = c("TRUE" = "Yes", "FALSE" = "No"),
           name = "Vulnerable"
         ) +
-        facet_wrap(~ label, nrow = 1, scales = "free_x") +
+        facet_wrap(~ label, nrow = 1, scales = "free") +
         labs(
-          title = "Distribution of Pre-release Bug Category Metrics",
-          x = "", y = "Metric Value (Log Scale)"
+          title = NULL, x = NULL, y = NULL
         ) +
         plot.theme +
         theme(
-          legend.position = "none",
-          plot.margin = unit(c(0,5.5,0,5.5), "pt")
+          legend.position = "none", plot.margin = unit(c(0,5.5,0,5.5), "pt")
         )
     )
 
     plot.source <- data.frame()
+
+    row.index <- row.index + 1
   }
 }
 
-# First Row of Density Plots
-plots[[2]] <- ggplotGrob(
+# Last Row of Density Plots
+plots[[row.index]] <- ggplotGrob(
   ggplot(plot.source, aes(x = becomes_vulnerable, y = value)) +
     geom_violin(aes(fill = becomes_vulnerable), alpha = 0.3) +
     geom_boxplot(width = 0.07, outlier.size = 1) +
@@ -189,20 +187,52 @@ plots[[2]] <- ggplotGrob(
       labels = c("TRUE" = "Yes", "FALSE" = "No"),
       name = "Vulnerable"
     ) +
-    facet_wrap(~ label, nrow = 1, scales = "free_x") +
+    facet_wrap(~ label, nrow = 1, scales = "free") +
     labs(
-      title = NULL,
-      x = "Vulnerable", y = "Metric Value (Log Scale)"
+      title = NULL, x = "Vulnerable", y = NULL
     ) +
     plot.theme +
-    theme(plot.margin = unit(c(0,5.5,0,5.5), "pt"))
+    theme(
+      legend.position = "none", plot.margin = unit(c(0,5.5,0,5.5), "pt")
+    )
 )
 
 #### Export Resolution: 1250 x 760
+##### Two Rows Layout
 ng = nullGrob()
 plot.grid <- grid.arrange(
+  heights = c(1, 1.2),
   arrangeGrob(plots[[1]], nrow = 1),
-  arrangeGrob(ng, plots[[2]], ng, nrow = 1, widths=c(0.15, 1, 0.15))
+  arrangeGrob(ng, plots[[2]], ng, nrow = 1, widths = c(0.15, 1, 0.15)),
+  top = textGrob(
+    "    Distribution of Pre-release Bug Category Metrics\n",
+    gp = gpar(fontsize = 14, fontface = "bold")
+  ),
+  left = textGrob(
+    "Metric Value (Log Scale)", rot = 90,
+    gp = gpar(fontsize = 12, fontface = "bold")
+  )
+)
+
+#### Export Resolution: 680 x 740
+##### Three Rows Layout
+ng = nullGrob()
+plot.grid <- grid.arrange(
+  heights = unit(c(1, 1, 1.1), "null"),
+  arrangeGrob(plots[[1]], nrow = 1),
+  arrangeGrob(plots[[2]], nrow = 1),
+  # NOTE: The widths parameter works only for the export resolution above.
+  arrangeGrob(
+    ng, plots[[3]], ng, nrow = 1, widths = c(1.05, 1, 1)
+  ),
+  top = textGrob(
+    "    Distribution of Pre-release Bug Category Metrics\n",
+    gp = gpar(fontsize = 14, fontface = "bold")
+  ),
+  left = textGrob(
+    "Metric Value (Log Scale)", rot = 90,
+    gp = gpar(fontsize = 12, fontface = "bold")
+  )
 )
 
 ##########################################
@@ -250,7 +280,7 @@ ggplot(plot.source, aes(x = becomes_vulnerable, y = value)) +
     labels = c("TRUE" = "Yes", "FALSE" = "No"),
     name = "Vulnerable"
   ) +
-  facet_wrap(~ label, nrow = 1, scales = "free_x") +
+  facet_wrap(~ label, nrow = 1, scales = "fixed") +
   labs(
     title = "Distribution of Review Experience Metrics",
     x = "Vulnerable", y = "Metric Value"
@@ -315,7 +345,7 @@ plot.source <- rbind(
     )
   )
 
-# Export Resolution: 1250 x 500
+# Export Resolution: (a) 1250 x 500 for one row (b) 840 x 840 for two rows
 ggplot(data = plot.source, aes(Var2, Var1, fill = value)) +
   geom_tile() +
   geom_text(
@@ -327,7 +357,7 @@ ggplot(data = plot.source, aes(Var2, Var1, fill = value)) +
     low = "#636363", high = "#636363", mid = "#f0f0f0",
     midpoint = 0, limit = c(-1,1)
   ) +
-  facet_wrap(~ label, nrow = 1, scales = "fixed") +
+  facet_wrap(~ label, nrow = 2, scales = "fixed") +
   guides(
     fill = guide_colorbar(
       barwidth = 10, barheight = 0.5,
